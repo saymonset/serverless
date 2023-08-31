@@ -1,0 +1,24 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Person",
+    "type": "object",
+    "required": ["name", "birth", "gender"],
+    "properties": {
+      "name": {
+        "type": "string",
+        "description": "The person's full name.",
+        "default": ""
+      },
+      "birth": {
+        "description": "Person birth date.",
+        "type": "string",
+        "format": "date",
+        "default": ""
+      },
+      "gender": {
+        "description": "Person gender.",
+        "type": "string",
+        "default": ""
+      }
+    }
+  }

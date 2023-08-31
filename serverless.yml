@@ -1,4 +1,5 @@
-service: serverless-http-api-dynamodb
+service: national-vaccine-control-app
+useDotenv: true
 frameworkVersion: "3"
 
 provider:
@@ -6,6 +7,7 @@ provider:
   runtime: python3.9
   environment:
     DYNAMODB_TABLE: ${self:service}-${sls:stage}
+    MONGO_URI: mongodb+srv://simon:XhlUSILsriC0H3bO@micluster.mayzd.mongodb.net/
   httpApi:
     cors: true
   iam:
@@ -20,6 +22,25 @@ provider:
             - dynamodb:UpdateItem
             - dynamodb:DeleteItem
           Resource: "arn:aws:dynamodb:${aws:region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
+package:
+  individually: true
+  patterns:
+    - "!*/**"
+plugins:
+  - serverless-python-requirements
+custom:
+  pythonRequirements:
+    usePipenv: false
+    dockerizePip: true
+  dynamodb:
+  # If you only want to use DynamoDB Local in some stages, declare them here
+    stages:
+      - dev
+      - qa
+    start:
+      port: 8000
+      inMemory: true
+      migrate: true
 
 functions:
   create:
@@ -28,6 +49,18 @@ functions:
       - httpApi:
           path: /todos
           method: post
+  add-users:
+    handler: addUser/handler.addUser
+    package:
+      patterns:
+        - "addUser/handler.py"
+    events:
+      - http:
+          path: user
+          method: POST
+          request:
+            schemas:
+              application/json: ${file(schemas/user-schema.json)}
 
   list:
     handler: todos/list.list
@@ -73,3 +106,29 @@ resources:
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST
         TableName: ${self:provider.environment.DYNAMODB_TABLE}
+    vaccine:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: vaccine-${env:STAGE}
+        AttributeDefinitions:
+          - AttributeName: pk
+            AttributeType: S
+        KeySchema:
+          - AttributeName: pk
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+    person:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: person-${env:STAGE}
+        AttributeDefinitions:
+          - AttributeName: pk
+            AttributeType: S
+        KeySchema:
+          - AttributeName: pk
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1

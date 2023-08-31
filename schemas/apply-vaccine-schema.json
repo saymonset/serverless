@@ -1,0 +1,24 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Vaccine Application",
+    "type": "object",
+    "required": ["vaccine_id", "date", "batch"],
+    "properties": {
+      "vaccine_id": {
+        "type": "string",
+        "description": "Vaccine db ID.",
+        "default": ""
+      },
+      "date": {
+        "type": "string",
+        "format": "date",
+        "description": "Vaccine application date.",
+        "default": ""
+      },
+      "batch": {
+        "description": "Vaccine Batch.",
+        "type": "string",
+        "default": ""
+      }
+    }
+  }

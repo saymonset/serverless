@@ -1,3 +1,10 @@
+## Comandos basicos
+serverless deploy
+sls remove
+
+sls invoke local -f function_name // STAGE = undefined
+sls invoke local -f function_name --stage dev // STAGE = dev
+
 <!--
 title: 'AWS Serverless HTTP API with DynamoDB store example in Python'
 description: 'This example demonstrates how to setup an HTTP API allowing you to create, list, get, update and delete Todos. DynamoDB is used to store the data.'
