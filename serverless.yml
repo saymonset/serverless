@@ -8,6 +8,9 @@ provider:
   environment:
     DYNAMODB_TABLE: ${self:service}-${sls:stage}
     MONGO_URI: mongodb+srv://simon:XhlUSILsriC0H3bO@micluster.mayzd.mongodb.net/
+    TWILIO_ID: 'ACe7edfd31cf39b1e25f717ed5093a81fc'
+    TWILIO_AUTH_TOKEN: 'afa246943dba061c67c0b745e67e6668'
+    JWT_SECRET: 'ASDASDJAWJDAIEJEIADJWDADKWOAJ'
   httpApi:
     cors: true
   iam:
@@ -43,92 +46,17 @@ custom:
       migrate: true
 
 functions:
-  create:
-    handler: todos/create.create
-    events:
-      - httpApi:
-          path: /todos
-          method: post
-  add-users:
-    handler: addUser/handler.addUser
+# PHONE
+  send-sms:
+    handler: Phone/sendSms/handler.sendSms
     package:
       patterns:
-        - "addUser/handler.py"
+        - "Phone/sendSms/handler.py"
     events:
       - http:
-          path: user
+          path: sendsms
           method: POST
           request:
             schemas:
-              application/json: ${file(schemas/user-schema.json)}
+              application/json: ${file(Phone/sendSms/phone-schema.json)}
 
-  list:
-    handler: todos/list.list
-    events:
-      - httpApi:
-          path: /todos
-          method: get
-
-  get:
-    handler: todos/get.get
-    events:
-      - httpApi:
-          path: /todos/{id}
-          method: get
-
-  update:
-    handler: todos/update.update
-    events:
-      - httpApi:
-          path: /todos/{id}
-          method: put
-
-  delete:
-    handler: todos/delete.delete
-    events:
-      - httpApi:
-          path: /todos/{id}
-          method: delete
-
-resources:
-  Resources:
-    TodosDynamoDbTable:
-      Type: 'AWS::DynamoDB::Table'
-      DeletionPolicy: Retain
-      Properties:
-        AttributeDefinitions:
-          -
-            AttributeName: id
-            AttributeType: S
-        KeySchema:
-          -
-            AttributeName: id
-            KeyType: HASH
-        BillingMode: PAY_PER_REQUEST
-        TableName: ${self:provider.environment.DYNAMODB_TABLE}
-    vaccine:
-      Type: AWS::DynamoDB::Table
-      Properties:
-        TableName: vaccine-${env:STAGE}
-        AttributeDefinitions:
-          - AttributeName: pk
-            AttributeType: S
-        KeySchema:
-          - AttributeName: pk
-            KeyType: HASH
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
-    person:
-      Type: AWS::DynamoDB::Table
-      Properties:
-        TableName: person-${env:STAGE}
-        AttributeDefinitions:
-          - AttributeName: pk
-            AttributeType: S
-        KeySchema:
-          - AttributeName: pk
-            KeyType: HASH
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
