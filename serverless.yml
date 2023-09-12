@@ -95,4 +95,32 @@ functions:
           request:
             schemas:
               application/json: ${file(Users/user-schema.json)}
+  # LOGIN
+  login:
+    handler: Login/login/handler.login
+    package:
+      patterns:
+        - "Login/login/handler.py"
+    events:
+      - http:
+          path: login
+          method: POST
+          cors: true
+          request:
+            schemas:
+              application/json: ${file(Login/login/login-schema.json)}
+  logout:
+    handler: Login/logout/handler.logout
+    package:
+      patterns:
+        - "Login/logout/handler.py"
+    events:
+      - http:
+          path: logout
+          method: GET
+          cors: true
+          authorizer:
+            name: verify-token
+            identitySource: method.request.header.Authorization
+            resultTtlInSeconds: 0              
 
