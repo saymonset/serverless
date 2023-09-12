@@ -9,7 +9,7 @@ provider:
     DYNAMODB_TABLE: ${self:service}-${sls:stage}
     MONGO_URI: mongodb+srv://simon:XhlUSILsriC0H3bO@micluster.mayzd.mongodb.net/
     TWILIO_ID: 'ACe7edfd31cf39b1e25f717ed5093a81fc'
-    TWILIO_AUTH_TOKEN: 'afa246943dba061c67c0b745e67e6668'
+    TWILIO_AUTH_TOKEN: '05d07f01d95098080162dbbf0dddca38'
     JWT_SECRET: 'ASDASDJAWJDAIEJEIADJWDADKWOAJ'
   httpApi:
     cors: true
@@ -59,4 +59,16 @@ functions:
           request:
             schemas:
               application/json: ${file(Phone/sendSms/phone-schema.json)}
+  check-code:
+    handler: Phone/checkCode/handler.checkCode
+    package:
+      patterns:
+        - "Phone/checkCode/handler.py"
+    events:
+      - http:
+          path: checkcode
+          method: POST
+          request:
+            schemas:
+              application/json: ${file(Phone/checkCode/code-schema.json)}
 
