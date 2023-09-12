@@ -46,6 +46,12 @@ custom:
       migrate: true
 
 functions:
+  # TOKEN
+  verify-token:
+    handler: Token/handler.verifyToken
+    package:
+      patterns:
+        - "Token/handler.py"
 # PHONE
   send-sms:
     handler: Phone/sendSms/handler.sendSms
@@ -71,4 +77,22 @@ functions:
           request:
             schemas:
               application/json: ${file(Phone/checkCode/code-schema.json)}
+    # USERS
+  add-users:
+    handler: Users/addUser/handler.addUser
+    package:
+      patterns:
+        - "Users/addUser/handler.py"
+    events:
+      - http:
+          path: user
+          method: POST
+          cors: true
+          authorizer:
+            name: verify-token
+            identitySource: method.request.header.Authorization
+            resultTtlInSeconds: 0
+          request:
+            schemas:
+              application/json: ${file(Users/user-schema.json)}
 
