@@ -29,6 +29,9 @@ def login(event, context):
     message and a token. If the user is not validated, it returns a response with a status code of 401
     and a body containing the message "Unauthorized".
     """
+    
+    
+    
     udata = json.loads(event['body'])
     isVal, id = validateUser(udata['ci'], udata['password'])
     if (isVal):
@@ -37,7 +40,12 @@ def login(event, context):
         body = json.dumps( { 'message' : f"user validated successfully", "token": token}) 
         response = {
             'statusCode': 200,
-            'body': body
+            'body': body,
+            'headers': {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Credentials": 'true',
+                "Access-Control-Allow-Headers": "*",
+            }
         }
         return response
     response = {

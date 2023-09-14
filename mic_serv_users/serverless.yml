@@ -105,7 +105,16 @@ functions:
       - http:
           path: login
           method: POST
-          cors: true
+          cors:
+            origin: "*"
+            headers:
+              - Content-Type
+              - X-Requested-With
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
           request:
             schemas:
               application/json: ${file(Login/login/login-schema.json)}
@@ -122,5 +131,16 @@ functions:
           authorizer:
             name: verify-token
             identitySource: method.request.header.Authorization
-            resultTtlInSeconds: 0              
+            resultTtlInSeconds: 0  
+resources:
+  Resources:
+    Unauthorized:
+      Type: AWS::ApiGateway::GatewayResponse
+      Properties:
+        ResponseParameters:
+          "gatewayresponse.header.Access-Control-Allow-Origin": "'*'"
+          "gatewayresponse.header.Access-Control-Allow-Headers": "'*'"
+        ResponseType: "DEFAULT_4XX"
+        RestApiId:
+          Ref: "ApiGatewayRestApi"           
 
