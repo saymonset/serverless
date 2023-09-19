@@ -1,7 +1,18 @@
 service: national-vaccine-control-app
 useDotenv: true
 frameworkVersion: "3"
-
+CorsConfiguration:
+  AllowOrigins:
+    - "http://localhost:4200/"
+  AllowHeaders:
+    - x-apigateway-header
+  AllowMethods:
+    - GET
+    - POST
+    - PUT
+    - DELETE
+  MaxAge: 600
+  AllowCredentials: true
 provider:
   name: aws
   runtime: python3.9
@@ -105,16 +116,8 @@ functions:
       - http:
           path: login
           method: POST
-          cors:
-            origin: "*"
-            headers:
-              - Content-Type
-              - X-Requested-With
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
-              - X-Amz-User-Agent
+          cors: true
+
           request:
             schemas:
               application/json: ${file(Login/login/login-schema.json)}

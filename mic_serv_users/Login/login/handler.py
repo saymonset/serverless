@@ -42,15 +42,18 @@ def login(event, context):
             'statusCode': 200,
             'body': body,
             'headers': {
-                "Access-Control-Allow-Origin": "*",
-                "Access-Control-Allow-Credentials": 'true',
-                "Access-Control-Allow-Headers": "*",
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Credentials': True,
             }
         }
         return response
     response = {
         'statusCode': 401,
-        'body': "Unauthorized"
+        'body': "Unauthorized",
+        'headers': {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Credentials': True,
+            }
     }
     return response
 

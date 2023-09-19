@@ -38,7 +38,6 @@ def sendSms(event, context):
     user = users.find_one({"phone": inc_body['phone']})
     print(account_sid, auth_token)
     print(inc_body['phone'])
-    print('la cagada')
 
     client = Client(account_sid, auth_token)
     rand_num = random.randint(99999,999999)
