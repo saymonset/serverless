@@ -32,7 +32,9 @@ def get_user(user_id):
     
 
     return jsonify(
-        {'userId': item.get('userId').get('S'), 'name': item.get('name').get('S')}
+        {'userId': item.get('userId').get('S'), 'name': item.get('name').get('S')
+         , 'phone': item.get('phone').get('S')
+         , 'surname': item.get('surname').get('S')}
     )
 
 
@@ -40,12 +42,13 @@ def get_user(user_id):
 def create_user():
     user_id = request.json.get('userId')
     name = request.json.get('name')
+    phone = request.json.get('phone')
+    surname =  request.json.get('surname')
     if not user_id or not name:
         return jsonify({'error': 'Please provide both "userId" and "name"'}), 400
 
-    token = jwt.encode({'user_id': user_id}, 'clave_secreta', algorithm='HS256')
     dynamodb_client.put_item(
-        TableName=USERS_TABLE, Item={'userId': {'S': user_id}, 'name': {'S': name}}
+        TableName=USERS_TABLE, Item={'userId': {'S': user_id}, 'name': {'S': name}, 'phone': {'S': phone},'surname': {'S': surname}}
     )
 
     return jsonify({'userId': user_id, 'name': name})
