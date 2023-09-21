@@ -20,7 +20,7 @@ provider:
     DYNAMODB_TABLE: ${self:service}-${sls:stage}
     MONGO_URI: mongodb+srv://simon:XhlUSILsriC0H3bO@micluster.mayzd.mongodb.net/
     TWILIO_ID: 'ACe7edfd31cf39b1e25f717ed5093a81fc'
-    TWILIO_AUTH_TOKEN: '05d07f01d95098080162dbbf0dddca38'
+    TWILIO_AUTH_TOKEN: 'a3b490fac46c6fea7a1b4888da55c4e1'
     JWT_SECRET: 'ASDASDJAWJDAIEJEIADJWDADKWOAJ'
   httpApi:
     cors: true

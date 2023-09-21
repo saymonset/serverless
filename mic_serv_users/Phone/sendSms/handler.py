@@ -50,7 +50,7 @@ def sendSms(event, context):
                 message = client.messages.create(
                     from_='+12179190616',
                     body=f"Your validation code is: {rand_num}",
-                    to=user['phone']
+                    to=inc_body['phone']
                 )
                 users.update_one({'_id':user['_id']}, {"$set": {'last_code': rand_num}}, upsert=False)
                 body = json.dumps( { 'message' : f"Code was sent successfully."}) 
@@ -65,11 +65,12 @@ def sendSms(event, context):
                     'body': body
                 }
         else:    
-            client.messages.create(
+            message = client.messages.create(
                 from_='+12179190616',
                 body=f"Your validation code is: {rand_num}",
                 to=inc_body['phone']
-            )
+                )
+            
             user = {
                 'phone': inc_body['phone'],
                 'last_code': rand_num,
