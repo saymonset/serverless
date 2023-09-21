@@ -17,21 +17,6 @@ account_sid = os.environ.get('TWILIO_ID')
 auth_token = os.environ.get('TWILIO_AUTH_TOKEN')
 
 def sendSms(event, context):
-    """
-    The function `sendSms` sends a validation code via SMS to a given phone number and updates the
-    user's status accordingly.
-    
-    :param event: The `event` parameter is a dictionary that contains information about the event that
-    triggered the function. It typically includes details such as the HTTP request body, headers, and
-    other relevant information
-    :param context: The `context` parameter is an object that provides information about the runtime
-    environment of the function. It includes details such as the AWS request ID, function name, and
-    other useful information. In this code, the `context` parameter is not used
-    :return: The function `sendSms` returns a response object. The response object has two properties:
-    `statusCode` and `body`. The `statusCode` indicates the status of the response (e.g., 201 for
-    success, 401 for unauthorized, 400 for bad request), and the `body` contains a JSON string with a
-    message indicating the result of the operation.
-    """
     inc_body = json.loads(event['body'])
     db = conn.mic_serv_users
     users = db.users
