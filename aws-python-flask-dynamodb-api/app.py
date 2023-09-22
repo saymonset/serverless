@@ -5,10 +5,9 @@ import boto3
 
 from flask import Flask, jsonify, make_response, request
 from flask_pymongo import PyMongo
-
+from routes.vacc import vaccine 
 from flask_cors import CORS
-
-from config.mongodb import db
+ 
 
 app = Flask(__name__)
 CORS(app) 
@@ -58,26 +57,10 @@ def create_user():
     if not user_id or not name:
         return jsonify({'error': 'Please provide both "userId" and "name"'}), 400
 
-    # Insertar el nuevo usuario en la colección
-    collection = db['vacunasSaymon']
-    new_user = {
-                "user_id": user_id,
-                "name": name,
-                "phone": phone
-            }
-    collection.insert_one(new_user)
+    app.register_blueprint(vaccine, url_prefix='/users')
 
-    dynamodb_client.put_item(
-        TableName=USERS_TABLE, Item={'userId': {'S': user_id}, 'name': {'S': name}, 'phone': {'S': phone},'surname': {'S': surname}}
-    )
-    # users = db.collection.find()
-    # print(users)
-
-    # online_users = mongo.db.users.find({"online": True})
-    # if online_users is not None:
-    #   return jsonify({'userId': user_id, 'name': name, 'online_users':online_users})
-    # else:
-    return jsonify({'userId': user_id, 'name': name})
+    
+    #return jsonify({'userId': user_id, 'name': name})
 
     
 
