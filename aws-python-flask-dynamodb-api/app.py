@@ -5,18 +5,16 @@ import boto3
 
 from flask import Flask, jsonify, make_response, request
 from flask_pymongo import PyMongo
-from pymongo import MongoClient
+
 from flask_cors import CORS
 
+from config.mongodb import db
+
 app = Flask(__name__)
-app.config["MONGO_URI"] = "mongodb+srv://simon:XhlUSILsriC0H3bO@micluster.mayzd.mongodb.net/"
-mongo = PyMongo(app)
-CORS(app)
+CORS(app) 
 
 #---------
- # Establece la conexión con la base de datos MongoDB
-client = MongoClient("mongodb+srv://simon:XhlUSILsriC0H3bO@micluster.mayzd.mongodb.net/")
-db = client["users"]
+
 
 
 #---------
@@ -61,7 +59,7 @@ def create_user():
         return jsonify({'error': 'Please provide both "userId" and "name"'}), 400
 
     # Insertar el nuevo usuario en la colección
-    collection = db['vacunas']
+    collection = db['vacunasSaymon']
     new_user = {
                 "user_id": user_id,
                 "name": name,
