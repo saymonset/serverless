@@ -2,11 +2,24 @@ import os
 import jwt
 
 import boto3
+
 from flask import Flask, jsonify, make_response, request
+from flask_pymongo import PyMongo
+from pymongo import MongoClient
 from flask_cors import CORS
 
 app = Flask(__name__)
+app.config["MONGO_URI"] = "mongodb+srv://simon:XhlUSILsriC0H3bO@micluster.mayzd.mongodb.net/"
+mongo = PyMongo(app)
 CORS(app)
+
+#---------
+ # Establece la conexión con la base de datos MongoDB
+client = MongoClient("mongodb+srv://simon:XhlUSILsriC0H3bO@micluster.mayzd.mongodb.net/")
+db = client["users"]
+
+
+#---------
 
 
 dynamodb_client = boto3.client('dynamodb')
@@ -47,11 +60,28 @@ def create_user():
     if not user_id or not name:
         return jsonify({'error': 'Please provide both "userId" and "name"'}), 400
 
+    # Insertar el nuevo usuario en la colección
+    collection = db['vacunas']
+    new_user = {
+                "user_id": user_id,
+                "name": name,
+                "phone": phone
+            }
+    collection.insert_one(new_user)
+
     dynamodb_client.put_item(
         TableName=USERS_TABLE, Item={'userId': {'S': user_id}, 'name': {'S': name}, 'phone': {'S': phone},'surname': {'S': surname}}
     )
+    # users = db.collection.find()
+    # print(users)
 
+    # online_users = mongo.db.users.find({"online": True})
+    # if online_users is not None:
+    #   return jsonify({'userId': user_id, 'name': name, 'online_users':online_users})
+    # else:
     return jsonify({'userId': user_id, 'name': name})
+
+    
 
 
 #-------------
