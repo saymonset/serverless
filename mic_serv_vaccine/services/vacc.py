@@ -1,6 +1,8 @@
-from flask import request, Response
+from flask import request, Response, jsonify
 from bson import json_util, ObjectId
 from config.mongodb import mongo
+from bson.json_util import dumps
+import json
 
 
 """Registro de vacunas"""
@@ -14,7 +16,7 @@ def create_vaccine_service():
     disease = data.get("disease", None)
     dosis = data.get("dosis", None)
     application_age = data.get("application_age", None)
-    isChildren = data.get("isChildren", None)
+    isChildren = data.get("isChildren", False)
     if name:
         response = mongo.db.vaccines.insert_one(
             {
@@ -24,6 +26,7 @@ def create_vaccine_service():
                 "dosis": dosis,
                 "application_age": application_age,
                 "isChildren": isChildren,
+                "status": True
             }
         )
         result = {
@@ -34,6 +37,7 @@ def create_vaccine_service():
              "dosis": dosis,
              "application_age": application_age,
              "isChildren": isChildren,
+             "status": True
         }
         return result
     else:
@@ -44,10 +48,21 @@ def create_vaccine_service():
 
 
 def get_vaccines_service():
-    data = mongo.db.vaccines.find()
+    limite = int(request.args.get('limite', 15))
+    desde = int(request.args.get('desde', 0))
+    query = {'status': True}
+    data = mongo.db.vaccines.find(query).skip(desde).limit(limite)
     result = json_util.dumps(data)
-    return Response(result, mimetype="application/json")
+    total = mongo.db.vaccines.count_documents(query)
+    diccionario = {
+        'total': total,
+        'limite':limite,
+        'desde':desde,
+        'vaccines': result
+    }
 
+    return jsonify(diccionario)
+    #return Response(json.dumps(diccionario), mimetype="application/json")
 
 """Obtener una Vacuna"""
 
