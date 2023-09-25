@@ -21,25 +21,12 @@ def get_vaccine(id):
 @vaccine.route('/', methods = ['POST'])
 def create_vaccine():
 
-    tupla_objeto = vaccine_validate()
-    print(tupla_objeto)
-    valor_buscado = "resp"
-    indice = None
-    for i, elemento in enumerate(tupla_objeto):
-        print(elemento)
-        print(tupla_objeto)
-        if type(elemento) == str and elemento == valor_buscado:
-            indice = i
-            break
+    result = vaccine_validate()
     
-
-    #valor_resp = tupla_objeto[indice]
-
-    print(indice)
-
-    #resp = create_vaccine_service() if bool(objeto["resp"])  else objeto 
+    print(bool(result["resp"]))
+    resp = create_vaccine_service() if bool(result["resp"])  else result 
   
-    return tupla_objeto
+    return resp
     
   #return create_vaccine_service()
 
