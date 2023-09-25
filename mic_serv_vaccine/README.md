@@ -1,0 +1,26 @@
+################requirements.txt##################
+blinker==1.6.2
+click==8.1.7
+dnspython==2.4.2
+flask==2.3.3
+Flask-PyMongo==2.3.0
+importlib-metadata==6.8.0
+itsdangerous==2.1.2
+Jinja2==3.1.2
+MarkupSafe==2.1.3
+pymongo==4.5.0
+python-dotenv==1.0.0
+werkzeug==2.3.7
+zipp==3.17.0
+
+##################################################
+
+pip install -r requirements.txt
+sls plugin install -n serverless-wsgi
+
+ 
+
+serverless wsgi serve --port 5001
+
+serverless wsgi serve
+sls deploy --stage qa

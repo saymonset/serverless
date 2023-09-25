@@ -11,6 +11,17 @@ authorName: 'Serverless, inc.'
 authorAvatar: 'https://avatars1.githubusercontent.com/u/13742415?s=200&v=4'
 -->
 
+
+pip install -r requirements.txt
+sls plugin install -n serverless-wsgi
+
+ 
+
+serverless wsgi serve --port 5001
+
+serverless wsgi serve
+sls deploy --stage qa--
+
 pip install Flask-PyMongo
 
 # Serverless Framework Python Flask API service backed by DynamoDB on AWS

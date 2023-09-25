@@ -1,73 +1,24 @@
-service: mic-serv-vaccine
-useDotenv: true
-frameworkVersion: '3'
-CorsConfiguration:
-  AllowOrigins:
-    - "*"
-  AllowHeaders:
-    - x-apigateway-header
-  AllowMethods:
-    - GET
-    - POST
-    - PUT
-    - DELETE
-  MaxAge: 600
-  AllowCredentials: true
+org: oraclefedora
+app: aws-python-flask-dynamodb-api
+service: vaccine #name this whatever you want
+ 
 provider:
-  name: aws
-  runtime: python3.9
-  environment:
-    DYNAMODB_TABLE: ${self:service}-${sls:stage}
-    MONGO_URI: mongodb+srv://simon:XhlUSILsriC0H3bO@micluster.mayzd.mongodb.net/
-    TWILIO_ID: 'ACe7edfd31cf39b1e25f717ed5093a81fc'
-    TWILIO_AUTH_TOKEN: '05d07f01d95098080162dbbf0dddca38'
-    JWT_SECRET: 'ASDASDJAWJDAIEJEIADJWDADKWOAJ'
-  httpApi:
-    cors: true
-package:
-  individually: true
-  patterns:
-    - "!*/**"
+ name: aws
+ runtime: python3.11
+ region: us-east-1
+ memorySize: 128
+
 plugins:
+  - serverless-wsgi
   - serverless-python-requirements
+
 custom:
-  pythonRequirements:
-    usePipenv: false
-    dockerizePip: true
+ wsgi:
+   app: app.app
+   packRequirements: false
 
 functions:
-  # TOKEN
-  verify-token:
-    handler: Token/handler.verifyToken
-    package:
-      patterns:
-        - "Token/handler.py"
-  # SPECIALITIES
-  createspeciality:
-    handler: specialities/create.create
-    package:
-      patterns:
-        - "specialities/create.py"
-    events:
-      - http:
-          path: specialities
-          method: POST
-          cors: true
-          authorizer:
-            name: verify-token
-            identitySource: method.request.header.Authorization
-            resultTtlInSeconds: 0
-          request:
-            schemas:
-              application/json: ${file(specialities/specialities-schema.json)}
-resources:
-  Resources:
-    Unauthorized:
-      Type: AWS::ApiGateway::GatewayResponse
-      Properties:
-        ResponseParameters:
-          "gatewayresponse.header.Access-Control-Allow-Origin": "'*'"
-          "gatewayresponse.header.Access-Control-Allow-Headers": "'*'"
-        ResponseType: "DEFAULT_4XX"
-        RestApiId:
-          Ref: "ApiGatewayRestApi"
+ app:
+   handler: wsgi_handler.handler
+   events:
+     - httpApi: '*'
