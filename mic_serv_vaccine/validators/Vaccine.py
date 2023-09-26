@@ -4,11 +4,11 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
 import json
-from validators.VaccineBd import nameExistBd
 
 
 
-def isValid():
+
+def isValidVaccine():
     data = request.get_json()
     name = data.get("name")
     description = data.get("description")
@@ -32,11 +32,7 @@ def isValid():
                return {"resp":False,
                 "application_age":"A qué edad se aplica es obligatoria"}          
 
-    else:  return validarInBD()
+    else: return {"resp":True}
 
  
-
-def validarInBD():
-    return  nameExistBd()   
-
-         
+ 

@@ -9,7 +9,7 @@ import json
 
 
 
-def nameExistBd():
+def isValidBdVaccine():
     data = request.get_json()
     name = data.get("name")
 
