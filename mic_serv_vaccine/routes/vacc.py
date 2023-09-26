@@ -4,8 +4,9 @@ from flask import Blueprint
 from flask import request, Response
 from services.vacc import create_vaccine_service, get_vaccines_service, get_vaccine_service, update_vaccine_service, delete_vaccine_service
 from validators.Vaccine import isValidVaccine
-from validators.VaccineBd import isValidBdVaccine
+from validators.VaccineBd import isValidBdVaccine, isValidBdVaccineUpdate
 import json
+from bson.objectid import ObjectId
 vaccine = Blueprint('vaccine', __name__)
 
 
@@ -23,7 +24,6 @@ def get_vaccine(id):
 def create_vaccine():
     # Validar campos obligatprios
     result = isValidVaccine()
-    print (result)
     if not bool(result["resp"]):  return result 
      # Validar campos en BD
     result =  isValidBdVaccine()
@@ -32,8 +32,12 @@ def create_vaccine():
 
 @vaccine.route('/<id>', methods = ['PUT'])
 def update_vaccine(id):
-    # Validar campos obligatprios
-    result = isValid()
+   
+     # Validar campos obligatprios
+    result = isValidVaccine()
+    if not bool(result["resp"]):  return result 
+     # Validar campos en BD
+    result =  isValidBdVaccineUpdate(id)
     return update_vaccine_service(id) if bool(result["resp"])  else result 
 
 

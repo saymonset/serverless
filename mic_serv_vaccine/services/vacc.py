@@ -62,7 +62,6 @@ def get_vaccines_service():
     }
 
     return jsonify(diccionario)
-    #return Response(json.dumps(diccionario), mimetype="application/json")
 
 """Obtener una Vacuna"""
 
@@ -81,8 +80,8 @@ def update_vaccine_service(id):
     if len(data) == 0:
         return "No hay datos para actualizar", 400
 
-    response = mongo.db.vaccines.update_one({"_id": ObjectId(id)}, {"$set": data})
-
+   
+    response = mongo.db.vaccines.update_one({"_id":{'$eq': ObjectId(id)}}, {"$set": data})
     if response.modified_count >= 1:
         return "La vacuna ah sido actualizada correctamente", 200
     else:
