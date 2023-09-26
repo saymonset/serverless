@@ -18,9 +18,9 @@ provider:
   runtime: python3.9
   environment:
     DYNAMODB_TABLE: ${self:service}-${sls:stage}
-    MONGO_URI: mongodb+srv://simon:XhlUSILsriC0H3bO@micluster.mayzd.mongodb.net/
+    MONGO_URI: mongodb+srv://simon:XhlUSILsriC0H3bO@micluster.mayzd.mongodb.net/health_{{stage}}
     TWILIO_ID: 'ACe7edfd31cf39b1e25f717ed5093a81fc'
-    TWILIO_AUTH_TOKEN: 'a3b490fac46c6fea7a1b4888da55c4e1'
+    TWILIO_AUTH_TOKEN: '46d118856fadd22a1853c4ab6abb0e02'
     JWT_SECRET: 'ASDASDJAWJDAIEJEIADJWDADKWOAJ'
   httpApi:
     cors: true
@@ -42,6 +42,7 @@ package:
     - "!*/**"
 plugins:
   - serverless-python-requirements
+  - serverless-wsgi
 custom:
   pythonRequirements:
     usePipenv: false

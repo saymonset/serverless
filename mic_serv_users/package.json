@@ -5,6 +5,7 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "serverless-python-requirements": "^6.0.0"
+    "serverless-python-requirements": "^6.0.0",
+    "serverless-wsgi": "^3.0.2"
   }
 }
