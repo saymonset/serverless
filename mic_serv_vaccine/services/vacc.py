@@ -110,9 +110,6 @@ def delete_vaccine_service(id):
         # La cadena es un ObjectId válido
         # Realiza las operaciones necesarias
         response = delete_vaccine_repo(id)
-        print('--------------ini--------')
-        print (response)
-        print('-------------fin---------')
         if response.deleted_count >= 1:
             return "La vacuna ha sido eliminada correctamente", 200
         else:

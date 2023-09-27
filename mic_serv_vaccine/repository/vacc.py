@@ -1,3 +1,9 @@
+from flask import Flask, request, jsonify,  request, Response
+from flask_wtf import FlaskForm
+from wtforms import StringField, SubmitField
+from wtforms.validators import DataRequired
+import json
+from bson.objectid import ObjectId
 from config.mongodb import mongo
 from bson import ObjectId
 from models.vaccine import VaccineModels
@@ -42,6 +48,33 @@ def update_vaccine_repo(id, data):
 
 def delete_vaccine_repo(id):
      return mongo.db.vaccines.delete_one({"_id": ObjectId(id)})
+
+def find_one_repo(query):     
+    return mongo.db.vaccines.find_one(query)
+
+
+def isValidBdVaccine():
+    data = request.get_json()
+    name = data.get("name")
+    query = {'name': name }
+    vaccines = find_one_repo(query)
+    if vaccines:
+        return {"resp":False,
+                "name":"El nombre ya existe en bd"}
+    
+    return {"resp":True}
+
+
+def isValidBdVaccineUpdate(id):
+    data = request.get_json()
+    name = data.get("name")
+    query = {'name': name, '_id': {'$ne': ObjectId(id)}}
+    vaccines = find_one_repo(query)
+    if vaccines:
+        return {"resp":False,
+                "name":"El nombre ya existe en bd"}
+    
+    return {"resp":True}
     
 
 
