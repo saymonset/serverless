@@ -4,16 +4,16 @@ from flask import request, Response
 import json
 from bson.objectid import ObjectId
 from services.vacc import create_vaccine_service, get_vaccines_service, get_vaccine_service, update_vaccine_service, delete_vaccine_service
-from validators.Vaccine import isValidVaccine
-from validators.VaccineBd import isValidBdVaccine, isValidBdVaccineUpdate
-from services.applyVaccines import create_apply_vaccine_service, get_apply__vaccine_service
+from validators.vaccine import isValidVaccine
+from validators.vaccineBd import isValidBdVaccine, isValidBdVaccineUpdate
+from services.applyVaccines import create_apply_vaccine_service, get_apply__vaccine_service, get_applyVacciness_service
 
 applyVaccines = Blueprint('applyVaccines', __name__)
 
 
-# @applyVaccines.route('/', methods=['GET'])
-# def get_applyVacciness():
-#     return get_applyVacciness_service()
+@applyVaccines.route('/', methods=['GET'])
+def get_applyVacciness():
+    return get_applyVacciness_service()
 
 
 @applyVaccines.route('/<id>', methods = ['GET'])

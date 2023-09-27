@@ -26,65 +26,37 @@ def create_apply_vaccine_service():
     response = Response(json.dumps(response_data), status=200, mimetype='application/json')
     return response
 
-
-    # name = data.get("name")
-    # description = data.get("description", None)
-    # disease = data.get("disease", None)
-    # dosis = data.get("dosis", None)
-    # application_age = data.get("application_age", None)
-    # isChildren = data.get("isChildren", False)
-    # if name:
-    #     response = mongo.db.vaccines.insert_one(
-    #         {
-    #             "name": name,
-    #             "description": description,
-    #             "disease": disease,
-    #             "dosis": dosis,
-    #             "application_age": application_age,
-    #             "isChildren": isChildren,
-    #             "status": True
-    #         }
-    #     )
-    #     result = {
-    #          "id": str(response.inserted_id),
-    #          "name": name,
-    #          "description": description,
-    #          "disease": disease,
-    #          "dosis": dosis,
-    #          "application_age": application_age,
-    #          "isChildren": isChildren,
-    #          "status": True
-    #     }
-    #     return result
-    # else:
-    #     return "Invalid payload", 400
+ 
 
 
 """Obtiene las vacunas"""
 
 
-def get_vaccines_service():
+def get_applyVacciness_service():
     limite = int(request.args.get('limite', 15))
     desde = int(request.args.get('desde', 0))
-    query = {'status': True}
+    query = {'status': {'$in': [True, 'True']}}
     data = mongo.db.apply_vaccines.find(query).skip(desde).limit(limite)
+   # data = mongo.db.apply_vaccines.find()
+  
     result = json_util.dumps(data)
     total = mongo.db.apply_vaccines.count_documents(query)
     diccionario = {
         'total': total,
         'limite':limite,
         'desde':desde,
-        'vaccines': result
+        'apply_vaccines': json.loads(result)
     }
-
-    return jsonify(diccionario)
+    return jsonify((diccionario))
 
 """Obtener una Vacuna"""
 
 
 def get_apply__vaccine_service(id):
     data = mongo.db.apply_vaccines.find_one({"_id": ObjectId(id)})
-    vaccine = mongo.db.vaccines.find_one({"_id": ObjectId(data['vacinne_id'])})
+    vaccine = None
+    if data is not None and data['vacinne_id'] is not None:
+       vaccine = mongo.db.vaccines.find_one({"_id": ObjectId(data['vacinne_id'])})
 
     response_data = {
             'result': data,

@@ -1,8 +1,15 @@
 from flask import request, Response, jsonify
 from bson import json_util, ObjectId
-from config.mongodb import mongo
 from bson.json_util import dumps
 import json
+
+from config.mongodb  import   mongo
+from models.vaccine  import   VaccineModels
+from repository.vacc import   crear_vacuna_repo, get_vaccines_repo, get_vaccines_counts_repo
+from repository.vacc import   get_vaccine_repo, update_vaccine_repo, delete_vaccine_repo
+from helps.utils import validar_object_id
+
+
 
 
 """Registro de vacunas"""
@@ -18,17 +25,13 @@ def create_vaccine_service():
     application_age = data.get("application_age", None)
     isChildren = data.get("isChildren", False)
     if name:
-        response = mongo.db.vaccines.insert_one(
-            {
-                "name": name,
-                "description": description,
-                "disease": disease,
-                "dosis": dosis,
-                "application_age": application_age,
-                "isChildren": isChildren,
-                "status": True
-            }
-        )
+         # Crea un nuevo documento de usuario
+        vaccineModels = VaccineModels(name=name, description=description, 
+                                       disease=disease,dosis=dosis, application_age=application_age, 
+                                       isChildren=isChildren, status=True)
+        
+        response = crear_vacuna_repo(vaccineModels)
+
         result = {
              "id": str(response.inserted_id),
              "name": name,
@@ -50,15 +53,16 @@ def create_vaccine_service():
 def get_vaccines_service():
     limite = int(request.args.get('limite', 15))
     desde = int(request.args.get('desde', 0))
-    query = {'status': True}
-    data = mongo.db.vaccines.find(query).skip(desde).limit(limite)
+    
+    data = get_vaccines_repo(limite, desde)
+    total = get_vaccines_counts_repo()
+
     result = json_util.dumps(data)
-    total = mongo.db.vaccines.count_documents(query)
     diccionario = {
         'total': total,
         'limite':limite,
         'desde':desde,
-        'vaccines': result
+        'vaccines': json.loads(result)
     }
 
     return jsonify(diccionario)
@@ -67,7 +71,7 @@ def get_vaccines_service():
 
 
 def get_vaccine_service(id):
-    data = mongo.db.vaccines.find_one({"_id": ObjectId(id)})
+    data = get_vaccine_repo(id)
     result = json_util.dumps(data)
     return Response(result, mimetype="application/json")
 
@@ -79,21 +83,45 @@ def update_vaccine_service(id):
     data = request.get_json()
     if len(data) == 0:
         return "No hay datos para actualizar", 400
-
    
-    response = mongo.db.vaccines.update_one({"_id":{'$eq': ObjectId(id)}}, {"$set": data})
-    if response.modified_count >= 1:
-        return "La vacuna ah sido actualizada correctamente", 200
+    if validar_object_id(id):
+        # La cadena es un ObjectId válido
+        # Realiza las operaciones necesarias
+        response = update_vaccine_repo(id, data)
+        if response.modified_count >= 1:
+            return "La vacuna ah sido actualizada correctamente", 200
+        else:
+            return "La vacuna no fue encontrada", 404
     else:
-        return "La vacuna no fue encontrada", 404
+        # Maneja el error o muestra un mensaje de error
+        result = {
+             "TypeError": id,
+             "ValueError": "La cadena no es un ObjectId válido" 
+        }
+        return result
+    
 
 
 """Eliminar una vacuna"""
 
 
 def delete_vaccine_service(id):
-    response = mongo.db.vaccines.delete_one({"_id": ObjectId(id)})
-    if response.deleted_count >= 1:
-        return "La vacuna ha sido eliminada correctamente", 200
+    if validar_object_id(id):
+        # La cadena es un ObjectId válido
+        # Realiza las operaciones necesarias
+        response = delete_vaccine_repo(id)
+        print('--------------ini--------')
+        print (response)
+        print('-------------fin---------')
+        if response.deleted_count >= 1:
+            return "La vacuna ha sido eliminada correctamente", 200
+        else:
+            return "La vacuna no fue encontrada", 404
     else:
-        return "La vacuna no fue encontrada", 404
+        # Maneja el error o muestra un mensaje de error
+        result = {
+             "TypeError": id,
+             "ValueError": "La cadena no es un ObjectId válido" 
+        }
+        return result
+    
