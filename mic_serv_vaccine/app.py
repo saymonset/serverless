@@ -4,6 +4,7 @@ import os
 from config.mongodb import mongo
 from routes.vacc import vaccine 
 from routes.applyVaccines import applyVaccines 
+from routes.specialities import specialities
 
 load_dotenv()
 
@@ -15,4 +16,6 @@ print(mongo.db)
 
 app.register_blueprint(vaccine, url_prefix='/vaccine')
 app.register_blueprint(applyVaccines, url_prefix='/applyVaccines')
+app.register_blueprint(specialities, url_prefix='/specialities')
+
 

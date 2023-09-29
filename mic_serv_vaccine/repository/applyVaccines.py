@@ -1,7 +1,4 @@
 from flask import Flask, request, jsonify,  request, Response
-from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
-from wtforms.validators import DataRequired
 import json
 from bson.objectid import ObjectId
 from config.mongodb import mongo

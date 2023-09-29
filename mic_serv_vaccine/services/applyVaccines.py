@@ -11,23 +11,39 @@ from repository.vacc import  get_vaccine_repo
 from helps.utils import validar_object_id
 
 """Registro de vacunas"""
-
-
+    
 def create_apply_vaccine_service():
     data = request.get_json()
-    lote = data.get("lote", None)
-    vacinne_id = data.get("vacinne_id", None)
+
+    vacinne_id = data.get("vacinne_id")
+    user_id = data.get("user_id")
+    family_id = data.get("family_id")
+    batch = data.get("batch")
+    lote = data.get("lote")
+    image = data.get("image")
+    date = data.get("date")
     status = data.get("status", True)
-    print(vacinne_id)
     if vacinne_id:
         # Crea un nuevo documento de usuario
-        applyVaccineModels = ApplyVaccineModels(lote=lote, vacinne_id=vacinne_id, status=status)
+        applyVaccineModels = ApplyVaccineModels(vacinne_id=vacinne_id, 
+                                                user_id=user_id, 
+                                                family_id=family_id, 
+                                                batch=batch, 
+                                                lote=lote, 
+                                                image=image, 
+                                                date=date, 
+                                                status=status)
         response = crear_applyVaccine_repo(applyVaccineModels)
  
         result = {
                 "id": str(response.inserted_id),
-                "lote": lote,
                 "vacinne_id": vacinne_id,
+                "user_id":user_id, 
+                "family_id":family_id, 
+                "batch":batch, 
+                "lote":lote, 
+                "image":image, 
+                "date":date, 
                 "status": status
             }
         return result
@@ -106,8 +122,8 @@ def delete_applyVaccines_service(id):
     if data is not None:
         response =delete_apply_vaccine_repo(id)
         if response.deleted_count >= 1:
-            return "La vacuna ha sido eliminada correctamente", 200
+            return "La apply_vaccine ha sido eliminada correctamente", 200
         else:
-            return "La vacuna no fue encontrada", 404
+            return "La apply_vaccine no fue encontrada", 404
     else:
          return "No existe registro para el id:"+id, 400       

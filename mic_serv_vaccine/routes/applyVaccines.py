@@ -4,7 +4,7 @@ from flask import request, Response
 import json
 from bson.objectid import ObjectId
 from services.vacc import create_vaccine_service, get_vaccines_service, get_vaccine_service, update_vaccine_service, delete_vaccine_service
-from validators.vaccine import isValidVaccine
+from validators.applyVaccines import isValidApplyVaccine
 from repository.vacc  import isValidBdVaccine, isValidBdVaccineUpdate
 from services.applyVaccines import delete_applyVaccines_service, update_apply_vaccine_service, create_apply_vaccine_service, get_apply__vaccine_service, get_applyVacciness_service
 
@@ -23,18 +23,17 @@ def get_applyVaccines(id):
 
 @applyVaccines.route('/', methods = ['POST'])
 def create_applyVaccines():
+     # Validar campos obligatprios
+    result = isValidApplyVaccine()
+    if not bool(result["resp"]):  return result 
     return create_apply_vaccine_service()
     
 
 @applyVaccines.route('/<id>', methods = ['PUT'])
 def update_applyVaccines(id):
-   
-     # Validar campos obligatprios
-    # result = isValidapplyVaccines()
-    # if not bool(result["resp"]):  return result 
-    #  # Validar campos en BD
-    # result =  isValidBdapplyVaccinesUpdate(id)
-    #return update_apply_vaccine_service(id) if bool(result["resp"])  else result 
+    # Validar campos obligatprios
+    result = isValidApplyVaccine()
+    if not bool(result["resp"]):  return result 
     return update_apply_vaccine_service(id) 
 
 
