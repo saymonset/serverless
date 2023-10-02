@@ -47,6 +47,7 @@ def delete_vaccine_repo(id):
      return mongo.db.vaccines.delete_one({"_id": ObjectId(id)})
 
 def find_one_repo(query):     
+  
     return mongo.db.vaccines.find_one(query)
 
 
