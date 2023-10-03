@@ -1,87 +1,53 @@
-from flask import request, Response, jsonify
-from bson import json_util, ObjectId
-from bson.json_util import dumps
-import json
-
-from config.mongodb  import   mongo
-from models.vaccine  import   VaccineModels
-from repository.vacc import   crear_vacuna_repo, get_vaccines_repo, get_vaccines_counts_repo
-from repository.vacc import   get_vaccine_repo, update_vaccine_repo, delete_vaccine_repo
-from helps.utils import validar_object_id
-
+from openpyxl import load_workbook
+import tempfile
+from flask import Flask, send_file
+import os
  
-"""Obtiene las vacunas"""
 
+def get_scheme_test_service():
+    # Modifica el archivo de Excel y obtiene su ruta temporal
+    ruta_archivo_modificado = modificar_archivo_excel()
+    # Devuelve el archivo modificado para su descarga
+    return send_file(ruta_archivo_modificado, as_attachment=True)
 
-def get_vaccines_service():
-    limite = int(request.args.get('limite', 15))
-    desde = int(request.args.get('desde', 0))
-    
-    data = get_vaccines_repo(limite, desde)
-    total = get_vaccines_counts_repo()
+def modificar_archivo_excel():
+      # Nombre del archivo
+    nombre_archivo = "scheme//children.xlsx"
+    # Obtener el path absoluto del archivo
+    path_absoluto = os.path.abspath(nombre_archivo)
 
-    result = json_util.dumps(data)
-    diccionario = {
-        'total': total,
-        'limite':limite,
-        'desde':desde,
-        'vaccines': json.loads(result)
-    }
+    # Ruta del archivo original en el paquete de implementación
+    ruta_archivo_original = path_absoluto
 
-    return jsonify(diccionario)
+    # Crea un archivo temporal para trabajar con él
+    archivo_temporal = tempfile.NamedTemporaryFile(delete=False, suffix='.xlsx')
 
-"""Obtener una Vacuna"""
+    # Copia el contenido del archivo original al archivo temporal
+    with open(ruta_archivo_original, 'rb') as archivo_origen:
+        archivo_temporal.write(archivo_origen.read())
 
+    # Cierra el archivo temporal
+    archivo_temporal.close()
 
-def get_vaccine_service(id):
-    data = get_vaccine_repo(id)
-    result = json_util.dumps(data)
-    return Response(result, mimetype="application/json")
+    # Carga el archivo temporal con openpyxl
+    workbook = load_workbook(archivo_temporal.name)
+    sheet = workbook['Hoja1']
+    datos = ['11-03-2023', '11-03-2023', '11-05-2023']
+    fila = 3
+    for dato in datos:
+        celda = sheet.cell(row=fila, column=5)
+        celda.value = dato
+        print(f'celda.value = {celda.value}')
+        fila += 1
+    # Guarda los cambios en el archivo temporal
+    workbook.save(archivo_temporal.name)
 
+    # Cierra el archivo de trabajo
+    workbook.close()
+  
+    print(f'Saliendo el path = {archivo_temporal.name}')
+    # Devuelve la ruta del archivo temporal modificado
+    return archivo_temporal.name
 
-"""Actualizacion de vacuna"""
-
-
-def update_vaccine_service(id):
-    data = request.get_json()
-    if len(data) == 0:
-        return "No hay datos para actualizar", 400
-   
-    if validar_object_id(id):
-        # La cadena es un ObjectId válido
-        # Realiza las operaciones necesarias
-        response = update_vaccine_repo(id, data)
-        if response.modified_count >= 1:
-            return "La vacuna ah sido actualizada correctamente", 200
-        else:
-            return "La vacuna no fue encontrada", 404
-    else:
-        # Maneja el error o muestra un mensaje de error
-        result = {
-             "TypeError": id,
-             "ValueError": "La cadena no es un ObjectId válido" 
-        }
-        return result
-    
-
-
-"""Eliminar una vacuna"""
-
-
-def delete_vaccine_service(id):
-    if validar_object_id(id):
-        # La cadena es un ObjectId válido
-        # Realiza las operaciones necesarias
-        response = delete_vaccine_repo(id)
-        if response.deleted_count >= 1:
-            return "La vacuna ha sido eliminada correctamente", 200
-        else:
-            return "La vacuna no fue encontrada", 404
-    else:
-        # Maneja el error o muestra un mensaje de error
-        result = {
-             "TypeError": id,
-             "ValueError": "La cadena no es un ObjectId válido" 
-        }
-        return result
-    
+     
+ 

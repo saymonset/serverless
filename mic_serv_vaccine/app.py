@@ -6,6 +6,7 @@ from routes.vacc import vaccine
 from routes.applyVaccines import applyVaccines 
 from routes.specialities import specialities
 from routes.doctors import doctors
+from  routes.scheme import scheme
 
 load_dotenv()
 
@@ -19,5 +20,6 @@ app.register_blueprint(vaccine, url_prefix='/vaccine')
 app.register_blueprint(applyVaccines, url_prefix='/applyVaccines')
 app.register_blueprint(specialities, url_prefix='/specialities')
 app.register_blueprint(doctors, url_prefix='/doctors')
+app.register_blueprint(scheme, url_prefix='/scheme')
 
 
