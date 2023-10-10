@@ -2,6 +2,9 @@
 serverless deploy
 sls remove
 
+sls remove --stage qa
+sls deploy --stage qa
+
 sls invoke local -f function_name // STAGE = undefined
 sls invoke local -f function_name --stage dev // STAGE = dev
 

@@ -8,6 +8,7 @@ from routes.specialities import specialities
 from routes.doctors import doctors
 from  routes.scheme import scheme
 from routes.genders import genders
+from routes.sendSms import sendSms
 from routes.relationships import relationships
 
 load_dotenv()
@@ -25,5 +26,6 @@ app.register_blueprint(doctors, url_prefix='/doctors')
 app.register_blueprint(scheme, url_prefix='/scheme')
 app.register_blueprint(genders, url_prefix='/genders')
 app.register_blueprint(relationships, url_prefix='/relationships')
+app.register_blueprint(sendSms, url_prefix='/sendSms')
 
 
