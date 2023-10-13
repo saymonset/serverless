@@ -15,10 +15,7 @@ from helps.utils import validar_object_id
 """Registro de objetos"""
 
 
-def create_relationships_service():
-    data = request.get_json()
- 
-    name = data.get("name")
+def create_relationships_service(name):
     if name:
          # Crea un nuevo documento de usuario
         relationshipsModels = RelationshipsModels(name=name, status=True)
@@ -38,9 +35,9 @@ def create_relationships_service():
 """Obtiene las objetos"""
 
 
-def get_relationshipsList_service():
-    limite = int(request.args.get('limite', 15))
-    desde = int(request.args.get('desde', 0))
+def get_relationshipsList_service(limite, desde):
+    limite = int(limite)
+    desde = int(desde)
     
     data = get_relationships_page_repo(limite, desde)
     total = get_relationships_counts_repo()
@@ -67,8 +64,7 @@ def get_relationships_service(id):
 """Actualizacion de objeto"""
 
 
-def update_relationships_service(id):
-    data = request.get_json()
+def update_relationships_service(id, data):
     if len(data) == 0:
         return "No hay datos para actualizar", 400
    

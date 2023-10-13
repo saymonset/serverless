@@ -7,7 +7,13 @@ sls plugin install -n serverless-wsgi
  
 #Para des[plegar local
 serverless wsgi serve --port 5001
- 
+sls wsgi serve --port 5001
 
 #Para desplegar en amazon
+sls remove --stage qa
 sls deploy --stage qa
+
+
+virtualenv venv
+source ./venv/bin/activate
+pip install -r requirements.txt 

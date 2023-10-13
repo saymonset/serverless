@@ -51,9 +51,7 @@ def find_one_repo(query):
     return mongo.db.genders.find_one(query)
 
 
-def isValidBdgenders():
-    data = request.get_json()
-    name = data.get("name")
+def isValidBdgenders(name):
     query = {'name': name }
     campo = find_one_repo(query)
     if campo:

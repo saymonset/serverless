@@ -4,7 +4,7 @@ class UserModels:
     def __init__(self, 
                  phone:str, 
                  last_code:str,
-                 status:str,
+                 status:bool,
                  token:str,
                  birth:str,
                  ci:str,

@@ -13,6 +13,10 @@ def get_vaccines_repo(limite:int, desde:int):
     query = {'status': {'$in': [True, 'True']}}
     return mongo.db.vaccines.find(query).skip(desde).limit(limite)
 
+def get_vaccines_all(isChildren: bool):
+    query = {'status': {'$in': [True, 'True']}, 'isChildren': isChildren}
+    return mongo.db.vaccines.find(query)
+
 def get_vaccines_counts_repo():
     query = {'status': {'$in': [True, 'True']}}
     return mongo.db.vaccines.count_documents(query)
@@ -51,8 +55,7 @@ def find_one_repo(query):
     return mongo.db.vaccines.find_one(query)
 
 
-def isValidBdVaccine():
-    data = request.get_json()
+def isValidBdVaccine(data):
     name = data.get("name")
     query = {'name': name }
     vaccines = find_one_repo(query)
@@ -63,8 +66,7 @@ def isValidBdVaccine():
     return {"resp":True}
 
 
-def isValidBdVaccineUpdate(id):
-    data = request.get_json()
+def isValidBdVaccineUpdate(id, data):
     name = data.get("name")
     query = {'name': name, '_id': {'$ne': ObjectId(id)}}
     vaccines = find_one_repo(query)

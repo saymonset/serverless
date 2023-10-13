@@ -13,40 +13,38 @@ def verifyToken(event, context):
     """
     The `verifyToken` function checks if a token is valid and not blacklisted, and generates a policy
     document for authorization.
-    
-    :param event: The `event` parameter is a dictionary that contains information about the event that
-    triggered the function. It typically includes details such as the HTTP request headers, body, and
-    other relevant information
-    :param context: The `context` parameter is an object that provides information about the runtime
-    environment of the function. It includes details such as the AWS request ID, function name, and
-    other contextual information. In this code snippet, the `context` parameter is not used, so it can
-    be removed from the function signature
-    :return: a dictionary with two keys: 'principalId' and 'policyDocument'. The value of 'principalId'
-    can be either 'unauthorized' or the user's ID. The value of 'policyDocument' is generated based on
-    the result of the verification process and can be either 'Allow' or 'Deny'.
     """
     blacklist = db.token_blacklist
     token = event['authorizationToken']
+    print('---------------------1----------------------------------------')
+    print(secret)
+    print('---------end secret-------------------')
+    print(token)
+    print('---------end token-------------------')
     methodArn = event['methodArn']
-    print(blacklist.find_one({'token': token}))
-    if (token is None):
-        return {'principalId': 'unauthorized', 'policyDocument': generatePolicy('Deny', methodArn)}
-    elif ("Bearer " not in token):
-        return {'principalId': 'unauthorized', 'policyDocument': generatePolicy('Deny', methodArn)}
-    elif (blacklist.find_one({'token': token})):
+    print(methodArn)
+    print('---------methodArn-------------------')
+    print('---------------------1.1----------------------------------------')
+    if token is None or "Bearer" not in token or blacklist.find_one({'token': token}):
+        print('---------------------2----------------------------------------')
         return {'principalId': 'unauthorized', 'policyDocument': generatePolicy('Deny', methodArn)}
     token = token.replace("Bearer ", "")
     try:
+        print('---------------------2.0---------------------------------------')
         decoded = jwt.decode(token, secret, algorithms=["HS256"])
+        print('---------------------2.0.1---------------------------------------')
         if ('_id' in decoded):
             userId = decoded['_id']
+            print('---------------------2.1---------------------------------------')
             policyDocument = generatePolicy('Allow', methodArn)
         else:
             userId = 'unauthorized'
             policyDocument = generatePolicy('Deny', methodArn)
+            print('---------------------2.2----------------------------------------')
     except jwt.ExpiredSignatureError:
         userId = 'unauthorized'
         policyDocument = generatePolicy('Deny', methodArn)
+        print('---------------------3----------------------------------------')
     return {'principalId': userId, 'policyDocument': policyDocument}
 
 def generatePolicy(effect, methodArn):

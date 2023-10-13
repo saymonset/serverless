@@ -15,20 +15,19 @@ from helps.utils import validar_object_id
 """Registro de vacunas"""
 
 
-def create_vaccine_service():
-    data = request.get_json()
- 
+def create_vaccine_service(data):
     name = data.get("name")
     description = data.get("description", None)
     disease = data.get("disease", None)
     dosis = data.get("dosis", None)
     application_age = data.get("application_age", None)
     isChildren = data.get("isChildren", False)
+    status = data.get("status", False)
     if name:
          # Crea un nuevo documento de usuario
         vaccineModels = VaccineModels(name=name, description=description, 
                                        disease=disease,dosis=dosis, application_age=application_age, 
-                                       isChildren=isChildren, status=True)
+                                       isChildren=isChildren, status=status)
         
         response = crear_vacuna_repo(vaccineModels)
 
@@ -50,9 +49,9 @@ def create_vaccine_service():
 """Obtiene las vacunas"""
 
 
-def get_vaccines_service():
-    limite = int(request.args.get('limite', 15))
-    desde = int(request.args.get('desde', 0))
+def get_vaccines_list_service(limite, desde):
+    limite = int(limite)
+    desde = int(desde)
     
     data = get_vaccines_repo(limite, desde)
     total = get_vaccines_counts_repo()
@@ -79,8 +78,7 @@ def get_vaccine_service(id):
 """Actualizacion de vacuna"""
 
 
-def update_vaccine_service(id):
-    data = request.get_json()
+def update_vaccine_service(id, data):
     if len(data) == 0:
         return "No hay datos para actualizar", 400
    

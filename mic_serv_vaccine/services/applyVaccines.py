@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask import request, Response, jsonify
 from bson import json_util, ObjectId
 from config.mongodb import mongo
@@ -9,41 +10,41 @@ from repository.applyVaccines import update_applyVaccine_repo, crear_applyVaccin
 from repository.applyVaccines import delete_apply_vaccine_repo, get_applyVaccine_repo, find_one_applyVaccine_repo, get_applyVaccine_list_repo
 from repository.vacc import  get_vaccine_repo
 from helps.utils import validar_object_id
-
+from datetime import date
+from datetime import datetime
 """Registro de vacunas"""
     
-def create_apply_vaccine_service():
-    data = request.get_json()
-
+def create_apply_vaccine_service(data):
     vacinne_id = data.get("vacinne_id")
-    user_id = data.get("user_id")
-    family_id = data.get("family_id")
-    batch = data.get("batch")
+    dependent_id = data.get("dependent_id")
     lote = data.get("lote")
     image = data.get("image")
-    date = data.get("date")
+    date_apply = data.get("date_apply")
+    #datetime.strptime(data.get("date_apply"), "%Y-%m-%d")
+    # Obtener la fecha actual
+    fecha_actual = date.today()
+
+    # Convertir la fecha actual a un objeto datetime
+    fecha_actual_datetime = datetime.combine(fecha_actual, datetime.min.time())
     status = data.get("status", True)
     if vacinne_id:
         # Crea un nuevo documento de usuario
         applyVaccineModels = ApplyVaccineModels(vacinne_id=vacinne_id, 
-                                                user_id=user_id, 
-                                                family_id=family_id, 
-                                                batch=batch, 
+                                                dependent_id=dependent_id, 
                                                 lote=lote, 
                                                 image=image, 
-                                                date=date, 
+                                                date_apply=date_apply, 
+                                                date_system = fecha_actual_datetime,
                                                 status=status)
         response = crear_applyVaccine_repo(applyVaccineModels)
  
         result = {
-                "id": str(response.inserted_id),
+               # "id": str(response.inserted_id),
                 "vacinne_id": vacinne_id,
-                "user_id":user_id, 
-                "family_id":family_id, 
-                "batch":batch, 
+                "dependent_id":dependent_id, 
                 "lote":lote, 
                 "image":image, 
-                "date":date, 
+                "date_apply":date_apply, 
                 "status": status
             }
         return result
@@ -56,9 +57,9 @@ def create_apply_vaccine_service():
 """Obtiene las vacunas"""
 
 
-def get_applyVacciness_service():
-    limite = int(request.args.get('limite', 15))
-    desde = int(request.args.get('desde', 0))
+def get_applyVaccinesList_service(limite, desde):
+    limite = int(limite)
+    desde = int(desde)
     data = get_applyVaccine_list_repo(limite, desde)
     result = json_util.dumps(data)
     total = get_applyVaccine_counts_repo()
@@ -90,8 +91,7 @@ def get_apply__vaccine_service(id):
 """Actualizacion de vacuna"""
 
 
-def update_apply_vaccine_service(id):
-    data = request.get_json()
+def update_apply_vaccine_service(id, data):
     if len(data) == 0:
         return "No hay datos para actualizar", 400
 

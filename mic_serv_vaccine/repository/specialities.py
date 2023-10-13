@@ -52,9 +52,7 @@ def find_one_applyVaccine_repo(query):
 def find_one_repo(query):     
     return mongo.db.specialities.find_one(query)
 
-def isValidBdSpeciality():
-    data = request.get_json()
-    speciality = data.get("speciality")
+def isValidBdSpeciality(speciality):
     query = {'speciality': speciality }
     specialities = find_one_repo(query)
     if specialities:
@@ -64,8 +62,7 @@ def isValidBdSpeciality():
     return {"resp":True}
 
 
-def isValidBdSpecialityUpdate(id):
-    data = request.get_json()
+def isValidBdSpecialityUpdate(id, data):
     speciality = data.get("speciality")
     query = {'speciality': speciality, '_id': {'$ne': ObjectId(id)}}
     specialities = find_one_repo(query)

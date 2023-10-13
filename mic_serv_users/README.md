@@ -8,6 +8,10 @@ sls deploy --stage qa
 sls invoke local -f function_name // STAGE = undefined
 sls invoke local -f function_name --stage dev // STAGE = dev
 
+virtualenv venv
+source ./venv/bin/activate
+pip install -r requirements.txt 
+
 <!--
 title: 'AWS Serverless HTTP API with DynamoDB store example in Python'
 description: 'This example demonstrates how to setup an HTTP API allowing you to create, list, get, update and delete Todos. DynamoDB is used to store the data.'

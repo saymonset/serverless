@@ -8,11 +8,9 @@ import random
 import os
 from pymongo import MongoClient
 from twilio.rest import Client
-
-
-
 import logging
-from repository.sendSms import get_phone_in_users_repo, crear_users_repo
+
+from repository.user import   crear_users_repo, update_status_user_repo, get_phone_in_users_repo
 
 
 
@@ -20,9 +18,7 @@ from repository.sendSms import get_phone_in_users_repo, crear_users_repo
 """Registro de objetos"""
 
 
-def sendSms_service():
-    data = request.get_json()
- 
+def sendSms_service(data):
     phone = data.get("phone")
     if phone:
         rand_num = random.randint(99999,999999)

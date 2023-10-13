@@ -5,16 +5,14 @@ from bson.json_util import dumps
 import json
 from models.doctors import  DoctorsModels
 from services.vacc import  get_vaccine_service 
-from repository.doctors import update_applyVaccine_repo, create_doctors_repo, get_doctor_repo,get_doctors_counts_repo, get_doctors_list_repo
+from repository.doctors import update_doctors_repo, create_doctors_repo, get_doctor_repo,get_doctors_counts_repo, get_doctors_list_repo
 from repository.doctors import delete_doctor_repo,  find_one_applyVaccine_repo
 from repository.vacc import  get_vaccine_repo
 from helps.utils import validar_object_id
 
 """Registro de vacunas"""
     
-def create_doctors_service():
-    data = request.get_json()
-
+def create_doctors_service(data):
     user_id = data.get("user_id")
     status = data.get("status", True)
     if user_id:
@@ -38,9 +36,9 @@ def create_doctors_service():
 """Obtiene las vacunas"""
 
 
-def get_doctors_list_service():
-    limite = int(request.args.get('limite', 15))
-    desde = int(request.args.get('desde', 0))
+def get_doctors_list_service(limite, desde):
+    limite = int(limite)
+    desde = int(desde)
     data = get_doctors_list_repo(limite, desde)
     result = json_util.dumps(data)
     total = get_doctors_counts_repo()
@@ -67,19 +65,18 @@ def get_doctorsbyId_service(id):
 """Actualizacion de vacuna"""
 
 
-def update_speciality_service(id):
-    data = request.get_json()
+def update_doctors_service(id, data):
     if len(data) == 0:
         return "No hay datos para actualizar", 400
 
     if validar_object_id(id):
         # La cadena es un ObjectId válido
         # Realiza las operaciones necesarias
-        response = update_applyVaccine_repo(id, data)
+        response = update_doctors_repo(id, data)
         if response.modified_count >= 1:
-            return "La speciality ah sido actualizada correctamente", 200
+            return "La doctors ah sido actualizada correctamente", 200
         else:
-            return "La speciality no fue encontrada", 404
+            return "No se pudo actualizar", 404
     else:
         # Maneja el error o muestra un mensaje de error
         result = {

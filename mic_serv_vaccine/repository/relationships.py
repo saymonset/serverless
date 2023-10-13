@@ -51,9 +51,7 @@ def find_one_repo(query):
     return mongo.db.relationships.find_one(query)
 
 
-def isValidBdRelationships():
-    data = request.get_json()
-    name = data.get("name")
+def isValidBdRelationships(name):
     query = {'name': name }
     campo = find_one_repo(query)
     if campo:
@@ -63,8 +61,7 @@ def isValidBdRelationships():
     return {"resp":True}
 
 
-def isValidBdRelationshipsUpdate(id):
-    data = request.get_json()
+def isValidBdRelationshipsUpdate(id, data):
     name = data.get("name")
     query = {'name': name, '_id': {'$ne': ObjectId(id)}}
     objs = find_one_repo(query)

@@ -1,59 +1,77 @@
-
-from flask import Blueprint, jsonify
-from flask import request, Response
+from flask import Blueprint
+from flask_restx import Namespace, Resource, fields, Api
+from flask import request, Response, Flask
+import flask 
 import json
-from bson.objectid import ObjectId
+from bson import ObjectId
 from validators.doctors import isValid
-from repository.doctors  import isValidBdDoctors, isValidBdSpecialityUpdate
-from services.doctors import delete_doctor_service, update_speciality_service, create_doctors_service, get_doctorsbyId_service, get_doctors_list_service
+from repository.doctors  import isValidBdDoctors, isValidBdDoctorUpdate
+from repository.user  import isValidBdUser
+from services.doctors import delete_doctor_service, update_doctors_service, create_doctors_service, get_doctorsbyId_service, get_doctors_list_service
 from helps.utils import validar_object_id
-
-doctors = Blueprint('doctors', __name__)
-
+from helps.token import verifyToken
 
 
-@doctors.route('/', methods = ['POST'])
-def create_doctors():
-   # Validar campos obligatprios
-    result = isValid()
-    if not bool(result["resp"]):  return result 
-   # Validar campos en BD
-    result =  isValidBdDoctors()
-    return create_doctors_service() if bool(result["resp"])  else result 
+ns_doctors = Namespace('doctors', 'Doctors related endpoints')
+
+model = ns_doctors.model('Doctors', {
+    'user_id': fields.String(required=True, description='Id of the user'),
+    'status': fields.Boolean(required=True, description='status of the Doctor'),
+})
 
 
-@doctors.route('/', methods=['GET'])
-def get_doctorsList():
-    return get_doctors_list_service()
+@ns_doctors.route('/', methods = [ 'POST' ])
+class getDoctorssswgger(Resource):
+    @ns_doctors.doc(params={'status': {'default': True}})
+    @ns_doctors.doc(headers={'Authorization': {'description': 'Bearer Access Token'}})
+    @ns_doctors.expect(model, validate=True)
+    def post(self,  **kwargs):
+       # Obtener los datos del objeto enviado en la solicitud
+        data = ns_doctors.payload
+        result = isValidBdUser(data)
+        if not bool(result["resp"]):  return result 
+         # Validar campos en BD
+        result =  isValidBdDoctors(data)
+        if not bool(result["resp"]):  return result 
+
+        result = verifyToken(request)
+        return create_doctors_service(data) if bool(result["resp"])  else result  
 
 
-@doctors.route('/<id>', methods = ['GET'])
-def get_doctor(id):
-    return get_doctorsbyId_service(id)
-
-# @doctors.route('/<id>', methods = ['PUT'])
-# def update_doctors(id):
-#     # Validar campos obligatprios
-#     result = isValid()
-#     if not bool(result["resp"]):  return result 
-#    # Validar campos en BD
-#     result =  isValidBdSpecialityUpdate(id)
-#     return update_speciality_service(id) if bool(result["resp"])  else result 
-
-@doctors.route('/<id>', methods = ['DELETE'])
-def delete_doctors(id):
-     if validar_object_id(id):
-        # La cadena es un ObjectId válido
-        # Realiza las operaciones necesarias
-        return delete_doctor_service(id)
-     else:
-        # Maneja el error o muestra un mensaje de error
-        result = {
-             "TypeError": id,
-             "ValueError": "La cadena no es un ObjectId válido" 
-        }
-        return result
-
-   
+@ns_doctors.route('/<limite>/<desde>', methods = [ 'GET' ])
+class get_doctorsList(Resource):        
+    @ns_doctors.doc(params={'limite': {'default': 30}, 'desde': {'default': 0}})
+    @ns_doctors.doc(headers={'Authorization': {'description': 'Bearer Access Token'}})
+    def get(self, limite=None, desde=None):
+        result = verifyToken(request)
+        return get_doctors_list_service(limite, desde) if bool(result["resp"])  else result 
 
 
+
+@ns_doctors.route('/<id>', methods = [  'GET', 'PUT', 'DELETE' ])
+class getDoctorsswgger(Resource):
+    @ns_doctors.doc(headers={'Authorization': {'description': 'Bearer Access Token'}})
+    def get(self, id):
+         result = verifyToken(request)
+         return get_doctorsbyId_service(id)  if bool(result["resp"]) else result 
+
+    @ns_doctors.doc(headers={'Authorization': {'description': 'Bearer Access Token'}})     
+    def delete(self, id):
+        result = verifyToken(request)
+        return delete_doctor_service(id)  if bool(result["resp"]) else result      
+
+    @ns_doctors.doc(headers={'Authorization': {'description': 'Bearer Access Token'}})    
+    @ns_doctors.expect(model, validate=True)
+    def put(self,  id):
+        # Obtener los datos del objeto enviado en la solicitud
+        data = ns_doctors.payload
+        result = isValidBdUser(data)
+        if not bool(result["resp"]):  return result 
+
+         # Validar campos en BD
+        result =  isValidBdDoctorUpdate(id, data)
+        if not bool(result["resp"]):  return result 
+
+        result = verifyToken(request)
+        return update_doctors_service(id, data) if bool(result["resp"]) else result 
+ 

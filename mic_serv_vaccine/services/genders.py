@@ -15,10 +15,10 @@ from helps.utils import validar_object_id
 """Registro de objetos"""
 
 
-def create_genders_service():
-    data = request.get_json()
+def create_genders_service(name):
+    #data = request.get_json()
  
-    name = data.get("name")
+   # name = data.get("name")
     if name:
          # Crea un nuevo documento de usuario
         genderModels = GenderModels(name=name, status=True)
@@ -38,9 +38,9 @@ def create_genders_service():
 """Obtiene las objetos"""
 
 
-def get_gendersList_service():
-    limite = int(request.args.get('limite', 15))
-    desde = int(request.args.get('desde', 0))
+def get_gendersList_service(limite, desde):
+    limite = int(limite)
+    desde = int(desde)
     
     data = get_genders_repo(limite, desde)
     total = get_genders_counts_repo()
@@ -67,8 +67,8 @@ def get_gender_service(id):
 """Actualizacion de objeto"""
 
 
-def update_genders_service(id):
-    data = request.get_json()
+def update_genders_service(id, data):
+    #data = request.get_json()
     if len(data) == 0:
         return "No hay datos para actualizar", 400
    

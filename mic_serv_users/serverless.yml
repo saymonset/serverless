@@ -1,62 +1,36 @@
 service: national-vaccine-control-app
 useDotenv: true
-frameworkVersion: "3"
-CorsConfiguration:
-  AllowOrigins:
-    - "http://localhost:4200/"
-  AllowHeaders:
-    - x-apigateway-header
-  AllowMethods:
-    - GET
-    - POST
-    - PUT
-    - DELETE
-  MaxAge: 600
-  AllowCredentials: true
 provider:
   name: aws
-  runtime: python3.9
+  runtime: python3.8
   environment:
-    DYNAMODB_TABLE: ${self:service}-${sls:stage}
-    MONGO_URI: mongodb+srv://simon:XhlUSILsriC0H3bO@micluster.mayzd.mongodb.net/health_{{stage}}
-    TWILIO_ID: 'ACe7edfd31cf39b1e25f717ed5093a81fc'
-    TWILIO_AUTH_TOKEN: '46d118856fadd22a1853c4ab6abb0e02'
-    JWT_SECRET: 'ASDASDJAWJDAIEJEIADJWDADKWOAJ'
-  httpApi:
-    cors: true
-  iam:
-    role:
-      statements:
-        - Effect: Allow
-          Action:
-            - dynamodb:Query
-            - dynamodb:Scan
-            - dynamodb:GetItem
-            - dynamodb:PutItem
-            - dynamodb:UpdateItem
-            - dynamodb:DeleteItem
-          Resource: "arn:aws:dynamodb:${aws:region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
+    MONGO_URI: mongodb+srv://cartillauser:C4rt1ll42023@cluster0.fkuv17j.mongodb.net/
+    STRIP_STAGE_PATH: yes
+
 package:
-  individually: true
-  patterns:
-    - "!*/**"
+  exclude:
+    - node_modules/**
+    - venv/**
+
 plugins:
+  - serverless-auto-swagger
   - serverless-python-requirements
-  - serverless-wsgi
+  - serverless-dotenv-plugin
+  - serverless-offline
+
 custom:
+  autoswagger:
+    useRedirectUI: true
+    host: 'jecuuw4xqc.execute-api.us-east-1.amazonaws.com'
+    basePath: '/dev'
+    schemes: ['https', 'http']
+    apiKeyHeaders: ['Authorization']
   pythonRequirements:
     usePipenv: false
     dockerizePip: true
-  dynamodb:
-  # If you only want to use DynamoDB Local in some stages, declare them here
-    stages:
-      - dev
-      - qa
-    start:
-      port: 8000
-      inMemory: true
-      migrate: true
-
+    zip: true
+    slim: true
+    
 functions:
   # TOKEN
   verify-token:
@@ -64,32 +38,8 @@ functions:
     package:
       patterns:
         - "Token/handler.py"
-# PHONE
-  send-sms:
-    handler: Phone/sendSms/handler.sendSms
-    package:
-      patterns:
-        - "Phone/sendSms/handler.py"
-    events:
-      - http:
-          path: sendsms
-          method: POST
-          request:
-            schemas:
-              application/json: ${file(Phone/sendSms/phone-schema.json)}
-  check-code:
-    handler: Phone/checkCode/handler.checkCode
-    package:
-      patterns:
-        - "Phone/checkCode/handler.py"
-    events:
-      - http:
-          path: checkcode
-          method: POST
-          request:
-            schemas:
-              application/json: ${file(Phone/checkCode/code-schema.json)}
-    # USERS
+
+  # USERS
   add-users:
     handler: Users/addUser/handler.addUser
     package:
@@ -100,6 +50,7 @@ functions:
           path: user
           method: POST
           cors: true
+          bodyType: "User"
           authorizer:
             name: verify-token
             identitySource: method.request.header.Authorization
@@ -107,6 +58,59 @@ functions:
           request:
             schemas:
               application/json: ${file(Users/user-schema.json)}
+
+  # DEPENDENTS
+  add-dependent:
+    handler: Dependents/addDependent/handler.addDependent
+    package:
+      patterns:
+        - "Dependents/addDependent/handler.py"
+    events:
+      - http:
+          path: dependent
+          method: POST
+          cors: true
+          bodyType: "Dependent"
+          authorizer:
+            name: verify-token
+            identitySource: method.request.header.Authorization
+            resultTtlInSeconds: 0
+          request:
+            schemas:
+              application/json: ${file(Dependents/dependent-schema.json)}
+  get-dependent:
+    handler: Dependents/getDependent/handler.getDependent
+    package:
+      patterns:
+        - "Dependents/getDependent/handler.py"
+    events:
+      - http:
+          path: dependent/{id}
+          method: GET
+          cors: true
+          authorizer:
+            name: verify-token
+            identitySource: method.request.header.Authorization
+            resultTtlInSeconds: 0
+          request:
+            parameters: 
+              paths: 
+                id: true
+  get-dependents:
+    handler: Dependents/getDependent/handler.getDependents
+    package:
+      patterns:
+        - "Dependents/getDependent/handler.py"
+    events:
+      - http:
+          path: dependents
+          method: GET
+          cors: true
+          authorizer:
+            name: verify-token
+            identitySource: method.request.header.Authorization
+            resultTtlInSeconds: 0
+
   # LOGIN
   login:
     handler: Login/login/handler.login
@@ -118,7 +122,7 @@ functions:
           path: login
           method: POST
           cors: true
-
+          bodyType: "Login"
           request:
             schemas:
               application/json: ${file(Login/login/login-schema.json)}
@@ -135,16 +139,48 @@ functions:
           authorizer:
             name: verify-token
             identitySource: method.request.header.Authorization
-            resultTtlInSeconds: 0  
+            resultTtlInSeconds: 0
+  
+  # PHONE
+  send-sms:
+    handler: Phone/sendSms/handler.sendSms
+    package:
+      patterns:
+        - "Phone/sendSms/handler.py"
+    events:
+      - http:
+          path: sendsms
+          method: POST
+          cors: true
+          bodyType: "SMS"
+          request:
+            schemas:
+              application/json: ${file(Phone/sendSms/phone-schema.json)}
+  check-code:
+    handler: Phone/checkCode/handler.checkCode
+    package:
+      patterns:
+        - "Phone/checkCode/handler.py"
+    events:
+      - http:
+          path: checkcode
+          method: POST
+          cors: true
+          bodyType: "Code"
+          request:
+            schemas:
+              application/json: ${file(Phone/checkCode/code-schema.json)}
+
+
+	
 resources:
   Resources:
-    Unauthorized:
-      Type: AWS::ApiGateway::GatewayResponse
+    GatewayResponseDefault4XX:
+      Type: 'AWS::ApiGateway::GatewayResponse'
       Properties:
         ResponseParameters:
-          "gatewayresponse.header.Access-Control-Allow-Origin": "'*'"
-          "gatewayresponse.header.Access-Control-Allow-Headers": "'*'"
-        ResponseType: "DEFAULT_4XX"
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: DEFAULT_4XX
         RestApiId:
-          Ref: "ApiGatewayRestApi"           
-
+          Ref: 'ApiGatewayRestApi'

@@ -7,10 +7,8 @@ import phonenumbers
 
 
 
-def isValidSendSms():
-    data = request.get_json()
-    phone = data.get("phone")
-  
+def isValidSendSms(phone):
+   
     if     not phone:
                return {"resp":False,
                 "phone":"El phone es obligatorio"}
@@ -25,4 +23,18 @@ def isValidSendSms():
                 }
 
  
- 
+def isValidCode(code):
+   
+     if     not code:
+               return {"resp":False,
+                "phone":"El code es obligatorio"}
+     
+     try:
+          int(code)
+          return {"resp":True}
+     except ValueError:
+          return {"resp":False,
+                "phone":"El code debe ser numero"}
+     
+     
+  

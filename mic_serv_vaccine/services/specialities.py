@@ -12,11 +12,8 @@ from helps.utils import validar_object_id
 
 """Registro de vacunas"""
     
-def create_specialities_service():
-    data = request.get_json()
-
-    speciality = data.get("speciality")
-    status = data.get("status", True)
+def create_specialities_service(speciality):
+    status =  True
     if speciality:
         # Crea un nuevo documento de usuario
         specialitiesModels = SpecialitiesModels(speciality=speciality, 
@@ -38,9 +35,9 @@ def create_specialities_service():
 """Obtiene las vacunas"""
 
 
-def get_specialities_service():
-    limite = int(request.args.get('limite', 15))
-    desde = int(request.args.get('desde', 0))
+def get_specialities_service(limite, desde):
+    limite = int(limite)
+    desde = int(desde)
     data = get_specialities_list_repo(limite, desde)
     result = json_util.dumps(data)
     total = get_specialities_counts_repo()
@@ -67,8 +64,7 @@ def get_specialitiesbyId_service(id):
 """Actualizacion de vacuna"""
 
 
-def update_speciality_service(id):
-    data = request.get_json()
+def update_speciality_service(id, data):
     if len(data) == 0:
         return "No hay datos para actualizar", 400
 

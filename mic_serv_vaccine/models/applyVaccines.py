@@ -1,19 +1,19 @@
+
+from datetime import date
 class ApplyVaccineModels:
     def __init__(self, vacinne_id:str, 
-                       user_id:str,  
-                       family_id:str,  
-                       batch:str,  
+                       dependent_id:str,  
                        lote:str,  
                        image:str,  
-                       date:str,  
+                       date_apply:str,  
+                       date_system: date,
                        status:bool):
         self.vacinne_id = vacinne_id
-        self.user_id = user_id
-        self.family_id = family_id
-        self.batch = batch
+        self.dependent_id = dependent_id
         self.lote = lote
         self.image = image
-        self.date = date
+        self.date_apply = date_apply
+        self.date_system = date_system
         self.status = status
  
 

@@ -1,24 +1,24 @@
 from flask import Blueprint
-from flask import request, Response
+from flask_restx import Namespace, Resource, fields, Api
+from flask import request, Response, Flask
 from services.sendSms import sendSms_service
 from validators.sendSms import isValidSendSms
-#from repository.sendSms import isValidBdgenders, isValidBdgendersUpdate
 import json
 from bson.objectid import ObjectId
 
-sendSms = Blueprint('sendSms', __name__)
+ns_sendSms = Namespace('sendSms', 'sendSms related endpoints')
 
-
- 
-
-
-@sendSms.route('/', methods = ['POST'])
-def create_sendSms():
-    # Validar campos obligatprios
-    result = isValidSendSms()
-    if not bool(result["resp"]):  return result 
-     # Validar campos en BD
-    # result =  isValidBdgenders()
-    return sendSms_service() if bool(result["resp"])  else result 
-    
- 
+model = ns_sendSms.model('SendSms', {
+        'phone': fields.String(required=True, description='Tlf para enviar el codigo'),
+    })
+@ns_sendSms.route('/', methods = [ 'POST' ])
+class getSendSmsswgger(Resource):
+    @ns_sendSms.doc(params={'phone': {'default': '+584142711347'}})
+    @ns_sendSms.expect(model, validate=True)
+    def post(self,  **kwargs):
+       # Obtener los datos del objeto enviado en la solicitud
+        data = ns_sendSms.payload
+        phone = data['phone']
+        result =  isValidSendSms(phone)
+        if not bool(result["resp"]):  return result 
+        return sendSms_service(data) if bool(result["resp"])  else result 

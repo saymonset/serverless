@@ -49,7 +49,7 @@
       "gender": {
         "description": "Person's gender",
         "type": "string",
-        "default": ""
+        "default": "YYYY-MM-DD"
       }
     }
   }

@@ -31,11 +31,11 @@ def get_doctor_repo(id):
         }
         return result
 
-def update_applyVaccine_repo(id, data):
+def update_doctors_repo(id, data):
     if validar_object_id(id):
         # La cadena es un ObjectId válido
         # Realiza las operaciones necesarias
-        return mongo.db.specialities.update_one({"_id":{'$eq': ObjectId(id)}}, {"$set": data})
+        return mongo.db.doctors.update_one({"_id":{'$eq': ObjectId(id)}}, {"$set": data})
     else:
         # Maneja el error o muestra un mensaje de error
         result = {
@@ -56,8 +56,7 @@ def find_one_applyVaccine_repo(query):
 def find_one_repo(query):     
     return mongo.db.doctors.find_one(query)
 
-def isValidBdDoctors():
-    data = request.get_json()
+def isValidBdDoctors(data):
     user_id = data.get("user_id")
     query = {'user_id': user_id }
     doctors = find_one_repo(query)
@@ -68,17 +67,27 @@ def isValidBdDoctors():
     return {"resp":True}
 
 
-def isValidBdSpecialityUpdate(id):
-    data = request.get_json()
-    speciality = data.get("speciality")
-    query = {'speciality': speciality, '_id': {'$ne': ObjectId(id)}}
-    specialities = find_one_repo(query)
-    if specialities:
-        return {"resp":False,
-                "name":"El speciality ya existe en bd"}
+def isValidBdDoctorUpdate(id, data):
+     if not validar_object_id(id):
+         # Maneja el error o muestra un mensaje de error
+        result = {
+             "TypeError": id,
+             "ValueError": "La cadena no es un ObjectId válido" 
+        }
+        return result
+       
+     user_id = data["user_id"]
     
-    return {"resp":True}
-    #
+     if not validar_object_id(user_id):
+         # Maneja el error o muestra un mensaje de error
+        result = {
+             "TypeError": id,
+             "ValueError": "El usuario no es valido" 
+        }
+        return result
+    
+    
+     return {"resp":True}
 
 
 

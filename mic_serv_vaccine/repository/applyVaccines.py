@@ -49,6 +49,10 @@ def delete_apply_vaccine_repo(id):
 def find_one_applyVaccine_repo(query):     
     return mongo.db.apply_vaccines.find_one(query)
 
+def get_dependent_applied_vaccines(dependent_id: int):
+    query = {'family_id': dependent_id}
+    return mongo.db.apply_vaccines.find(query).sort("date")
+
 
 # def isValidBdVaccine():
 #     data = request.get_json()
