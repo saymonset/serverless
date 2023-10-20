@@ -23,11 +23,13 @@ def get_gender_repo(id):
         # Realiza las operaciones necesarias
         return mongo.db.genders.find_one({"_id": ObjectId(id)})
     else:
-        # Maneja el error o muestra un mensaje de error
-        result = {
-             "TypeError": id,
-             "ValueError": "La cadena no es un ObjectId válido" 
-        }
+            # Maneja el error o muestra un mensaje de error
+        result  = {
+                "error":False,
+                "resp":False,
+                "TypeError": id,
+                "ValueError": "La cadena no es un ObjectId válido" 
+         }
         return result
 
 def update_genders_repo(id, data):

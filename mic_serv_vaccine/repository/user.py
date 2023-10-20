@@ -16,14 +16,54 @@ def find_one_repo(query):
 
 def update_status_user_repo(id, data):
     return mongo.db.users.update_one({"_id":{'$eq': ObjectId(id)}}, {"$set": data})
-      
 
+
+def update_user_repo(id, data):
+    if validar_object_id(id):
+        # La cadena es un ObjectId válido
+        # Realiza las operaciones necesarias
+        return mongo.db.users.update_one({"_id":{'$eq': ObjectId(id)}}, {"$set": data})
+    else:
+        # Maneja el error o muestra un mensaje de error
+        result = {
+             "TypeError": id,
+             "ValueError": "La cadena no es un ObjectId válido" 
+        }
+        return result
+
+      
+def get_user_repo(id):
+    if validar_object_id(id):
+        # La cadena es un ObjectId válido
+        # Realiza las operaciones necesarias
+        return mongo.db.users.find_one({"_id": ObjectId(id)})
+    else:
+            # Maneja el error o muestra un mensaje de error
+        result  = {
+                "error":False,
+                "resp":False,
+                "TypeError": id,
+                "ValueError": "La cadena no es un ObjectId válido" 
+         }
+        return result
 def crear_users_repo(obj:UserModels):
     return mongo.db.users.insert_one(obj).inserted_id
     #return mongo.db.users.insert_one(obj.__dict__)
 
+def delete_user_repo(id):
+         return mongo.db.users.delete_one({"_id": ObjectId(id)})
+
 def get_phone_in_users_repo(phone):
         return mongo.db.users.find_one({"phone": phone})
+
+def get_user_repo_list(limite:int, desde:int):
+    query = {'status': {'$in': [True, 'True']}}
+    return mongo.db.users.find({}).skip(desde).limit(limite)
+
+def get_user_counts_repo():
+    query = {'status': {'$in': [True, 'True']}}
+    #query = {'status': {'$in': [True, 'True']}}
+    return mongo.db.users.count_documents({})
 
 def isValidBdUser(data):
     id = data.get("user_id")

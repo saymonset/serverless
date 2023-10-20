@@ -20,24 +20,19 @@ def verifyToken(request):
     """
 
     
-    print('----------------0--------------------------------------')
-    
     token = request.headers.get('Authorization')
     event = {'authorizationToken':token,
                 'methodArn':'methodArn'}
 
     token = event['authorizationToken']
-    print('----------------1--------------------token------------------')
     methodArn = event['methodArn']
     if token is None or "Bearer" not in token or find_one_blacklist_repo({'token': token}):
         return {'principalId': 'unauthorized', 'policyDocument': generatePolicy('Deny', methodArn), 'resp':False}
     token = token.replace("Bearer ", "")
     print(token)
     try:
-      print('----------------1--------------------secret------------------')
       print(secret)
       decoded = jwt.decode(token, secret, algorithms=["HS256"])
-      print('----------------2--------------------------------------')
 
       if ('_id' in decoded):
               userId = decoded['_id']

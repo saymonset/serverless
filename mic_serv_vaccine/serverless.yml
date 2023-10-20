@@ -9,7 +9,7 @@ provider:
     STRIP_STAGE_PATH: yes
     MONGO_URI: 'mongodb+srv://simon:XhlUSILsriC0H3bO@micluster.mayzd.mongodb.net/mic_serv_users'
     TWILIO_ID: 'ACe7edfd31cf39b1e25f717ed5093a81fc'
-    TWILIO_AUTH_TOKEN: '46d118856fadd22a1853c4ab6abb0e02'
+    TWILIO_AUTH_TOKEN: 'd81d5dcfdc74364b1f8248fc68ad7804'
     JWT_SECRET: 'ASDASDJAWJDAIEJEIADJWDADKWOAJ'
     TWILIO_PHONE: '+12179190616'
 

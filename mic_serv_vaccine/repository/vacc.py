@@ -29,10 +29,13 @@ def get_vaccine_repo(id):
     else:
         # Maneja el error o muestra un mensaje de error
         result = {
+             "error":False,
+             "resp":False,
              "TypeError": id,
              "ValueError": "La cadena no es un ObjectId válido" 
         }
         return result
+ 
 
 def update_vaccine_repo(id, data):
     if validar_object_id(id):

@@ -5,7 +5,7 @@ import json
 
 from config.mongodb  import   mongo
 from models.genders  import   GenderModels
-from repository.dependent import   crear_dependents_repo , checkUserDependent, get_dependents_repo, get_dependents_counts_repo
+from repository.dependent import   crear_dependents_repo , checkUserDependent,get_dependentById_repo, get_dependents_repo, get_dependents_counts_repo, delete_dependent_repo, update_dependents_repo
 from helps.utils import validar_object_id
 
 
@@ -58,57 +58,48 @@ def get_dependentList_service(limite, desde, user_id):
     return jsonify(diccionario)
 
 # """Obtener una objeto"""
-
-
-# def get_gender_service(id):
-#     data = get_gender_repo(id)
-#     result = json_util.dumps(data)
-#     return Response(result, mimetype="application/json")
-
-
-# """Actualizacion de objeto"""
-
-
-# def update_genders_service(id, data):
-#     #data = request.get_json()
-#     if len(data) == 0:
-#         return "No hay datos para actualizar", 400
-   
-#     if validar_object_id(id):
-#         # La cadena es un ObjectId válido
-#         # Realiza las operaciones necesarias
-#         response = update_genders_repo(id, data)
-#         if response.modified_count >= 1:
-#             return "Ha sido actualizada correctamente", 200
-#         else:
-#             return "No fue encontrada", 404
-#     else:
-#         # Maneja el error o muestra un mensaje de error
-#         result = {
-#              "TypeError": id,
-#              "ValueError": "La cadena no es un ObjectId válido" 
-#         }
-#         return result
+def get_dependentsbyId_service(id):
+    data = get_dependentById_repo(id)
     
+    response_data = {
+            'result': data,
+    }
+    response = Response(json.dumps(json.loads(json_util.dumps(response_data))), status=200, mimetype='application/json')
+    return response
+
+def delete_dependent_service(id):
+    data = get_dependentById_repo(id)
+    if data is not None:
+        response =delete_dependent_repo(id)
+        if response.deleted_count >= 1:
+            return "El Dependiente ha sido eliminada correctamente", 200
+        else:
+            return "El Dependiente no fue encontrada", 404
+    else:
+         return "No existe registro para el id:"+id, 400
 
 
-# """Eliminar una objeto"""
+"""Actualizacion de depndent"""
 
 
-# def delete_genders_service(id):
-#     if validar_object_id(id):
-#         # La cadena es un ObjectId válido
-#         # Realiza las operaciones necesarias
-#         response = delete_genders_repo(id)
-#         if response.deleted_count >= 1:
-#             return "Se ha sido eliminada correctamente", 200
-#         else:
-#             return "No fue encontrada", 404
-#     else:
-#         # Maneja el error o muestra un mensaje de error
-#         result = {
-#              "TypeError": id,
-#              "ValueError": "La cadena no es un ObjectId válido" 
-#         }
-#         return result
-    
+def update_dependent_service(id, data):
+    if len(data) == 0:
+        return "No hay datos para actualizar", 400
+
+    if validar_object_id(id):
+        # La cadena es un ObjectId válido
+        # Realiza las operaciones necesarias
+        response = update_dependents_repo(id, data)
+        if response.modified_count >= 1:
+            return "Dependent ha sido actualizada correctamente", 200
+        else:
+            return "No se pudo actualizar", 404
+    else:
+        # Maneja el error o muestra un mensaje de error
+        result = {
+             "TypeError": id,
+             "ValueError": "La cadena no es un ObjectId válido" 
+        }
+        return result    
+
+ 

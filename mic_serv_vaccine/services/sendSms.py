@@ -29,7 +29,10 @@ def sendSms_service(data):
                 update_status_user_repo(user['_id'], data)
                 user =  get_phone_in_users_repo(phone)
             if user['status'] == 'unverified':
-                sendSms_phone(phone, rand_num)
+
+                result = sendSms_phone(phone, rand_num)
+                if not bool(result["resp"]):  return result 
+                
                 data = {'last_code': rand_num}
                 update_status_user_repo(user['_id'], data)
                 body = json.dumps( { 'message' : f"Code was sent successfully."}) 
@@ -45,7 +48,9 @@ def sendSms_service(data):
                 }
         
         else:    
-            sendSms_phone(phone, rand_num)
+
+            result = sendSms_phone(phone, rand_num)
+            if not bool(result["resp"]):  return result 
             
             # The `user` variable is used to store the result of the `get_phone_in_users_repo` function, which retrieves user data from the repository based on the provided phone number.
             user = {
@@ -66,13 +71,23 @@ def sendSms_service(data):
 
 
 def sendSms_phone(phone, rand_num):
-    account_sid = os.environ.get('TWILIO_ID')
-    auth_token = os.environ.get('TWILIO_AUTH_TOKEN')
-    client = Client(account_sid, auth_token)
-    message = client.messages.create(
-                    from_=os.environ.get('TWILIO_PHONE'),
-                    body=f"Your validation code is: {rand_num}",
-                    to=phone
-                )
-    return message
-
+    try:
+        account_sid = os.environ.get('TWILIO_ID')
+        auth_token = os.environ.get('TWILIO_AUTH_TOKEN')
+        client = Client(account_sid, auth_token)
+        client.messages.create(
+                        from_=os.environ.get('TWILIO_PHONE'),
+                        body=f"Your validation code is: {rand_num}",
+                        to=phone
+                    )
+        resp = {"resp":True,
+         "statusCode": 201,
+               }
+        return resp
+    except Exception as e:
+        resp =    {"resp":False,
+                    "statusCode": 501,
+                    "error":"Hubo un error al mandar el mensaje: "  + str(e)}
+    
+        return resp
+ 

@@ -33,13 +33,13 @@ def checkCode_service(data):
             now = datetime.utcnow()
 
             # Calcula la fecha y hora de expiración sumando 20 minutos a la fecha y hora actual
-            exp_time = now + timedelta(minutes=20)
+            #exp_time = now + timedelta(minutes=20 * 1)
+            exp_time = now + timedelta(minutes=20 * 6)
             # Calculate the expiration time as a far future date
             #exp_time = datetime.utcnow() + timedelta(days=365 * 10)
 
             token = jwt.encode({'_id':str(user['_id']), 'exp': exp_time}, secret, algorithm="HS256")
             decoded = jwt.decode(token, secret, algorithms=["HS256"])
-            print(token)
             update_status_user_repo(user['_id'], {'status': 'verified', 'token': token} )
             body = json.dumps( { 'message' : f"Code was checked successfully. Proceed with registration", 
                                  'token': token
