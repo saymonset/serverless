@@ -22,12 +22,12 @@ export const SendSmsScreen = ({ navigation }: Props) => {
     });
 
         {/* Simbolo wait esperando */}
-    // if ( status === 'checking' ) return <LoadingScreen />
+    if ( status === 'checking' ) return <LoadingScreen />
 
   {/*  Si ya en el redux nos trae el token actualizado, es porque puede crear un usuario */}
     useEffect(() => {
         // Ejecutar la navegación automáticamente al cargar el componente
-        navigation.replace('UserAdd');
+        navigation.replace('UserPartTotal');
       }, [token]);
 
       {/* Solo para sacar mensajes de error por pantalla */}

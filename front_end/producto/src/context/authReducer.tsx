@@ -10,6 +10,7 @@ export interface AuthState {
 }
 
 type AuthAction = 
+    | { type: 'beforeCheckCode'}
     | { type: 'checkCode', payload: { token: string | null } }
     | { type: 'sendSms', payload: { isSendCode: boolean, phone: string } }
     | { type: 'resetSendSms'}
@@ -23,9 +24,16 @@ type AuthAction =
 export const authReducer = ( state: AuthState, action: AuthAction ): AuthState => {
 
     switch (action.type) {
+        
+        case 'beforeCheckCode':
+            return {
+                ...state,
+                status: 'checking',
+            }
         case 'checkCode':
             return {
                 ...state,
+                status: 'not-authenticated',
                 token: action.payload.token,
             }
         case 'resetSendSms':

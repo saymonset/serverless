@@ -1,14 +1,12 @@
 import React, { useContext, useEffect } from 'react'
 import { KeyboardAvoidingView, Platform, Text, View, TextInput, TouchableOpacity, Keyboard, Alert } from 'react-native'
 
-
 import { AuthContext } from '../context/AuthContext';
 import { loginStyles } from '../theme/loginTheme'
 
 import { WhiteLogo } from '../components/WhiteLogo'
 import { useForm } from '../hooks/useForm'
 import { StackScreenProps } from '@react-navigation/stack';
-
 
 interface Props extends StackScreenProps<any,any>{}
 

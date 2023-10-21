@@ -58,6 +58,10 @@ export const AuthProvider = ({ children }: any)=> {
                 const {data} = response;
                  const { resp, message, token=null} = data; 
                
+                 {/* cambiamos status para el loader que muestre al usuario en espera*/}
+                //  dispatch({ 
+                //     type: 'beforeCheckCode'
+                // })
                  //  En caso de error
                  if( !resp ){
                     dispatch({ 
@@ -115,13 +119,13 @@ export const AuthProvider = ({ children }: any)=> {
         try {
                 let response = await vaccinesApi.post<SendSmsResponse>('/sendSms', { phone } );
                 const {data} = response;
-                 const { resp, message} = data; 
+                 const { resp, message, error} = data; 
                
                  //  En caso de error
                  if( !resp ){
                     dispatch({ 
                         type: 'addError', 
-                        payload: message || 'Telefono escrito de manera incorrecta'
+                        payload: message || error || 'Telefono escrito de manera incorrecta'
                     })
                     return;
                  }

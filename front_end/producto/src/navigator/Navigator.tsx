@@ -7,7 +7,7 @@ import { LoginScreen } from '../screens/LoginScreen';
 import { ProtectedScreen } from '../screens/ProtectedScreen';
 import { LoadingScreen } from '../screens/LoadingScreen';
 import { SendSmsScreen } from '../screens/SendSmsScreen';
-import { UserAdd } from '../screens/UserAdd';
+import { UserPartTotal } from '../screens/UserPartTotal';
 
 
 const Stack = createStackNavigator();
@@ -32,11 +32,9 @@ export const Navigator = () => {
         (status !== 'authenticated') 
           ? (
             <>
-             
               <Stack.Screen name="SendSmsScreen" component={ SendSmsScreen } />
-              <Stack.Screen name="UserAdd" component={ UserAdd } />
+              <Stack.Screen name="UserPartTotal" component={ UserPartTotal } />
               <Stack.Screen name="LoginScreen" component={ LoginScreen } />
-            
             </>
           )
           : (
