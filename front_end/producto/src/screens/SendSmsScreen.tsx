@@ -8,6 +8,10 @@ import { useForm } from '../hooks/useForm';
 import { StackScreenProps } from '@react-navigation/stack';
 import { AuthContext } from '../context/AuthContext';
 import { LoadingScreen } from './LoadingScreen';
+import { NotSendCode } from '../components/NotSendCode';
+import { SendCode } from '../components/SendCode';
+ 
+ 
 
 interface Props extends StackScreenProps<any, any> {}
 
@@ -41,21 +45,22 @@ export const SendSmsScreen = ({ navigation }: Props) => {
 
     }, [ errorMessage ])
 
-    const onSendSms= () => {
+    const onSendSms= (phone:string) => {
         Keyboard.dismiss();
+        console.log(phone)
         sendSms({ phone });
     }
 
-    const onResetSendSms= () => {
-        Keyboard.dismiss();
-        resetSendSms();
-    }
 
-    const onCheckCode= () => {
+
+    const onCheckCode= (code:string) => {
         Keyboard.dismiss();
         let phone = phoneSend ;
-        checkCode({phone, code:code0})
+        console.log({phone, code})
+        checkCode({phone, code})
     }
+
+    
 
     return (
         <>
@@ -74,100 +79,31 @@ export const SendSmsScreen = ({ navigation }: Props) => {
                     {/* Keyboard avoid view */}
                     <WhiteLogo />
 
+                    {/* <AddCategory 
+                onNewCategory={ (value) => onAddCategory(value) }
+            /> */}
+
                                     <Text style={ loginStyles.title }>Send SMS</Text>
                                                         { !isSendCode  && (
                                                         <> 
-                                        <Text style={ loginStyles.label }>Phone:</Text>
-                                        <TextInput 
-                                            placeholder="+112223333344"
-                                            placeholderTextColor="rgba(255,255,255,0.4)"
-                                            underlineColorAndroid="white"
-                                            style={[ 
-                                                loginStyles.inputField,
-                                                ( Platform.OS === 'ios' ) && loginStyles.inputFieldIOS
-                                            ]}
-                                            selectionColor="white"
-
-                                            onChangeText={ (value) => onChange(value, 'phone') }
-                                            value={ phone }
-                                            onSubmitEditing={ onSendSms }
-
-
-                                            autoCapitalize="none"
-                                            autoCorrect={ false }
-                                        />
+                                    <NotSendCode onNewPhone={ (value:string) => onSendSms(value) }></NotSendCode>
                                     </>)
                                     }
 
                                     { isSendCode  && (
                                         <>
-                                            <Text style={ loginStyles.label }>code:</Text>
-                                            <TextInput 
-                                                placeholderTextColor="rgba(255,255,255,0.4)"
-                                                underlineColorAndroid="white"
-                                                style={[ 
-                                                    loginStyles.inputField,
-                                                    ( Platform.OS === 'ios' ) && loginStyles.inputFieldIOS
-                                                ]}
-                                                selectionColor="white"
-
-                                                onChangeText={ (value) => onChange(value, 'code0') }
-                                                value={ code0 }
-                                                onSubmitEditing={ onCheckCode }
-
-                                                autoCapitalize="none"
-                                                autoCorrect={ false }
-                                            />
+                                          <SendCode onNewCode={ (value:string) => onCheckCode(value) }></SendCode>
                                         </>)
                                     }
                                     
 
 
 
-                                    { isSendCode  && (
-                                    <>
-                                        {/* Boton Check Code */}
-                                        <View style={ loginStyles.buttonContainer }>
-                                            <TouchableOpacity
-                                                activeOpacity={ 0.8 }
-                                                style={ loginStyles.button }
-                                                onPress={ onCheckCode }
-                                            >
-                                                <Text style={ loginStyles.buttonText } >Check Code</Text>
-                                            </TouchableOpacity>
-                                        </View>
-                                    </>)
-                                    }
+                                 
                                     
-                                    { !isSendCode  && (
-                                    <> 
-                                    {/* Boton Send Msg */}
-                                    <View style={ loginStyles.buttonContainer }>
-                                        <TouchableOpacity
-                                            activeOpacity={ 0.8 }
-                                            style={ loginStyles.button }
-                                            onPress={ onSendSms }
-                                        >
-                                            <Text style={ loginStyles.buttonText } >Send SMS</Text>
-                                        </TouchableOpacity>
-                                    </View>
-                                    </>)
-                                    }
+                                   
 
-                                        { isSendCode  && (
-                                                            <> 
-                                                {/* Reset code*/}
-                                                <View style={ loginStyles.newUserContainer  }>
-                                                    <TouchableOpacity
-                                                        activeOpacity={ 0.8 }
-                                                        onPress={  onResetSendSms}
-                                                    >
-                                                        <Text style={ loginStyles.buttonText }>Reset</Text>
-                                                    </TouchableOpacity>
-
-                                                </View>
-                                        </>)
-                                        }
+                                       
                                
                             
                      
