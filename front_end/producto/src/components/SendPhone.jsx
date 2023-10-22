@@ -1,8 +1,11 @@
-import React, {  useState} from 'react';
-import { Text, View, TextInput, Platform,  TouchableOpacity } from 'react-native';
+import React, {  useState, useContext} from 'react';
+import { Text, View, TextInput, Platform,  TouchableOpacity, Keyboard } from 'react-native';
+import { AuthContext } from '../context/AuthContext';
 import { loginStyles } from '../theme/loginTheme';
 
-export const  NotSendCode = ({ onNewPhone }) => {
+export const  SendPhone = () => {
+
+    const { sendSms, beforeCheckCode } = useContext( AuthContext );  
   const [ inputValue, setInputValue ] = useState('');
 
   const onInputChange = (value) => {
@@ -10,13 +13,14 @@ export const  NotSendCode = ({ onNewPhone }) => {
   }
 
   const onSubmit = ( event ) => {
+      Keyboard.dismiss();
       event.preventDefault();
       if( inputValue.trim().length <= 1) return;
-      // setCategories( categories => [ inputValue, ...categories ]);
+      beforeCheckCode()
+      sendSms({phone:inputValue.trim()});
       setInputValue('');
-      onNewPhone( inputValue.trim() );
   }
-
+ 
   return (
       <>
             <Text style={ loginStyles.label }>Phone:</Text>

@@ -1,3 +1,3 @@
 
-export * from './NotSendCode';
+export * from './SendPhone';
 export * from './SendCode';

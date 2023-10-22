@@ -1,11 +1,11 @@
 import React, {  useState, useContext} from 'react';
-import { Text, View, TextInput, Platform,  TouchableOpacity } from 'react-native';
+import { Text, View, TextInput, Platform,  TouchableOpacity, Keyboard } from 'react-native';
 import { AuthContext } from '../context/AuthContext';
 import { loginStyles } from '../theme/loginTheme';
 
-export const  SendCode = ({ onNewCode }) => {
+export const  SendCode = () => {
 
-  const {  resetSendSms } = useContext( AuthContext );
+  const {  resetSendSms, checkCode, phone  } = useContext( AuthContext );
   const [ inputValue, setInputValue ] = useState('');
 
   const onInputChange = (value) => {
@@ -16,13 +16,20 @@ export const  SendCode = ({ onNewCode }) => {
       event.preventDefault();
       if( inputValue.trim().length <= 1) return;
       setInputValue('');
-      onNewCode( inputValue.trim() );
+      onCheckCode( inputValue.trim() );
   }
 
   const onResetSendSms= () => {
     Keyboard.dismiss();
     resetSendSms();
 }
+
+
+const onCheckCode= (code) => {
+  Keyboard.dismiss();
+  checkCode({phone, code})
+}
+
 
   return (
       <>

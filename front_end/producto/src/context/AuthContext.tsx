@@ -22,6 +22,7 @@ type AuthContextProps = {
     sendSms: (sendSmsRequest:SendSmsRequest) => void;
     resetSendSms: () => void;
     checkCode: (checkcCodeRequest:CheckcCodeRequest) => void;
+    beforeCheckCode: () => void;
    
 
 }
@@ -48,7 +49,12 @@ export const AuthProvider = ({ children }: any)=> {
     }, [])
 
 
-
+    const beforeCheckCode = async() => {
+                 //  En caso todo marche bien
+                 dispatch({ 
+                    type: 'beforeCheckCode',
+                });
+    }
 
     {/* send sms  */} 
     const checkCode = async({ phone='', code='' }: CheckcCodeRequest ) => {
@@ -120,6 +126,9 @@ export const AuthProvider = ({ children }: any)=> {
                 let response = await vaccinesApi.post<SendSmsResponse>('/sendSms', { phone } );
                 const {data} = response;
                  const { resp, message, error} = data; 
+
+             
+                 
                
                  //  En caso de error
                  if( !resp ){
@@ -252,7 +261,8 @@ export const AuthProvider = ({ children }: any)=> {
             removeError,
             sendSms,
             resetSendSms,
-            checkCode
+            checkCode,
+            beforeCheckCode
         }}>
             { children }
         </AuthContext.Provider>

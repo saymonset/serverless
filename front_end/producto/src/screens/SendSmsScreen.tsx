@@ -4,11 +4,10 @@ import { Text, View, TextInput, Platform, KeyboardAvoidingView, Keyboard, Alert,
 import { Background } from '../components/Background';
 import { WhiteLogo } from '../components/WhiteLogo';
 import { loginStyles } from '../theme/loginTheme';
-import { useForm } from '../hooks/useForm';
 import { StackScreenProps } from '@react-navigation/stack';
 import { AuthContext } from '../context/AuthContext';
 import { LoadingScreen } from './LoadingScreen';
-import { NotSendCode } from '../components/NotSendCode';
+import { SendPhone } from '../components/SendPhone';
 import { SendCode } from '../components/SendCode';
  
  
@@ -16,14 +15,8 @@ import { SendCode } from '../components/SendCode';
 interface Props extends StackScreenProps<any, any> {}
 
 export const SendSmsScreen = ({ navigation }: Props) => {
-    
 
-    const { sendSms, resetSendSms, checkCode, token,  errorMessage, removeError, isSendCode, phone:phoneSend , status} = useContext( AuthContext );
-
-    const { phone, code0, onChange } = useForm({
-       phone: '',
-       code0: '' 
-    });
+    const {  token,  errorMessage, removeError, isSendCode, status} = useContext( AuthContext );
 
         {/* Simbolo wait esperando */}
     if ( status === 'checking' ) return <LoadingScreen />
@@ -45,20 +38,9 @@ export const SendSmsScreen = ({ navigation }: Props) => {
 
     }, [ errorMessage ])
 
-    const onSendSms= (phone:string) => {
-        Keyboard.dismiss();
-        console.log(phone)
-        sendSms({ phone });
-    }
+  
 
 
-
-    const onCheckCode= (code:string) => {
-        Keyboard.dismiss();
-        let phone = phoneSend ;
-        console.log({phone, code})
-        checkCode({phone, code})
-    }
 
     
 
@@ -71,30 +53,22 @@ export const SendSmsScreen = ({ navigation }: Props) => {
                 style={{ flex: 1 }}
                 behavior={ (Platform.OS === 'ios') ? 'padding': 'height' }
             >
-
-               
-
-
                 <View style={ loginStyles.formContainer }>                
                     {/* Keyboard avoid view */}
                     <WhiteLogo />
 
-                    {/* <AddCategory 
-                onNewCategory={ (value) => onAddCategory(value) }
-            /> */}
-
                                     <Text style={ loginStyles.title }>Send SMS</Text>
                                                         { !isSendCode  && (
                                                         <> 
-                                    <NotSendCode onNewPhone={ (value:string) => onSendSms(value) }></NotSendCode>
-                                    </>)
-                                    }
+                                                             <SendPhone ></SendPhone>
+                                                        </>)
+                                                        }
 
-                                    { isSendCode  && (
-                                        <>
-                                          <SendCode onNewCode={ (value:string) => onCheckCode(value) }></SendCode>
-                                        </>)
-                                    }
+                                                        { isSendCode  && (
+                                                            <>
+                                                            <SendCode></SendCode>
+                                                            </>)
+                                                        }
                                     
 
 
