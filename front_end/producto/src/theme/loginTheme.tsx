@@ -41,6 +41,17 @@ export const loginStyles = StyleSheet.create({
         paddingVertical: 5,
         borderRadius: 100
     },
+    buttonblue: {
+        borderWidth: 2,
+        borderColor: 'blue',
+        paddingHorizontal: 20,
+        paddingVertical: 5,
+        borderRadius: 100
+    },
+    buttonTextBlue: {
+        fontSize: 18,
+        color: 'black'
+    },
     buttonText: {
         fontSize: 18,
         color: 'white'

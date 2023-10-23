@@ -9,6 +9,7 @@ import { WhiteLogo } from '../components/WhiteLogo'
 import { useForm } from '../hooks/useForm'
 import { StackScreenProps } from '@react-navigation/stack';
 import { UserPart1 } from './UserPart1';
+import { Fab } from '../components/Fab';
 
 
 interface Props extends StackScreenProps<any,any>{}
@@ -57,13 +58,14 @@ export const UserPartTotal = ( { navigation }: Props ) => {
      const [gender, setGender] = useState('');
      const [role, setRole] = useState('');
    
-     const handleSubmit = () => {
+     const onSubmit = () => {
        // Handle form submission here
        // You can access the form values using the state variables (name, lastName, etc.)
        // Perform any necessary validation or data processing before submitting
        // You can also make an API call to send the form data to a server
    
        // Example: Log the form values to the console
+       
        console.log('Name:', name);
        console.log('Last Name:', lastName);
        console.log('Birthday:', birthday);
@@ -73,8 +75,11 @@ export const UserPartTotal = ( { navigation }: Props ) => {
        console.log('Role:', role);
      };
 
+     
+
     return (
-        <View style={styles.container}>
+  <View>   
+    <View style={styles.container}>
       <View style={styles.column}>
         <TextInput
           style={styles.input}
@@ -121,8 +126,31 @@ export const UserPartTotal = ( { navigation }: Props ) => {
           onChangeText={text => setRole(text)}
         />
       </View>
-      <Button title="Submit" onPress={handleSubmit} />
+     
     </View>
+     {/* <Button title="Submit" onPress={onSubmit} /> */}
+
+<Fab title='Enviar'
+     onPress= { ()  => onSubmit()}
+     position='bl'
+></Fab>
+
+<Fab title='Enviar'
+     onPress= { ()  => onSubmit()}
+     position='br'
+></Fab>
+    
+      {/* <TouchableOpacity
+                                                activeOpacity={ 0.8 }
+                                                style={ styles.fabLocationBL}
+                                                onPress={ onSubmit }
+                                            >
+                                              <View style={styles.fab}>
+                                                <Text style={ styles.fabText } >back</Text> 
+                                              </View>
+                                               
+                                            </TouchableOpacity> */}
+  </View>
     )
 }
 
@@ -145,4 +173,38 @@ const styles = StyleSheet.create({
       padding: 10,
       marginBottom: 10,
     },
+    buttonx: {
+      borderWidth: 1,
+      borderColor: 'gray',
+      padding: 10,
+      marginBottom: 10,
+      borderRadius:100,
+      backgroundColor:'blue',
+    },
+    fabLocationBR:{
+         position:'absolute',
+         bottom: -10,
+         right:200,
+
+    },
+    fabLocationBL:{
+      position:'absolute',
+      bottom: -10,
+      left: 50,
+
+ },
+    fab :{
+      backgroundColor:'#5856D6',
+      width:60,
+      height:60,
+      borderRadius:100,
+      justifyContent:'center'
+    },
+    fabText :{
+      color:'white',
+      fontSize:10,
+      fontWeight:'bold',
+      alignSelf:'center',
+
+    }
   });

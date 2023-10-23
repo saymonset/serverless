@@ -32,8 +32,10 @@ export const Navigator = () => {
         (status !== 'authenticated') 
           ? (
             <>
-              <Stack.Screen name="SendSmsScreen" component={ SendSmsScreen } />
+            
               <Stack.Screen name="UserPartTotal" component={ UserPartTotal } />
+              <Stack.Screen name="SendSmsScreen" component={ SendSmsScreen } />
+            
               <Stack.Screen name="LoginScreen" component={ LoginScreen } />
             </>
           )
