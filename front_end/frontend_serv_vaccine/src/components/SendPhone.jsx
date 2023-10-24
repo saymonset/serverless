@@ -2,8 +2,16 @@ import React, {  useState, useContext} from 'react';
 import { Text, View, TextInput, Platform,  TouchableOpacity, Keyboard } from 'react-native';
 import { AuthContext } from '../context/AuthContext';
 import { loginStyles } from '../theme/loginTheme';
+import { StackScreenProps } from '@react-navigation/stack';
 
-export const  SendPhone = () => {
+
+
+interface Props extends StackScreenProps<any, any> {}
+
+
+export const  SendPhone = ({ navigation }) => {
+
+    console.log({navigation})
 
     const { sendSms, beforeCheckCode } = useContext( AuthContext );  
   const [ inputValue, setInputValue ] = useState('');
@@ -20,6 +28,15 @@ export const  SendPhone = () => {
       sendSms({phone:inputValue.trim()});
       setInputValue('');
   }
+
+  const onLogin = ( event ) => {
+    if (navigation) {
+        navigation.replace('LoginScreen');
+      }
+   // Keyboard.dismiss();
+   // event.preventDefault();
+   //
+}
  
   return (
       <>
@@ -43,15 +60,25 @@ export const  SendPhone = () => {
                                             autoCorrect={ false }
                                             />
               {/* Boton Send Msg */}
-              <View style={ loginStyles.buttonContainer }>
-                                        <TouchableOpacity
-                                            activeOpacity={ 0.8 }
-                                            style={ loginStyles.button }
-                                            onPress={ onSubmit }
-                                        >
-                                            <Text style={ loginStyles.buttonText } >Send SMS</Text>
-                                        </TouchableOpacity>
-                                    </View>
+                      
+                             <View style={ loginStyles.buttonContainer }>
+                                    <View style={ loginStyles.severalContainer}>
+                                            <TouchableOpacity
+                                                    activeOpacity={ 0.8 }
+                                                    style={ loginStyles.button }
+                                                    onPress={ onLogin }
+                                                >
+                                                    <Text style={ loginStyles.buttonText } >Back</Text>
+                                                </TouchableOpacity>
+                                                <TouchableOpacity
+                                                    activeOpacity={ 0.8 }
+                                                    style={ loginStyles.button }
+                                                    onPress={ onSubmit }
+                                                >
+                                                    <Text style={ loginStyles.buttonText } >Send SMS</Text>
+                                                </TouchableOpacity>
+                                     </View>
+                              </View>
     </>
   )
 }

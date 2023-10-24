@@ -61,11 +61,11 @@ export const Fab = ({ title, onPress, position = 'br'}:Props) => {
 const styles = StyleSheet.create({
     fabLocation:{
         position:'absolute',
-        bottom: -680
+        bottom: 10
     },
     fabLocationAndroid:{
         position:'absolute',
-        bottom: -430,
+        bottom: 10,
     },
     right:{
          right:10,

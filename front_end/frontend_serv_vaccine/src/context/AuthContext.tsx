@@ -4,9 +4,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import cafeApi from '../api/cafeApi';
 import vaccinesApi from '../api/vaccinesApi';
 
-import { Usuario, LoginResponse, LoginData, RegisterData } from '../interfaces/appInterfaces';
+import { Usuario, LoginResponse, LoginData, RegisterData, UserResponse } from '../interfaces/appInterfaces';
 import { authReducer, AuthState } from './authReducer';
-import { CheckcCodeRequest, CheckcCodeResponse, LoginVaccineResponse, SendSmsRequest, SendSmsResponse } from '../interfaces/vaccinesinterface';
+import { CheckcCodeRequest, CheckcCodeResponse, LoginVaccineResponse, SendSmsRequest, SendSmsResponse} from '../interfaces/vaccinesinterface';
 
 type AuthContextProps = {
     isSendCode: boolean  | null;
@@ -23,6 +23,7 @@ type AuthContextProps = {
     resetSendSms: () => void;
     checkCode: (checkcCodeRequest:CheckcCodeRequest) => void;
     beforeCheckCode: () => void;
+    userAdd: (user: UserRequest) => void;
    
 
 }
@@ -48,6 +49,64 @@ export const AuthProvider = ({ children }: any)=> {
         checkToken();
     }, [])
 
+
+    const userAdd = async(user: Usuario) => {
+
+        //console.log('-----------AsyncStorage-----')
+        //console.log(` user.token =  ${user.token}`)
+        if (user.token){
+            await AsyncStorage.setItem('token', user.token );
+        }
+        
+        // const headers = {
+        //     Authorization: `Bearer ${token}`,
+        // };
+
+        let payload = { token: user.token , user, error:'' }
+        
+        try {
+            let response = null; //await vaccinesApi.post<UserResponse>('/users', {...user });
+            const {data} = response;
+             const { resp, error = ''} = data; 
+             payload['error'] = error;
+             console.log({data})
+             {/* cambiamos status para el loader que muestre al usuario en espera*/}
+        
+             //  En caso de error
+             if( !resp ){
+                dispatch({ 
+                    type: 'addUserError', 
+                    payload
+                })
+                return;
+             }
+
+              //  En caso todo marche bien
+            dispatch({ 
+                type: 'userAdd' 
+            });
+          
+            //await AsyncStorage.setItem('token', data.token );
+          } catch (error) {
+            if (error.response) {
+              // El servidor respondió con un estado de error (por ejemplo, 404, 500)
+              console.log(error.response.data);
+              console.log(error.response.status);
+              console.log(error.response.headers);
+            } else if (error.request) {
+              // La solicitud fue realizada pero no se recibió ninguna respuesta
+              console.log(error.request);
+            } else {
+              // Ocurrió un error al configurar la solicitud
+              console.log('Error', error.message);
+            }
+                //     console.log(error)
+                dispatch({ 
+                    type: 'addError', 
+                    payload: error.response.data.msg || 'Información incorrecta'
+                })
+          }
+}
 
     const beforeCheckCode = async() => {
                  //  En caso todo marche bien
@@ -262,7 +321,8 @@ export const AuthProvider = ({ children }: any)=> {
             sendSms,
             resetSendSms,
             checkCode,
-            beforeCheckCode
+            beforeCheckCode,
+            userAdd
         }}>
             { children }
         </AuthContext.Provider>

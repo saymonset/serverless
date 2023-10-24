@@ -19,12 +19,31 @@ type AuthAction =
     | { type: 'removeError' }
     | { type: 'notAuthenticated' }
     | { type: 'logout' }
+    | { type: 'userAdd' }
+    | { type: 'addUserError' , payload: { token: string | undefined, user: Usuario, error: string | undefined } }
+    
+
+    
 
 
 export const authReducer = ( state: AuthState, action: AuthAction ): AuthState => {
 
     switch (action.type) {
         
+        case 'userAdd':
+            return {
+                ...state,
+                status: 'not-authenticated',
+                token: null,
+            }
+        case 'addUserError':
+                return {
+                    ...state,
+                    user: action.payload.user,
+                    status: 'not-authenticated',
+                    token: action.payload.token,
+                    errorMessage: action.payload.error
+                }   
         case 'beforeCheckCode':
             return {
                 ...state,
@@ -62,6 +81,7 @@ export const authReducer = ( state: AuthState, action: AuthAction ): AuthState =
                 token: null,
                 errorMessage: action.payload
             }
+     
     
         case 'removeError':
             return {

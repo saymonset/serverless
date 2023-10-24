@@ -8,19 +8,22 @@ import { useForm } from '../hooks/useForm';
 import { StackScreenProps } from '@react-navigation/stack';
 import { AuthContext } from '../context/AuthContext';
 
+
 interface Props extends StackScreenProps<any, any> {}
 
 export const LoginScreen = ({ navigation }: Props) => {
 
-    const { signIn, errorMessage, removeError } = useContext( AuthContext );
+    const { signIn, errorMessage, removeError, isSendCode } = useContext( AuthContext );
 
     const { email, password, onChange } = useForm({
        email: '',
        password: '' 
     });
 
+    
+
     useEffect(() => {
-        if( errorMessage && errorMessage.length === 0 ) return;
+        if(  errorMessage.length === 0 ) return;
 
         Alert.alert( 'Login incorrecto', errorMessage,[{
             text: 'Ok',
@@ -74,7 +77,7 @@ export const LoginScreen = ({ navigation }: Props) => {
                     />
 
 
-                    <Text style={ loginStyles.label }>Contraseña:</Text>
+                    <Text style={ loginStyles.label }>Password:</Text>
                     <TextInput 
                         placeholder="******"
                         placeholderTextColor="rgba(255,255,255,0.4)"
@@ -106,13 +109,14 @@ export const LoginScreen = ({ navigation }: Props) => {
                         </TouchableOpacity>
                     </View>
 
+                  
                     {/* Crear una nueva cuenta */}
                     <View style={ loginStyles.newUserContainer  }>
                         <TouchableOpacity
                             activeOpacity={ 0.8 }
-                            onPress={ () => navigation.replace('RegisterScreen') }
+                            onPress={ () => navigation.replace('SendSmsScreen') }
                         >
-                            <Text style={ loginStyles.buttonText }>Nueva cuenta </Text>
+                            <Text style={ loginStyles.buttonText }>{!isSendCode?'New Account':'Check Code'} </Text>
                         </TouchableOpacity>
                     </View>
                 </View>

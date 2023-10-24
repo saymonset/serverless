@@ -10,6 +10,7 @@ import { useForm } from '../hooks/useForm'
 import { StackScreenProps } from '@react-navigation/stack';
 import { UserPart1 } from './UserPart1';
 import { Fab } from '../components/Fab';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 interface Props extends StackScreenProps<any,any>{}
@@ -17,25 +18,11 @@ interface Props extends StackScreenProps<any,any>{}
 
 export const UserPartTotal = ( { navigation }: Props ) => {
 
-    const { signUp, errorMessage, removeError } = useContext( AuthContext );
-
-    // const { email, password, name, lastname, ci, state, city, birth, gender_id, status, onChange } = useForm({
-    //     name: '',
-    //     lastname:'',
-    //     password: '' ,
-    //     ci:'',
-    //     email: '',
-    //     state:'',
-    //     city:'',
-    //     birth:'',
-    //     gender_id:'',
-    //     status: true
-
-       
-    //  });
+    const { userAdd, errorMessage, removeError, token } = useContext( AuthContext );
+ 
 
      useEffect(() => {
-        if( errorMessage.length === 0 ) return;
+        if( errorMessage && errorMessage.length === 0 ) return;
 
         Alert.alert( 'Registro incorrecto', errorMessage,[{
             text: 'Ok',
@@ -44,19 +31,24 @@ export const UserPartTotal = ( { navigation }: Props ) => {
 
     }, [ errorMessage ])
  
-     const onRegister = () => {
-       //  console.log({email, password, name, lastname, ci, state, city, birth, gender_id, status});
-         Keyboard.dismiss();
-     }
 
      {/**  iA */}
      const [name, setName] = useState('');
-     const [lastName, setLastName] = useState('');
-     const [birthday, setBirthday] = useState('');
+     const [lastname, setLastName] = useState('');
+     const [password, setPassword] = useState('');
      const [ci, setCI] = useState('');
+     const [email, setEmail] = useState('');
+     const [state, setState] = useState('');
+     const [city, setCity] = useState('');
+     const [birth, setBirthday] = useState('');
+     const [gender_id, setGender] = useState('');
      const [status, setStatus] = useState('');
-     const [gender, setGender] = useState('');
-     const [role, setRole] = useState('');
+
+
+
+     const onLogin = () => {
+      navigation.replace('LoginScreen');
+     }
    
      const onSubmit = () => {
        // Handle form submission here
@@ -67,97 +59,127 @@ export const UserPartTotal = ( { navigation }: Props ) => {
        // Example: Log the form values to the console
        
        console.log('Name:', name);
-       console.log('Last Name:', lastName);
-       console.log('Birthday:', birthday);
+       console.log('Last Name:', lastname);
+       console.log('birth:', birth);
        console.log('CI:', ci);
        console.log('Status:', status);
-       console.log('Gender:', gender);
-       console.log('Role:', role);
+       console.log('Gender:', gender_id);
+       //console.log(token)
+       
+       userAdd({ name, lastname, password, ci, email, state, city, birth, gender_id, status, token  });
      };
-
+      
      
 
     return (
-  <View>   
-    <View style={styles.container}>
-      <View style={styles.column}>
-        <TextInput
-          style={styles.input}
-          placeholder="Name"
-          value={name}
-          onChangeText={text => setName(text)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Last Name"
-          value={lastName}
-          onChangeText={text => setLastName(text)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Birthday"
-          value={birthday}
-          onChangeText={text => setBirthday(text)}
-        />
-      </View>
-      <View style={styles.column}>
-        <TextInput
-          style={styles.input}
-          placeholder="CI"
-          value={ci}
-          onChangeText={text => setCI(text)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Status"
-          value={status}
-          onChangeText={text => setStatus(text)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Gender"
-          value={gender}
-          onChangeText={text => setGender(text)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Role"
-          value={role}
-          onChangeText={text => setRole(text)}
-        />
-      </View>
-     
-    </View>
-     {/* <Button title="Submit" onPress={onSubmit} /> */}
+       <>
+              <Text style={styles.title}>Add User Information</Text>
+              <SafeAreaView 
+                    style={[styles.container]}>
+                            <View style={[styles.column]}>
+                              <TextInput
+                                style={styles.input}
+                                placeholder="Name"
+                                value={name}
+                                onChangeText={text => setName(text)}
+                              />
+                              <TextInput
+                                style={styles.input}
+                                placeholder="Last Name"
+                                value={lastname}
+                                onChangeText={text => setLastName(text)}
+                              />
+                              <TextInput
+                                style={styles.input}
+                                placeholder="Password"
+                                value={password}
+                                onChangeText={text => setPassword(text)}
+                                placeholderTextColor="rgba(255,255,255,0.4)"
+                                secureTextEntry
+                                autoCapitalize="none"
+                                autoCorrect={ false }
+                              />
+                              <TextInput
+                                style={styles.input}
+                                placeholder="email"
+                                value={email}
+                                onChangeText={text => setEmail(text)}
+                                autoCapitalize="none"
+                                autoCorrect={ false }
+                              />
+                              <TextInput
+                                style={styles.input}
+                                placeholder="birth"
+                                value={birth}
+                                onChangeText={text => setBirthday(text)}
+                              />
+                            </View>
+                            <View style={[styles.column]}>
+                              <TextInput
+                                style={styles.input}
+                                placeholder="State"
+                                value={state}
+                                onChangeText={text => setState(text)}
+                              />
+                              <TextInput
+                                style={styles.input}
+                                placeholder="CI"
+                                value={ci}
+                                onChangeText={text => setCI(text)}
+                              />
+                              <TextInput
+                                style={styles.input}
+                                placeholder="Status"
+                                value={status}
+                                onChangeText={text => setStatus(text)}
+                              />
+                              <TextInput
+                                style={styles.input}
+                                placeholder="Gender"
+                                value={gender_id}
+                                onChangeText={text => setGender(text)}
+                              />
+                              <TextInput
+                                style={styles.input}
+                                placeholder="City"
+                                value={city}
+                                onChangeText={text => setCity(text)}
+                              />
+                            </View>
+                           
+                          
+                      {/* <Button title="Submit" onPress={onSubmit} /> */}
 
-<Fab title='Enviar'
-     onPress= { ()  => onSubmit()}
-     position='bl'
-></Fab>
+                        <Fab title='Back'
+                            onPress= { ()  => onLogin()}
+                            position='bl'
+                        ></Fab>
 
-<Fab title='Enviar'
-     onPress= { ()  => onSubmit()}
-     position='br'
-></Fab>
-    
-      {/* <TouchableOpacity
-                                                activeOpacity={ 0.8 }
-                                                style={ styles.fabLocationBL}
-                                                onPress={ onSubmit }
-                                            >
-                                              <View style={styles.fab}>
-                                                <Text style={ styles.fabText } >back</Text> 
-                                              </View>
-                                               
-                                            </TouchableOpacity> */}
-  </View>
+                        <Fab title='Enviar'
+                            onPress= { ()  => onSubmit()}
+                            position='br'
+                        ></Fab>
+                 
+              </SafeAreaView>
+              </>
     )
 }
 
+ 
 
 
 const styles = StyleSheet.create({
+ 
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    textAlign:'center',
+    top:30
+
+  },
     container: {
+      flex:1,
       flexDirection: 'row',
       justifyContent: 'space-between',
       paddingHorizontal: 20,

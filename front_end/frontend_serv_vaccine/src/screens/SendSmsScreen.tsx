@@ -24,12 +24,13 @@ export const SendSmsScreen = ({ navigation }: Props) => {
   {/*  Si ya en el redux nos trae el token actualizado, es porque puede crear un usuario */}
     useEffect(() => {
         // Ejecutar la navegación automáticamente al cargar el componente
+        if (token === '' || token === null) return;
         navigation.replace('UserPartTotal');
       }, [token]);
 
       {/* Solo para sacar mensajes de error por pantalla */}
     useEffect(() => {
-        if( errorMessage.length === 0 ) return;
+        if( errorMessage && errorMessage.length === 0 ) return;
 
         Alert.alert( 'Phone incorrecto', errorMessage,[{
             text: 'Ok',
@@ -60,7 +61,7 @@ export const SendSmsScreen = ({ navigation }: Props) => {
                                     <Text style={ loginStyles.title }>Send SMS</Text>
                                                         { !isSendCode  && (
                                                         <> 
-                                                             <SendPhone ></SendPhone>
+                                                             <SendPhone navigation = { navigation }></SendPhone>
                                                         </>)
                                                         }
 
@@ -69,21 +70,7 @@ export const SendSmsScreen = ({ navigation }: Props) => {
                                                             <SendCode></SendCode>
                                                             </>)
                                                         }
-                                    
-
-
-
-                                 
-                                    
-                                   
-
-                                       
-                               
-                            
-                     
-
-                    
-
+                                     
 
                 </View>
                 

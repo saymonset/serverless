@@ -32,14 +32,19 @@ export const loginStyles = StyleSheet.create({
     },
     buttonContainer: {
         alignItems: 'center',
-        marginTop: 50
+        marginTop: 50,
     },
+    severalContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+      },
     button: {
         borderWidth: 2,
         borderColor: 'white',
         paddingHorizontal: 20,
         paddingVertical: 5,
-        borderRadius: 100
+        borderRadius: 100,
+        marginHorizontal:10,
     },
     buttonblue: {
         borderWidth: 2,
