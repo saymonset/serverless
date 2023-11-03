@@ -19,7 +19,7 @@ export const SendSmsScreen = ({ navigation }: Props) => {
     const {  token,  errorMessage, removeError, isSendCode, status} = useContext( AuthContext );
 
         {/* Simbolo wait esperando */}
-    if ( status === 'checking' ) return <LoadingScreen />
+   // if ( status === 'checking' ) return <LoadingScreen />
 
   {/*  Si ya en el redux nos trae el token actualizado, es porque puede crear un usuario */}
     useEffect(() => {
@@ -30,7 +30,7 @@ export const SendSmsScreen = ({ navigation }: Props) => {
 
       {/* Solo para sacar mensajes de error por pantalla */}
     useEffect(() => {
-        if( errorMessage && errorMessage.length === 0 ) return;
+        if( errorMessage.length === 0 ) return;
 
         Alert.alert( 'Phone incorrecto', errorMessage,[{
             text: 'Ok',

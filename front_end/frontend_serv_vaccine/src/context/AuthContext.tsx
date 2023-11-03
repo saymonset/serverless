@@ -1,19 +1,21 @@
 import React, { createContext, useEffect, useReducer } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import cafeApi from '../api/cafeApi';
 import vaccinesApi from '../api/vaccinesApi';
 
 import { Usuario, LoginResponse, LoginData, RegisterData, UserResponse } from '../interfaces/appInterfaces';
 import { authReducer, AuthState } from './authReducer';
 import { CheckcCodeRequest, CheckcCodeResponse, LoginVaccineResponse, SendSmsRequest, SendSmsResponse} from '../interfaces/vaccinesinterface';
+import { ImageComponent } from 'react-native/types';
 
 type AuthContextProps = {
     isSendCode: boolean  | null;
     phone:      string | null;
     errorMessage: string;
+    successfullMessage: string;
     token: string | null;
     user: Usuario | null;
+    moreinfouser: More | null;
     status: 'checking' | 'authenticated' | 'not-authenticated';
     signUp: ( registerData: RegisterData ) => void;
     signIn: ( loginData: LoginData ) => void;
@@ -34,7 +36,9 @@ const authInicialState: AuthState = {
     status: 'checking',
     token: null,
     user: null,
-    errorMessage: ''
+    moreinfouser: null,
+    errorMessage: '',
+    successfullMessage: ''
 }
 
 
@@ -52,43 +56,45 @@ export const AuthProvider = ({ children }: any)=> {
 
     const userAdd = async(user: Usuario) => {
 
-        //console.log('-----------AsyncStorage-----')
-        //console.log(` user.token =  ${user.token}`)
-        if (user.token){
-            await AsyncStorage.setItem('token', user.token );
+        {/** Viene el token cuando chequeas el code*/}
+        const { token } = user;
+        if (token){
+            await AsyncStorage.setItem('token', token ); 
         }
+            
         
         // const headers = {
-        //     Authorization: `Bearer ${token}`,
+        //     Authorization: `Bearer ${user.token}`,
         // };
 
-        let payload = { token: user.token , user, error:'' }
+     
         
         try {
-            let response = null; //await vaccinesApi.post<UserResponse>('/users', {...user });
+            let response = await vaccinesApi.post<UserResponse>('/users', {...user });
             const {data} = response;
-             const { resp, error = ''} = data; 
-             payload['error'] = error;
+             const { resp, error:errorbackend = '', message = ''} = data; 
+             console.log('hay vamos!!')
              console.log({data})
              {/* cambiamos status para el loader que muestre al usuario en espera*/}
         
              //  En caso de error
-             if( !resp ){
+             if( !resp || (errorbackend && errorbackend.length > 0 )){
                 dispatch({ 
-                    type: 'addUserError', 
-                    payload
+                    type: 'addError', 
+                    payload: errorbackend
                 })
                 return;
              }
 
               //  En caso todo marche bien
             dispatch({ 
-                type: 'userAdd' 
+                type: 'userAdd' ,
+                payload: message
             });
           
             //await AsyncStorage.setItem('token', data.token );
           } catch (error) {
-            if (error.response) {
+            if (error?.response) {
               // El servidor respondió con un estado de error (por ejemplo, 404, 500)
               console.log(error.response.data);
               console.log(error.response.status);
@@ -123,10 +129,7 @@ export const AuthProvider = ({ children }: any)=> {
                 const {data} = response;
                  const { resp, message, token=null} = data; 
                
-                 {/* cambiamos status para el loader que muestre al usuario en espera*/}
-                //  dispatch({ 
-                //     type: 'beforeCheckCode'
-                // })
+             
                  //  En caso de error
                  if( !resp ){
                     dispatch({ 
@@ -172,6 +175,7 @@ export const AuthProvider = ({ children }: any)=> {
      {/* resetSendSms sms  */} 
      const resetSendSms = async() => {
           //  En caso todo marche bien
+          await AsyncStorage.removeItem('token');
           dispatch({ 
             type: 'resetSendSms'
         });
@@ -182,9 +186,10 @@ export const AuthProvider = ({ children }: any)=> {
     const sendSms = async({ phone }: SendSmsRequest ) => {
 
         try {
+                 await AsyncStorage.removeItem('token');
                 let response = await vaccinesApi.post<SendSmsResponse>('/sendSms', { phone } );
                 const {data} = response;
-                 const { resp, message, error} = data; 
+                const { resp, message, error} = data; 
 
              
                  
@@ -207,6 +212,11 @@ export const AuthProvider = ({ children }: any)=> {
                     }
                 });
                 
+            
+                ads
+                titulo
+                Imagen,
+                link
               
                 //await AsyncStorage.setItem('token', data.token );
               } catch (error) {
@@ -238,7 +248,7 @@ export const AuthProvider = ({ children }: any)=> {
         if ( !token ) return dispatch({ type: 'notAuthenticated' });
 
         // Hay token
-        const resp = await cafeApi.get('/auth');
+        const resp = await vaccinesApi.get('/auth');
         if ( resp.status !== 200 ) {
             return dispatch({ type: 'notAuthenticated' });
         }
@@ -248,23 +258,23 @@ export const AuthProvider = ({ children }: any)=> {
             type: 'signUp',
             payload: {
                 token: resp.data.token,
-                user: resp.data.usuario
+                user: resp.data.usuario,
             }
         });
     }
 
 
-    const signIn = async({ correo, password }: LoginData ) => {
+    const signIn = async({ email, password }: LoginData ) => {
 
         try {
-            let dataVaccine = await vaccinesApi.post<LoginVaccineResponse>('/login', { ci:'123456', password } );
-            const { data } = await cafeApi.post<LoginResponse>('/auth/login', { correo, password } );
+            const { data } = await vaccinesApi.post<LoginVaccineResponse>('/login/mail', { email, password } );
            
             dispatch({ 
                 type: 'signUp',
                 payload: {
                     token: data.token,
-                    user: data.usuario
+                    user: data.usuario,
+                    more: data.more
                 }
             });
 
@@ -278,16 +288,17 @@ export const AuthProvider = ({ children }: any)=> {
         }
     };
     
-    const signUp = async( { nombre, correo, password }: RegisterData ) => {
+    const signUp = async( { nombre, email, password }: RegisterData ) => {
 
         try {
          
-            const { data } = await cafeApi.post<LoginResponse>('/usuarios', { correo, password, nombre } );
+            const { data } = await vaccinesApi.post<LoginVaccineResponse>('/usuarios', { email, password, nombre } );
             dispatch({ 
                 type: 'signUp',
                 payload: {
                     token: data.token,
-                    user: data.usuario
+                    user: data.usuario,
+                    more: data.more
                 }
             });
 

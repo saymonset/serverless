@@ -18,13 +18,24 @@ interface Props extends StackScreenProps<any,any>{}
 
 export const UserPartTotal = ( { navigation }: Props ) => {
 
-    const { userAdd, errorMessage, removeError, token } = useContext( AuthContext );
+    const {  userAdd,successfullMessage, errorMessage, removeError, token } = useContext( AuthContext );
  
 
-     useEffect(() => {
-        if( errorMessage && errorMessage.length === 0 ) return;
+    
+    useEffect(() => {
+      if(  successfullMessage.length === 0 ) return;
 
-        Alert.alert( 'Registro incorrecto', errorMessage,[{
+      Alert.alert( 'Info:', successfullMessage,[{
+          text: 'Ok',
+          onPress: removeError
+      }]);
+      navigation.replace('LoginScreen');
+  }, [ successfullMessage ])
+
+     useEffect(() => {
+        if(  errorMessage.length === 0 ) return;
+
+        Alert.alert( 'Error:', errorMessage,[{
             text: 'Ok',
             onPress: removeError
         }]);
@@ -63,7 +74,9 @@ export const UserPartTotal = ( { navigation }: Props ) => {
        console.log('birth:', birth);
        console.log('CI:', ci);
        console.log('Status:', status);
+       setGender('65391c195f461c1c76e06647')
        console.log('Gender:', gender_id);
+       
        //console.log(token)
        
        userAdd({ name, lastname, password, ci, email, state, city, birth, gender_id, status, token  });

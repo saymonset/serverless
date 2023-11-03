@@ -45,7 +45,7 @@ export const UserAdd = ( { navigation }: Props ) => {
          Keyboard.dismiss();
         //  signUp({
         //      nombre: name,
-        //      correo: email,
+        //      email,
         //      password
         //  });
      }

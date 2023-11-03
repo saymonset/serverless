@@ -1,4 +1,5 @@
 import { Usuario } from '../interfaces/appInterfaces';
+import { More } from '../interfaces/vaccinesinterface';
 
 export interface AuthState {
     isSendCode: boolean  | null;
@@ -6,7 +7,9 @@ export interface AuthState {
     status: 'checking' | 'authenticated' | 'not-authenticated';
     token: string | null;
     errorMessage: string;
+    successfullMessage: string;
     user: Usuario | null;
+    moreinfouser: More | null;
 }
 
 type AuthAction = 
@@ -14,13 +17,12 @@ type AuthAction =
     | { type: 'checkCode', payload: { token: string | null } }
     | { type: 'sendSms', payload: { isSendCode: boolean, phone: string } }
     | { type: 'resetSendSms'}
-    | { type: 'signUp', payload: { token: string, user: Usuario } }
+    | { type: 'signUp', payload: { token: string, user: Usuario, more: More} }
     | { type: 'addError', payload: string }
     | { type: 'removeError' }
     | { type: 'notAuthenticated' }
     | { type: 'logout' }
-    | { type: 'userAdd' }
-    | { type: 'addUserError' , payload: { token: string | undefined, user: Usuario, error: string | undefined } }
+    | { type: 'userAdd', payload: string }
     
 
     
@@ -35,15 +37,8 @@ export const authReducer = ( state: AuthState, action: AuthAction ): AuthState =
                 ...state,
                 status: 'not-authenticated',
                 token: null,
+                successfullMessage:action.payload,
             }
-        case 'addUserError':
-                return {
-                    ...state,
-                    user: action.payload.user,
-                    status: 'not-authenticated',
-                    token: action.payload.token,
-                    errorMessage: action.payload.error
-                }   
         case 'beforeCheckCode':
             return {
                 ...state,
@@ -86,7 +81,8 @@ export const authReducer = ( state: AuthState, action: AuthAction ): AuthState =
         case 'removeError':
             return {
                 ...state,
-                errorMessage: ''
+                errorMessage: '',
+                successfullMessage:''
             };
 
         case 'signUp':
@@ -95,7 +91,8 @@ export const authReducer = ( state: AuthState, action: AuthAction ): AuthState =
                 errorMessage: '',
                 status: 'authenticated',
                 token: action.payload.token,
-                user: action.payload.user
+                user: action.payload.user,
+                moreinfouser: action.payload.more
             }
 
         case 'logout':

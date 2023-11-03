@@ -8,7 +8,6 @@ import { useForm } from '../hooks/useForm';
 import { StackScreenProps } from '@react-navigation/stack';
 import { AuthContext } from '../context/AuthContext';
 
-
 interface Props extends StackScreenProps<any, any> {}
 
 export const LoginScreen = ({ navigation }: Props) => {
@@ -23,7 +22,7 @@ export const LoginScreen = ({ navigation }: Props) => {
     
 
     useEffect(() => {
-        if(  errorMessage.length === 0 ) return;
+        if( errorMessage.length === 0 ) return;
 
         Alert.alert( 'Login incorrecto', errorMessage,[{
             text: 'Ok',
@@ -35,7 +34,7 @@ export const LoginScreen = ({ navigation }: Props) => {
     const onLogin = () => {
         console.log({email, password});
         Keyboard.dismiss();
-        signIn({ correo: email, password });
+        signIn({ email, password });
     }
 
     return (

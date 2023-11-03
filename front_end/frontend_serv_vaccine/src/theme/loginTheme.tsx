@@ -40,7 +40,7 @@ export const loginStyles = StyleSheet.create({
       },
     button: {
         borderWidth: 2,
-        borderColor: 'white',
+        borderColor: 'red',
         paddingHorizontal: 20,
         paddingVertical: 5,
         borderRadius: 100,

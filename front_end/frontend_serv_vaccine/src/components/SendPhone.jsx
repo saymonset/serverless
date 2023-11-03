@@ -31,6 +31,7 @@ export const  SendPhone = ({ navigation }) => {
 
   const onLogin = ( event ) => {
     if (navigation) {
+        
         navigation.replace('LoginScreen');
       }
    // Keyboard.dismiss();

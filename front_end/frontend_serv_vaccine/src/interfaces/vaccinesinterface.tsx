@@ -31,6 +31,7 @@ export interface LoginVaccineResponse {
     token:      string;
     usuario:    Usuario;
     more:       More;
+    resp?:       boolean;
 }
 
 export interface More {

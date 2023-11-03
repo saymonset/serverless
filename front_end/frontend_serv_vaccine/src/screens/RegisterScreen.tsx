@@ -38,7 +38,7 @@ export const RegisterScreen = ( { navigation }: Props ) => {
          Keyboard.dismiss();
          signUp({
              nombre: name,
-             correo: email,
+             email,
              password
          });
      }
