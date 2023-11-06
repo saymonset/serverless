@@ -7,7 +7,7 @@ from validators.genders import isValidGenders
 from repository.genders import isValidBdgenders, isValidBdgendersUpdate
 import json
 from bson.objectid import ObjectId
-
+from flask_jwt_extended import jwt_required
  
 
 ns_genders = Namespace('genders', 'Genders related endpoints')
@@ -22,6 +22,8 @@ genders_model = ns_genders.model('Genders', {
 class getGenderswgger(Resource):
     @ns_genders.expect(genders_model, validate=True)
     @ns_genders.doc(headers={'Authorization': {'description': 'Bearer Access Token'}})
+    @ns_genders.doc(security='apikey')
+    @jwt_required()
     def post(self,  **kwargs):
        # Obtener los datos del objeto enviado en la solicitud
         gender_data = ns_genders.payload
@@ -33,16 +35,24 @@ class getGenderswgger(Resource):
 
 @ns_genders.route('/<limite>/<desde>', methods = [ 'GET' ])
 class getGenderswgger(Resource):        
+    @ns_genders.doc(security='apikey')
+    @jwt_required()
     def get(self, limite, desde):
         return get_gendersList_service(limite, desde)
 
 
 @ns_genders.route('/<id>', methods = [  'GET',  'PUT', 'DELETE' ])
 class getGenderswgger(Resource):
+    @ns_genders.doc(security='apikey')
+    @jwt_required()
     def get(self, id):
          return get_gender_service(id)
+    @ns_genders.doc(security='apikey')
+    @jwt_required()
     def delete(self, id):
-        return delete_genders_service(id)     
+        return delete_genders_service(id)  
+    @ns_genders.doc(security='apikey')
+    @jwt_required()   
     @ns_genders.expect(genders_model, validate=True)
     def put(self,  id):
        # Obtener los datos del objeto enviado en la solicitud

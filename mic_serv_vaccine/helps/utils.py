@@ -11,7 +11,7 @@ def validar_object_id(id):
 
 def validar_fecha(fecha_str):
     try:
-        fecha = datetime.strptime(fecha_str, "%d/%m/%Y")
+        fecha = datetime.strptime(fecha_str, "%Y-%m-%d")
         return {"resp":True}
     except ValueError:
          return {"resp":False,

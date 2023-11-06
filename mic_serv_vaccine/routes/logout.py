@@ -7,21 +7,16 @@ from helps.token import verifyToken
 from validators.genders import isValidGenders
 import json
 from bson.objectid import ObjectId
-
- 
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 ns_logout = Namespace('logout', 'Logout related endpoints')
- 
- 
- 
 
 @ns_logout.route('/', methods = [ 'POST' ])
 class getlogoutwgger(Resource):
     @ns_logout.doc(headers={'Authorization': {'description': 'Bearer Access Token'}})
+    @ns_logout.doc(security='apikey')
+    @jwt_required()
     def post(self,  **kwargs):
-        result = verifyToken(request)
-        if not bool(result["resp"]):  return result 
-        usuario = result['usuario']
-        return logout(usuario) 
+        return logout(get_jwt_identity()) 
 
  

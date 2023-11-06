@@ -56,7 +56,8 @@ def crear_dependents_repo(obj:DependentModels):
 
 
 def get_dependents_repo(limite:int, desde:int, user_id):
-    query = {'status': {'$in': [True, 'True']}, 'isUser': False, 'user_id': (user_id)}
+    query = {'status': {'$in': [True, 'True']}, 'isUser': False, 'user_id': user_id}
+    print(query)
     return mongo.db.dependents.find(query).skip(desde).limit(limite)
 
 def get_dependents_counts_repo(user_id):

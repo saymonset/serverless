@@ -12,7 +12,7 @@ from repository.user    import get_user_repo
 from repository.dependent    import checkUserDependent
 import json
 from bson.objectid import ObjectId
-
+from flask_jwt_extended import jwt_required, get_jwt_identity
  
 
 ns_dependents = Namespace('dependent', 'Dependent related endpoints')
@@ -22,13 +22,11 @@ model = ns_dependents.model('dependent', {
    
     'name': fields.String(required=True, description='Name of dependet'),
     'lastname': fields.String(required=True, description='Lastname of dependet'),
-    'email': fields.String(required=True, description='Email of dependet'),
-    'phone': fields.String(required=True, description='Phone of dependet'),
+    'email': fields.String(required=False, description='Email of dependet'),
+    'phone': fields.String(required=False, description='Phone of dependet'),
     'gender_id': fields.String(required=True, description='Gender of dependet'),
     'birth': fields.String(required=True, description='Birth of dependet'),
-    'user_id': fields.String(required=True, description='User_id of users'),
     'relationship_id': fields.String(required=True, description='relation ship of dependet'),
-    'status': fields.Boolean(required=True, description='status of the Dependent'),
 })
  
 
@@ -36,18 +34,18 @@ model = ns_dependents.model('dependent', {
 class getCreateDependentswgger(Resource):
     @ns_dependents.expect(model, validate=True)
     @ns_dependents.doc(headers={'Authorization': {'description': 'Bearer Access Token'}})
+    @ns_dependents.doc(security='apikey')
+    @jwt_required()
     def post(self,  **kwargs):
 
         result = verifyToken(request)
-        print('------------------------')
-        print(result)
         if not bool(result["resp"]):  return result 
         usuario = result['usuario']
        # Obtener los datos del objeto enviado en la solicitud
         data = ns_dependents.payload
 
         #Validamos id pk de entrada
-        result = get_user_repo(data["user_id"])
+        result = get_user_repo(get_jwt_identity())
         if result is None or "error" in result:
            return {"error": "El user_id no es una instancia de la clase User"}
         
@@ -61,52 +59,66 @@ class getCreateDependentswgger(Resource):
         if result is None or "error" in result:
            return {"error": "El relationship_id no es una instancia de la clase relationship_id"}
         
-        if not validar_email(data["email"]):
+        if 'email' in data and not validar_email(data["email"]):
            return {"error": "No es valido el email"}
 
 #, 'isUser': False, 'user_id': user_id
            #Validamos CI
         result = checkUserDependent({"name": data["name"], "lastname": data["lastname"]
                                      ,'isUser': False
-                                     ,"user_id": data["user_id"] })
-        print(result)                               
+                                     ,"user_id": get_jwt_identity() })                           
         if result:
            return {"error": "El dependent exist in bd"}
 
         return create_dependents_service(data, usuario) 
 
 
-@ns_dependents.route('/<limite>/<desde>/<user_id>', methods = [ 'GET' ])
-class getdependentswgger(Resource):        
-    def get(self, limite, desde, user_id):
-        #Validamos id pk de entrada
-        result = get_user_repo(user_id)
-        if result is None or "error" in result:
-           return {"error": "El user_id no es una instancia de la clase User"}
+@ns_dependents.route('/<limite>/<desde>', methods = [ 'GET' ])
+class getdependentswgger(Resource):       
+   @ns_dependents.doc(security='apikey')
+   @jwt_required() 
+   def get(self, limite, desde):
+      #Validamos id pk de entrada
+      result = get_user_repo(get_jwt_identity())
+      if result is None or "error" in result:
+         return {"error": "El user_id no es una instancia de la clase User"}
+      return get_dependentList_service(limite, desde, get_jwt_identity())
 
-        return get_dependentList_service(limite, desde, user_id)
 
-
+@ns_dependents.route('/<limite>/<desde>/<id_user>', methods = [ 'GET' ])
+class getdependentByUser(Resource):       
+   @ns_dependents.doc(security='apikey')
+   @jwt_required() 
+   def get(self, limite, desde, id_user):
+      #Validamos id pk de entrada
+      result = get_user_repo(id_user)
+      if result is None or "error" in result:
+         return {"error": "El user_id no es una instancia de la clase User"}
+      return get_dependentList_service(limite, desde, id_user)
 
 @ns_dependents.route('/<id>', methods = [  'GET', 'PUT', 'DELETE' ])
 class getDependentswgger(Resource):
     @ns_dependents.doc(headers={'Authorization': {'description': 'Bearer Access Token'}})
+    @ns_dependents.doc(security='apikey')
+    @jwt_required()
     def get(self, id):
          result = verifyToken(request)
          return get_dependentsbyId_service(id)  if bool(result["resp"]) else result 
 
-    @ns_dependents.doc(headers={'Authorization': {'description': 'Bearer Access Token'}})     
+    @ns_dependents.doc(headers={'Authorization': {'description': 'Bearer Access Token'}})  
+    @ns_dependents.doc(security='apikey')
+    @jwt_required()   
     def delete(self, id):
         result = verifyToken(request)
         return delete_dependent_service(id)  if bool(result["resp"]) else result      
 
     @ns_dependents.doc(headers={'Authorization': {'description': 'Bearer Access Token'}})    
+    @ns_dependents.doc(security='apikey')
+    @jwt_required()
     @ns_dependents.expect(model, validate=True)
     def put(self,  id):
-     
         # Obtener los datos del objeto enviado en la solicitud
         data = ns_dependents.payload
-
         result = verifyToken(request)
         return update_dependent_service(id, data) if bool(result["resp"]) else result 
  

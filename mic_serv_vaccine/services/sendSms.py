@@ -96,9 +96,11 @@ def sendSms_phone(phone, rand_num):
                }
         return resp
     except Exception as e:
+	
         resp =    {"resp":False,
                     "statusCode": 501,
-                    "error":"Hubo un error al mandar el mensaje: "  + str(e)}
+                    "error":"Hubo un error al mandar el mensaje, por favor intente nuevamente."}
+        print(str(e))
     
         return resp
  

@@ -7,7 +7,7 @@ from validators.vaccine import isValidVaccine
 from repository.vacc import isValidBdVaccine, isValidBdVaccineUpdate
 import json
 from bson.objectid import ObjectId
-
+from flask_jwt_extended import jwt_required
 
  
 
@@ -19,14 +19,15 @@ model = ns_vaccine.model('Vaccines', {
     'disease': fields.String(required=True, description='Disease of vaccine'),
     'dosis': fields.String(required=True, description='Dosis of vaccine'),
     'application_age': fields.String(required=True, description='Application age of vaccine'),
-    'isChildren': fields.Boolean(required=True, description='isChildren to vaccine'),
-    'status': fields.Boolean(required=True, description='Status to vaccine'),
+    'isChildren': fields.Boolean(required=True, description='isChildren to vaccine')
 })
 
 @ns_vaccine.route('/', methods = [ 'POST' ])
 class getVaccinessswgger(Resource):
     @ns_vaccine.doc(params={'status': {'default': True}})
     @ns_vaccine.expect(model, validate=True)
+    @ns_vaccine.doc(security='apikey')
+    @jwt_required()
     def post(self,  **kwargs):
          # Obtener los datos del objeto enviado en la solicitud
         data = ns_vaccine.payload
@@ -38,17 +39,25 @@ class getVaccinessswgger(Resource):
 @ns_vaccine.route('/<limite>/<desde>', methods = [ 'GET' ])
 class get_vaccionesList(Resource):        
     @ns_vaccine.doc(params={'limite': {'default': 20}, 'desde': {'default': 0}})
+    @ns_vaccine.doc(security='apikey')
+    @jwt_required()
     def get(self, limite=None, desde=None):
          return get_vaccines_list_service(limite, desde)
 
   
 @ns_vaccine.route('/<id>', methods = [  'GET', 'PUT', 'DELETE' ])
 class getVaccionesswgger(Resource):
+    @ns_vaccine.doc(security='apikey')
+    @jwt_required()
     def get(self, id):
          return get_vaccine_service(id)
+    @ns_vaccine.doc(security='apikey')
+    @jwt_required()
     def delete(self, id):
         return delete_vaccine_service(id)     
     @ns_vaccine.expect(model, validate=True)
+    @ns_vaccine.doc(security='apikey')
+    @jwt_required()
     def put(self,  id):
        # Obtener los datos del objeto enviado en la solicitud
         data = ns_vaccine.payload

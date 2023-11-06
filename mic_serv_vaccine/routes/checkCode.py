@@ -15,7 +15,6 @@ model = ns_checkCode.model('CheckCode', {
     })
 @ns_checkCode.route('/', methods = [ 'POST' ])
 class getCheckCodeswgger(Resource):
-    @ns_checkCode.doc(params={'phone': {'default': '+584142711347'}, 'code': {'default': 0}})
     @ns_checkCode.expect(model, validate=True)
     def post(self,  **kwargs):
        # Obtener los datos del objeto enviado en la solicitud

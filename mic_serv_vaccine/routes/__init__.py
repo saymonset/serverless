@@ -1,6 +1,6 @@
 from flask import Blueprint
 from flask_restx import Api
-from .reporte import ns_reporte
+from .scheme import ns_scheme
 from .genders import ns_genders
 from .relationships import ns_relationships
 from .specialities import ns_specialities
@@ -15,18 +15,27 @@ from .login import ns_login
 from .logout import ns_logout
 from .ads import ns_ads
 
-blueprint = Blueprint('Vaccine API', __name__, url_prefix='/docs')
+blueprint = Blueprint('Vaccine API', __name__, url_prefix='/api')
+
+# Authorization 
+authorization = {
+    'apikey': {
+        'type': 'apiKey',
+        'in': 'header',
+        'name': 'Authorization'
+    }
+}
 
 api_extension = Api(
     blueprint,
-    title='Flask RESTplus Demo',
+    title='Vaccine Scheduler API',
     version='1.0',
-    description='Application tutorial to demonstrate Flask RESTplus extension\
-        for better project structure and auto generated documentation',
-    doc='/doc'
+    description='API documentation for an app to manage and schedule vaccines.',
+    doc='/doc',
+    authorizations=authorization
 )
 
-api_extension.add_namespace(ns_reporte)
+api_extension.add_namespace(ns_scheme)
 api_extension.add_namespace(ns_genders)
 api_extension.add_namespace(ns_relationships)
 api_extension.add_namespace(ns_specialities)

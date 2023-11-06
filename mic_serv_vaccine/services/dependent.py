@@ -1,13 +1,11 @@
-from flask import request, Response, jsonify
+from flask import Response, jsonify
 from bson import json_util, ObjectId
-from bson.json_util import dumps
 import json
-
-from config.mongodb  import   mongo
-from models.genders  import   GenderModels
+import datetime
+from dateutil.relativedelta import relativedelta
 from repository.dependent import   checkUserDependent, crear_dependents_repo ,get_dependentById_repo, get_dependents_repo, get_dependents_counts_repo, delete_dependent_repo, update_dependents_repo
 from helps.utils import validar_object_id
-
+from flask_jwt_extended import get_jwt_identity
 
 
 
@@ -18,6 +16,11 @@ def create_dependents_service(dependent_data, usuario):
     
     #dependent_data['user_id'] = usuario['_id']
     dependent_data['isUser'] = False
+    dependent_data['user_id'] = get_jwt_identity()
+    dependent_data['status'] = True
+    dependent_data['isChildren'] = True if relativedelta(datetime.datetime.now(), datetime.datetime.fromisoformat("2021-06-24")).years < 18 else False
+    dependent_data['age'] = relativedelta(datetime.datetime.now(), datetime.datetime.fromisoformat("2021-06-24")).years
+    
     crear_dependents_repo(dependent_data)
     message = "Dependent was added successfully";
     response = {
