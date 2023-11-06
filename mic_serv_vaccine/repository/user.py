@@ -8,8 +8,25 @@ from models.specialities import SpecialitiesModels
 from models.doctors import  DoctorsModels
 from helps.utils import validar_object_id
 from passlib.hash import pbkdf2_sha256
-
+from repository.dependent import    checkUserDependent
  
+
+
+def validateUserByEmail(email, password):
+ 
+    userDependent = checkUserDependent({"email": email, "isUser": True}) 
+    if userDependent:
+        user = get_user_repo(userDependent['user_id'])
+        if (user and pbkdf2_sha256.verify(password, user['password'])):
+            return True, user['_id'], user
+        return False, False, user
+    else:
+        return False, False, None
+def validateUser(ci, password):
+    user = find_one_repo({"ci": ci}) 
+    if (user and pbkdf2_sha256.verify(password, user['password'])):
+       return True, user['_id'], user
+    return False, False, user
 
 def find_one_repo(query):     
     return mongo.db.users.find_one(query)
@@ -86,12 +103,7 @@ def isValidBdUser(data):
  
     #
 
-def validateUser(ci, password):
-    
-    user = find_one_repo({"ci": ci}) 
-    if (user and pbkdf2_sha256.verify(password, user['password'])):
-       return True, user['_id']
-    return False, False
+
 
 
 

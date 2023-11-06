@@ -4,9 +4,12 @@ from flask_restx import Namespace, Resource, fields, Api
 from flask import request, Response, Flask
 from services.dependent import create_dependents_service, get_dependentList_service, get_dependentsbyId_service, delete_dependent_service, update_dependent_service
 from helps.token import verifyToken
+from helps.utils import validar_email
 from validators.genders import isValidGenders
 from repository.genders import isValidBdgenders, isValidBdgendersUpdate, get_gender_repo
+from repository.relationships import get_relationships_repo
 from repository.user    import get_user_repo
+from repository.dependent    import checkUserDependent
 import json
 from bson.objectid import ObjectId
 
@@ -16,15 +19,15 @@ ns_dependents = Namespace('dependent', 'Dependent related endpoints')
  
 
 model = ns_dependents.model('dependent', {
+   
+    'name': fields.String(required=True, description='Name of dependet'),
+    'lastname': fields.String(required=True, description='Lastname of dependet'),
+    'email': fields.String(required=True, description='Email of dependet'),
+    'phone': fields.String(required=True, description='Phone of dependet'),
+    'gender_id': fields.String(required=True, description='Gender of dependet'),
+    'birth': fields.String(required=True, description='Birth of dependet'),
     'user_id': fields.String(required=True, description='User_id of users'),
-    'name': fields.String(required=True, description='Name of users'),
-    'lastname': fields.String(required=True, description='Lastname of users'),
-    'password': fields.String(required=True, description='Password of users'),
-    'ci': fields.String(required=True, description='CI of users'),
-    'email': fields.String(required=True, description='Email of users'),
-    'city': fields.String(required=True, description='City of users'),
-    'birth': fields.String(required=True, description='Birth of users'),
-    'gender_id': fields.String(required=True, description='Gender of users'),
+    'relationship_id': fields.String(required=True, description='relation ship of dependet'),
     'status': fields.Boolean(required=True, description='status of the Dependent'),
 })
  
@@ -36,22 +39,41 @@ class getCreateDependentswgger(Resource):
     def post(self,  **kwargs):
 
         result = verifyToken(request)
+        print('------------------------')
+        print(result)
         if not bool(result["resp"]):  return result 
         usuario = result['usuario']
        # Obtener los datos del objeto enviado en la solicitud
-        user_data = ns_dependents.payload
+        data = ns_dependents.payload
 
         #Validamos id pk de entrada
-        result = get_user_repo(user_data["user_id"])
+        result = get_user_repo(data["user_id"])
         if result is None or "error" in result:
-           return {"error": "El id no es una instancia de la clase User"}
+           return {"error": "El user_id no es una instancia de la clase User"}
         
          #Validamos genero
-        result = get_gender_repo(user_data["gender_id"])
+        result = get_gender_repo(data["gender_id"])
         if result is None or "error" in result:
-           return {"error": "El id no es una instancia de la clase GenderModels"}
+           return {"error": "El gender_id no es una instancia de la clase GenderModels"}
+        
+           #Validamos relacion
+        result = get_relationships_repo(data["relationship_id"])
+        if result is None or "error" in result:
+           return {"error": "El relationship_id no es una instancia de la clase relationship_id"}
+        
+        if not validar_email(data["email"]):
+           return {"error": "No es valido el email"}
 
-        return create_dependents_service(user_data, usuario) 
+#, 'isUser': False, 'user_id': user_id
+           #Validamos CI
+        result = checkUserDependent({"name": data["name"], "lastname": data["lastname"]
+                                     ,'isUser': False
+                                     ,"user_id": data["user_id"] })
+        print(result)                               
+        if result:
+           return {"error": "El dependent exist in bd"}
+
+        return create_dependents_service(data, usuario) 
 
 
 @ns_dependents.route('/<limite>/<desde>/<user_id>', methods = [ 'GET' ])
@@ -60,7 +82,8 @@ class getdependentswgger(Resource):
         #Validamos id pk de entrada
         result = get_user_repo(user_id)
         if result is None or "error" in result:
-           return {"error": "El id no es una instancia de la clase User"}
+           return {"error": "El user_id no es una instancia de la clase User"}
+
         return get_dependentList_service(limite, desde, user_id)
 
 

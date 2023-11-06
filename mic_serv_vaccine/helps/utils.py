@@ -1,5 +1,6 @@
 from bson import ObjectId
 from datetime import datetime
+import re
 
 def validar_object_id(id):
     try:
@@ -16,6 +17,12 @@ def validar_fecha(fecha_str):
          return {"resp":False,
                 "date":"La fecha tiene un formato no valido. Formato valido es: d/m/Y "}
 
+def validar_email(email):
+    patron = r'^[\w\.-]+@[\w\.-]+\.\w+$'
+    if re.match(patron, email):
+        return True
+    else:
+        return False
 
 
          

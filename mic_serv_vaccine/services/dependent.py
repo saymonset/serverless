@@ -5,7 +5,7 @@ import json
 
 from config.mongodb  import   mongo
 from models.genders  import   GenderModels
-from repository.dependent import   crear_dependents_repo , checkUserDependent,get_dependentById_repo, get_dependents_repo, get_dependents_counts_repo, delete_dependent_repo, update_dependents_repo
+from repository.dependent import   checkUserDependent, crear_dependents_repo ,get_dependentById_repo, get_dependents_repo, get_dependents_counts_repo, delete_dependent_repo, update_dependents_repo
 from helps.utils import validar_object_id
 
 
@@ -16,17 +16,14 @@ from helps.utils import validar_object_id
 
 def create_dependents_service(dependent_data, usuario):
     
-    dependent_data['user_id'] = usuario['_id']
+    #dependent_data['user_id'] = usuario['_id']
     dependent_data['isUser'] = False
     crear_dependents_repo(dependent_data)
-    body = json.dumps( { 'message' : f"Dependent was added successfully"}) 
+    message = "Dependent was added successfully";
     response = {
         'statusCode': 201,
-        'headers': {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Credentials': True,
-        },
-        'body': body
+        "resp":True,
+        "message":message
     }
     return response
 

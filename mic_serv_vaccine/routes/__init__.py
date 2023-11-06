@@ -1,6 +1,6 @@
 from flask import Blueprint
 from flask_restx import Api
-#from .scheme import ns_scheme
+from .reporte import ns_reporte
 from .genders import ns_genders
 from .relationships import ns_relationships
 from .specialities import ns_specialities
@@ -13,6 +13,7 @@ from .user import ns_users
 from .dependent import ns_dependents
 from .login import ns_login
 from .logout import ns_logout
+from .ads import ns_ads
 
 blueprint = Blueprint('Vaccine API', __name__, url_prefix='/docs')
 
@@ -25,7 +26,7 @@ api_extension = Api(
     doc='/doc'
 )
 
-#api_extension.add_namespace(ns_scheme)
+api_extension.add_namespace(ns_reporte)
 api_extension.add_namespace(ns_genders)
 api_extension.add_namespace(ns_relationships)
 api_extension.add_namespace(ns_specialities)
@@ -38,4 +39,5 @@ api_extension.add_namespace(ns_users)
 api_extension.add_namespace(ns_dependents)
 api_extension.add_namespace(ns_login)
 api_extension.add_namespace(ns_logout)
+api_extension.add_namespace(ns_ads)
 

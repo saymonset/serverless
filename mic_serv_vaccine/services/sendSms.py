@@ -35,17 +35,28 @@ def sendSms_service(data):
                 
                 data = {'last_code': rand_num}
                 update_status_user_repo(user['_id'], data)
-                body = json.dumps( { 'message' : f"Code was sent successfully."}) 
                 response = {
+                    "resp":True,
                     'statusCode': 201,
-                    'body': body
+                    'message': "Code was sent successfully."
                 }
             else:
-                body = json.dumps( { 'message' : f"Phone number is already registered."}) 
-                response = {
-                    'statusCode': 401,
-                    'body': body
-                }
+                    result = sendSms_phone(phone, rand_num)
+                    if not bool(result["resp"]):  return result 
+                    
+                    data = {'last_code': rand_num}
+                    update_status_user_repo(user['_id'], data)
+                    response = {
+                        "resp":True,
+                        'statusCode': 201,
+                        'message': "Code was sent successfully."
+                    }
+                # result = sendSms_phone(phone, rand_num)
+                # response = {
+                #     "resp":True,
+                #     'statusCode': 201,
+                #     'message': "Phone number is already registered."
+                # }
         
         else:    
 
@@ -60,10 +71,10 @@ def sendSms_service(data):
             }
             crear_users_repo(user)
             #users.insert_one(user).inserted_id
-            body = json.dumps( { 'message' : f"Code was sent successfully."}) 
             response = {
+                "resp":True,
                 'statusCode': 201,
-                'body': body
+                'message': 'Code was sent successfully.'
             }
         return response
     else:

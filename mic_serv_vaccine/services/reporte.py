@@ -4,7 +4,7 @@ from flask import Flask, send_file
 import os
  
 
-def get_scheme_test_service():
+def get_reporte_test_service():
     # Modifica el archivo de Excel y obtiene su ruta temporal
     ruta_archivo_modificado = modificar_archivo_excel()
     # Devuelve el archivo modificado para su descarga

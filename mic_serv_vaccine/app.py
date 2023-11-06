@@ -12,4 +12,4 @@ app.config['RESTPLUS_MASK_SWAGGER'] = False
 mongo.init_app(app)
 app.register_blueprint(blueprint)
 
- 
+  

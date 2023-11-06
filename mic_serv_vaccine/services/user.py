@@ -5,7 +5,7 @@ import json
 from passlib.hash import pbkdf2_sha256
 from config.mongodb  import   mongo
 from repository.user import   update_status_user_repo, get_user_repo, get_user_repo_list, get_user_counts_repo, delete_user_repo, update_user_repo
-from repository.dependent import   checkUserDependent, crear_dependents_repo
+from repository.dependent import    checkUserDependent, crear_dependents_repo
 from helps.utils import validar_object_id
 
 
@@ -15,8 +15,6 @@ from helps.utils import validar_object_id
 
 
 def create_user_service(user_data, usuario):
-    print(user_data)
-    print(usuario)
     user_id = usuario['_id']
     ci = user_data['ci']
     city = user_data['city']
@@ -28,19 +26,18 @@ def create_user_service(user_data, usuario):
     del user_data['state']
     user_data['isUser'] = True
     user_data['user_id'] = user_id
+    message = ''
     if checkUserDependent({'user_id': user_id, 'isUser': True}) is None:
       crear_dependents_repo(user_data)
       update_status_user_repo(user_id, {'password': password, 'ci': ci, 'city': city, 'state': state} )
-      body = json.dumps( { 'message' : f"user with ID {user_id} was created successfully"}) 
+      message = f"user with ID {user_id} was created successfully"
     else:
-      body = json.dumps( { 'message' : f"User already exist"}) 
+      message = "User already exist";
+      
     response = {
         'statusCode': 201,
-        'headers': {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Credentials': True,
-        },
-        'body': body
+        'message': message,
+        "resp":True
     }
     return response
 
@@ -57,7 +54,7 @@ def get_userList_service(limite, desde):
         'total': total,
         'limite':limite,
         'desde':desde,
-        'dependents': json.loads(result)
+        'users': json.loads(result)
     }
 
     return jsonify(diccionario)
@@ -65,9 +62,13 @@ def get_userList_service(limite, desde):
 # """Obtener una objeto"""
 def get_userbyId_service(id):
     data = get_user_repo(id)
+    print(data)
+    dependent_is_user = checkUserDependent({'isUser': True, "user_id":ObjectId(id) })
+    dependent_is_user = json_util.dumps(dependent_is_user)
     
     response_data = {
-            'result': data,
+            'user': data,
+            'more': json.loads(dependent_is_user),
     }
     response = Response(json.dumps(json.loads(json_util.dumps(response_data))), status=200, mimetype='application/json')
     return response 
@@ -94,8 +95,8 @@ def update_user_service(id, data):
     if validar_object_id(id):
         # La cadena es un ObjectId válido
         # Realiza las operaciones necesarias
-        print(id)
-        print(data)
+        password = pbkdf2_sha256.hash(data['password'])
+        data['password']=password;
         response = update_user_repo(id, data)
         if response.modified_count >= 1:
             return "Usuario ha sido actualizada correctamente", 200

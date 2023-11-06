@@ -1,10 +1,11 @@
 from flask import Blueprint, jsonify
+from flask_restx import Namespace, Resource, fields, Api
 from services.scheme import get_scheme_test_service
+ 
 
-scheme = Blueprint('scheme', __name__)
+ns_scheme = Namespace('ns_scheme', 'ns_scheme related endpoints')
 
-
-@scheme.route('/', methods=['GET'])
+@ns_scheme.route('/', methods=['GET'])
 def get_scheme():
     return get_scheme_test_service()
 

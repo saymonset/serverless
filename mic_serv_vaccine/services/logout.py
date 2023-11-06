@@ -19,22 +19,16 @@ def logout(user):
     if (user):
         to_blacklist = {"token": event['headers']['Authorization'], "user_id": user['_id']}
         crear_blacklists_repo(to_blacklist)
-        body = json.dumps( { 'message' : f"Logout made successfully"}) 
+        message = "Logout made successfully"; 
         response = {
             'statusCode': 200,
-            'headers': {
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Credentials': True,
-            },
-            'body': body
+             "resp":True,
+             "message":message
         }
         return response
     response = {
         'statusCode': 401,
-        'headers': {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Credentials': True,
-        },
-        'body': "Unauthorized"
+        'message': "Unauthorized",
+        'resp':False,
     }
     return response

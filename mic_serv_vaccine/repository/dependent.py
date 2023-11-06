@@ -9,11 +9,11 @@ from models.doctors import  DoctorsModels
 from helps.utils import validar_object_id
 
  
- 
+
  
 def checkUserDependent(query):     
     #La primera ves se usa la colletion users y no dependents
-    return mongo.db.users.find_one(query)
+    return mongo.db.dependents.find_one(query)
 
  
 def get_dependentById_repo(id):
@@ -56,11 +56,11 @@ def crear_dependents_repo(obj:DependentModels):
 
 
 def get_dependents_repo(limite:int, desde:int, user_id):
-    query = {'status': {'$in': [True, 'True']}, 'isUser': False, 'user_id': ObjectId(user_id)}
+    query = {'status': {'$in': [True, 'True']}, 'isUser': False, 'user_id': (user_id)}
     return mongo.db.dependents.find(query).skip(desde).limit(limite)
 
 def get_dependents_counts_repo(user_id):
-    query = {'status': {'$in': [True, 'True']}, 'isUser': False, 'user_id': ObjectId(user_id)}
+    query = {'status': {'$in': [True, 'True']}, 'isUser': False, 'user_id': (user_id)}
     #query = {'status': {'$in': [True, 'True']}}
     return mongo.db.dependents.count_documents(query)
 

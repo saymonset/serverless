@@ -4,8 +4,10 @@ from flask_restx import Namespace, Resource, fields, Api
 from flask import request, Response, Flask
 from services.user import create_user_service, get_userList_service, get_userbyId_service, delete_user_service, update_user_service
 from helps.token import verifyToken
+from helps.utils import validar_email
 from validators.genders import isValidGenders
 from repository.genders import get_gender_repo
+from repository.user import find_one_repo
 from models.genders import GenderModels
 
 import json
@@ -34,20 +36,36 @@ class getuserswgger(Resource):
     @ns_users.expect(model, validate=True)
     @ns_users.doc(headers={'Authorization': {'description': 'Bearer Access Token'}})
     def post(self,  **kwargs):
-
         result = verifyToken(request)
         if not bool(result["resp"]):  return result 
+
+        #Si el token es valido, obtenemos el usuario
         usuario = result['usuario']
        # Obtener los datos del objeto enviado en la solicitud
         data = ns_users.payload
 
-        #Validamos genero
-        result = get_gender_repo(data["gender_id"])
-        if result is None or "error" in result:
-           return {"error": "El id no es una instancia de la clase GenderModels"}
-             
+
+         #Validamos CI
         
-        return create_user_service(data, usuario) 
+        if data["ci"] is None or data["ci"] =="":
+           return {"error": "Ci is missing"}
+        result = find_one_repo({"ci": data["ci"]})
+        if result:
+           return {"error": "El ci existe en bd"}
+
+    
+        
+        if not validar_email(data["email"]):
+           return {"error": "No es valido el email"}
+
+        
+        #Validamos genero
+      #   result = get_gender_repo(data["gender_id"])
+       
+
+      #   if result is None or "error" in result:
+      #      return {"error": "El id no es una instancia de la clase GenderModels"}
+        return create_user_service(data, usuario)  
 
 
 @ns_users.route('/<limite>/<desde>', methods = [ 'GET' ])
@@ -77,9 +95,9 @@ class getUserById(Resource):
         # Obtener los datos del objeto enviado en la solicitud
         data = ns_users.payload
            #Validamos genero
-        result = get_gender_repo(data["gender_id"])
-        if result is None or "error" in result:
-           return {"error": "El id no es una instancia de la clase GenderModels"}
+      #   result = get_gender_repo(data["gender_id"])
+      #   if result is None or "error" in result:
+      #      return {"error": "El id no es una instancia de la clase GenderModels"}
 
         result = verifyToken(request)
         return update_user_service(id, data) if bool(result["resp"]) else result 

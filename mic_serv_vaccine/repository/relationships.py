@@ -25,6 +25,8 @@ def get_relationships_repo(id):
     else:
         # Maneja el error o muestra un mensaje de error
         result = {
+             "error":False,
+             "resp":False,
              "TypeError": id,
              "ValueError": "La cadena no es un ObjectId válido" 
         }
@@ -38,6 +40,8 @@ def update_relationships_repo(id, data):
     else:
         # Maneja el error o muestra un mensaje de error
         result = {
+             "error":False,
+             "resp":False,
              "TypeError": id,
              "ValueError": "La cadena no es un ObjectId válido" 
         }

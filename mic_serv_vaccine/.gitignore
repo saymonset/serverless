@@ -5,4 +5,9 @@ package-lock.json
 .requirements.zip
 venv
 .env
+.idea
+./idea
 __pycache__
+../.DS_Store
+../.gitignore
+./package-lock.json
