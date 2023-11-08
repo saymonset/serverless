@@ -12,6 +12,8 @@ import { UserPart3 } from '../screens/UserPart3';
 import { Test } from '../screens/Test';
 import { MoviePoster } from '../components/MoviePoster';
 import { TodoApp } from '../components/todoApp';
+import CalendarApp from '../screens/CalendarApp';
+import TableApp from '../screens/TableApp';
 
 
 const Stack = createStackNavigator();
@@ -39,21 +41,22 @@ export const Navigator = () => {
 
 {/* <Stack.Screen name="Test" component={ Test } /> */}
 {/* */}
-<Stack.Screen name="TodoApp" component={ TodoApp } />
-<Stack.Screen name="MoviePoster" component={ MoviePoster } />
-<Stack.Screen name="LoginScreen" component={ LoginScreen } />
-<Stack.Screen name="SendSmsScreen" component={ SendSmsScreen } /> 
+
+              <Stack.Screen name="LoginScreen" component={ LoginScreen } />
+              <Stack.Screen name="SendSmsScreen" component={ SendSmsScreen } /> 
               <Stack.Screen name="UserPartTotal" component={ UserPartTotal } />
               {/* 
               */}
-            
-           
-            
-            
             </>
           )
           : (
-            <Stack.Screen name="ProtectedScreen" component={ ProtectedScreen } />
+           <> 
+              <Stack.Screen name="ProtectedScreen" component={ ProtectedScreen } />
+              <Stack.Screen name="TableApp" component={ TableApp } />
+              <Stack.Screen name="CalendarApp" component={ CalendarApp } />
+              <Stack.Screen name="TodoApp" component={ TodoApp } />
+              <Stack.Screen name="MoviePoster" component={ MoviePoster } />
+            </>
           )
       }
 

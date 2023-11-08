@@ -5,7 +5,7 @@ export const todosApi = createApi({
     reducerPath: 'todos',
 
     baseQuery: fetchBaseQuery({
-        baseUrl: 'https://4p1bw1ybo5.execute-api.us-east-1.amazonaws.com/docs'
+        baseUrl: 'https://q1ent4zlfc.execute-api.us-east-1.amazonaws.com/api'
     }),
 
     endpoints: (builder) => ({
