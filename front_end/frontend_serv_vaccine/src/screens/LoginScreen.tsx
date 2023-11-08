@@ -7,6 +7,9 @@ import { loginStyles } from '../theme/loginTheme';
 import { useForm } from '../hooks/useForm';
 import { StackScreenProps } from '@react-navigation/stack';
 import { AuthContext } from '../context/AuthContext';
+/**-----------store login------------- */
+import { getLogin } from '../store/slices/login'
+import { useDispatch, useSelector } from 'react-redux'
 
 interface Props extends StackScreenProps<any, any> {}
 
@@ -18,6 +21,9 @@ export const LoginScreen = ({ navigation }: Props) => {
        email: '',
        password: '' 
     });
+
+    const { isLoading:isLogin,  loginResponse  } = useSelector( state => state.loginStore)
+    const dispatch = useDispatch();
 
     
 
@@ -31,10 +37,16 @@ export const LoginScreen = ({ navigation }: Props) => {
 
     }, [ errorMessage ])
 
-    const onLogin = () => {
+    const   onLogin = async () => {
         console.log({email, password});
         Keyboard.dismiss();
-        signIn({ email, password });
+       // getLogin()
+       console.log('--------antes-----isLogin------')
+       console.log({loginResponse})
+        await dispatch(getLogin( email, password));
+        console.log({loginResponse})
+        console.log('------fin loadings-----------')
+        //signIn({ email, password });
     }
 
     return (
