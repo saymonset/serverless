@@ -10,7 +10,7 @@ export const loginThunks = ( email, password ): AnyAction  => {
     return async ( dispatch, getState) => {
 
       try {
-          dispatch( removeError())
+        //  dispatch( removeError())
           dispatch( startLoadingLogin())
 
           // TODO: realizar peticion http
@@ -39,9 +39,8 @@ export const loginThunks = ( email, password ): AnyAction  => {
 }
 
  
-export const removeErrorThunks = (): AnyAction => {
-    return (dispatch, getState) => {
-      dispatch(removeError);
-    };
+export const removeErrorThunks = (dispatch): AnyAction => {
+      dispatch(removeError());
+      return
   };
   

@@ -1,5 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { Text, View, TextInput, Platform, KeyboardAvoidingView, Keyboard, Alert, TouchableOpacity } from 'react-native';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { Background } from '../components/Background';
 import { WhiteLogo } from '../components/WhiteLogo';
@@ -27,26 +28,23 @@ export const LoginScreen = ({ navigation }: Props) => {
     const dispatch = useDispatch();
 
     const   onClearError = async () => {
-        await dispatch(removeErrorThunks);
+          removeErrorThunks(dispatch)
     } 
 
     useEffect(() => {
         
         if(  message.length === 0 ) return;
-//  await dispatch(loginThunks( email, password));
         Alert.alert( message, '',[{
             text: 'Ok',
-            onPress: onClearError
+            onPress:  onClearError
         }]);
-
+        
     }, [ message ])
 
- 
+    
     const   onLogin = async () => {
         Keyboard.dismiss();
-       // getLogin()
         await dispatch(loginThunks( email, password));
-        //signIn({ email, password });
     }
 
     if ( isLoading ) return <LoadingScreen /> 
