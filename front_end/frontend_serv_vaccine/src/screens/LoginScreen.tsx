@@ -8,48 +8,51 @@ import { useForm } from '../hooks/useForm';
 import { StackScreenProps } from '@react-navigation/stack';
 import { AuthContext } from '../context/AuthContext';
 /**-----------store login------------- */
-import { getLogin } from '../store/slices/login'
+import { loginThunks, removeErrorThunks } from '../store/slices/login'
 import { useDispatch, useSelector } from 'react-redux'
+import { LoadingScreen } from './LoadingScreen';
 
 interface Props extends StackScreenProps<any, any> {}
 
 export const LoginScreen = ({ navigation }: Props) => {
 
-    const { signIn, errorMessage, removeError, isSendCode } = useContext( AuthContext );
+    const { signIn, isSendCode } = useContext( AuthContext );
 
     const { email, password, onChange } = useForm({
        email: '',
        password: '' 
     });
 
-    const { isLoading:isLogin,  loginResponse  } = useSelector( state => state.loginStore)
+    const { isLoading, message  } = useSelector( state => state.loginStore)
     const dispatch = useDispatch();
 
-    
+    const   onClearError = async () => {
+        await dispatch(removeErrorThunks);
+    } 
 
     useEffect(() => {
-        if( errorMessage.length === 0 ) return;
-
-        Alert.alert( 'Login incorrecto', errorMessage,[{
+        
+        if(  message.length === 0 ) return;
+//  await dispatch(loginThunks( email, password));
+        Alert.alert( message, '',[{
             text: 'Ok',
-            onPress: removeError
+            onPress: onClearError
         }]);
 
-    }, [ errorMessage ])
+    }, [ message ])
 
+ 
     const   onLogin = async () => {
-        console.log({email, password});
         Keyboard.dismiss();
        // getLogin()
-       console.log('--------antes-----isLogin------')
-       console.log({loginResponse})
-        await dispatch(getLogin( email, password));
-        console.log({loginResponse})
-        console.log('------fin loadings-----------')
+        await dispatch(loginThunks( email, password));
         //signIn({ email, password });
     }
 
+    if ( isLoading ) return <LoadingScreen /> 
+
     return (
+        
         <>
             {/* Background */}
             <Background />
@@ -59,7 +62,8 @@ export const LoginScreen = ({ navigation }: Props) => {
                 behavior={ (Platform.OS === 'ios') ? 'padding': 'height' }
             >
 
-
+                   
+                
                 <View style={ loginStyles.formContainer }>                
                     {/* Keyboard avoid view */}
                     <WhiteLogo />
