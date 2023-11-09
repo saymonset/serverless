@@ -3,11 +3,13 @@ import { todosApi } from './apis'
 import { counterSlice } from './slices/counter'
 import { pokemonSlice } from './slices/pokemon'
 import { loginSlice } from './slices/login'
+import { sendSmsSlice } from './slices/sendSms'
 export const store = configureStore({
   reducer: {
     counter: counterSlice.reducer,
     pokemons: pokemonSlice.reducer,
     loginStore: loginSlice.reducer,
+    sendSmsStore: sendSmsSlice.reducer,
     [todosApi.reducerPath]: todosApi.reducer
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware()

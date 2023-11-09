@@ -1,9 +1,13 @@
-import React, {  useState, useContext} from 'react';
-import { Text, View, TextInput, Platform,  TouchableOpacity, Keyboard } from 'react-native';
+import React, {  useState, useContext, useEffect} from 'react';
+import { Text, View, TextInput, Platform,  TouchableOpacity, Keyboard , Alert} from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import { AuthContext } from '../context/AuthContext';
 import { loginStyles } from '../theme/loginTheme';
 import { StackScreenProps } from '@react-navigation/stack';
+import {   store } from '../store' 
+import {  removeErrorSmsThunks, sendSmsThunks } from '../store/slices/sendSms/index' 
 
+import { LoadingScreen } from '../screens/LoadingScreen';
 
 
 interface Props extends StackScreenProps<any, any> {}
@@ -11,34 +15,67 @@ interface Props extends StackScreenProps<any, any> {}
 
 export const  SendPhone = ({ navigation }) => {
 
-    console.log({navigation})
-
-    const { sendSms, beforeCheckCode } = useContext( AuthContext );  
+   
   const [ inputValue, setInputValue ] = useState('');
 
+
+
+  const { isLoading, message, isSendCode , token } = useSelector( (state: store ) => state.sendSmsStore);
+  const dispatch = useDispatch();
+
+  const   onClearError = async () => {
+       await removeErrorSmsThunks(dispatch)
+ } 
+
+  {/* Solo para sacar mensajes de error por pantalla */}
+useEffect(() => {
+    if( message.length === 0 ) return;
+
+    Alert.alert(message,'',[{
+        text: 'Ok',
+        onPress: onClearError
+    }]);
+
+    if (isSendCode){
+        //console.log('Todo cool, isSendCode:' + isSendCode)
+        navigation.replace('SendSmsScreen');
+    }
+
+    if (token){
+        //console.log('Todo cool, isSendCode:' + isSendCode)
+        navigation.replace('UserPartTotal');
+    }
+
+    onClearError();
+
+}, [ message ])
+
+  
+  
+  
+  
   const onInputChange = (value) => {
       setInputValue( value );
   }
 
-  const onSubmit = ( event ) => {
+  const onSubmit = async( event ) => {
       Keyboard.dismiss();
       event.preventDefault();
       if( inputValue.trim().length <= 1) return;
-      beforeCheckCode()
-      sendSms({phone:inputValue.trim()});
+
+      await dispatch(sendSmsThunks( inputValue.trim() ));
       setInputValue('');
   }
 
   const onLogin = ( event ) => {
     if (navigation) {
-        
         navigation.replace('LoginScreen');
       }
-   // Keyboard.dismiss();
-   // event.preventDefault();
-   //
+
 }
- 
+  
+  if ( isLoading ) return <LoadingScreen /> 
+
   return (
       <>
             <Text style={ loginStyles.label }>Phone:</Text>

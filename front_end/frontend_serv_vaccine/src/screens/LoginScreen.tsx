@@ -1,31 +1,27 @@
-import React, { useContext, useEffect } from 'react';
+import React, {  useEffect } from 'react';
 import { Text, View, TextInput, Platform, KeyboardAvoidingView, Keyboard, Alert, TouchableOpacity } from 'react-native';
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import { StackScreenProps } from '@react-navigation/stack';
+import { useDispatch, useSelector } from 'react-redux'
 
 import { Background } from '../components/Background';
 import { WhiteLogo } from '../components/WhiteLogo';
 import { loginStyles } from '../theme/loginTheme';
 import { useForm } from '../hooks/useForm';
-import { StackScreenProps } from '@react-navigation/stack';
-import { AuthContext } from '../context/AuthContext';
-/**-----------store login------------- */
-import { loginThunks, removeErrorThunks } from '../store/slices/login'
-import { useDispatch, useSelector } from 'react-redux'
+import { loginThunks, removeErrorThunks } from '../store/slices/login/loginThunks'
+import {  store } from '../store'
 import { LoadingScreen } from './LoadingScreen';
 
 interface Props extends StackScreenProps<any, any> {}
 
 export const LoginScreen = ({ navigation }: Props) => {
 
-    const { signIn, isSendCode } = useContext( AuthContext );
-
+    const { isLoading, message  } = useSelector( (state: store ) => state.loginStore)
+    const dispatch = useDispatch();
     const { email, password, onChange } = useForm({
        email: '',
        password: '' 
     });
 
-    const { isLoading, message  } = useSelector( state => state.loginStore)
-    const dispatch = useDispatch();
 
     const   onClearError = async () => {
           removeErrorThunks(dispatch)
@@ -129,7 +125,7 @@ export const LoginScreen = ({ navigation }: Props) => {
                             activeOpacity={ 0.8 }
                             onPress={ () => navigation.replace('SendSmsScreen') }
                         >
-                            <Text style={ loginStyles.buttonText }>{!isSendCode?'New Account':'Check Code'} </Text>
+                            <Text style={ loginStyles.buttonText }>New Account</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

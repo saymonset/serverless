@@ -1,5 +1,7 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { Text, View, TextInput, Platform, KeyboardAvoidingView, Keyboard, Alert, TouchableOpacity } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+
 
 import { Background } from '../components/Background';
 import { WhiteLogo } from '../components/WhiteLogo';
@@ -10,39 +12,18 @@ import { LoadingScreen } from './LoadingScreen';
 import { SendPhone } from '../components/SendPhone';
 import { SendCode } from '../components/SendCode';
  
- 
+
+
+
 
 interface Props extends StackScreenProps<any, any> {}
 
 export const SendSmsScreen = ({ navigation }: Props) => {
 
-    const {  token,  errorMessage, removeError, isSendCode, status} = useContext( AuthContext );
+   // const {  token,  errorMessage, removeError, isSendCode, status} = useContext( AuthContext );
 
-        {/* Simbolo wait esperando */}
-   // if ( status === 'checking' ) return <LoadingScreen />
-
-  {/*  Si ya en el redux nos trae el token actualizado, es porque puede crear un usuario */}
-    useEffect(() => {
-        // Ejecutar la navegación automáticamente al cargar el componente
-        if (token === '' || token === null) return;
-        navigation.replace('UserPartTotal');
-      }, [token]);
-
-      {/* Solo para sacar mensajes de error por pantalla */}
-    useEffect(() => {
-        if( errorMessage.length === 0 ) return;
-
-        Alert.alert( 'Phone incorrecto', errorMessage,[{
-            text: 'Ok',
-            onPress: removeError
-        }]);
-
-    }, [ errorMessage ])
-
+   const { isSendCode  } = useSelector( (state: store ) => state.sendSmsStore);
   
-
-
-
     
 
     return (
@@ -61,13 +42,14 @@ export const SendSmsScreen = ({ navigation }: Props) => {
                                     <Text style={ loginStyles.title }>Send SMS</Text>
                                                         { !isSendCode  && (
                                                         <> 
+                                                      
                                                              <SendPhone navigation = { navigation }></SendPhone>
                                                         </>)
                                                         }
 
                                                         { isSendCode  && (
                                                             <>
-                                                            <SendCode></SendCode>
+                                                            <SendCode navigation = { navigation }></SendCode>
                                                             </>)
                                                         }
                                      
