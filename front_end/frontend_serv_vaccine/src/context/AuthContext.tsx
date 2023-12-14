@@ -1,344 +1,100 @@
-import React, { createContext, useEffect, useReducer } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import React, { createContext, useReducer, useState } from 'react';
+import { authReducer } from './authReducer';
+import { Gender, GenderElement } from '../interfaces/gender-interfaces';
 import vaccinesApi from '../api/vaccinesApi';
+import { selectOption } from '../interfaces/select-option-interface';
+import { Relationship, RelationShipResponse } from '../interfaces/relationship-interfaces';
+ 
 
-import { Usuario, LoginResponse, LoginData, RegisterData, UserResponse } from '../interfaces/appInterfaces';
-import { authReducer, AuthState } from './authReducer';
-import { CheckcCodeRequest, CheckcCodeResponse, LoginVaccineResponse, SendSmsRequest, SendSmsResponse} from '../interfaces/vaccinesinterface';
-import { ImageComponent } from 'react-native/types';
+// Definir como luce, que informacion tendre aqui
+export interface AuthState  {
+    isLoggedIn: boolean;
+    username?: string;
+    genders?:  selectOption[];
+    relationships?:selectOption[];
+}
 
-type AuthContextProps = {
-    isSendCode: boolean  | null;
-    phone:      string | null;
-    errorMessage: string;
-    successfullMessage: string;
-    token: string | null;
-    user: Usuario | null;
-    moreinfouser: More | null;
-    status: 'checking' | 'authenticated' | 'not-authenticated';
-    signUp: ( registerData: RegisterData ) => void;
-    signIn: ( loginData: LoginData ) => void;
-    logOut: () => void;
-    removeError: () => void;
-    sendSms: (sendSmsRequest:SendSmsRequest) => void;
-    resetSendSms: () => void;
-    checkCode: (checkcCodeRequest:CheckcCodeRequest) => void;
-    beforeCheckCode: () => void;
-    userAdd: (user: UserRequest) => void;
+//  El estado inicial
+export const authInitialState:  AuthState = {
+    isLoggedIn: false,
+    username: undefined,
+    genders: [],
+    relationships:[],
+}
+
+// Lo usaremos para decirle a react como luce y que expone el context
+export interface  AuthContextProps {
+     authState: AuthState;
+     signIn: () => void;
+     genderLoad: () => void;
+     relationshipLoad: () => void;
+     // Carga los generos y raltion ships en memoria de bad al contexto para tenerlos  ya cargados
+     getGeneroRaltionSchipLoads :  () => void;
+}
+
+
+//Crear el contexto
+export const AuthContext = createContext( {} as AuthContextProps );
+
+//  Componente proveedor del estado
+export const AuthProvider = ( { children }:  any ) => {
    
+    const [authState, dispatch] = useReducer(authReducer, authInitialState);
 
-}
-
-const authInicialState: AuthState = {
-    isSendCode:   false,
-    phone: '',
-    status: 'checking',
-    token: null,
-    user: null,
-    moreinfouser: null,
-    errorMessage: '',
-    successfullMessage: ''
-}
-
-
-
-export const AuthContext = createContext({} as AuthContextProps);
-
-export const AuthProvider = ({ children }: any)=> {
-
-    const [ state, dispatch ] = useReducer( authReducer, authInicialState);
-
-    useEffect(() => {
-        checkToken();
-    }, [])
-
-
-    const userAdd = async(user: Usuario) => {
-
-        {/** Viene el token cuando chequeas el code*/}
-        const { token } = user;
-        if (token){
-            await AsyncStorage.setItem('token', token ); 
-        }
-            
-        
-        // const headers = {
-        //     Authorization: `Bearer ${user.token}`,
-        // };
-
-     
-        
-        try {
-            let response = await vaccinesApi.post<UserResponse>('/users', {...user });
-            const {data} = response;
-             const { resp, error:errorbackend = '', message = ''} = data; 
-             console.log('hay vamos!!')
-             console.log({data})
-             {/* cambiamos status para el loader que muestre al usuario en espera*/}
-        
-             //  En caso de error
-             if( !resp || (errorbackend && errorbackend.length > 0 )){
-                dispatch({ 
-                    type: 'addError', 
-                    payload: errorbackend
-                })
-                return;
-             }
-
-              //  En caso todo marche bien
-            dispatch({ 
-                type: 'userAdd' ,
-                payload: message
-            });
-          
-            //await AsyncStorage.setItem('token', data.token );
-          } catch (error) {
-            if (error?.response) {
-              // El servidor respondió con un estado de error (por ejemplo, 404, 500)
-              console.log(error.response.data);
-              console.log(error.response.status);
-              console.log(error.response.headers);
-            } else if (error.request) {
-              // La solicitud fue realizada pero no se recibió ninguna respuesta
-              console.log(error.request);
-            } else {
-              // Ocurrió un error al configurar la solicitud
-              console.log('Error', error.message);
-            }
-                //     console.log(error)
-                dispatch({ 
-                    type: 'addError', 
-                    payload: error.response.data.msg || 'Información incorrecta'
-                })
-          }
-}
-
-    const beforeCheckCode = async() => {
-                 //  En caso todo marche bien
-                 dispatch({ 
-                    type: 'beforeCheckCode',
-                });
+    const signIn = () => {
+        dispatch( { type:'signIn'})
     }
 
-    {/* send sms  */} 
-    const checkCode = async({ phone='', code='' }: CheckcCodeRequest ) => {
-
-        try {
-                let response = await vaccinesApi.post<CheckcCodeResponse>('/CheckCode', { phone, code } );
-                const {data} = response;
-                 const { resp, message, token=null} = data; 
-               
-             
-                 //  En caso de error
-                 if( !resp ){
-                    dispatch({ 
-                        type: 'addError', 
-                        payload: message || 'Code escrito de manera incorrecta'
-                    })
-                    return;
-                 }
-
-                  //  En caso todo marche bien
-                dispatch({ 
-                    type: 'checkCode',
-                    payload: {
-                        token
-                    }
-                });
-                
-                console.log(`Logueado ${token}`)
-              
-                //await AsyncStorage.setItem('token', data.token );
-              } catch (error) {
-                if (error.response) {
-                  // El servidor respondió con un estado de error (por ejemplo, 404, 500)
-                  console.log(error.response.data);
-                  console.log(error.response.status);
-                  console.log(error.response.headers);
-                } else if (error.request) {
-                  // La solicitud fue realizada pero no se recibió ninguna respuesta
-                  console.log(error.request);
-                } else {
-                  // Ocurrió un error al configurar la solicitud
-                  console.log('Error', error.message);
-                }
-                    //     console.log(error)
-                    dispatch({ 
-                        type: 'addError', 
-                        payload: error.response.data.msg || 'Información incorrecta'
-                    })
-              }
-    };
-      {/* end send sms */} 
-
-     {/* resetSendSms sms  */} 
-     const resetSendSms = async() => {
-          //  En caso todo marche bien
-          await AsyncStorage.removeItem('token');
-          dispatch({ 
-            type: 'resetSendSms'
-        });
-    };
-      {/* end reset send sms */} 
-
-  {/* send sms  */} 
-    const sendSms = async({ phone }: SendSmsRequest ) => {
-
-        try {
-                 await AsyncStorage.removeItem('token');
-                let response = await vaccinesApi.post<SendSmsResponse>('/sendSms', { phone } );
-                const {data} = response;
-                const { resp, message, error} = data; 
-
-             
-                 
-               
-                 //  En caso de error
-                 if( !resp ){
-                    dispatch({ 
-                        type: 'addError', 
-                        payload: message || error || 'Telefono escrito de manera incorrecta'
-                    })
-                    return;
-                 }
-
-                  //  En caso todo marche bien
-                dispatch({ 
-                    type: 'sendSms',
-                    payload: {
-                        isSendCode: true,
-                        phone
-                    }
-                });
-                
-            
-                ads
-                titulo
-                Imagen,
-                link
-              
-                //await AsyncStorage.setItem('token', data.token );
-              } catch (error) {
-                if (error.response) {
-                  // El servidor respondió con un estado de error (por ejemplo, 404, 500)
-                  console.log(error.response.data);
-                  console.log(error.response.status);
-                  console.log(error.response.headers);
-                } else if (error.request) {
-                  // La solicitud fue realizada pero no se recibió ninguna respuesta
-                  console.log(error.request);
-                } else {
-                  // Ocurrió un error al configurar la solicitud
-                  console.log('Error', error.message);
-                }
-                    //     console.log(error)
-                    dispatch({ 
-                        type: 'addError', 
-                        payload: error.response.data.msg || 'Información incorrecta'
-                    })
-              }
-    };
-      {/* end send sms */} 
-
-    const checkToken = async() => {
-        const token = await AsyncStorage.getItem('token');
-        
-        // No token, no autenticado
-        if ( !token ) return dispatch({ type: 'notAuthenticated' });
-
-        // Hay token
-        const resp = await vaccinesApi.get('/auth');
-        if ( resp.status !== 200 ) {
-            return dispatch({ type: 'notAuthenticated' });
-        }
-        
-        await AsyncStorage.setItem('token', resp.data.token );
-        dispatch({ 
-            type: 'signUp',
-            payload: {
-                token: resp.data.token,
-                user: resp.data.usuario,
-            }
-        });
+    const getGeneroRaltionSchipLoads = async() => {
+        let  datagenders =  vaccinesApi.get<Gender>(`/genders/20/0`);
+        let  datarelationships =  vaccinesApi.get<RelationShipResponse>(`/relationships/20/0`);
+        const [ gendersResp, relationshipsResp ] = await Promise.all([ datagenders, datarelationships ]);
+ 
+        genderLoad(gendersResp.data.genders);
+        relationshipLoad(relationshipsResp.data.relationships);
     }
 
-
-    const signIn = async({ email, password }: LoginData ) => {
-
+    const genderLoad = async(genders: GenderElement[] = []) => {
         try {
-            const { data } = await vaccinesApi.post<LoginVaccineResponse>('/login/mail', { email, password } );
-           
-            dispatch({ 
-                type: 'signUp',
-                payload: {
-                    token: data.token,
-                    user: data.usuario,
-                    more: data.more
-                }
-            });
-
-            await AsyncStorage.setItem('token', data.token );
+            let selections: selectOption[] =( genders.map((gender) => ({
+                key: gender._id.$oid,
+                value: gender.name,
+                disabled: false
+              })));
+            dispatch( { type:'genderLoad', payload:{
+                selections
+            }})
 
         } catch (error) {
-            dispatch({ 
-                type: 'addError', 
-                payload: error.response.data.msg || 'Información incorrecta'
-            })
+            console.log({error})
         }
-    };
+    }
+
+    const relationshipLoad = async(  relationShips: Relationship[] = [] ) => {
+        try {
+            let selections: selectOption[] =( relationShips.map((obj) => ({
+                key: obj._id.$oid,
+                value: obj.name,
+                disabled: false
+              })));
+            dispatch( { type:'relationshipLoad', payload:{
+                selections
+            }})
+
+        } catch (error) {
+            console.log({error})
+        }
+    }
     
-    const signUp = async( { nombre, email, password }: RegisterData ) => {
-
-        try {
-         
-            const { data } = await vaccinesApi.post<LoginVaccineResponse>('/usuarios', { email, password, nombre } );
-            dispatch({ 
-                type: 'signUp',
-                payload: {
-                    token: data.token,
-                    user: data.usuario,
-                    more: data.more
-                }
-            });
-
-            await AsyncStorage.setItem('token', data.token );
-
-        } catch (error) {
-            dispatch({ 
-                type: 'addError', 
-                payload: error.response.data.errors[0].msg || 'Revise la información'
-            });
-        }
-
-    };
-
-    const logOut = async() => {
-        await AsyncStorage.removeItem('token');
-        dispatch({ type: 'logout' });
-    };
-
-    const removeError = () => {
-        dispatch({ type: 'removeError' });
-    };
-
-    return (
-        <AuthContext.Provider value={{
-            ...state,
-            signUp,
+   return (
+          <AuthContext.Provider value={{
+            authState,
             signIn,
-            logOut,
-            removeError,
-            sendSms,
-            resetSendSms,
-            checkCode,
-            beforeCheckCode,
-            userAdd
-        }}>
-            { children }
-        </AuthContext.Provider>
-    )
-
+            genderLoad,
+            relationshipLoad,
+            getGeneroRaltionSchipLoads
+          }}>
+                { children }
+          </AuthContext.Provider>
+  )
 }
-
-

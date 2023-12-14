@@ -1,15 +1,15 @@
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
 import { todosApi } from './apis'
-import { counterSlice } from './slices/counter'
-import { pokemonSlice } from './slices/pokemon'
 import { loginSlice } from './slices/login'
 import { sendSmsSlice } from './slices/sendSms'
+import { registerSlice } from './slices/register'
+import { dependentSlice } from './slices/dependent'
 export const store = configureStore({
   reducer: {
-    counter: counterSlice.reducer,
-    pokemons: pokemonSlice.reducer,
     loginStore: loginSlice.reducer,
     sendSmsStore: sendSmsSlice.reducer,
+    registerStore: registerSlice.reducer,
+     dependentStore: dependentSlice.reducer,
     [todosApi.reducerPath]: todosApi.reducer
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware()

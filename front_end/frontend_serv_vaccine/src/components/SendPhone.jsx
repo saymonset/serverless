@@ -1,11 +1,10 @@
 import React, {  useState, useContext, useEffect} from 'react';
 import { Text, View, TextInput, Platform,  TouchableOpacity, Keyboard , Alert} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { AuthContext } from '../context/AuthContext';
 import { loginStyles } from '../theme/loginTheme';
 import { StackScreenProps } from '@react-navigation/stack';
 import {   store } from '../store' 
-import {  removeErrorSmsThunks, sendSmsThunks } from '../store/slices/sendSms/index' 
+import {  sendSmsThunks } from '../store/slices/sendSms/index' 
 
 import { LoadingScreen } from '../screens/LoadingScreen';
 
@@ -20,35 +19,12 @@ export const  SendPhone = ({ navigation }) => {
 
 
 
-  const { isLoading, message, isSendCode , token } = useSelector( (state: store ) => state.sendSmsStore);
+  const { isLoading } = useSelector( (state: store ) => state.sendSmsStore);
   const dispatch = useDispatch();
 
-  const   onClearError = async () => {
-       await removeErrorSmsThunks(dispatch)
- } 
 
-  {/* Solo para sacar mensajes de error por pantalla */}
-useEffect(() => {
-    if( message.length === 0 ) return;
 
-    Alert.alert(message,'',[{
-        text: 'Ok',
-        onPress: onClearError
-    }]);
 
-    if (isSendCode){
-        //console.log('Todo cool, isSendCode:' + isSendCode)
-        navigation.replace('SendSmsScreen');
-    }
-
-    if (token){
-        //console.log('Todo cool, isSendCode:' + isSendCode)
-        navigation.replace('UserPartTotal');
-    }
-
-    onClearError();
-
-}, [ message ])
 
   
   

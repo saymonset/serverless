@@ -27,6 +27,14 @@ export const loginSlice = createSlice({
             state.message = payload.message,
             state.loginResponse = payload.loginResponse;
         },
+        logOut: ( state, { payload } ) => {
+            state.email = payload.email;
+            state.isLoading = false;
+            state.status = payload.status,
+            state.token = payload.token,
+            state.message = payload.message,
+            state.loginResponse = payload.loginResponse;
+        },
        addError: ( state, { payload } ) =>{
                 state.loginResponse = null,
                 state.isLoading = false;
@@ -40,4 +48,4 @@ export const loginSlice = createSlice({
     }
 });
 // Action creators are generated for each case reducer function
-export const { startLoadingLogin, setLoginResponse, removeError,  addError  } = loginSlice.actions;
+export const { startLoadingLogin, setLoginResponse, removeError,  addError,  logOut } = loginSlice.actions;

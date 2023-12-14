@@ -1,40 +1,19 @@
 import React, {  useState, useContext, useEffect} from 'react';
 import { Text, View, TextInput, Platform,  TouchableOpacity, Keyboard, Alert } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { AuthContext } from '../context/AuthContext';
 import { loginStyles } from '../theme/loginTheme';
 import {  resetSendSmsThunks, removeErrorSmsThunks, checkCodeThunks } from '../store/slices/sendSms/index' 
-import {   store } from '../store' 
 import { LoadingScreen } from '../screens/LoadingScreen';
 
 export const  SendCode = ({ navigation }) => {
 
   const [ inputValue, setInputValue ] = useState('');
 
-  const { isLoading, message, phone, token } = useSelector( (state: store ) => state.sendSmsStore);
+  const { isLoading, message, phone } = useSelector( (state: store ) => state.sendSmsStore);
   const dispatch = useDispatch();
 
   
-  const   onClearError = async() => {
-     await removeErrorSmsThunks(dispatch)
-} 
 
-    {/* Solo para sacar mensajes de error por pantalla */}
-    useEffect(() => {
-        if( message.length === 0 ) return;
-
-        Alert.alert(message,'',[{
-            text: 'Ok',
-            onPress: onClearError
-        }]);
-    
-      
-       
-
-        onClearError();
-       // navigation.replace('SendSmsScreen');
-
-    }, [ message ])
 
   const onInputChange = (value) => {
       setInputValue( value );

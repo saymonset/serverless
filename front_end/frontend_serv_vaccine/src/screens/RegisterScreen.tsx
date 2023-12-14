@@ -1,149 +1,69 @@
-import React, { useContext, useEffect } from 'react'
-import { KeyboardAvoidingView, Platform, Text, View, TextInput, TouchableOpacity, Keyboard, Alert } from 'react-native'
+import React, { useEffect, useState } from 'react';
+import {  Alert, Keyboard } from 'react-native';
+import { Background } from '../components/Background';
+import { useDispatch, useSelector } from 'react-redux';
+import { LoadingScreen } from './LoadingScreen';
 
-
-import { AuthContext } from '../context/AuthContext';
-import { loginStyles } from '../theme/loginTheme'
-
-import { WhiteLogo } from '../components/WhiteLogo'
-import { useForm } from '../hooks/useForm'
+import { RegisterComponent } from '../components/RegisterComponent'
 import { StackScreenProps } from '@react-navigation/stack';
+import { removeErrorThunks } from '../store/slices/register';
 
 
 interface Props extends StackScreenProps<any,any>{}
 
+export const RegisterScreen = ({ navigation }: Props) => {
+    
+    const { isLoading, message, resp } = useSelector( (state: store ) => state.registerStore);
+    const dispatch = useDispatch();
 
-export const RegisterScreen = ( { navigation }: Props ) => {
+     const   onClearError = async () => {
+    //   await dispatch(());
+      await removeErrorThunks(dispatch)
+      console.log('removiendo error createregister')
+       } 
 
-    const { signUp, errorMessage, removeError } = useContext( AuthContext );
-
-    const { email, password, name, onChange } = useForm({
-        name: '',
-        email: '',
-        password: '' 
-     });
+       
+       
 
      useEffect(() => {
-        if( errorMessage.length === 0 ) return;
+        if( message.length === 0 ) return;
 
-        Alert.alert( 'Registro incorrecto', errorMessage,[{
+        Alert.alert( message , '',[{
             text: 'Ok',
-            onPress: removeError
+            onPress: onClearError
         }]);
 
-    }, [ errorMessage ])
+        
+        if (resp){
+            navigation.replace('LoginScreen')
+        }
+    }, [ message ])
+
+
+
+    const onLogin = () => {
+        navigation.replace('LoginScreen')
+    }
  
-     const onRegister = () => {
-         console.log({email, password, name});
+     const onRegister = async() => {
          Keyboard.dismiss();
-         signUp({
-             nombre: name,
-             email,
-             password
-         });
      }
+
 
 
     return (
         <>
-            <KeyboardAvoidingView
-                style={{ flex: 1, backgroundColor: '#5856D6' }}
-                behavior={ ( Platform.OS === 'ios') ? 'padding': 'height' }
-            >
+          {/* Background */} 
+     <Background></Background>
+    
+     {   ( isLoading ) && <LoadingScreen /> }          
+     <RegisterComponent onLogin={ onLogin } onRegisterScreen={() => onRegister()} ></RegisterComponent>  
+      
 
-
-                <View style={ loginStyles.formContainer }>                
-                    {/* Keyboard avoid view */}
-                    <WhiteLogo />
-
-                    <Text style={ loginStyles.title }>Registro</Text>
-
-                    <Text style={ loginStyles.label }>Nombre:</Text>
-                    <TextInput 
-                        placeholder="Ingrese su nombre:"
-                        placeholderTextColor="rgba(255,255,255,0.4)"
-                        underlineColorAndroid="white"
-                        style={[ 
-                            loginStyles.inputField,
-                            ( Platform.OS === 'ios' ) && loginStyles.inputFieldIOS
-                        ]}
-                        selectionColor="white"
-
-                        onChangeText={ (value) => onChange(value, 'name') }
-                        value={ name }
-                        onSubmitEditing={ onRegister }
-
-                        autoCapitalize="words"
-                        autoCorrect={ false }
-                    />
-
-
-                    <Text style={ loginStyles.label }>Email:</Text>
-                    <TextInput 
-                        placeholder="Ingrese su email:"
-                        placeholderTextColor="rgba(255,255,255,0.4)"
-                        keyboardType="email-address"
-                        underlineColorAndroid="white"
-                        style={[ 
-                            loginStyles.inputField,
-                            ( Platform.OS === 'ios' ) && loginStyles.inputFieldIOS
-                        ]}
-                        selectionColor="white"
-
-                        onChangeText={ (value) => onChange(value, 'email') }
-                        value={ email }
-                        onSubmitEditing={ onRegister }
-
-
-                        autoCapitalize="none"
-                        autoCorrect={ false }
-                    />
-
-
-                    <Text style={ loginStyles.label }>Contraseña:</Text>
-                    <TextInput 
-                        placeholder="******"
-                        placeholderTextColor="rgba(255,255,255,0.4)"
-                        underlineColorAndroid="white"
-                        secureTextEntry
-                        style={[ 
-                            loginStyles.inputField,
-                            ( Platform.OS === 'ios' ) && loginStyles.inputFieldIOS
-                        ]}
-                        selectionColor="white"
-
-                        onChangeText={ (value) => onChange(value, 'password') }
-                        value={ password }
-                        onSubmitEditing={ onRegister }
-
-                        autoCapitalize="none"
-                        autoCorrect={ false }
-                    />
-
-
-                    {/* Boton login */}
-                    <View style={ loginStyles.buttonContainer }>
-                        <TouchableOpacity
-                            activeOpacity={ 0.8 }
-                            style={ loginStyles.button }
-                            onPress={ onRegister }
-                        >
-                            <Text style={ loginStyles.buttonText } >Crear cuenta</Text>
-                        </TouchableOpacity>
-                    </View>
-
-                    {/* Crear una nueva cuenta */}
-                    <TouchableOpacity
-                        onPress={ () => navigation.replace('LoginScreen') }
-                        activeOpacity={ 0.8 }
-                        style={ loginStyles.buttonReturn }
-                    >
-                        <Text style={ loginStyles.buttonText  }>Login</Text>
-                    </TouchableOpacity>
-
-                </View>
-                
-            </KeyboardAvoidingView>
+           
         </>
     )
 }
+
+
+

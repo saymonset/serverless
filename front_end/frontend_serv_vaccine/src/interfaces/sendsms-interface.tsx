@@ -5,11 +5,14 @@ export interface SendSmsRequest {
 
 export interface SendSmsPayload {
     phone:      string;
+    password?: string;
     isLoading?: boolean  | null;
     token?: string | null;
     message?:    string;
     response?: Object;
     isSendCode?: boolean  | null;
+    resp?:boolean;
+    ci?: string;
 
     
 }

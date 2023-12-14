@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform } from "react-native";
 
 
 
@@ -8,9 +8,10 @@ export const loginStyles = StyleSheet.create({
         paddingHorizontal: 30,
         justifyContent:'center',
         height: 600,
-        marginBottom: 50
+        marginBottom: 100
     },
     title: {
+        textAlign:"center",
         color: 'white',
         fontSize: 30,
         fontWeight: 'bold',
@@ -30,6 +31,13 @@ export const loginStyles = StyleSheet.create({
         borderBottomWidth: 2,
         paddingBottom: 4
     },
+    inputFieldBirth: {
+        height: 40,
+        borderColor: 'gray',
+        borderWidth: 1,
+        borderRadius: 4,
+        paddingHorizontal: 8,
+      },
     buttonContainer: {
         alignItems: 'center',
         marginTop: 50,
@@ -40,11 +48,12 @@ export const loginStyles = StyleSheet.create({
       },
     button: {
         borderWidth: 2,
-        borderColor: 'red',
+        borderColor: 'white',
         paddingHorizontal: 20,
         paddingVertical: 5,
         borderRadius: 100,
         marginHorizontal:10,
+       
     },
     buttonblue: {
         borderWidth: 2,
@@ -59,7 +68,15 @@ export const loginStyles = StyleSheet.create({
     },
     buttonText: {
         fontSize: 18,
-        color: 'white'
+        color: 'white',
+    },
+    buttonTextBlack: {
+        fontSize: 18,
+        //color: 'white',
+        fontWeight: 'bold'
+    },
+    buttonTextNewAaccount: {
+        marginRight:30
     },
     newUserContainer: {
         alignItems: 'flex-end',
@@ -74,5 +91,14 @@ export const loginStyles = StyleSheet.create({
         paddingHorizontal: 10,
         paddingVertical: 5,
         borderRadius: 100
+    },
+    buttonReturn2: {
+       
+        //top: 2,
+        top: Platform.OS==='ios'? 6:6,
+        left: Platform.OS === 'ios'? 230: 350,
+        borderWidth: 1,
+        borderColor: 'black',
+        
     }
 });

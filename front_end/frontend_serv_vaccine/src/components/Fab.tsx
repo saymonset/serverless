@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
 
  },
     fab :{
-      backgroundColor:'gray',
+      backgroundColor:'rgba(0,0,0,0.2)',
       width:60,
       height:60,
       borderRadius:100,
