@@ -5,35 +5,32 @@ import type {PropsWithChildren} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Row } from 'react-native-reanimated-table';
 
+
+interface CardProps {
+    title: string;
+    color: string;
+    iconName: string;
+  }
+  
 export const CardsFigmaScreen = () => {
-  const { top } = useSafeAreaInsets();
   const [alignItems, setAlignItems] = useState('Consultas');
 
   return (
     <PreviewLayout
       label="Servicios"
       selectedValue={alignItems}
-      values={['Consultas', 'Patologías', 'Vacunación', 'Embarazo']}
+      values={[ {title:'Consultas', color:'rgb(180, 210, 255)', iconName:"medkit-outline"}, 
+                {title:'Patologías', color:'oldlace', iconName:"pulse-outline"},
+                {title:'Vacunación', color:'rgb(180, 230, 200)', iconName:"eyedrop-outline"},
+                {title:'Embarazo', color:'rgb(230, 210, 255)', iconName:"woman-outline"}]}
       setSelectedValue={setAlignItems}>
-      {/* <View style={[styles.box, {backgroundColor: 'powderblue'}]} />
-      <View style={[styles.box, {backgroundColor: 'skyblue'}]} />
-      <View
-        style={[
-          styles.box,
-          {
-            backgroundColor: 'steelblue',
-            width: 'auto',
-            minWidth: 50,
-          },
-        ]}
-      /> */}
     </PreviewLayout>
   );
 };
 
 type PreviewLayoutProps = PropsWithChildren<{
   label: string;
-  values: string[];
+  values: CardProps[];
   selectedValue: string;
   setSelectedValue: (value: string) => void;
 }>;
@@ -45,21 +42,27 @@ const PreviewLayout = ({
   selectedValue,
   setSelectedValue,
 }: PreviewLayoutProps) => (
-  <View style={{padding: 10, flex: 1}}>
+  <View style={{padding: 10, flex: 1, backgroundColor:'white'}}>
     <Text style={styles.label}>{label}</Text>
     <View style={styles.row}>
       {values.map(value => (
         <TouchableOpacity
-          key={value}
-          onPress={() => setSelectedValue(value)}
-          style={[styles.button, selectedValue === value && styles.selected]}>
-          <Text
-            style={[
-              styles.buttonLabel,
-              selectedValue === value && styles.selectedLabel,
-            ]}>
-            {value}
-          </Text>
+          key={value.title}
+          onPress={() => setSelectedValue(value.title)}
+          style={[{...styles.button,
+            backgroundColor:value.color}, selectedValue === value.title && {...styles.selected, backgroundColor:value.color}]}>
+           <View style={{flex:1, flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
+               <Icon name={ value.iconName } size = { 20 } color = { "black" }/>
+                <Text
+                    style={[
+                    {...styles.buttonLabel,
+                        marginLeft:20,
+                    },
+                    selectedValue === value.title && styles.selectedLabel,
+                    ]}>
+                    {value.title}
+                </Text>
+            </View>
         </TouchableOpacity>
       ))}
     </View>
@@ -91,6 +94,7 @@ const styles = StyleSheet.create({
     marginHorizontal: '1%',
     marginBottom: 6,
     minWidth: '48%',
+    height:50,
     textAlign: 'center',
   },
   selected: {
@@ -100,10 +104,10 @@ const styles = StyleSheet.create({
   buttonLabel: {
     fontSize: 12,
     fontWeight: '500',
-    color: 'coral',
+    color: 'gray',
   },
   selectedLabel: {
-    color: 'white',
+    color: 'black',
   },
   label: {
     textAlign: 'left',

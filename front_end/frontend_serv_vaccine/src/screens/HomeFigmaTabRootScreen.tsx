@@ -33,7 +33,6 @@ const TabsAndroid = () => {
           screenOptions= { ( { route}) => ({
           tabBarIcon: ( { color, focused} ) => {
             let iconName: string = '';
-              console.log(route.name)
               switch (  route.name ){
                 case 'HomeFigmaTab1Screen':
                   iconName='home-outline'

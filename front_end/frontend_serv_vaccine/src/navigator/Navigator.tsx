@@ -6,7 +6,7 @@ import { TextInputScreen } from '../screens/TextInputScreen';
 import { PullToRefreshScreen } from '../screens/PullToRefreshScreen';
 import { CustomSectionListScreen } from '../screens/CustomSectionListScreen';
 import { ModalScreen } from '../screens/ModalScreen';
-import { InfiniteScrollScreen } from '../screens/InfiniteScrollScreen';
+
 import { LoginScreen } from '../screens/LoginScreen';
 import { RegisterScreen } from '../screens/RegisterScreen';
 
@@ -75,7 +75,7 @@ export const Navigator = () => {
                 <Stack.Screen name="PullToRefreshScreen" component={PullToRefreshScreen} />
                 <Stack.Screen name="CustomSectionListScreen" component={CustomSectionListScreen} />
                 <Stack.Screen name="ModalScreen" component={ModalScreen} />
-                <Stack.Screen name="InfiniteScrollScreen" component={ InfiniteScrollScreen } />
+    
              </>)
       
       }
