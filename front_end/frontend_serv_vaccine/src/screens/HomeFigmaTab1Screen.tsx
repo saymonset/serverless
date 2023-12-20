@@ -15,7 +15,7 @@ export const HomeFigmaTab1Screen = () => {
            <NextAppointmentsScreen/>
       </View>
       <View style={[styles.card, { marginTop: 10, marginBottom: 5 }]} >
-               <WatchYourHealthScreen/>
+            <WatchYourHealthScreen/>
       </View>
     </View>
   )

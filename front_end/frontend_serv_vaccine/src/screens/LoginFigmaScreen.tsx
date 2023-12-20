@@ -59,11 +59,12 @@ const onSecurityInputChange = (value) => {
               setIsVisible(false);
               //Borramos mensajes del thrunk
               onClearError();
-           
               // Carga los generos y relationShips en memoria encontrados en bd y llevados al contexto para tenerlos  ya cargados
               if (status==='authenticated'){
                    getGeneroRaltionSchipLoads();
               }
+
+              // Cargamos automaticamente la primera pagina de navigation si esta autenticado
     }
 
     const abrirModal = () => {
@@ -83,7 +84,6 @@ const onSecurityInputChange = (value) => {
             return;
           }
           await dispatch(loginCiThunks( ci, password));
-          console.log('Hola')
     }
 
   const   onClearError = async () => {

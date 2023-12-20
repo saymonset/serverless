@@ -53,15 +53,13 @@ export const SearchScreen = () => {
                   }}>
         {/**  Boton regreso */}
         <SearchInputComponent
-                      onDebounce = { ( value ) => setTerm( value )}
-                      style={{
-                        position:'absolute',
-                        zIndex:999,
-                        width:screenWidth - 40,
-                        top: (Platform.OS==='ios') ?  top : top + 30
-
-                      }}
-        ></SearchInputComponent>
+        onDebounce={(value) => setTerm(value)}
+        style={{
+          position: 'absolute',
+          zIndex: 999,
+          width: screenWidth - 40,
+          top: (Platform.OS === 'ios') ? top : top + 30
+        }}   ></SearchInputComponent>
 
         <FlatList
                       data={dataFiltred}

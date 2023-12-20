@@ -75,7 +75,7 @@ export const SendPhoneFigmaScreen = ({ navigation }: Props) => {
            <BackgroundSendPhoneFigma></BackgroundSendPhoneFigma>
            
            {/**  Boton regreso */}
-           <BackePageComponente navigation={navigation} page="LoginFigmaScreen" />
+           <BackePageComponente navigation={navigation} page="WelcomeScreen" />
 
   
   

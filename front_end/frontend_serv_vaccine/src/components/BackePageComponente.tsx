@@ -1,5 +1,5 @@
 import React from 'react';
-import { Keyboard, Platform, Text, TouchableOpacity, View } from 'react-native';
+import { Keyboard, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
@@ -25,16 +25,11 @@ export const BackePageComponente = ({ navigation, page, title1="", title2="" }: 
   };
 
   return (
+    
     <View
       style={{
-      //  backgroundColor:'red',
-        flexDirection: 'row',
-        flex:1,
-        justifyContent: 'space-between',
-        marginBottom: 0,
-        marginLeft: 15,
-        marginHorizontal: 1,
-        marginTop: Platform.OS === 'ios' ? 30 : 30,
+           ...styles.container,
+           ...(title1 || title2 ? styles.allScreen : {}),
       }}
     >
       <TouchableOpacity onPress={() => onBack()} style={{ marginTop: 0 }}>
@@ -45,3 +40,18 @@ export const BackePageComponente = ({ navigation, page, title1="", title2="" }: 
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container :{
+     //  backgroundColor:'red',
+     flexDirection: 'row',
+     justifyContent: 'space-between',
+     marginBottom: 0,
+     marginLeft: 15,
+     marginHorizontal: 1,
+     marginTop: Platform.OS === 'ios' ? 30 : 30,
+},
+  allScreen :{
+      flex:1,
+  }
+});
