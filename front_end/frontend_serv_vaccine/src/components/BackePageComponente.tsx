@@ -1,25 +1,36 @@
 import React from 'react';
-import { Keyboard, Platform, TouchableOpacity, View } from 'react-native';
+import { Keyboard, Platform, Text, TouchableOpacity, View } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
-import { StackScreenProps } from '@react-navigation/stack';
+import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
 
 interface Props extends StackScreenProps<any, any> {
   page: string;
   route?: any;
+  navigation?: StackNavigationProp<any, any>;
+  title1?: string;
+  title2?: string;
 }
 
-export const BackePageComponente = ({ navigation, page }: Props) => {
+
+
+export const BackePageComponente = ({ navigation, page, title1="", title2="" }: Props) => {
+
+  const navigationAux = useNavigation();
+
   const onBack = async () => {
     Keyboard.dismiss();
-    navigation.replace(page);
+    navigation ?  navigation.replace(page) : navigationAux.navigate(page);
+   
   };
 
   return (
     <View
       style={{
+      //  backgroundColor:'red',
         flexDirection: 'row',
-        justifyContent: 'flex-start',
+        flex:1,
+        justifyContent: 'space-between',
         marginBottom: 0,
         marginLeft: 15,
         marginHorizontal: 1,
@@ -29,6 +40,8 @@ export const BackePageComponente = ({ navigation, page }: Props) => {
       <TouchableOpacity onPress={() => onBack()} style={{ marginTop: 0 }}>
         <Ionicons name="arrow-back-circle-outline" size={40} color="black" />
       </TouchableOpacity>
+      <Text style={{marginTop:10}}> { title1 }</Text>
+      <Text style={{marginTop:10}}> { title2 }</Text>
     </View>
   );
 };

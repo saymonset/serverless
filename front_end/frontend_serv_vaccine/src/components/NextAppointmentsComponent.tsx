@@ -17,10 +17,10 @@ export const NextAppointmentsComponent = ( { nextAppointments } : Props) => {
         const year = appointmentDate.getFullYear();
   return (
     <TouchableOpacity activeOpacity={0.9}>
-     <View style={{ flexDirection: 'row', alignItems: 'left' }}>
+     <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
             <View style={ {...styles.icon,
                               marginLeft:(Platform.OS==='ios')?0:10}}>
-                <Icon name={nextAppointments.icon} size={20} color={"black"} />
+                <Icon name={nextAppointments.icon} size={50} color={"black"} />
             </View>    
             <View style={{ marginLeft: 30 }}>
                     <Text style={styles.date}>{ `${day}/${month}/${year}`}</Text>
@@ -31,7 +31,6 @@ export const NextAppointmentsComponent = ( { nextAppointments } : Props) => {
             </View>
             <View style={{ flex: 1 }}></View>
       </View>
-    
   </TouchableOpacity>
   
   )
@@ -62,7 +61,7 @@ const styles = StyleSheet.create({
     },
     date: {
         color: 'black',
-        fontSize: 20,
+        fontSize: 14,
         fontWeight: 'bold',
        // left: 20
     },
@@ -83,8 +82,8 @@ const styles = StyleSheet.create({
         top:0,
         justifyContent:'center', 
         alignItems:'center' ,
-        width:30, 
-        height:30,  
+        width:60, 
+        height:60,  
         borderRadius:10,
         backgroundColor:  'rgba(173, 216, 230, 0.2)'
     },

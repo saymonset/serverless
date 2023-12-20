@@ -17,24 +17,23 @@ export const WatchYourHealthComponent = ( { nextAppointments } : Props) => {
         const year = appointmentDate.getFullYear();
   return (
     <View style={ {...styles.cardContainer}}>
-    <TouchableOpacity activeOpacity={0.9}>
-  
-            <View style={ {...styles.icon,
-                              marginLeft:(Platform.OS==='ios')?0:0}}>
-                        <Icon name={nextAppointments.icon} size={20} color={"black"} />
-            
-            </View>
-            <View>
-                    <Text style={styles.date}>{ `${day}/${month}/${year}`}</Text>
-                   { (nextAppointments.hour) && <Text style={styles.blue}>{ nextAppointments.hour}</Text> }
-                    <Text >{ nextAppointments.name}</Text>
-                    <Text>{ nextAppointments.title + ' ' + nextAppointments.subTitle}</Text>
-                    <Text></Text>
-            </View>
-          
-     
-    
-  </TouchableOpacity>
+            <TouchableOpacity activeOpacity={0.9}>
+        
+                    <View style={ {...styles.icon,
+                                    marginLeft:(Platform.OS==='ios')?0:0,
+                                    top: (Platform.OS==='ios')?10:0
+                                    }}>
+                                <Icon name={nextAppointments.icon} size={50} color={"black"} />
+                    
+                    </View>
+                    <View>
+                            <Text style={styles.date}>{ `${day}/${month}/${year}`}</Text>
+                        { (nextAppointments.hour) && <Text style={styles.blue}>{ nextAppointments.hour}</Text> }
+                            <Text >{ nextAppointments.name}</Text>
+                            <Text>{ nextAppointments.title + ' ' + nextAppointments.subTitle}</Text>
+                            <Text></Text>
+                    </View>
+        </TouchableOpacity>
   </View>
   
   )
@@ -48,12 +47,14 @@ const styles = StyleSheet.create({
     cardContainer: {
         backgroundColor:'rgba(182, 149, 192, 0.1)',
         marginVertical:0,
-        marginHorizontal:5,
+        marginRight:5,
         flex:1,
+        justifyContent:'center',
+        alignItems:'center',
     },
     date: {
         color: 'black',
-        fontSize: 20,
+        fontSize: 14,
         fontWeight: 'bold',
        // left: 20
     },
@@ -75,8 +76,8 @@ const styles = StyleSheet.create({
         marginBottom:10,
         justifyContent:'flex-start', 
         alignItems:'flex-start' ,
-        width:30, 
-        height:30,  
+        width:60, 
+        height:60,  
         borderRadius:10,
         backgroundColor:  'rgba(173, 216, 230, 0.2)'
     },

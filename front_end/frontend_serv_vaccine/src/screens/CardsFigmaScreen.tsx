@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, TouchableOpacity, Text, StyleSheet} from 'react-native';
+import {View, TouchableOpacity, Text, StyleSheet, Image} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import type {PropsWithChildren} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -42,31 +42,54 @@ const PreviewLayout = ({
   selectedValue,
   setSelectedValue,
 }: PreviewLayoutProps) => (
-  <View style={{padding: 10, flex: 1, backgroundColor:'white'}}>
-    <Text style={styles.label}>{label}</Text>
-    <View style={styles.row}>
-      {values.map(value => (
-        <TouchableOpacity
-          key={value.title}
-          onPress={() => setSelectedValue(value.title)}
-          style={[{...styles.button,
-            backgroundColor:value.color}, selectedValue === value.title && {...styles.selected, backgroundColor:value.color}]}>
-           <View style={{flex:1, flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
-               <Icon name={ value.iconName } size = { 20 } color = { "black" }/>
-                <Text
-                    style={[
-                    {...styles.buttonLabel,
-                        marginLeft:20,
-                    },
-                    selectedValue === value.title && styles.selectedLabel,
-                    ]}>
-                    {value.title}
-                </Text>
-            </View>
-        </TouchableOpacity>
-      ))}
+  <View style={{padding: 5, flex: 1, backgroundColor:'white'}}>
+    <View style={{flexDirection:'column'}}>
+      <View style={{alignItems:'flex-end'}}>
+        <View>
+          <Icon name='notifications-outline' size = { 20 } color = { "black" }/>
+        </View>
+      </View>
+      <View  style={{flexDirection:'row', 
+                     alignItems:'center',
+                     }}>
+              <Text style={styles.hola}>Hola!</Text>  
+        <Image 
+              source={ require('../assets/hola.png') }
+              style={{
+                  width: 50,
+                  height: 50,
+                  marginLeft:10,
+              }}
+          />
+        </View>
+      <View style={{flex:1}}>
+         <Text style={styles.label}>{label}</Text>
+          <View style={styles.row}>
+            {values.map(value => (
+              <TouchableOpacity
+                key={value.title}
+                onPress={() => setSelectedValue(value.title)}
+                style={[{...styles.button,
+                  backgroundColor:value.color}, selectedValue === value.title && {...styles.selected, backgroundColor:value.color}]}>
+                <View style={{flex:1, flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
+                    <Icon name={ value.iconName } size = { 40 } color = { "black" }/>
+                      <Text
+                          style={[
+                          {...styles.buttonLabel,
+                              marginLeft:20,
+                          },
+                          selectedValue === value.title && styles.selectedLabel,
+                          ]}>
+                          {value.title}
+                      </Text>
+                  </View>
+              </TouchableOpacity>
+            ))}
+          </View>
+
+      </View>
+
     </View>
-    {/* <View style={[styles.container, {[label]: selectedValue}]}>{children}</View> */}
   </View>
 );
 
@@ -113,5 +136,11 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     marginBottom: 10,
     fontSize: 24,
+    color:'black'
+  },
+  hola: {
+    fontWeight:'bold',
+    fontSize: 24,
+    color:'black'
   },
 });

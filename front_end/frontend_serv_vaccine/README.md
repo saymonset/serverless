@@ -51,4 +51,6 @@ npm install venezuela --save
 
 yarn add @react-navigation/material-bottom-tabs react-native-paper react-native-vector-icons
 
+yarn add uuid
+
 npx pod-install

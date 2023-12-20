@@ -24,6 +24,7 @@ import { SendCodeFigmaRecoveryScreen2 } from '../screens/SendCodeFigmaRecoverySc
 import { ConfirmPasswordRecoveryFigmaScreen3 } from '../screens/ConfirmPasswordRecoveryFigmaScreen3';
 import { ContactRecoveryFigmaScreen } from '../screens/ContactRecoveryFigmaScreen';
 import { HomeFigmaTabRootScreen } from '../screens/HomeFigmaTabRootScreen';
+import { SearchScreen } from '../screens/SearchScreen';
 
 
 
@@ -48,7 +49,9 @@ export const Navigator = () => {
           ? (<>
                  
                  
-                  
+                 <Stack.Screen name="HomeFigmaTabRootScreen" component={ HomeFigmaTabRootScreen } />  
+                 <Stack.Screen name="SearchScreen" component={SearchScreen} />
+                 
                   <Stack.Screen name="WelcomeScreen" component={ WelcomeScreen } /> 
                   <Stack.Screen name="LoginFigmaScreen" component={ LoginFigmaScreen } />
                   <Stack.Screen name="PasswordRecoveryScreen1" component={ PasswordRecoveryScreen1 } />
@@ -68,13 +71,14 @@ export const Navigator = () => {
             </>)
           : (<>
                {/** Este HomeScreen es el principa que lama el menu*/}
-                <Stack.Screen name="HomeFigmaTabRootScreen" component={ HomeFigmaTabRootScreen } /> 
+                
                 <Stack.Screen name="HomeScreen" component={HomeScreen} />
                 <Stack.Screen name="DependentScreen" component={ DependentScreen } />
                 <Stack.Screen name="TextInputScreen" component={TextInputScreen} />
                 <Stack.Screen name="PullToRefreshScreen" component={PullToRefreshScreen} />
                 <Stack.Screen name="CustomSectionListScreen" component={CustomSectionListScreen} />
                 <Stack.Screen name="ModalScreen" component={ModalScreen} />
+                
     
              </>)
       
