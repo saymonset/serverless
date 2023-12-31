@@ -90,7 +90,6 @@ export const RegistrodatosFigmaComponent = ( { onLogin, onRegisterScreen }: Prop
                 };
                     let register: Register = { ...obj  };
 
-                    console.log({phone})
                     await dispatch(registerThunks( register));
                 
                     {/** Nos vamos a la pantalla principal */}
@@ -204,13 +203,11 @@ export const RegistrodatosFigmaComponent = ( { onLogin, onRegisterScreen }: Prop
                                                                 autoCorrect={ false }
                                                             />
                                                     </View>
-                                                    <View style = {{ marginVertical:20}}>
+                                                    <View style = {{ marginTop:20}}>
                                                                 <Text style={ comunStylesFigma.label }>Fecha de nacimiento:</Text>
                                                                 <CalendarFigmaComponent onDateSelection= {(value) => onDateSelection(value)}/>
                                                     </View>
-                                        
-                                                    <View style = {{ marginVertical:20}}>
-                                                            
+                                                    <View style = {{ marginTop:10}}>
                                                                 <Text  style={[ 
                                                                         comunStylesFigma.inputField,
                                                                         ( Platform.OS === 'ios' ) && comunStylesFigma.inputFieldIOS
@@ -235,9 +232,7 @@ export const RegistrodatosFigmaComponent = ( { onLogin, onRegisterScreen }: Prop
                                                                 </TouchableOpacity>
 
                                                     </View>  
-
-
-                                                    { estado && ( <View style = {{ marginVertical:20}}>
+                                                    { estado && ( <View style = {{ marginTop:10}}>
                                                                             <Text  style={[ 
                                                                                     comunStylesFigma.inputField,
                                                                                     ( Platform.OS === 'ios' ) && comunStylesFigma.inputFieldIOS
@@ -249,7 +244,6 @@ export const RegistrodatosFigmaComponent = ( { onLogin, onRegisterScreen }: Prop
                                                                                                     />
                                                                                )
                                                                      }    
-
                                                                             <TouchableOpacity
                                                                                 style={[
                                                                                     comunStylesFigma.inputField,
@@ -262,11 +256,15 @@ export const RegistrodatosFigmaComponent = ( { onLogin, onRegisterScreen }: Prop
                                                                                 <Text style={{ color: 'white' }}> Municipio</Text>
                                                                                 </TouchableOpacity>
                                                      </View>    )}
-
-                                       
-
-                                         
-                                      
+                                                      {/* Crear una nueva cuenta */}
+                                        <View style={{...comunStylesFigma.buttonContainer,  alignItems:'center', marginTop:10, marginBottom:50}  }>
+                                            <TouchableOpacity 
+                                                     onPress= { onRegister} 
+                                                     style={ {...comunStylesFigma.button} }
+                                                    >
+                                                   <Text style={ [comunStylesFigma.buttonText ] }>Guardar</Text>
+                                            </TouchableOpacity>
+                                        </View>
                                     </View>
                                   
                     </SafeAreaView>
@@ -278,16 +276,7 @@ export const RegistrodatosFigmaComponent = ( { onLogin, onRegisterScreen }: Prop
 
  
 
-                                        {/* Crear una nueva cuenta */}
-                                        <View style={{...comunStylesFigma.buttonContainer,  alignItems:'center', marginTop:90, marginBottom:50}  }>
-                                    
-                                            <TouchableOpacity 
-                                                     onPress= { onRegister} 
-                                                     style={ {...comunStylesFigma.button} }
-                                                    >
-                                                   <Text style={ [comunStylesFigma.buttonText ] }>Siguiente</Text>
-                                            </TouchableOpacity>
-                                        </View>
+                                      
                                        
      
 

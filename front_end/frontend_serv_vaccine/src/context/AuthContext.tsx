@@ -49,7 +49,6 @@ export const AuthProvider = ( { children }:  any ) => {
         let  datagenders =  vaccinesApi.get<Gender>(`/genders/20/0`);
         let  datarelationships =  vaccinesApi.get<RelationShipResponse>(`/relationships/20/0`);
         const [ gendersResp, relationshipsResp ] = await Promise.all([ datagenders, datarelationships ]);
- 
         genderLoad(gendersResp.data.genders);
         relationshipLoad(relationshipsResp.data.relationships);
     }

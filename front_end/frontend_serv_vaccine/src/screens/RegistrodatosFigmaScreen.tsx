@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { removeErrorThunks } from '../store/slices/register/registerThunks';
 import { RegisterComponent } from '../components/RegisterComponent';
 import { ModalMessageComponent } from '../components/ModalMessageComponent';
+import { LoadingScreen } from './LoadingScreen';
  
 
 
@@ -26,7 +27,7 @@ export const RegistrodatosFigmaScreen = ({ navigation }: Props) => {
   }
  
     const [isVisible, setIsVisible] = useState(false);
-    const {  message, resp } = useSelector( (state: store ) => state.registerStore);
+    const {  message, resp, isLoading } = useSelector( (state: store ) => state.registerStore);
     const dispatch = useDispatch();
 
       const   onClearError = async () => {
@@ -120,7 +121,7 @@ export const RegistrodatosFigmaScreen = ({ navigation }: Props) => {
                                                                       message={`${message}`}
                                                 />)}
                                                       
-                                                
+                                                {  isLoading && (  <LoadingScreen />  )}
                                       
                              </View>
                              

@@ -4,6 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import type {PropsWithChildren} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Row } from 'react-native-reanimated-table';
+import { comunStylesFigma } from '../theme/comunFigmaTheme';
 
 
 interface CardProps {
@@ -52,7 +53,7 @@ const PreviewLayout = ({
       <View  style={{flexDirection:'row', 
                      alignItems:'center',
                      }}>
-              <Text style={styles.hola}>Hola!</Text>  
+              <Text style={comunStylesFigma.hola}>Hola!</Text>  
         <Image 
               source={ require('../assets/hola.png') }
               style={{
@@ -138,9 +139,5 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color:'black'
   },
-  hola: {
-    fontWeight:'bold',
-    fontSize: 24,
-    color:'black'
-  },
+
 });

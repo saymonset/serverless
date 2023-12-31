@@ -9,9 +9,8 @@ import { useNavigation } from '@react-navigation/native';
 export const NextAppointmentsScreen = () => {
     let keyCounter = 0;
 
-    const { top } = useSafeAreaInsets();
 
-    const { nextAppointments, isLoading } = useNextAppointments();
+    const { nextAppointments } = useNextAppointments();
 
     const navigation = useNavigation();
 
@@ -95,15 +94,4 @@ export const styles = StyleSheet.create({
 }
 });
 
-
-
-//const styles = StyleSheet.create({
-//   container: {
-//       flexDirection: 'row'
-//   },
-//   itemText: {
-//       marginLeft: 10,
-//       fontSize: 19,
-//       color: 'white',
-//   }
-// })
+ 

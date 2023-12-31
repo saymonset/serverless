@@ -25,6 +25,8 @@ import { ConfirmPasswordRecoveryFigmaScreen3 } from '../screens/ConfirmPasswordR
 import { ContactRecoveryFigmaScreen } from '../screens/ContactRecoveryFigmaScreen';
 import { HomeFigmaTabRootScreen } from '../screens/HomeFigmaTabRootScreen';
 import { SearchScreen } from '../screens/SearchScreen';
+import { PerfilFigmaAddScreen } from '../screens/PerfilFigmaAddScreen';
+import { PerfilesFigmaScreen } from '../screens/PerfilesFigmaScreen';
 
 
 
@@ -70,6 +72,8 @@ export const Navigator = () => {
           : (<>
                {/** Este HomeScreen es el principa que lama el menu*/}
                <Stack.Screen name="HomeFigmaTabRootScreen" component={ HomeFigmaTabRootScreen } />  
+               <Stack.Screen name="PerfilFigmaAddScreen" component={ PerfilFigmaAddScreen } />  
+               <Stack.Screen name="PerfilesFigmaScreen" component={ PerfilesFigmaScreen } />  
                 {/* <Stack.Screen name="HomeScreen" component={HomeScreen} /> */}
                 <Stack.Screen name="DependentScreen" component={ DependentScreen } />
                 <Stack.Screen name="TextInputScreen" component={TextInputScreen} />

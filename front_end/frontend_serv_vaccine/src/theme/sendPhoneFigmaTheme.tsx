@@ -4,13 +4,6 @@ export const stylesFigma = StyleSheet.create({
     formContainer: {
         flex: 1,
         flexDirection: 'column',
-        // paddingHorizontal: 30,
-        // flexDirection: 'row',
-        // justifyContent:'center',
-        // alignItems:'center',
-        // height:0,
-       // marginBottom: 100,
-       //backgroundColor:'red'
     },
     globalMargin: {
         marginHorizontal: 20

@@ -63,7 +63,6 @@ const onSecurityInputChange = (value) => {
               if (status==='authenticated'){
                    getGeneroRaltionSchipLoads();
               }
-
               // Cargamos automaticamente la primera pagina de navigation si esta autenticado
     }
 

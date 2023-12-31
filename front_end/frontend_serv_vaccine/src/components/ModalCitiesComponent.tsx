@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { KeyboardAvoidingView, Text, View, ScrollView, TouchableWithoutFeedback, Keyboard, Platform, TouchableOpacity, Modal, FlatList } from 'react-native';
 import { PaisScreen } from '../hooks/usePaisScreen';
 import { stylesFigma } from '../theme/appFigmaTheme';
@@ -23,6 +23,16 @@ export const ModalCitiesComponent = ( { getValor, propiedad = 'estado', idEstado
               setIsVisible(false);
               getValor( menuItem, propiedad);
           }
+   useEffect(() => {
+    
+    // Cargamos los estados de Veneuela
+    estadosOfVenezuela();
+   
+     
+   }, [])
+   
+
+
   return (
     <>
              <Modal

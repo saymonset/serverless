@@ -61,6 +61,17 @@ export const stylesFigma = StyleSheet.create({
         marginRight:30
     },
     
-    
+    container: {
+        backgroundColor:'white',
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        padding: 2,
+      },
+      card: {
+        flex: 1,
+        //backgroundColor: 'lightblue',
+        borderRadius: 10,
+      },
 
 })

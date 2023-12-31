@@ -79,6 +79,11 @@ export const comunStylesFigma = StyleSheet.create({
         color:'black',
         fontSize: 20,
     },
+    hola: {
+        fontWeight:'bold',
+        fontSize: 24,
+        color:'black'
+      },
     
     
 
