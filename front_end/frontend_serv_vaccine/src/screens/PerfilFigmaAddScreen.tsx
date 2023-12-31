@@ -8,17 +8,21 @@ import { stylesFigma } from '../theme/sendPhoneFigmaTheme';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { RegistrodatosFigmaComponent } from '../components/RegistrodatosFigmaComponent';
 import { useDispatch, useSelector } from 'react-redux';
-import { registerThunks, removeErrorThunks } from '../store/slices/register/registerThunks';
+ 
 import { RegisterComponent } from '../components/RegisterComponent';
 import { ModalMessageComponent } from '../components/ModalMessageComponent';
 import { useNavigation } from '@react-navigation/native';
-import { Register } from '../interfaces';
+import { Dependent, Register } from '../interfaces';
 import { useForm } from '../hooks/useForm';
 import { PaisScreen } from '../hooks/usePaisScreen';
 import {  comunStylesFigma } from '../theme/comunFigmaTheme'
 import { CalendarFigmaComponent } from '../components/CalendarFigmaComponent';
 import { ModalCitiesComponent } from '../components/ModalCitiesComponent';
 import { UseGenderComponent } from '../components/GenderComponent';
+import { UseRelationShipComponent } from '../components/RelationShipComponent';
+import { useDependent } from '../hooks/useDependent';
+import { dependentThunksAddModify,  removeErrorThunks } from '../store/slices/dependent';
+import { LoadingScreen } from './LoadingScreen';
 
 
 
@@ -29,20 +33,44 @@ export const PerfilFigmaAddScreen = () => {
 
 
   const [isVisible, setIsVisible] = useState(false);
+  const [isVisibleEstado, setIsVisibleEstado] = useState(false);
   const [isVisibleMunicipio, setIsVisibleMunicipio] = useState(false);
   const [idEstado, setIdEstado] = useState(0);
   const [estado, setEstado] = useState('');
   const [municipio, setMunicipio] = useState("");
   const [selectedGeneroId, setSelectedGeneroId] = React.useState("");
+  const [selecteRelationShipId, setSelectedRelationShipId] = React.useState("");
 
-  const onSelectTrigger = (value) => {
+  const onSexoTrigger = (value: string) => {
     setSelectedGeneroId(value);
   }
-  const { isLoading, message, resp, password: paswordFromSecurity } = useSelector((state: store) => state.registerStore);
-  const { token, phone } = useSelector((state: store) => state.sendSmsStore);
-  const { name, lastname, password, ci, email, state, city, birth, gender_id, status, onChange } = useForm({
-    name: '', lastname: '', password: '', ci: '', email: '', state: '', city: '', birth: '', gender_id: '', status: true
-  });
+
+
+  const onRelationShipSelectTrigger = (value:string) => {
+    setSelectedRelationShipId(value);
+  }
+
+
+      {/** Estas variables vienen del store */}
+      const { isLoading, name:nameUser,lastname:lastnameUser, phone:phoneUser, email:emailUser, birth:birthUser
+        ,gender_id:gender_idUser, status:statusUser, edit, _id, message, resp  } = useSelector( (state: store ) => state.dependentStore);
+  //const { isLoading, message, resp, password: paswordFromSecurity } = useSelector((state: store) => state.registerStore);
+  const {  usuario:{ phone, token }, user_id  } = useSelector((state: store) => state.loginStore);
+ 
+
+    {/** Estas variables son para inicializar el formulario */}
+    const inic = {
+      name:nameUser,
+      lastname:lastnameUser,
+      phone:phoneUser,
+      email:emailUser,
+      birth:birthUser,
+      gender_id:gender_idUser,
+      status:statusUser,
+     
+      }
+
+  const { name, lastname, email, state, city, birth, gender_id, status, onChange } = useDependent({...inic});
   const { estadosOfVenezuela, municipiosOfEstadosOfVenezuela } = PaisScreen();
   const navigation = useNavigation();
 
@@ -58,7 +86,7 @@ export const PerfilFigmaAddScreen = () => {
 
   const onClearError = async () => {
     await removeErrorThunks(dispatch)
-    console.log('removiendo error createregister')
+    console.log('removiendo errodddddd createregister')
   }
 
   const cerrarModal = () => {
@@ -67,16 +95,19 @@ export const PerfilFigmaAddScreen = () => {
     onClearError();
 
     if (resp) {
-      navigation.replace('LoginFigmaScreen')
+      navigation.navigate('PerfilesFigmaScreen' as never)
     }
   }
 
   const abrirModal = () => {
     setIsVisible(true);
   }
+  const abrirModalEstado = () => {
+    setIsVisibleEstado(true);
+  }
 
   useEffect(() => {
-    if (message.length === 0) return;
+   if (message.length === 0) return;
 
     // Si la respuesta es positiva entonces no sacamos ningun mensaje en el modal y nos vamos a otra pagina
     if (resp) {
@@ -90,7 +121,7 @@ export const PerfilFigmaAddScreen = () => {
 
 
   const onLogin = () => {
-    navigation.replace('LoginScreen')
+    navigation.navigate('LoginScreen' as never)
   }
 
 
@@ -98,53 +129,52 @@ export const PerfilFigmaAddScreen = () => {
 
 
 
-  const showModal = async () => {
-    setIsVisible(true);
+  const showModalEstado = async () => {
+    setIsVisibleEstado(true);
   }
 
   const showModalMunicipio = async () => {
     setIsVisibleMunicipio(true);
   }
 
-  const getValor = (menuItem: Pais, propiedad) => {
+  const getValor = (menuItem: Pais, propiedad: any) => {
     if (propiedad === 'estado') {
-      setIsVisible(false);
+      setIsVisibleEstado(false);
       setIdEstado(menuItem.id_estado)
       let mun = municipiosOfEstadosOfVenezuela(menuItem.id_estado)[0].municipios;
       setEstado(`${menuItem.capital}-${menuItem.estado}`)
+      onChange(`${menuItem.capital}-${menuItem.estado}`, 'state')
       setMunicipio('');
+
     }
 
     if (propiedad === 'municipio') {
       setIsVisibleMunicipio(false);
       setMunicipio(`${menuItem.capital}-${menuItem.municipio}`);
+      onChange(`${menuItem.capital}-${menuItem.municipio}`, 'city')
     }
   }
 
 
-  const onRegister = async () => {
+  const onAddDependent = async () => {
     Keyboard.dismiss();
     let obj = {
       name,
       lastname,
-      password: paswordFromSecurity,
-      ci,
       email,
-      state: estado,
-      city: municipio,
-      birth,
+      phone,
       gender_id: selectedGeneroId,
-      status: status.toString(),
-      token,
-      phone
+      birth,
+      user_id,
+      relationship_id: selecteRelationShipId,
+      state,
+      city,
+      status:true
     };
-    let register: Register = { ...obj };
-
-    console.log({ phone })
-    await dispatch(registerThunks(register));
-
+    let dependent: Dependent = { ...obj };
+   await dispatch(dependentThunksAddModify(dependent, token));
     {/** Nos vamos a la pantalla principal */ }
-    //onRegisterScreen();
+    //onAddDependentScreen();
   }
 
   const onDateSelection = (date: Date) => {
@@ -189,7 +219,7 @@ export const PerfilFigmaAddScreen = () => {
               type='big'
               marginBottom={0}
             ></HeaderTitleFigma>
-            {/* <RegistrodatosFigmaComponent onLogin={onLogin} onRegisterScreen={() => onRegister()}></RegistrodatosFigmaComponent> */}
+            {/* <RegistrodatosFigmaComponent onLogin={onLogin} onAddDependentScreen={() => onAddDependent()}></RegistrodatosFigmaComponent> */}
 
                 <ScrollView>
                         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -208,7 +238,7 @@ export const PerfilFigmaAddScreen = () => {
 
                                                 onChangeText={ (value) => onChange(value, 'name') }
                                                 value={ name }
-                                                onSubmitEditing={ onRegister }
+                                                onSubmitEditing={ onAddDependent }
 
                                                 autoCapitalize="words"
                                                 autoCorrect={ false }
@@ -228,7 +258,7 @@ export const PerfilFigmaAddScreen = () => {
 
                                                             onChangeText={ (value) => onChange(value, 'lastname') }
                                                             value={ lastname }
-                                                            onSubmitEditing={ onRegister }
+                                                            onSubmitEditing={ onAddDependent }
 
                                                             autoCapitalize="words"
                                                             autoCorrect={ false }
@@ -237,10 +267,15 @@ export const PerfilFigmaAddScreen = () => {
                                         {/* Sexo */}
                                         <View style = {{ marginVertical:20}}>
                                               <Text>Sexo:<Text style={{ color: 'skyblue' }}> *</Text></Text>
-                                              <UseGenderComponent onPress={ onSelectTrigger }/> 
+                                              <UseGenderComponent onPress={ onSexoTrigger }/> 
                                         </View>
+                                        {/* Relacion */}
+                                        <View>
+                                              <Text>Parentesco:<Text style={{ color: 'skyblue' }}> *</Text></Text>
+                                              <UseRelationShipComponent onPress={ onRelationShipSelectTrigger }/>
+                                        </View>  
                                         {/* Cedula */}
-                                        <View style = {{ marginVertical:20}}>
+                                        {/* <View style = {{ marginVertical:20}}>
                                                                 <Text style={ comunStylesFigma.label }>Cedula:<Text style={{ color: 'skyblue' }}> *</Text></Text>
                                                                 <TextInput 
                                                                     placeholder="V- 12345678"
@@ -254,12 +289,12 @@ export const PerfilFigmaAddScreen = () => {
 
                                                                     onChangeText={ (value) => onChange(value, 'ci') }
                                                                     value={ ci }
-                                                                    onSubmitEditing={ onRegister }
+                                                                    onSubmitEditing={ onAddDependent }
 
                                                                     autoCapitalize="words"
                                                                     autoCorrect={ false }
                                                                 />
-                                        </View>  
+                                        </View>   */}
                                         {/* email */}
                                         <View style = {{ marginVertical:20}}>
                                                 <Text>Dirección de correo electrónico:<Text style={{ color: 'skyblue' }}> *</Text></Text>
@@ -276,7 +311,7 @@ export const PerfilFigmaAddScreen = () => {
 
                                                     onChangeText={ (value) => onChange(value, 'email') }
                                                     value={ email }
-                                                    onSubmitEditing={ onRegister }
+                                                    onSubmitEditing={ onAddDependent }
 
 
                                                     autoCapitalize="none"
@@ -299,7 +334,7 @@ export const PerfilFigmaAddScreen = () => {
                                                      Propiedad puede ser estado o  municipio para ver que se va  allenar
                                                      Aqui la p[ropiedad es estados]
                                                  */}
-                                                {isVisible && (<ModalCitiesComponent getValor = { ( item, propiedad ) => getValor( item, propiedad )}
+                                                {isVisibleEstado && (<ModalCitiesComponent getValor = { ( item, propiedad ) => getValor( item, propiedad )}
                                                                                       propiedad = 'estado' 
                                                                                     />
                                                                 )
@@ -310,7 +345,7 @@ export const PerfilFigmaAddScreen = () => {
                                                         (Platform.OS === 'ios') && comunStylesFigma.inputFieldIOS,
                                                         { backgroundColor: 'gray', justifyContent: 'center', alignItems: 'center' }
                                                     ]}
-                                                    onPress={() => showModal()}
+                                                    onPress={() => showModalEstado()}
                                                     >
                                                     <Text style={ { color:'white'} }>Estado:</Text>
                                                 </TouchableOpacity>
@@ -334,25 +369,31 @@ export const PerfilFigmaAddScreen = () => {
                                                                                     (Platform.OS === 'ios') && comunStylesFigma.inputFieldIOS,
                                                                                     { backgroundColor: 'gray', justifyContent: 'center', alignItems: 'center' }
                                                                                 ]}
-                                                                                onPress={() => showModalMunicipio(true)}
+                                                                                onPress={() => showModalMunicipio()}
                                                                                 >
                                                                                 <Text style={{ color: 'white' }}> Municipio</Text>
                                                                                 </TouchableOpacity>
                                                        </View>    )}  
+                                            {/* Crear una nueva cuenta */}
+                                            <View style={{...comunStylesFigma.buttonContainer,  alignItems:'center', marginTop:10, marginBottom:50}  }>
 
-                                         {/* Parentesco                      */}
-                                        <View style = {{ marginVertical:20}}>
-                                              <Text>Parentesco:<Text style={{ color: 'skyblue' }}> *</Text></Text>
-                                              <UseGenderComponent onPress={ onSelectTrigger }/> 
+                                            
+                                                      
+                                                {  isLoading && (  <LoadingScreen />  )}
+                                            <TouchableOpacity 
+                                                     onPress= { onAddDependent} 
+                                                     style={ {...comunStylesFigma.button} }
+                                                    >
+                                                   <Text style={ [comunStylesFigma.buttonText ] }>Guardar</Text>
+                                            </TouchableOpacity>
                                         </View>
-                                        <View style = { styles.globalBottom }></View>
                           </View>
                          
                         </TouchableWithoutFeedback>
               </ScrollView>     
-            {/* {isVisible && (<ModalMessageComponent getValor={() => cerrarModal()}
+            {isVisible && (<ModalMessageComponent getValor={() => cerrarModal()}
               message={`${message}`}
-            />)} */}
+            />)}
           </View>
         </View>
       </KeyboardAvoidingView>

@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
    backgroundColor: 'white',
   },
   text: {
-    color: 'white',
+    color: 'gray',
     fontSize: 12,
   },
 });

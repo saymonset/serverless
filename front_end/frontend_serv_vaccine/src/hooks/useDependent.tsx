@@ -14,7 +14,7 @@ export const useDependent = ({...iniForm}:Dependent) => {
  
  
     //
-    const { name,  lastname,  phone, email,  birth, gender_id, status , onChange } = useForm({...iniForm});
+    const { name,  lastname, state, city,  phone, email,  birth, gender_id, status , onChange } = useForm({...iniForm});
 
 
 
@@ -91,6 +91,8 @@ export const useDependent = ({...iniForm}:Dependent) => {
          onDependent,
          name,  
          lastname,  
+         state,
+         city,
          phone,      
          email, 
          birth, 

@@ -12,13 +12,14 @@ export const dependentThunks = ( dependent:Dependent, token: String, loginRespon
         if (token) {
           await AsyncStorage.setItem('token', token ); 
         }
+        console.log('--------1--------------------');
           dispatch( startLoadingDependent());
           let data0 =  {};
           const {_id} = dependent;
           let { usuario } = loginResponse;
           let {_id:{$oid}} = usuario;
           dependent['user_id']=$oid;
-
+      
          //console.log({$oid})
           if(_id){
             const { _id, ...resto } = dependent;
@@ -30,8 +31,7 @@ export const dependentThunks = ( dependent:Dependent, token: String, loginRespon
           }
           const {data} = data0;
           const { statusCode, message, resp, } = data;
-
-          console.log({data})
+        
 
           if (statusCode == 401 || !resp) {
               dispatch( addMessage("Error: "+JSON.stringify(data)))
@@ -48,6 +48,46 @@ export const dependentThunks = ( dependent:Dependent, token: String, loginRespon
            dispatch( addMessage("Error: "+error))
       }
     }
+}
+
+export const dependentThunksAddModify = ( dependent:Dependent, token ): AnyAction  => {
+  return async ( dispatch, getState) => {
+    try {
+   
+      if (token) {
+        await AsyncStorage.setItem('token', token ); 
+      }
+        dispatch( startLoadingDependent());
+        let data0 =  {};
+        const {_id} = dependent;
+       //console.log({$oid})
+        if(_id){
+          const { _id, ...resto } = dependent;
+          dependent = Object.assign({}, resto);
+          data0 = await vaccinesApi.put(`/dependent/${_id}`, {...dependent});
+        }else{
+          data0 = await vaccinesApi.post(`/dependent/p`, {...dependent});
+        }
+
+        const {data} = data0;
+        const { statusCode, message, resp, } = data;
+       
+
+        if (statusCode == 401 || !resp) {
+            dispatch( addMessage("Error: "+JSON.stringify(data)))
+            return 
+        }
+        const payload: Dependent = {
+            ...dependent,
+            message,
+            resp
+            
+          };
+        dispatch( setDependentResponse(payload) );
+    } catch (error) {
+         dispatch( addMessage("Error: "+error))
+    }
+  }
 }
 
 export const dependentByIdThunks = ( id:String, token: String ): AnyAction  => {

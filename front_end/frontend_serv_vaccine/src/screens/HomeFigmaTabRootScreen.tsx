@@ -27,8 +27,6 @@ const TabsAndroid = () => {
         sceneAnimationEnabled= { true }
         barStyle={{
           backgroundColor: colores.primary
-          
-
         }}
           screenOptions= { ( { route}) => ({
           tabBarIcon: ( { color, focused} ) => {

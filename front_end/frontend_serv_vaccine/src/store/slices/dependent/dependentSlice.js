@@ -79,7 +79,8 @@ export const dependentSlice = createSlice({
         },
        addMessage: ( state, { payload } ) =>{
                 state.isLoading = false;
-                state.message = payload
+                state.message = payload;
+                console.log({payload})
         },
         removeMessage: ( state, { payload }) => {
             state.message = '';

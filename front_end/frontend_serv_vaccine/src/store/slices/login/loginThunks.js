@@ -48,22 +48,33 @@ export const loginCiThunks = ( ci, password ): AnyAction  => {
     try {
         dispatch( startLoadingLogin())
         // TODO: realizar peticion http
-    
         const {data} = await vaccinesApi.post(`/login`,{ ci, password });
-        const { token, resp, message, more } = data;
+        const { token, resp, message, more, usuario } = data;
+        const { _id } = usuario;
+        const { $oid:user_id } = _id;
+         
+       
 
         if ( !resp) {
             dispatch( addError("Error: "+message))
             return 
         }
+
+      
         const payload: LoginState = {
             email:more.email,
             isLoading: false,
             status: 'authenticated',
             token,
             message: '',
-            loginResponse: data,
+            user_id,
+            usuario,
           };
+
+          console.log({ user_id });
+          
+         
+       
         dispatch( setLoginResponse(payload) );
         
     } catch (error) {

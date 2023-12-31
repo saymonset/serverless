@@ -8,6 +8,8 @@ export interface LoginState {
     token: string | null;
     message: string;
     loginResponse: LoginResponse | null;
+    user_id: string;
+    usuario: Usuario;
   }
 
 export interface LoginResponse {

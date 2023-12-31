@@ -18,6 +18,8 @@ export interface Dependent {
     isUser?:          boolean;
     lastname?:        string;
     name?:            string;
+    state?:           string,
+    city?:            string;
     phone?:           string;
     relationship_id?: string;
     status?:          boolean;

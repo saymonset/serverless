@@ -9,6 +9,7 @@ import {  LoginState } from '../../../interfaces'
     status: 'not-authenticated',
     token: '',
     message: '',
+    user_id:'',
     loginResponse: null,
   };
 
@@ -25,7 +26,10 @@ export const loginSlice = createSlice({
             state.status = 'authenticated',
             state.token = payload.token,
             state.message = payload.message,
+            state.user_id = payload.user_id,
+            state.usuario = payload.usuario;
             state.loginResponse = payload.loginResponse;
+            
         },
         logOut: ( state, { payload } ) => {
             state.email = payload.email;

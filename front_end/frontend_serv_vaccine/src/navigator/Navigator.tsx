@@ -62,12 +62,9 @@ export const Navigator = () => {
                   <Stack.Screen name="SendCodeFigmaScreen" component={ SendCodeFigmaScreen } />
                   <Stack.Screen name="SeguridadFigmaScreen" component={ SeguridadFigmaScreen } />
                   <Stack.Screen name="RegistrodatosFigmaScreen" component={ RegistrodatosFigmaScreen } /> 
-                  
-                 
                   <Stack.Screen name="LoginScreen" component={ LoginScreen } />
                   <Stack.Screen name="SendSmsScreen" component={ SendSmsScreen } />
                   <Stack.Screen name="RegisterScreen" component={ RegisterScreen } /> 
-                 
             </>)
           : (<>
                {/** Este HomeScreen es el principa que lama el menu*/}
