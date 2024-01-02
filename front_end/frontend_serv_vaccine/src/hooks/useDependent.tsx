@@ -1,46 +1,30 @@
 import React, { useState } from 'react'
-import { Keyboard } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {   store } from '../store' 
-import {  registerThunks } from '../store/slices/register' 
-
 import { useForm } from './useForm';
 import { Dependent } from '../interfaces';
 import { dependentByIdThunks, dependentAddThunks, dependentDeleteThunks, loadDataThunks } from '../store/slices/dependent/dependentThunks.js';
-import { useDispatch, useSelector } from 'react-redux';
-import perfiles from '../interfaces/perfil-figma-interfaces';
+import { useDispatch } from 'react-redux';
 
 
 
 export const useDependent = ({...iniForm}:Dependent) => {
- 
-    const [ lista, setLista] = useState< PerfilFigma[] >( perfiles );
-    //
     const { name,  lastname, state, city,  phone, email,  birth, gender_id, status , onChange } = useForm({...iniForm});
-
-
-
     const [selectedGeneroId, setSelectedGeneroId] = React.useState("");
     const [selecteRelationShipId, setSelectedRelationShipId] = React.useState("");
     const [selectedUserId, setSelectedUserId] = React.useState("");
-
     const dispatch = useDispatch();
 
     {/**   datos de la tabla  */}
-
-
   const [isVisible, setIsVisible] = useState(false);
-
   const [tableData, setTableData] = useState([
     {
-      name: 'Samy',
-      lastname: 'true',
-      email: 'oracle@gmail.com',
-      phone: '04142711347',
-      gender_id: '65391c195f461c1c76e06647',
-      birth: '2016-03-03T08:00:00.000',
-      user_id: '653bb43c4c9a1e92b73983b9',
-      relationship_id: '653bc2727a410e288cb781da',
+      name: '',
+      lastname: '',
+      email: '',
+      phone: '',
+      gender_id: '',
+      birth: '',
+      user_id: '',
+      relationship_id: '',
       status: true,
     },
   ]);
