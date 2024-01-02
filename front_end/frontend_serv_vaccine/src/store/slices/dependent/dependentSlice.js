@@ -23,7 +23,7 @@ import {  Dependent } from '../../../interfaces/dependent-interfaces';
     statusCode:'',
     tableData: [],
     desde:      0,
-    limite:     2,
+    limite:     20,
     total:      0,
     currentPage:0,
     isDelete: false,

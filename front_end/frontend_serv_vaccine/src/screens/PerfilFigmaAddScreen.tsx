@@ -86,7 +86,6 @@ export const PerfilFigmaAddScreen = () => {
 
   const onClearError = async () => {
     await removeErrorThunks(dispatch)
-    console.log('removiendo errodddddd createregister')
   }
 
   const cerrarModal = () => {

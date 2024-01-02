@@ -12,7 +12,6 @@ export const dependentThunks = ( dependent:Dependent, token: String, loginRespon
         if (token) {
           await AsyncStorage.setItem('token', token ); 
         }
-        console.log('--------1--------------------');
           dispatch( startLoadingDependent());
           let data0 =  {};
           const {_id} = dependent;
