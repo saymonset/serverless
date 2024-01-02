@@ -7,7 +7,6 @@ import { loadDataThunks } from '../store/slices/dependent';
 
 
 export const usePerfilFigma = () => {
-    const [ setIsLoading] = useState(true);
     const [ lista, setLista] = useState< PerfilFigma[] >( perfiles );
     const {  usuario:{ token }  } = useSelector((state: store) => state.loginStore);
 
@@ -15,46 +14,30 @@ export const usePerfilFigma = () => {
 
     const dispatch = useDispatch();
 
+      {/** LLenar data */}
     const   loadDataFromStore = async () => {
       let limiteDesde ={
        limite,
        desde:0
      }
-     let prev: NextPrevioPage ={
+     let nextPrev: NextPrevioPage ={
        nextPage:'none'
      }
-     loadData(limiteDesde, prev)
+     await dispatch(loadDataThunks( limiteDesde, currentPage, nextPrev, token ));
+     // Define the desired format
+     setLista( tableData.map(item => ({
+                   icon: "person-outline",
+                   name: item.name,
+                   lastname: item.lastname,
+                   isUser: item.isUser
+                 })));
  }
-    const loadInfo = async () => {
-     
-        loadDataFromStore();
-       
-       //  const data = perfiles;
-         //setLista(data);
-        
-    }
-
     useEffect( () => {
-        loadInfo();
+      loadDataFromStore();
     }, []);
 
-     {/** LLenar data */}
-const loadData = async(limiteDesde: DesdeLimite, nextPrev: NextPrevioPage) => {
-  await dispatch(loadDataThunks( limiteDesde, currentPage, nextPrev, token ));
-  console.log('-------1---------------');
-  console.log({tableData});
-  console.log('-------2---------------');
-
-  // Define the desired format
-const PerfilFigma = tableData.map(item => ({
-                icon: "person-outline",
-                name: item.name,
-                lastname: item.lastname,
-                isUser: item.isUser
-              }));
-              setLista(PerfilFigma);  
-                
-}
+   
+ 
 
   return  {
          lista,

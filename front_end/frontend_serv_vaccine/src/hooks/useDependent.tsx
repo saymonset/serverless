@@ -6,13 +6,15 @@ import {  registerThunks } from '../store/slices/register'
 
 import { useForm } from './useForm';
 import { Dependent } from '../interfaces';
-import { dependentByIdThunks, dependentAddThunks, dependentDeleteThunks } from '../store/slices/dependent/dependentThunks.js';
+import { dependentByIdThunks, dependentAddThunks, dependentDeleteThunks, loadDataThunks } from '../store/slices/dependent/dependentThunks.js';
 import { useDispatch, useSelector } from 'react-redux';
+import perfiles from '../interfaces/perfil-figma-interfaces';
+
 
 
 export const useDependent = ({...iniForm}:Dependent) => {
  
- 
+    const [ lista, setLista] = useState< PerfilFigma[] >( perfiles );
     //
     const { name,  lastname, state, city,  phone, email,  birth, gender_id, status , onChange } = useForm({...iniForm});
 
@@ -45,6 +47,18 @@ export const useDependent = ({...iniForm}:Dependent) => {
 
   const addRow =async(token: string, showModal:(value:boolean)=>void) => {
     await dispatch(dependentAddThunks( token ));
+
+    // Actualizamos la data de la tabla
+    let limiteDesde ={
+      limite:1000,
+      desde:0
+    }
+    let nextPrev: NextPrevioPage ={
+      nextPage:'none'
+    }
+    let currentPage = 0;
+    await dispatch(loadDataThunks( limiteDesde, currentPage, nextPrev, token ));
+
     showModal(true);
   };
 

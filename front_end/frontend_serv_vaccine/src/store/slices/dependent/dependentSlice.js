@@ -22,6 +22,7 @@ import {  Dependent } from '../../../interfaces/dependent-interfaces';
     resp: false,
     statusCode:'',
     tableData: [],
+    dependentsResume:[],
     desde:      0,
     limite:     20,
     total:      0,
@@ -71,6 +72,7 @@ export const dependentSlice = createSlice({
         },
         loadDataDependent: ( state, { payload } ) => {
             state.tableData = payload.dependents;
+            state.dependentsResume = payload.dependentsResume;
             state.isLoading = false;
             state.desde = payload.desde;
             state.limite = payload.limite;

@@ -1,22 +1,42 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react'
+import React, { useEffect } from 'react'
 import { FlatList, Keyboard, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons';
+import { useDispatch, useSelector } from 'react-redux';
 import { PerfilFigmaComponent } from '../components/PerfilFigmaComponent';
 import { usePerfilFigma } from '../hooks/usePerfilFigma';
+import { NextPrevioPage } from '../interfaces';
+import { loadDataThunks } from '../store/slices/dependent';
 import { comunStylesFigma } from '../theme/comunFigmaTheme';
 
 export const PerfilesFigmaScreen = () => {
   let keyCounter = 0;
 
-
-  const { lista, isLoading } = usePerfilFigma();
+  const {  usuario:{ token }  } = useSelector((state: store) => state.loginStore);
+  const { message, resp, tableData, total, limite, desde, currentPage, isLoading, isDelete, dependentsResume } = useSelector( (state: store ) => state.dependentStore);
 
   const navigation = useNavigation();
+
+  const dispatch = useDispatch();
 
   const addFamily = ()=> {
          navigation.navigate( 'PerfilFigmaAddScreen' as never)
   }
+
+   {/** LLenar data */}
+const loadData = async(limiteDesde: DesdeLimite, nextPrev: NextPrevioPage) => {
+  await dispatch(loadDataThunks( limiteDesde, currentPage, nextPrev, token ));
+}
+  useEffect(() => {
+    let limiteDesde ={
+         limite,
+         desde
+    }
+    let none: NextPrevioPage ={
+      nextPage:'none'
+    }
+    loadData(limiteDesde, none)
+  }, [ ])
 return (
   <View style = {{ ... styles.globalMargin,
                        alignItems:'center',
@@ -44,7 +64,7 @@ return (
                       
              
              <FlatList
-                    data={lista}
+                    data={dependentsResume}
                     keyExtractor={() => {
                       keyCounter++;
                       return keyCounter.toString();

@@ -21,7 +21,7 @@ import { ModalCitiesComponent } from '../components/ModalCitiesComponent';
 import { UseGenderComponent } from '../components/GenderComponent';
 import { UseRelationShipComponent } from '../components/RelationShipComponent';
 import { useDependent } from '../hooks/useDependent';
-import { dependentThunksAddModify,  removeErrorThunks } from '../store/slices/dependent';
+import { dependentThunksAddModify,  removeErrorThunks, loadDataThunks } from '../store/slices/dependent';
 import { LoadingScreen } from './LoadingScreen';
 
 
@@ -172,8 +172,16 @@ export const PerfilFigmaAddScreen = () => {
     };
     let dependent: Dependent = { ...obj };
    await dispatch(dependentThunksAddModify(dependent, token));
-    {/** Nos vamos a la pantalla principal */ }
-    //onAddDependentScreen();
+        // Actualizamos la data de la tabla
+        let limiteDesde ={
+          limite:1000,
+          desde:0
+        }
+        let nextPrev: NextPrevioPage ={
+          nextPage:'none'
+        }
+        let currentPage = 0;
+        await dispatch(loadDataThunks( limiteDesde, currentPage, nextPrev, token ));
   }
 
   const onDateSelection = (date: Date) => {

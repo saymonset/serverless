@@ -188,8 +188,21 @@ export const loadDataThunks = ( desdeLimite: DesdeLimite, currentPage = 1, nextP
       const { desde, limite } = desdeLimite;
      
       const {data} = await vaccinesApi.get(`/dependent/${limite}/${desde}`);
+
+     
+      
      
       const { dependents, total, error } = data;
+       // Scamos un resumen de la data dependents y le agregamos un icono
+       let dependentsResume = [];
+       if (dependents){
+           dependentsResume = dependents.map(item => ({
+               icon: "person-outline",
+               name: item.name,
+               lastname: item.lastname,
+               isUser: item.isUser
+           }));
+       }
       if (error) {
         dispatch( addMessage("Error: "+JSON.stringify(error)))
         return 
@@ -197,6 +210,7 @@ export const loadDataThunks = ( desdeLimite: DesdeLimite, currentPage = 1, nextP
       currentPage = whereGo (nextPrev, total, currentPage);
       const payload: Dependentss = {
         dependents,
+        dependentsResume,
         birth:'',
         desde,
         limite,
