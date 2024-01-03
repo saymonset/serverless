@@ -57,7 +57,7 @@ const styles = {
   modalContent: {
     width: 350,
     height: 450,
-    backgroundColor: '#B0E2FF',
+    backgroundColor: 'while',
     justifyContent: 'center',
     alignItems: 'center',
     shadowOffset: {

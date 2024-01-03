@@ -3,8 +3,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import vaccinesApi from '../../../api/vaccinesApi'
 import {   startLoadingDependent, setDependentResponse, addMessage, removeMessage, loadDataDependent, setDependentById, setDependentDelete  } from './dependentSlice'
  import { Dependent, Dependentss, DesdeLimite, NextPrevioPage } from '../../../interfaces';
- import { UseHandlerPag } from '../../../hooks/useHandlerPag';
-
+ 
+ 
 
 export const dependentThunks = ( dependent:Dependent, token: String, loginResponse: LoginResponse ): AnyAction  => {
     return async ( dispatch, getState) => {
@@ -176,6 +176,8 @@ const whereGo =   (nextPrevioPage, total, currentPage) => {
      }
      return currentPage;
 }
+
+
 
 export const loadDataThunks = ( desdeLimite: DesdeLimite, currentPage = 1, nextPrev, token): AnyAction  => {
   return async ( dispatch, getState) => {

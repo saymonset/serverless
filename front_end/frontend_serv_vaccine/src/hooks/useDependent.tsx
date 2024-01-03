@@ -3,6 +3,7 @@ import { useForm } from './useForm';
 import { Dependent } from '../interfaces';
 import { dependentByIdThunks, dependentAddThunks, dependentDeleteThunks, loadDataThunks } from '../store/slices/dependent/dependentThunks.js';
 import { useDispatch } from 'react-redux';
+import perfiles from '../interfaces/perfil-figma-interfaces';
 
 
 

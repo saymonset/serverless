@@ -24,7 +24,7 @@ import {  Dependent } from '../../../interfaces/dependent-interfaces';
     tableData: [],
     dependentsResume:[],
     desde:      0,
-    limite:     20,
+    limite:     2,
     total:      0,
     currentPage:0,
     isDelete: false,
