@@ -16,8 +16,8 @@ vaccinesApi.interceptors.request.use(
         return config;
     },
     (error) => {
-        console.log('Desde api axios;')
-        console.log(error);
+        console.error('Desde api axios;')
+        console.error(error);
         return Promise.reject(error);
     }
 );

@@ -50,7 +50,7 @@ export const ModalMessageComponent = ({ getValor, message = '' }: Props) => {
 const styles = {
   modalContainer: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
     justifyContent: 'center',
     alignItems: 'center',
   },

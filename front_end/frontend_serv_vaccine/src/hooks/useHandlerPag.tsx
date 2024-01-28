@@ -16,21 +16,16 @@ const handlePreviousPage =  (total: number) => {
  
 
 const handleNextPage =  (total: number) => {
-  console.log('--1-')
-  console.log({total, page})
   if (page < total) {
     setPage((prevPage) => {
       const nextPage = prevPage + 1;
       return nextPage;
     });
-    console.log(page)
-    console.log('--2-')
   }
 };
 
 const whereGo =   (nextPrevioPage: NextPrevioPage, total=0) => {
      const { nextPage } = nextPrevioPage;
-     console.log({nextPage})
     switch (nextPage) {
           case 'next':
             // Lógica para ir a la siguiente página

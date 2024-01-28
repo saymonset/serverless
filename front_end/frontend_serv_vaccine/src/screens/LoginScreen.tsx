@@ -17,8 +17,7 @@ interface Props extends StackScreenProps<any, any> {}
 
 export const LoginScreen = ({ navigation }: Props) => {
 
-    const {   genderLoad,
-        relationshipLoad,getGeneroRaltionSchipLoads } = useContext(AuthContext)
+
 
       {/* REDUX TOOLKIT */}
       
@@ -47,9 +46,6 @@ useEffect(() => {
   const onLogin = async () => {
     Keyboard.dismiss();
     await dispatch(loginThunks( email, password));
-
-    // Carga los generos y raltion ships en memoria de bad al contexto para tenerlos  ya cargados
-       getGeneroRaltionSchipLoads();
 }
  
   return (

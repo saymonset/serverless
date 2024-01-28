@@ -11,12 +11,13 @@ import { AuthContext } from '../context/AuthContext';
 
 interface Props {
     onPress: (value:string)=> void;
+    gender_id?: string;
   }
 
-export const UseGenderComponent = ({ onPress}:Props) => {
+export const UseGenderComponent = ({ onPress, gender_id}:Props) => {
 
   const { authState:{genders} } = useContext(AuthContext)
-  const { gender_id } = useSelector( (state: store ) => state.dependentStore);
+ // const { gender_id } = useSelector( (state: store ) => state.dependentStore);
 
   
 
@@ -33,22 +34,29 @@ export const UseGenderComponent = ({ onPress}:Props) => {
   const getGenders = async () => {
     try {
       setData( genders as never);
+      loadDefault();
     } catch (error) {
       console.error(error);
     }
   };
 
+  const loadDefault = () => {
+    if (genders && genders.length>0){
+      let obj = genders.filter((value)=>{
+      let { key } = value;
+      if ( key == gender_id){
+          return value;
+      }
+     });
+     if (obj && obj.length > 0){
+      const { key, value } = obj[0];
+      setSelectedByDefault({ key, value } );
+     }
+   }
+  }
+
   useEffect(() => {
-    if (data && data.length>0){
-       let obj = data.filter((value)=>{
-        let { key } = value;
-        if ( key === gender_id)
-        return value;
-       });
-       if (obj && obj.length > 0){
-        setSelectedByDefault(obj[0]);
-       }
-    }
+   
   }, [gender_id]);
 
 

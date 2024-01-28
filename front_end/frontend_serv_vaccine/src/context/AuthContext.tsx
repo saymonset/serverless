@@ -4,6 +4,8 @@ import { Gender, GenderElement } from '../interfaces/gender-interfaces';
 import vaccinesApi from '../api/vaccinesApi';
 import { selectOption } from '../interfaces/select-option-interface';
 import { Relationship, RelationShipResponse } from '../interfaces/relationship-interfaces';
+import { ApplyVaccineResponse, DosisResponse, Dosiss } from '../interfaces';
+import { Vaccine, VaccineResponse } from '../interfaces/vaccine-interfaces';
  
 
 // Definir como luce, que informacion tendre aqui
@@ -12,6 +14,8 @@ export interface AuthState  {
     username?: string;
     genders?:  selectOption[];
     relationships?:selectOption[];
+    dosis?:  Dosiss[];
+    vaccines?:Vaccine[];
 }
 
 //  El estado inicial
@@ -20,6 +24,8 @@ export const authInitialState:  AuthState = {
     username: undefined,
     genders: [],
     relationships:[],
+    dosis: [],
+    vaccines:[],
 }
 
 // Lo usaremos para decirle a react como luce y que expone el context
@@ -30,6 +36,7 @@ export interface  AuthContextProps {
      relationshipLoad: () => void;
      // Carga los generos y raltion ships en memoria de bad al contexto para tenerlos  ya cargados
      getGeneroRaltionSchipLoads :  () => void;
+     getDosisVaccinesLoads :  (token:string) => void;
 }
 
 
@@ -46,11 +53,48 @@ export const AuthProvider = ( { children }:  any ) => {
     }
 
     const getGeneroRaltionSchipLoads = async() => {
+        
         let  datagenders =  vaccinesApi.get<Gender>(`/genders/20/0`);
         let  datarelationships =  vaccinesApi.get<RelationShipResponse>(`/relationships/20/0`);
-        const [ gendersResp, relationshipsResp ] = await Promise.all([ datagenders, datarelationships ]);
+
+       
+
+        const [ gendersResp, relationshipsResp ] = await Promise.all([ datagenders, datarelationships]);
         genderLoad(gendersResp.data.genders);
         relationshipLoad(relationshipsResp.data.relationships);
+      
+    }
+    const getDosisVaccinesLoads = async(token: string) => {
+     //   console.log({token});
+        //Este filtro hay que colocarlo porque la url exige por lo menos un string vacio ''. Es un
+        const filtro = '\'\'';
+
+        let  datavaccines =  vaccinesApi.get<VaccineResponse>(`/vaccine/100/0/${filtro}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+        let  datadosis =  vaccinesApi.get<DosisResponse>(`/dosis/100/0/${filtro}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+         const [ datavaccinesResp, datadosisResp ] = await Promise.all([ datavaccines, datadosis ]);
+
+         const vaccines:Vaccine[] = datavaccinesResp.data.vaccines ?? [];
+         dispatch( { type:'vaccinesLoad', payload:{
+            selections:vaccines
+        }})
+         const dosis:Dosiss[] = datadosisResp.data.dosiss ?? [];
+         dispatch( { type:'dosisLoad', payload:{
+            selections:dosis
+        }})
+        // console.log(datadosisResp.data);
+       // console.log(datadosisResp.data.dosiss);
+       
+      //  genderLoad(gendersResp.data.genders);
+       // relationshipLoad(relationshipsResp.data.relationships);
     }
 
     const genderLoad = async(genders: GenderElement[] = []) => {
@@ -65,7 +109,7 @@ export const AuthProvider = ( { children }:  any ) => {
             }})
 
         } catch (error) {
-            console.log({error})
+            console.error({error})
         }
     }
 
@@ -81,7 +125,7 @@ export const AuthProvider = ( { children }:  any ) => {
             }})
 
         } catch (error) {
-            console.log({error})
+            console.error({error})
         }
     }
     
@@ -91,7 +135,8 @@ export const AuthProvider = ( { children }:  any ) => {
             signIn,
             genderLoad,
             relationshipLoad,
-            getGeneroRaltionSchipLoads
+            getGeneroRaltionSchipLoads,
+            getDosisVaccinesLoads
           }}>
                 { children }
           </AuthContext.Provider>

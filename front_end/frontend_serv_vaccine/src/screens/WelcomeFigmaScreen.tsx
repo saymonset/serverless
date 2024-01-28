@@ -18,7 +18,7 @@ export const WelcomeScreen = ({ navigation }: Props) => {
     const {   getGeneroRaltionSchipLoads } = useContext(AuthContext)
 
     const begin = ( ) => {
-          {/*  Cargamos data en el contexto */}
+          {/*  Cargamos data en el contexto reduce*/}
         getGeneroRaltionSchipLoads();
         navigation.replace('SendPhoneFigmaScreen')
     }

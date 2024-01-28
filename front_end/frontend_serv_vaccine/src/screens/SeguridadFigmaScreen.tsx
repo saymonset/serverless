@@ -1,16 +1,10 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import React, { useState } from 'react'
-import { Alert, Button, Image, Keyboard, KeyboardAvoidingView, Modal, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useForm } from '../hooks/useForm';
-import { WhiteLogo } from '../components/WhiteLogo';
+import { Keyboard, KeyboardAvoidingView, Modal, Platform, Text, TouchableOpacity, View } from 'react-native';
 import { BackgroundSendPhoneFigma } from '../components/BackgroundSendPhoneFigma';
 import { HeaderTitleFigma } from '../components/HeaderTitleFigmaComponent';
 import { stylesFigma } from '../theme/sendPhoneFigmaTheme';
-import {  SendPhonFigmaComponent } from '../components/SendPhonFigmaComponent';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { SendCodeFigmaComponent } from '../components/SendCodeFigmaComponent';
 import { SeguridadFigmaComponent } from '../components/SeguridadFigmaComponent';
 
 

@@ -3,11 +3,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import vaccinesApi from '../../../api/vaccinesApi'
 import {   startLoadingSms, setSmsResponse, addErrorSms,  removeErrorSms, resetSendSms, 
           checkCode, setPassword, passwordUpdate, setCi  } from './sendSmsSlice'
+import {  enviarMensajePorStatusCode } from '../../../utils/enviarMensajePorStatusCode'
 
 
 
 const enviarCode = async ( dispatch, phone, ci ) => {
  
+      try {
         let response = await vaccinesApi.post('/sendSms', { phone } );
         let {data} = response;
         const { resp, message, error} = data; 
@@ -25,6 +27,8 @@ const enviarCode = async ( dispatch, phone, ci ) => {
             token: '',
             message: 'Success SMS: '+message,
             response: null,
+            //En SendPhoneFigmaScreen , en un useEffect, agarramos esta 
+            //bandera para dirigirnos a la pagina donde debe escribir el odigo enviado
             isSendCode: true,
             phone,
             resp
@@ -38,6 +42,10 @@ const enviarCode = async ( dispatch, phone, ci ) => {
             }
             dispatch( setCi(payload) );
         }
+      } catch (error) {
+           dispatch( addErrorSms("Error: "+error));
+      }
+        
 
        
 }
@@ -49,27 +57,8 @@ export const reEnviarCodeThunks = ( phone ): AnyAction => {
       dispatch( startLoadingSms());
         //  Enviamaos el codigo para recuperar password
         enviarCode( dispatch, phone );
-      // // TODO: realizar peticion http
-      
-      //   let response = await vaccinesApi.post('/sendSms', { phone } );
-      //   let {data} = response;
-      //   const { resp, message, statusCode} = data; 
-      //    if (!resp){
-      //     dispatch( addErrorSms("Error: "+message));
-      //     return;
-      //    }
-      //    const payload = {
-      //       phone,
-      //       isLoading: false,
-      //       token: '',
-      //       message: 'Success SMS: '+message,
-      //       response: null,
-      //       isSendCode: true,
-      //     };
-      //   dispatch( setSmsResponse(payload) );
-     
     } catch (error) {
-         console.log({error});
+         console.error({error});
          dispatch( addErrorSms("Error: "+error))
     }
  
@@ -82,30 +71,10 @@ export const sendSmsThunks = (  phone   ): AnyAction  => {
         dispatch( startLoadingSms())
        //  Enviaamos el codigo para recuperar password
         enviarCode( dispatch, phone );
-        // // TODO: realizar peticion http
         
-    
-        //   let response = await vaccinesApi.post('/sendSms', { phone } );
-         
-        //   let {data} = response;
-         
-         
-        //   const { resp, message, statusCode} = data; 
-        //    if (!resp){
-        //     dispatch( addErrorSms("Error: "+message));
-        //     return;
-        //    }
-        //    const payload = {
-        //       phone,
-        //       isLoading: false,
-        //       token: '',
-        //       message: 'Success SMS: '+message,
-        //       response: null,
-        //       isSendCode: true,
-        //     };
-        //   dispatch( setSmsResponse(payload) );
+     
       } catch (error) {
-           console.log({error});
+           console.error({error});
            dispatch( addErrorSms("Error: "+error))
       }
    
@@ -124,17 +93,16 @@ export const passwordRecoveryThunks = (  phone, code   ): AnyAction  => {
          
         let response = await vaccinesApi.post('/CheckCode/passwordRecovery', { phone, code } );
         let {data} = response;
-        const { resp, message, token=null} = data; 
+        const { resp, statusCode} = data; 
          if (!resp){
-              dispatch( addErrorSms("Error: "+message));
+              dispatch( addErrorSms(enviarMensajePorStatusCode(statusCode+"")))
               return;
          }
         //  Enviamos el codigo para recuperar password
-     
         enviarCode( dispatch, phone, ci );
        
     } catch (error) {
-      console.log({error});
+      console.error({error});
          dispatch( addErrorSms("Error: "+error))
     }
   }
@@ -156,6 +124,7 @@ export const checkCodeThunks = (  phone, code   ): AnyAction  => {
          const payload = {
             token,
             message: 'Success Code: '+message,
+            //En SendCodeFigmaScreen en un effect con el token nos dirigimos de manera automatica a  SeguridadFigmaScreen
             phone,
             resp
           };
@@ -163,7 +132,7 @@ export const checkCodeThunks = (  phone, code   ): AnyAction  => {
         dispatch( checkCode(payload) );
        
     } catch (error) {
-      console.log({error});
+      console.error({error});
          dispatch( addErrorSms("Error: "+error))
     }
   }
@@ -175,28 +144,30 @@ export const changuePasswordThunks = (  password, password2, phone, code   ): An
       dispatch( startLoadingSms());
 
       if (password !== password2) {
-          dispatch( addErrorSms("Error: "+'The password confirmation does not match'));
+        let statusCode='passworddoesnotmatch'
+          dispatch( addErrorSms(enviarMensajePorStatusCode(statusCode)))
           return;
       }
       // TODO: realizar peticion http
         let response = await vaccinesApi.post('/CheckCode/passwordUpdate', { phone, code, password } );
         let {data} = response;
 
-        const { resp, message} = data; 
+        const { resp, message, statusCode} = data; 
          if (!resp){
           dispatch( addErrorSms("Error: "+message));
           return;
          }
 
+         //statusCode = "successPassword";
          const payload = {
             resp,
-            message: 'Success Code: '+message,
+            message: enviarMensajePorStatusCode(statusCode+''),
           };
           
         dispatch( passwordUpdate(payload) );
        
     } catch (error) {
-      console.log({error});
+      console.error({error});
          dispatch( addErrorSms("Error: "+error))
     }
   }

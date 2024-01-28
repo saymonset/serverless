@@ -4,8 +4,10 @@ import { loginSlice } from './slices/login'
 import { sendSmsSlice } from './slices/sendSms'
 import { registerSlice } from './slices/register'
 import { dependentSlice } from './slices/dependent'
+import { applyVaccineSlice } from './slices/applyvaccines'
 export const store = configureStore({
   reducer: {
+    applyVaccineStore: applyVaccineSlice.reducer,
     loginStore: loginSlice.reducer,
     sendSmsStore: sendSmsSlice.reducer,
     registerStore: registerSlice.reducer,

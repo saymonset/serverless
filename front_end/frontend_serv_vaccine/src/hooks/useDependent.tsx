@@ -1,14 +1,40 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from './useForm';
-import { Dependent } from '../interfaces';
-import { dependentByIdThunks, dependentAddThunks, dependentDeleteThunks, loadDataThunks } from '../store/slices/dependent/dependentThunks.js';
-import { useDispatch } from 'react-redux';
-import perfiles from '../interfaces/perfil-figma-interfaces';
+import { Dependent, DependentsResume, DesdeLimite, NextPrevioPage } from '../interfaces';
+import { dependentByIdThunks, dependentDeleteThunks, dependentThunksAddModify, editFalseDependentThunks, loadDataThunks } from '../store/slices/dependent/dependentThunks.js';
+import { useDispatch, useSelector } from 'react-redux';
 
 
 
-export const useDependent = ({...iniForm}:Dependent) => {
-    const { name,  lastname, state, city,  phone, email,  birth, gender_id, status , onChange } = useForm({...iniForm});
+export const useDependent = () => {
+
+  const [dataFiltred, setDataFiltred] = useState<DependentsResume[]>([]);
+
+    {/** Estas variables vienen del store */}
+    let {  name:nameStore,  lastname:lastnameStore, phone:phoneStore, email:emailStore,  birth:birthStore, gender_id:gender_idStore,
+       status:statusStore,age:ageStore, isChildren:isChildrenStore , state:stateStore, city:cityStore, edo:edoStore,
+       dependentsResume } = useSelector( (state: store ) => state.dependentStore);
+
+       {/** Estas variables son para inicializar el formulario */}
+    let inic = {
+      name:nameStore,
+      lastname:lastnameStore,
+      phone:phoneStore,
+      email:emailStore,
+      birth:birthStore,
+      gender_id:gender_idStore,
+      status:statusStore,
+      state:stateStore,
+      edo:edoStore,
+      city:cityStore,
+      age:ageStore, 
+      isChildren:isChildrenStore
+    }
+    const {  name,  lastname, phone, email,  birth, gender_id, status
+      ,age, isChildren , state, city, edo, onChange } = useForm({...inic});
+     
+
+
     const [selectedGeneroId, setSelectedGeneroId] = React.useState("");
     const [selecteRelationShipId, setSelectedRelationShipId] = React.useState("");
     const [selectedUserId, setSelectedUserId] = React.useState("");
@@ -16,42 +42,28 @@ export const useDependent = ({...iniForm}:Dependent) => {
 
     {/**   datos de la tabla  */}
   const [isVisible, setIsVisible] = useState(false);
-  const [tableData, setTableData] = useState([
-    {
-      name: '',
-      lastname: '',
-      email: '',
-      phone: '',
-      gender_id: '',
-      birth: '',
-      user_id: '',
-      relationship_id: '',
-      status: true,
-    },
-  ]);
+  
+  const loadDataFromStore = (data:DependentsResume[]) => {
+    setDataFiltred(data);
+  }
 
-  const addRow =async(token: string, showModal:(value:boolean)=>void) => {
-    await dispatch(dependentAddThunks( token ));
+  const loadData = async(limiteDesde: DesdeLimite,currentPage:number, nextPrev:NextPrevioPage, token:string, term: string) => {
+    await dispatch(loadDataThunks( limiteDesde, currentPage, nextPrev, token, term));
+  }
+  const dependentDelete = async( id:String, token: String, dependentsResume: DependentsResume[] ) => {
+      dispatch(dependentDeleteThunks(id, token, dependentsResume ))
+  }
+  const dependentAddModify = async(dependent: Dependent, token: string, dependentsResume:DependentsResume, total:number) => {
+    await dispatch(dependentThunksAddModify(dependent, token, dependentsResume, total));
+  }
 
-    // Actualizamos la data de la tabla
-    let limiteDesde ={
-      limite:1000,
-      desde:0
-    }
-    let nextPrev: NextPrevioPage ={
-      nextPage:'none'
-    }
-    let currentPage = 0;
-    await dispatch(loadDataThunks( limiteDesde, currentPage, nextPrev, token ));
-
-    showModal(true);
-  };
-
+  const dependentById = async(id: string, token: string) => {
+    await dispatch(dependentByIdThunks(id, token));
+  }
+  //   
   const deleteRow = async(id:string, token:stringx) => {
     await dispatch(dependentDeleteThunks( id, token ));
-    // const newData = [...tableData];
-    // newData.splice(index, 1);
-    // setTableData(newData);
+    
   };
 
   const updateRow = async(id:string, token:string, showModal:(value:boolean)=>void) => {
@@ -59,8 +71,15 @@ export const useDependent = ({...iniForm}:Dependent) => {
     showModal(true);
   };
 
+   const editFalseDependent = () => {
+      dispatch(editFalseDependentThunks( ));
+  }
    
-
+  const updateRowFigma =  async(id:string, token:string) => {
+    
+      dispatch(await dependentByIdThunks( id, token ));
+   
+  };
    
 
     let onGeneroSelectTrigger = (value:string) => {
@@ -79,6 +98,26 @@ export const useDependent = ({...iniForm}:Dependent) => {
     }
 
 
+    const initPerfiles = async (limite:number, token: string) => {
+
+      let limiteDesde ={
+        limite,
+        desde:0
+      }
+      let prev: NextPrevioPage ={
+        nextPage:'none'
+      }
+    //  loadData(limiteDesde, prev);
+      let currentPage = 0;
+      await dispatch(loadDataThunks( limiteDesde, currentPage, prev, token ));
+    } 
+    
+
+    useEffect(() => {
+      loadDataFromStore(dependentsResume);
+    }, [dependentsResume])
+    
+
     const onDependent = async() => {
 
     }
@@ -88,24 +127,33 @@ export const useDependent = ({...iniForm}:Dependent) => {
          onUserSelectTrigger,
          onRelationShipSelectTrigger,
          onDependent,
-         name,  
-         lastname,  
+         name,
+         lastname,
+         phone,
+         email,
+         birth,
+         gender_id,
+         status,
          state,
          city,
-         phone,      
-         email, 
-         birth, 
-         gender_id, 
-         status, 
+         age,
+         isChildren,
+         edo,
          onChange,
          selectedGeneroId,
          selecteRelationShipId,
          selectedUserId,
-         tableData,
          updateRow,
-         addRow,
+         updateRowFigma,
+         dependentAddModify,
+         editFalseDependent,
+         dependentById,
+         dataFiltred, 
          deleteRow,
+         dependentDelete,
          setIsVisible,
-         isVisible
+         isVisible,
+         initPerfiles,
+         loadData
   }
 }

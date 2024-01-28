@@ -16,7 +16,6 @@ export const PullToRefreshScreen = () => {
     setRefreshing(true);
 
     setTimeout(() => {
-      console.log('Terminamos');
       setRefreshing(false);
       setData('Hola Mundo');
     }, 3500);

@@ -1,6 +1,6 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import React, { useEffect, useState } from 'react'
-import {  Alert, Keyboard, KeyboardAvoidingView, Modal, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {   Keyboard, KeyboardAvoidingView, Platform,  TouchableOpacity, View } from 'react-native';
  
 import { BackgroundSendPhoneFigma } from '../components/BackgroundSendPhoneFigma';
 import { HeaderTitleFigma } from '../components/HeaderTitleFigmaComponent';
@@ -9,7 +9,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { RegistrodatosFigmaComponent } from '../components/RegistrodatosFigmaComponent';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeErrorThunks } from '../store/slices/register/registerThunks';
-import { RegisterComponent } from '../components/RegisterComponent';
 import { ModalMessageComponent } from '../components/ModalMessageComponent';
 import { LoadingScreen } from './LoadingScreen';
  
@@ -32,7 +31,6 @@ export const RegistrodatosFigmaScreen = ({ navigation }: Props) => {
 
       const   onClearError = async () => {
           await removeErrorThunks(dispatch)
-          console.log('removiendo error createregister')
       } 
  
       const cerrarModal = () => {
@@ -69,7 +67,6 @@ export const RegistrodatosFigmaScreen = ({ navigation }: Props) => {
  
      const onRegister = async() => {
          Keyboard.dismiss();
-         console.log({message, resp})
      }
 
 

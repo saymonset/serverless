@@ -1,7 +1,6 @@
 import  React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useSelector } from 'react-redux';
-import { HomeScreen } from '../screens/HomeScreen';
 import { TextInputScreen } from '../screens/TextInputScreen';
 import { PullToRefreshScreen } from '../screens/PullToRefreshScreen';
 import { CustomSectionListScreen } from '../screens/CustomSectionListScreen';
@@ -10,7 +9,6 @@ import { ModalScreen } from '../screens/ModalScreen';
 import { LoginScreen } from '../screens/LoginScreen';
 import { RegisterScreen } from '../screens/RegisterScreen';
 
-import {  store } from '../store'
 import { SendSmsScreen } from '../screens/SendSmsScreen';
 import { DependentScreen } from '../screens/DependentScreen';
 import { WelcomeScreen } from '../screens/WelcomeFigmaScreen';
@@ -27,10 +25,41 @@ import { HomeFigmaTabRootScreen } from '../screens/HomeFigmaTabRootScreen';
 import { SearchScreen } from '../screens/SearchScreen';
 import { PerfilFigmaAddScreen } from '../screens/PerfilFigmaAddScreen';
 import { PerfilesFigmaScreen } from '../screens/PerfilesFigmaScreen';
+import { Dependent } from '../interfaces/dependent-interfaces';
+import { ApplyVaccinesScreen } from '../screens/ApplyVaccinesScreen';
+import { ApplyVaccinesAddScreen } from '../screens/ApplyVaccinesAddScreen';
+ 
 
+export type RootStackParams = {
+  WelcomeScreen: undefined;
+  LoginFigmaScreen: undefined;
+  PasswordRecoveryScreen1: undefined;
+  ContactRecoveryFigmaScreen: undefined;
+  SendCodeFigmaRecoveryScreen2: undefined;
+  ConfirmPasswordRecoveryFigmaScreen3: undefined;
+  SendPhoneFigmaScreen: undefined;
+  SendCodeFigmaScreen: undefined;
+  SeguridadFigmaScreen: undefined;
+  RegistrodatosFigmaScreen: undefined;
+  LoginScreen: undefined;
+  SendSmsScreen: undefined;
+  RegisterScreen: undefined;
 
+  // Parte privada autenticado
+  HomeFigmaTabRootScreen: undefined;
+  PerfilFigmaAddScreen: Dependent;
+  PerfilesFigmaScreen: undefined;
+  ApplyVaccinesScreen: undefined;
+  ApplyVaccinesAddScreen: undefined;
+  DependentScreen: undefined;
+  TextInputScreen: undefined;
+  PullToRefreshScreen: undefined;
+  CustomSectionListScreen: undefined;
+  ModalScreen: undefined;
+  SearchScreen: undefined;
+}
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<RootStackParams>();
 
 export const Navigator = () => {
 
@@ -49,9 +78,6 @@ export const Navigator = () => {
       
           (status !== 'authenticated')
           ? (<>
-                 
-                 
-              
                   <Stack.Screen name="WelcomeScreen" component={ WelcomeScreen } /> 
                   <Stack.Screen name="LoginFigmaScreen" component={ LoginFigmaScreen } />
                   <Stack.Screen name="PasswordRecoveryScreen1" component={ PasswordRecoveryScreen1 } />
@@ -67,17 +93,19 @@ export const Navigator = () => {
                   <Stack.Screen name="RegisterScreen" component={ RegisterScreen } /> 
             </>)
           : (<>
-               {/** Este HomeScreen es el principa que lama el menu*/}
+               {/** Este HomeScreen es el principa que llama el menu*/}
                <Stack.Screen name="HomeFigmaTabRootScreen" component={ HomeFigmaTabRootScreen } />  
                <Stack.Screen name="PerfilFigmaAddScreen" component={ PerfilFigmaAddScreen } />  
                <Stack.Screen name="PerfilesFigmaScreen" component={ PerfilesFigmaScreen } />  
-                {/* <Stack.Screen name="HomeScreen" component={HomeScreen} /> */}
+
+               <Stack.Screen name="ApplyVaccinesScreen" component={ ApplyVaccinesScreen } />  
+               <Stack.Screen name="ApplyVaccinesAddScreen" component={ ApplyVaccinesAddScreen } />  
+             
                 <Stack.Screen name="DependentScreen" component={ DependentScreen } />
                 <Stack.Screen name="TextInputScreen" component={TextInputScreen} />
                 <Stack.Screen name="PullToRefreshScreen" component={PullToRefreshScreen} />
                 <Stack.Screen name="CustomSectionListScreen" component={CustomSectionListScreen} />
                 <Stack.Screen name="ModalScreen" component={ModalScreen} />
-                
                 <Stack.Screen name="SearchScreen" component={SearchScreen} />
                  
                 

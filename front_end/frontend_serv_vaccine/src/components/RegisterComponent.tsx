@@ -24,7 +24,6 @@ export const RegisterComponent = ( { onLogin, onRegisterScreen }: Props1) => {
   const [selected, setSelected] = React.useState("");
   const [selectedGeneroId, setSelectedGeneroId] = React.useState("");
   const onSelectTrigger = (value:string) => {
-      console.log(`Disparado desde el padre: ${value}`);
       setSelectedGeneroId(value);
   }
   const { token, phone } = useSelector( (state: store ) => state.sendSmsStore);
@@ -56,8 +55,6 @@ export const RegisterComponent = ( { onLogin, onRegisterScreen }: Props1) => {
 
 
         let register: Register = { ...obj  };
-
-        console.log({phone})
         await dispatch(registerThunks( register));
        
          {/** Nos vamos a la pantalla principal */}

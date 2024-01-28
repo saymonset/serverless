@@ -14,10 +14,10 @@ import { useNavigation } from '@react-navigation/native';
 
 interface Props {
     obj: PerfilFigma;
-    deleteRow: (id:string) => void;
+    applyVaccinePerson: (id:string) => void;
 }
 
-export const PerfilFigmaComponent = ( { obj, deleteRow } : Props) => {
+export const ApplyVaccinesComponent = ( { obj, applyVaccinePerson } : Props) => {
 
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -66,10 +66,10 @@ export const PerfilFigmaComponent = ( { obj, deleteRow } : Props) => {
             <View style={{  marginLeft:(Platform.OS==='ios')?1:10}}>
                 <TouchableOpacity onPress={
                               () => {
-                                deleteRow(obj._id)
+                                applyVaccinePerson(obj._id)
                               }
                               }>
-                      {obj.isUser ? <></>:<Ionicons name="trash" size={50} color="red" />} 
+                       <Ionicons name="eyedrop-outline" size={50} color="black" /> 
                 </TouchableOpacity>
             </View>
            

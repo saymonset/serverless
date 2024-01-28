@@ -5,6 +5,7 @@ import type {PropsWithChildren} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Row } from 'react-native-reanimated-table';
 import { comunStylesFigma } from '../theme/comunFigmaTheme';
+import { useNavigation } from '@react-navigation/native';
 
 
 interface CardProps {
@@ -15,6 +16,8 @@ interface CardProps {
   
 export const CardsFigmaScreen = () => {
   const [alignItems, setAlignItems] = useState('Consultas');
+
+ 
 
   return (
     <PreviewLayout
@@ -42,7 +45,29 @@ const PreviewLayout = ({
   values,
   selectedValue,
   setSelectedValue,
-}: PreviewLayoutProps) => (
+}: PreviewLayoutProps) => {
+  
+  const navigation = useNavigation();
+ 
+  const goPage = (selectedValue: string) => {
+        switch (selectedValue) {
+          case 'Consultas':
+            navigation.navigate( 'PerfilFigmaAddScreen' as never)
+            break;
+          case 'Patologías':
+             
+            break;
+          case 'Vacunación':
+            navigation.navigate( 'ApplyVaccinesScreen' as never)
+            break;
+          case 'Embarazo':
+            break;
+          default:
+            break;
+        }
+  }
+  
+  return (
   <View style={{padding: 5, flex: 1, backgroundColor:'white'}}>
     <View style={{flexDirection:'column'}}>
       <View style={{alignItems:'flex-end'}}>
@@ -69,7 +94,11 @@ const PreviewLayout = ({
             {values.map(value => (
               <TouchableOpacity
                 key={value.title}
-                onPress={() => setSelectedValue(value.title)}
+                onPress={() => {
+                          setSelectedValue(value.title)
+                          goPage( value.title )
+                        
+                        }}
                 style={[{...styles.button,
                   backgroundColor:value.color}, selectedValue === value.title && {...styles.selected, backgroundColor:value.color}]}>
                 <View style={{flex:1, flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
@@ -92,7 +121,7 @@ const PreviewLayout = ({
 
     </View>
   </View>
-);
+) };
 
 const styles = StyleSheet.create({
   container: {

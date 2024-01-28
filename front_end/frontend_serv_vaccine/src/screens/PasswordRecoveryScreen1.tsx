@@ -8,7 +8,7 @@ import { WhiteLogo } from '../components/WhiteLogo';
 import { BackgroundSendPhoneFigma } from '../components/BackgroundSendPhoneFigma';
 import { HeaderTitleFigma } from '../components/HeaderTitleFigmaComponent';
 import { stylesFigma } from '../theme/sendPhoneFigmaTheme';
-import {  passwordRecoveryThunks, removeErrorSmsThunks, sendSmsThunks } from '../store/slices/sendSms/index' ;
+import {  passwordRecoveryThunks, removeErrorSmsThunks } from '../store/slices/sendSms/index' ;
 import { ModalMessageComponent } from '../components/ModalMessageComponent';
 import { comunStylesFigma } from '../theme/comunFigmaTheme';
 import { AuthContext } from '../context/AuthContext';
@@ -89,6 +89,7 @@ const onSecurityInputChange = (value) => {
           if( codValue.trim().length <= 1) return;
           if( tlf.trim().length <= 1) return;
           let phone = codValue.trim()+tlf.trim()
+           //Cerrar modal  , si es satisfactorio , vamos a la siuiente pantalla :  SendCodeFigmaRecoveryScreen2
           await dispatch(passwordRecoveryThunks( phone, ci ));
      }
 
@@ -213,7 +214,7 @@ const onSecurityInputChange = (value) => {
                                                       <View style={ {...stylesFigma.buttonContainer,
                                                               alignItems:'center',
                                                               justifyContent:'center',
-                                                              marginTop:(Platform.OS === 'ios') ? 0: 0, 
+                                                              marginTop:(Platform.OS === 'ios') ? 10: 10, 
                                                               marginBottom:(Platform.OS === 'ios') ? 0: 0} }>
                                                                 <TouchableOpacity
                                                                     activeOpacity={ 0.8 }

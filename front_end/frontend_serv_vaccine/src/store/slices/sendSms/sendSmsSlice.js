@@ -69,12 +69,15 @@ export const sendSmsSlice = createSlice({
         },
          setPassword: (state,  { payload } ) => {
             state.password = payload.password;
+            state.isLoading = false;
         },
         setCi: (state,  { payload } ) => {
             state.ci = payload.ci;
+            state.isLoading = false;
         },
         setPhone: (state,  { payload } ) => {
             state.phone = payload.phone;
+            state.isLoading = false;
         },
     }
 });

@@ -24,8 +24,18 @@ export interface Dependent {
     relationship_id?: string;
     status?:          boolean;
     user_id?:         string;
+    icon?: string;
+    dependentsResume?: DependentsResume[];
    
 }
+
+export interface DependentsResume {
+    _id:  string,
+    icon: string,
+    name: string,
+    lastname: string,
+    isUser: boolean;
+};
 
 export interface ID {
     $oid: string;

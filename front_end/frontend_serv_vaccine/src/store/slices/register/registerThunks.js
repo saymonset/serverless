@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import vaccinesApi from '../../../api/vaccinesApi'
 import {   startLoadingRegister, setRegisterResponse, addMessage,removeMessage, setPassword  } from './registerSlice'
 import {  Register } from '../../../interfaces/register-interfaces';
-import {  useSelector } from 'react-redux';
+import {  enviarMensajePorStatusCode } from '../../../utils/enviarMensajePorStatusCode'
 
 
 export const registerThunks = ( register:Register ): AnyAction  => {
@@ -21,7 +21,7 @@ export const registerThunks = ( register:Register ): AnyAction  => {
 
           const { statusCode, body, message, resp, } = data;
           if (statusCode == 401 || !resp) {
-              dispatch( addMessage("Error: "+JSON.stringify(data)))
+              dispatch( addMessage(enviarMensajePorStatusCode(statusCode)))
               return 
           }
           const payload: Register = {

@@ -1,8 +1,7 @@
-import React, {  useState, useContext, useEffect} from 'react';
+import React, {  useState} from 'react';
 import { Text, View, TextInput, Platform,  TouchableOpacity, Keyboard, Alert } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { stylesFigma } from '../theme/sendPhoneFigmaTheme';
-import {  resetSendSmsThunks, removeErrorSmsThunks } from '../store/slices/sendSms/index' 
 import { reEnviarCodeThunks, checkCodeThunks } from '../store/slices/sendSms/sendSmsThunks'
 import { LoadingScreen } from '../screens/LoadingScreen';
 import { HeaderTitleFigma } from '../components/HeaderTitleFigmaComponent';
@@ -11,7 +10,7 @@ export const  SendCodeFigmaComponent = ({ navigation }) => {
 
   const [ inputValue, setInputValue ] = useState('');
 
-  const { isLoading, message, phone } = useSelector( (state: store ) => state.sendSmsStore);
+  const { isLoading, phone } = useSelector( (state: store ) => state.sendSmsStore);
   const dispatch = useDispatch();
 
   
@@ -32,10 +31,7 @@ export const  SendCodeFigmaComponent = ({ navigation }) => {
          setInputValue('');
   }
 
-  const onResetSendSms= () => {
-    Keyboard.dismiss();
-    resetSendSmsThunks(dispatch);
-}
+ 
 
    if ( isLoading ) return <LoadingScreen /> 
 

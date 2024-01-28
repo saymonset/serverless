@@ -1,14 +1,10 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import React, { useEffect, useState } from 'react'
-import { Alert, Button, Image, Keyboard, KeyboardAvoidingView, Modal, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Keyboard, KeyboardAvoidingView, Platform, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useForm } from '../hooks/useForm';
-import { WhiteLogo } from '../components/WhiteLogo';
 import { BackgroundSendPhoneFigma } from '../components/BackgroundSendPhoneFigma';
 import { HeaderTitleFigma } from '../components/HeaderTitleFigmaComponent';
 import { stylesFigma } from '../theme/sendPhoneFigmaTheme';
-import {  SendPhonFigmaComponent } from '../components/SendPhonFigmaComponent';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { SendCodeFigmaComponent } from '../components/SendCodeFigmaComponent';
 import { removeErrorSmsThunks } from '../store/slices/sendSms/sendSmsThunks';
@@ -20,15 +16,10 @@ interface Props extends StackScreenProps<any, any> {}
 
 export const SendCodeFigmaScreen = ({ navigation }: Props) => {
 
-  const {  message, isSendCode , token,resp } = useSelector( (state: store ) => state.sendSmsStore);
+  const {  message , token,resp } = useSelector( (state: store ) => state.sendSmsStore);
   const dispatch = useDispatch();
   const [isVisible, setIsVisible] = useState(false);
-  const [ inputValue, setInputValue ] = useState('');
-
-  const onInputChange = (value:any) => {
-      setInputValue( value );
-  }
-    
+ 
   const   onBack = async () => {
         Keyboard.dismiss();
         navigation.replace('SendPhoneFigmaScreen')

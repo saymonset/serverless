@@ -14,10 +14,10 @@ export const TableComponent = ({ tableData = [] }) => {
             rowData.email,
             rowData.phone,
             <View style={{ flexDirection: 'row' }}>
-              <TouchableOpacity onPress={() => console.log('update')} style={{ marginRight: 10 }}>
+              <TouchableOpacity onPress={() =>  null} style={{ marginRight: 10 }}>
                 <Ionicons name="pencil" size={20} color="black" />
               </TouchableOpacity>
-              <TouchableOpacity onPress={() =>console.log('delete')}>
+              <TouchableOpacity onPress={() =>null}>
                 <Ionicons name="trash" size={20} color="red" />
               </TouchableOpacity>
             </View>,

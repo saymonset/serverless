@@ -1,17 +1,17 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { HomeFigmaTab1Screen } from './HomeFigmaTab1Screen';
-import { HomeFigmaTab2Screen } from './HomeFigmaTab2Screen';
+import { PerfilesFigmaScreen } from './PerfilesFigmaScreen';
 import { HomeFigmaTab3Screen } from './HomeFigmaTab3Screen';
 import { HomeFigmaTab4Screen } from './HomeFigmaTab4Screen';
-import { styles } from '../theme/registrodatosFigmaTheme';
 import { colores } from '../theme/comunFigmaTheme';
-import {  Text } from 'react-native-elements';
 import { Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import useEffect from 'react';
 
 
 export const  HomeFigmaTabRootScreen = () => {
+
   return Platform.OS ==='ios'
          ? <TabsIOs/>
          :<TabsAndroid/>
@@ -35,7 +35,7 @@ const TabsAndroid = () => {
                 case 'HomeFigmaTab1Screen':
                   iconName='home-outline'
                   break;
-               case 'HomeFigmaTab2Screen':
+               case 'PerfilesFigmaScreen':
                   iconName='person-outline'
                   break;
                case 'HomeFigmaTab3Screen':
@@ -54,7 +54,7 @@ const TabsAndroid = () => {
     })}
     >
       <BottomTabAndroid.Screen name="HomeFigmaTab1Screen" options={{title:''}} component={HomeFigmaTab1Screen} />
-      <BottomTabAndroid.Screen name="HomeFigmaTab2Screen" options={{title:''}} component={HomeFigmaTab2Screen} />
+      <BottomTabAndroid.Screen name="PerfilesFigmaScreen" options={{title:''}} component={PerfilesFigmaScreen} />
       <BottomTabAndroid.Screen name="HomeFigmaTab3Screen" options={{title:''}} component={HomeFigmaTab3Screen} />
       <BottomTabAndroid.Screen name="HomeFigmaTab4Screen" options={{title:''}} component={HomeFigmaTab4Screen} />
     </BottomTabAndroid.Navigator>
@@ -72,14 +72,13 @@ export const TabsIOs = () => {
         backgroundColor:'white'
       }}
       screenOptions= { ( { route}) => ({
-            tabBarIcon: ( { color, size, focused} ) => {
+            tabBarIcon: ( { color} ) => {
               let iconName: string = '';
-                console.log(route.name)
                 switch (  route.name ){
                     case 'HomeFigmaTab1Screen':
                        iconName='home-outline'
                        break;
-                    case 'HomeFigmaTab2Screen':
+                    case 'PerfilesFigmaScreen':
                        iconName='person-outline'
                        break;
                     case 'HomeFigmaTab3Screen':
@@ -97,7 +96,7 @@ export const TabsIOs = () => {
      
     >
       <BottomTabIOS.Screen name="HomeFigmaTab1Screen" options={{title:''}} component={HomeFigmaTab1Screen} />
-      <BottomTabIOS.Screen name="HomeFigmaTab2Screen" options={{title:''}} component={HomeFigmaTab2Screen} />
+      <BottomTabIOS.Screen name="PerfilesFigmaScreen" options={{title:''}} component={PerfilesFigmaScreen} />
       <BottomTabIOS.Screen name="HomeFigmaTab3Screen" options={{title:''}} component={HomeFigmaTab3Screen} />
       <BottomTabIOS.Screen name="HomeFigmaTab4Screen" options={{title:''}} component={HomeFigmaTab4Screen} />
     </BottomTabIOS.Navigator>

@@ -1,5 +1,5 @@
 import { AnyAction } from 'redux';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {  enviarMensajePorStatusCode } from '../../../utils/enviarMensajePorStatusCode'
 
 import vaccinesApi from '../../../api/vaccinesApi'
 import {   startLoadingLogin, setLoginResponse, removeError, addError, logOut  } from './loginSlice'
@@ -47,13 +47,21 @@ export const loginCiThunks = ( ci, password ): AnyAction  => {
   return async ( dispatch, getState) => {
     try {
         dispatch( startLoadingLogin())
-        // TODO: realizar peticion http
+
         const {data} = await vaccinesApi.post(`/login`,{ ci, password });
+        
         const { token, resp, message, more, usuario } = data;
+    
+        if (!usuario){
+         //dispatch( addError("Error: "+message))
+         let  statusCode = "401";
+          dispatch( addError(enviarMensajePorStatusCode(statusCode)))
+          return;
+        }
         const { _id } = usuario;
         const { $oid:user_id } = _id;
          
-       
+        
 
         if ( !resp) {
             dispatch( addError("Error: "+message))
@@ -62,7 +70,7 @@ export const loginCiThunks = ( ci, password ): AnyAction  => {
 
       
         const payload: LoginState = {
-            email:more.email,
+            email:more?.email,
             isLoading: false,
             status: 'authenticated',
             token,
@@ -71,10 +79,6 @@ export const loginCiThunks = ( ci, password ): AnyAction  => {
             usuario,
           };
 
-          console.log({ user_id });
-          
-         
-       
         dispatch( setLoginResponse(payload) );
         
     } catch (error) {

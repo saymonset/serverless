@@ -23,29 +23,21 @@ export const SearchScreen = () => {
     const [ term, setTerm ] = useState('');
 
     useEffect(() => {
-     
      if (term.length === 0 ) {
           return setDataFiltred([]);
      }
-
-
       setDataFiltred(
         data.filter(
            ( item ) => item.name.toLowerCase().includes( term.toLowerCase() ))
       );
-    
-      
     }, [term])
     
 
-    console.log({isFetching})
     if ( isFetching ){
         return (
          <LoadingScreen></LoadingScreen>
         )
-    }else{
-      console.log({data})
-    }
+    } 
   return (
     <View style={{flex:1,
                   marginTop: (Platform.OS==='ios')?top:top + 10,

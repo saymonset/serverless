@@ -73,7 +73,10 @@ export const ConfirmPasswordRecoveryFigmaScreen3 = ({ navigation }: Props) => {
                   setShowWarnings_II(true);
                   return;
                 }
-                console.log({ci, phone})
+                if (!ci || !phone){
+                  navigation.replace("LoginFigmaScreen");
+                  return;
+                }
                 await dispatch(changuePasswordThunks( inputValue, inputValue_II, phone, ci ));
             }
 
@@ -108,13 +111,7 @@ export const ConfirmPasswordRecoveryFigmaScreen3 = ({ navigation }: Props) => {
                     abrirModal();
             }, [ message ])
 
-            {/* Solo para sacar mensajes de error por pantalla */}
-          //   useEffect(() => {
-          //     console.log('------lorenzo333--------88-----------');
-              
-          //     console.log({ ci, phone});
-          //     console.log('-------------------------');
-          // }, [])
+           
  
   return (
     <>

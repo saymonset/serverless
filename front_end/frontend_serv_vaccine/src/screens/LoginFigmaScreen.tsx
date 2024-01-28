@@ -24,7 +24,7 @@ interface Props extends StackScreenProps<any, any> {}
 export const LoginFigmaScreen = ({ navigation }: Props) => {
 
   const {  message, status, isLoading  } = useSelector( (state: store ) => state.loginStore);
-  const {  getGeneroRaltionSchipLoads } = useContext(AuthContext)
+ 
 
   const dispatch = useDispatch();
 
@@ -59,11 +59,7 @@ const onSecurityInputChange = (value) => {
               setIsVisible(false);
               //Borramos mensajes del thrunk
               onClearError();
-              // Carga los generos y relationShips en memoria encontrados en bd y llevados al contexto para tenerlos  ya cargados
-              if (status==='authenticated'){
-                   getGeneroRaltionSchipLoads();
-              }
-              // Cargamos automaticamente la primera pagina de navigation si esta autenticado
+           
     }
 
     const abrirModal = () => {
@@ -75,8 +71,8 @@ const onSecurityInputChange = (value) => {
     }
 
     const onLogin = async ( event ) => {
-      event.preventDefault();
-      Keyboard.dismiss();
+          event.preventDefault();
+          Keyboard.dismiss();
          
          if( password.trim().length <= 7){
             setShowWarnings(true);
@@ -203,7 +199,9 @@ const onSecurityInputChange = (value) => {
                                                      alignItems:'center',
                                                      flex:1}}> 
                                                     <View style ={{flex:1}}>
-                                                    <TouchableOpacity onPress={() => navigation.replace("PasswordRecoveryScreen1")}>
+                                                    <TouchableOpacity onPress={
+                                                                          () => navigation.replace("PasswordRecoveryScreen1")
+                                                                      }>
                                                                <HeaderTitleFigma title="¿Olvidates tu contraseña?" 
                                                                                                           marginTop={(Platform.OS === 'ios') ? 0: 0}
                                                                                                           marginBottom={(Platform.OS === 'ios') ? 20: 20}

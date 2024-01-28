@@ -64,7 +64,7 @@ export const SearchInputComponent = (  {  onDebounce, style }:Props) => {
 
 const styles = StyleSheet.create({
     container: {
-        flexDirection:'column'
+        flexDirection:'column',
       //  backgroundColor:'red'
     },
     textBackground: {

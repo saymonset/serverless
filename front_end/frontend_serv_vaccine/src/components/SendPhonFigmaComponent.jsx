@@ -46,7 +46,6 @@ export const  SendPhonFigmaComponent = ({ navigation }) => {
       event.preventDefault();
       if( codValue.trim().length <= 1) return;
       if( inputValue.trim().length <= 1) return;
-      console.log(codValue+inputValue);
       let phone = codValue.trim()+inputValue.trim()
       await dispatch(sendSmsThunks( phone ));
       setInputValue('');

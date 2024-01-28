@@ -1,5 +1,5 @@
-import React, {  useState, useContext, useEffect, useRef} from 'react';
-import { Text, View, TextInput, Platform,  TouchableOpacity, Keyboard, Alert } from 'react-native';
+import React, {  useState} from 'react';
+import { Text, View, TextInput, Platform,  TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { stylesFigma } from '../theme/sendPhoneFigmaTheme';
 import { putPasswordThunks } from '../store/slices/register/registerThunks' 
@@ -8,11 +8,10 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
 export const  SeguridadFigmaComponent = ({ navigation }) => {
-  const inputRef = useRef(null);
   const [ inputValue, setInputValue ] = useState('');
 
 
-  const { isLoading, message, phone } = useSelector( (state: store ) => state.sendSmsStore);
+  const { isLoading } = useSelector( (state: store ) => state.sendSmsStore);
   const dispatch = useDispatch();
 
   const [secureText, setSecureText] = useState(true);

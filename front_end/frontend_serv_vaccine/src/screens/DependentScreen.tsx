@@ -24,7 +24,7 @@ export const DependentScreen = () => {
 
     const iniForm =  {name:'', lastname:'', phone:'', email:'', birth: new Date(), gender_id:'', status:true}
 
-    const {  setIsVisible, isVisible, updateRow, deleteRow, addRow   } = useDependent({...iniForm});
+    const {  setIsVisible, isVisible, updateRow, deleteRow   } = useDependent({...iniForm});
     const { token } = useSelector( (state: store ) => state.loginStore);
     const { message, resp, tableData, total, limite, desde, currentPage, isLoading, isDelete } = useSelector( (state: store ) => state.dependentStore);
 
@@ -190,12 +190,7 @@ const handleNextPage  = () => {
 
       {/* totalPages */}
 
-      <TouchableOpacity onPress={() => {
-                                                                addRow(token, showModal);
-                                                              }
-                                                    }  style={{ marginRight: 10 }}>
-            <Ionicons name="add" size={20} color="white" />
-          </TouchableOpacity>
+     
 
           <Modal animationType="fade" visible={isVisible} transparent={true}>
                 <DependentComponent isVisible={isVisible} onClose={() => setIsVisible(false)} 

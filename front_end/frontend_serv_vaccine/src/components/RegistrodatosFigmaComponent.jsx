@@ -1,26 +1,15 @@
-import React, { useEffect, useState } from 'react'
-import { Alert, Modal, Keyboard, KeyboardAvoidingView, Platform, SafeAreaView, ScrollView, Text, TextInput, 
+import React, { useState } from 'react'
+import {  Keyboard, KeyboardAvoidingView, Platform, SafeAreaView, ScrollView, Text, TextInput, 
     TouchableOpacity, TouchableWithoutFeedback, View, FlatList } from 'react-native';
  import {  comunStylesFigma } from '../theme/comunFigmaTheme'
-import { WhiteLogo } from './WhiteLogo';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from '../hooks/useForm';
 import { PaisScreen } from '../hooks/usePaisScreen';
-import { StackScreenProps } from '@react-navigation/stack';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import { HeaderTitleFigma } from '../components/HeaderTitleFigmaComponent';
-import { stylesFigma } from '../theme/sendPhoneFigmaTheme';
 import { registerThunks } from '../store/slices/register';
 import { UseGenderComponent } from './GenderComponent';
-import { CustomSwitch } from './CustomSwitch';
 import { CalendarFigmaComponent } from './CalendarFigmaComponent';
-import { menuItems } from '../data/menuItems';
-import { FlatListMenuItemFigma } from '../components/FlatListMenuItemFigma';
-import { HeaderTitle } from '../components/HeaderTitle';
-import {  ItemSeparator } from '../components/ItemSeparator';
 import { Pais } from '../interfaces/appInterfaces'
 import { ModalCitiesComponent } from '../components/ModalCitiesComponent';
-import { color } from 'react-native-elements/dist/helpers';
 
 interface Props1  {
     onLogin: () => void;
@@ -39,7 +28,7 @@ export const RegistrodatosFigmaComponent = ( { onLogin, onRegisterScreen }: Prop
   const onSelectTrigger = (value ) => {
       setSelectedGeneroId(value);
   }
-  const { isLoading, message, resp, password:paswordFromSecurity } = useSelector( (state: store ) => state.registerStore);
+  const { password:paswordFromSecurity } = useSelector( (state: store ) => state.registerStore);
   const { token, phone } = useSelector( (state: store ) => state.sendSmsStore);
   const dispatch = useDispatch();
   const { name,  lastname,  password, ci, email, state, city, birth, gender_id, status, onChange } = useForm({
@@ -89,7 +78,6 @@ export const RegistrodatosFigmaComponent = ( { onLogin, onRegisterScreen }: Prop
                 phone
                 };
                     let register: Register = { ...obj  };
-
                     await dispatch(registerThunks( register));
                 
                     {/** Nos vamos a la pantalla principal */}

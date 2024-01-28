@@ -1,25 +1,25 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useContext, useEffect, useState } from 'react'
-import { Alert, Button, Dimensions, FlatList, Keyboard, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, Button, Dimensions, FlatList, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useDispatch, useSelector } from 'react-redux';
-import { PerfilFigmaComponent } from '../components/PerfilFigmaComponent';
-import { DependentsResume, NextPrevioPage } from '../interfaces';
-import { beforedependentAddThunks, loadDataThunks, dependentDeleteThunks, clearDependenThunks } from '../store/slices/dependent';
+import { ApplyVaccinesComponent } from '../components/ApplyVaccinesComponent';
+import {  NextPrevioPage } from '../interfaces';
+import { beforedependentAddThunks, clearDependenThunks } from '../store/slices/dependent';
 import { comunStylesFigma } from '../theme/comunFigmaTheme';
 import { HeaderTitleFigma } from '../components/HeaderTitleFigmaComponent';
 import { stylesFigma } from '../theme/appFigmaTheme';
 import { LoadingScreen } from './LoadingScreen';
-import { AuthContext } from '../context/AuthContext';
 import { useDependent } from '../hooks/useDependent';
 import { SearchInputComponent } from '../components/SearchInputComponent';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useApplyVaccines } from '../hooks/useApplyVaccines';
 
 
 
 const screenWidth = Dimensions.get("window").width;
 
-export const PerfilesFigmaScreen =  () => {
+export const ApplyVaccinesScreen =  () => {
 
            
 
@@ -28,14 +28,19 @@ export const PerfilesFigmaScreen =  () => {
             
            
             let keyCounter = 0;
-
-          
+ 
             const { initPerfiles, 
                     dataFiltred, 
-                    loadData,
-                    dependentDelete } = useDependent();
+                    loadData} = useDependent();
             const {  usuario:{ token }  } = useSelector((state: store) => state.loginStore);
-            const {  total, limite, desde, currentPage, isLoading, dependentsResume } = useSelector( (state: store ) => state.dependentStore);
+            const {  total, limite, desde, currentPage, isLoading } = useSelector( (state: store ) => state.dependentStore);
+
+            //En caso que sea isEdit nvegamos a la pagina agregar o midificar
+            const {  isEdit } = useSelector( (state: store ) => state.applyVaccineStore);
+
+            {/** Estas variables applyVaccineStore del store */}
+         
+            let { dependentById, editFalseDependent  } = useApplyVaccines();
             
             const navigation = useNavigation();
 
@@ -43,31 +48,14 @@ export const PerfilesFigmaScreen =  () => {
 
             const addFamily = async ()=> {
                     dispatch(beforedependentAddThunks());
-                    navigation.navigate( 'PerfilFigmaAddScreen' as never)
+                   
                   
             }
 
-            const deleteRow = ( id: string)=>{
-                
-                  Alert.alert(
-                    'Confirmar eliminación',
-                    '¿Estás seguro que deseas eliminar este elemento?',
-                    [
-                      {
-                        text: 'Cancelar',
-                        style: 'cancel',
-                      },
-                      {
-                        text: 'Eliminar',
-                        style: 'destructive',
-                        onPress: () => {
-                          // Lógica para eliminar el elemento
-                          dependentDelete(id, token, dependentsResume);
-                        },
-                      },
-                    ],
-                    { cancelable: false }
-                  );
+            const applyVaccinePerson = ( id: string)=>{
+              // Clocamos el id del dependiente en el store de apply vaccine y la bandera ee ediotar en trrue
+              console.log({isEdit})
+                 dependentById(id);
             }
 
             {/** LLenar data */}
@@ -76,6 +64,14 @@ export const PerfilesFigmaScreen =  () => {
          
           // }
 
+      /* This `useEffect` hook is triggered whenever the `dependentById` value changes. It checks if the `isEdit` flag is true, and if so, it calls the `editFalseDependent` function and navigates to the 'ApplyVaccinesAddScreen' screen using the `navigation.navigate` function. This is used to handle the scenario where the user wants to edit a dependent's vaccine application. */
+          useEffect(() => {
+             if (isEdit){
+                 
+                  editFalseDependent();
+                  navigation.navigate( 'ApplyVaccinesAddScreen' as never)
+             }
+          }, [dependentById])  
 
           const handlePreviousPage = () => {
             let limiteDesde ={
@@ -117,17 +113,10 @@ export const PerfilesFigmaScreen =  () => {
                           nextPage:'none'
                         }
                         loadData(limiteDesde, currentPage, none, token, term)
-                        //  setDataFiltred(
-                        //   dependentsResume.filter(
-                        //       ( item:DependentsResume ) => item.name.toLowerCase().includes( term.toLowerCase() ))
-                        //  );
                       }, [term])  
                 
                 useEffect(() => {
-                    //busqueda
-                  //  setTerm('');
-
-                  
+        
                     initPerfiles(limite, token);
                     dispatch( clearDependenThunks());
 
@@ -188,7 +177,7 @@ export const PerfilesFigmaScreen =  () => {
                             numColumns={1}
                             horizontal={false}
                             ItemSeparatorComponent={() => <View style={{ height: 1, backgroundColor: 'lightgray'}} />}
-                            ListHeaderComponent={  <HeaderTitleFigma title={`Perfiles`}
+                            ListHeaderComponent={  <HeaderTitleFigma title={`Aplicar Vacuna`}
                             marginTop={(Platform.OS === 'ios') ? 120: 120}
                             stylesFigma={stylesFigma}
                             type='big'
@@ -200,8 +189,8 @@ export const PerfilesFigmaScreen =  () => {
                             renderItem={({ item }) => (
                               <View style={{marginBottom:10,
                                             marginTop:5}}>
-                                <PerfilFigmaComponent obj={item}
-                                                       deleteRow = {  (id:string) => deleteRow(id)} />
+                                <ApplyVaccinesComponent obj={item}
+                                                       applyVaccinePerson = {  (id:string) => applyVaccinePerson(id)} />
                               </View>
                             )}
                           />

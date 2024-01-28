@@ -31,28 +31,28 @@ export const UseRelationShipComponent = ({onPress}:Props) => {
     }
   };
 
+  const loadDefault = () => {
+    if (relationships && relationships.length>0){
+       let obj = relationships.filter((value)=>{
+       let { key } = value;
+        if ( key == relationship_id){
+          return value;
+        }
+      });
+      if (obj && obj.length > 0){
+        const { key, value } = obj[0];
+        setSelectedByDefault({ key, value } );
+      }
+   }
  
+   }
 
   useEffect(() => {
     getObjects();
-    setSelectedByDefault({
-      key:'',
-      value:''
-    });
+    loadDefault();
   }, []);
 
-  useEffect(() => {
-    if (data && data.length>0){
-       let obj = data.filter((value)=>{
-        let { key } = value;
-        if ( key === relationship_id)
-        return value;
-       });
-       if (obj && obj.length > 0){
-        setSelectedByDefault(obj[0]);
-       }
-    }
-  }, [relationship_id]);
+ 
 
   return  (
          <SelectList

@@ -1,15 +1,11 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import React, { useEffect, useState } from 'react'
-import { Alert, Button, Image, Keyboard, KeyboardAvoidingView, Modal, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {  KeyboardAvoidingView, Platform, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useForm } from '../hooks/useForm';
-import { WhiteLogo } from '../components/WhiteLogo';
 import { BackgroundSendPhoneFigma } from '../components/BackgroundSendPhoneFigma';
 import { HeaderTitleFigma } from '../components/HeaderTitleFigmaComponent';
 import { stylesFigma } from '../theme/sendPhoneFigmaTheme';
 import {  SendPhonFigmaComponent } from '../components/SendPhonFigmaComponent';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import {  removeErrorSmsThunks } from '../store/slices/sendSms/index' ;
 import {  removeErrorThunks } from '../store/slices/register/index';
 import { ModalMessageComponent } from '../components/ModalMessageComponent';
@@ -25,22 +21,17 @@ export const SendPhoneFigmaScreen = ({ navigation }: Props) => {
   const dispatch = useDispatch();
 
   const [isVisible, setIsVisible] = useState(false);
-  const [ inputValue, setInputValue ] = useState('');
-  const onInputChange = (value:any) => {
-    setInputValue( value );
-}
+
     
-
-
-
             const cerrarModal = () => {
               setIsVisible(false);
               //Borramos mensajes del thrunk
               onClearError();
-            
+            //Todavia falta en que coloque el codigo en el formulario que se le envio al tlf
               if (isSendCode){
-                navigation.replace('SendCodeFigmaScreen');
+                  navigation.replace('SendCodeFigmaScreen');
               }
+              // Aqui si esta el token, regitramos el usuario pidiendo datos
               if (token){
                   navigation.replace('RegistrodatosFigmaScreen');
               }

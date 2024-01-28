@@ -39,6 +39,7 @@ const onInputChange = (value) => {
     const onSubmit = async ( event ) => {
       event.preventDefault();
       if( codigo.trim().length <= 1) return;
+        //Si todo va bien, navegamos a ConfirmPasswordRecoveryFigmaScreen3, en cerrar modal esta.
         await dispatch(checkCodeThunks( phone, codigo.trim()));
     }
 

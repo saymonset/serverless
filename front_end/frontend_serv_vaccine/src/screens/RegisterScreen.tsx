@@ -19,7 +19,6 @@ export const RegisterScreen = ({ navigation }: Props) => {
      const   onClearError = async () => {
     //   await dispatch(());
       await removeErrorThunks(dispatch)
-      console.log('removiendo error createregister')
        } 
 
        
