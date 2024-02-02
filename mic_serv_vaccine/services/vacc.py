@@ -18,15 +18,14 @@ from helps.utils import validar_object_id
 def create_vaccine_service(data):
     name = data.get("name")
     description = data.get("description", None)
-    disease = data.get("disease", None)
-    dosis = data.get("dosis", None)
+    disease_prevents = data.get("disease_prevents", None)
     application_age = data.get("application_age", None)
     isChildren = data.get("isChildren", False)
     status = data.get("status", False)
     if name:
          # Crea un nuevo documento de usuario
         vaccineModels = VaccineModels(name=name, description=description, 
-                                       disease=disease,dosis=dosis, application_age=application_age, 
+                                       disease_prevents=disease_prevents, application_age=application_age, 
                                        isChildren=isChildren, status=status)
         
         response = crear_vacuna_repo(vaccineModels)
@@ -35,8 +34,7 @@ def create_vaccine_service(data):
              "id": str(response.inserted_id),
              "name": name,
              "description": description,
-             "disease": disease,
-             "dosis": dosis,
+             "disease_prevents": disease_prevents,
              "application_age": application_age,
              "isChildren": isChildren,
              "status": True
@@ -49,12 +47,12 @@ def create_vaccine_service(data):
 """Obtiene las vacunas"""
 
 
-def get_vaccines_list_service(limite, desde):
+def get_vaccines_list_service(limite, desde, query):
     limite = int(limite)
     desde = int(desde)
     
-    data = get_vaccines_repo(limite, desde)
-    total = get_vaccines_counts_repo()
+    data = get_vaccines_repo(limite, desde,  query)
+    total = get_vaccines_counts_repo(query)
 
     result = json_util.dumps(data)
     diccionario = {
@@ -80,23 +78,49 @@ def get_vaccine_service(id):
 
 def update_vaccine_service(id, data):
     if len(data) == 0:
-        return "No hay datos para actualizar", 400
+         
+        return {
+                "error":True,
+                "resp":False,
+                "TypeError": id,
+                "statusCode": "uptdateBadCadena",
+                "ValueError": "No hay datos para actualizar" ,
+                "message": "No hay datos para actualizar" 
+         }
    
     if validar_object_id(id):
         # La cadena es un ObjectId válido
         # Realiza las operaciones necesarias
         response = update_vaccine_repo(id, data)
-        if response.modified_count >= 1:
-            return "La vacuna ah sido actualizada correctamente", 200
+        if response.modified_count >= 0:
+            return {
+                "error":False,
+                "resp":True,
+                "TypeError": id,
+                "statusCode": "uptdateSuccess",
+                "ValueError": "La vacuna fue actualizada correctamente" ,
+                "message": "La vacuna fue actualizada correctamente" 
+         }
         else:
-            return "La vacuna no fue encontrada", 404
+            return {
+                "error":True,
+                "resp":False,
+                "TypeError": id,
+                "statusCode": "uptdateNotFound",
+                "ValueError": "La vacuna no fue encontrada" ,
+                "message": "La vacuna no fue encontrada" 
+         }
     else:
         # Maneja el error o muestra un mensaje de error
-        result = {
-             "TypeError": id,
-             "ValueError": "La cadena no es un ObjectId válido" 
-        }
-        return result
+        
+        return {
+                "error":True,
+                "resp":False,
+                "TypeError": id,
+                "statusCode": "400",
+                "ValueError": "La cadena no es un ObjectId válido" ,
+                "message": "La cadena no es un ObjectId válido" 
+         }
     
 
 

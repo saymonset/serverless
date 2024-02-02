@@ -28,6 +28,8 @@ import { PerfilesFigmaScreen } from '../screens/PerfilesFigmaScreen';
 import { Dependent } from '../interfaces/dependent-interfaces';
 import { ApplyVaccinesScreen } from '../screens/ApplyVaccinesScreen';
 import { ApplyVaccinesAddScreen } from '../screens/ApplyVaccinesAddScreen';
+import { ApplyVaccListarDosisByDependienteScreen } from '../screens/ApplyVaccListarDosisByDependienteScreen';
+import { ApplyVaccineConsultaScreen } from '../screens/ApplyVaccineConsultaScreen';
  
 
 export type RootStackParams = {
@@ -49,8 +51,12 @@ export type RootStackParams = {
   HomeFigmaTabRootScreen: undefined;
   PerfilFigmaAddScreen: Dependent;
   PerfilesFigmaScreen: undefined;
+
   ApplyVaccinesScreen: undefined;
   ApplyVaccinesAddScreen: undefined;
+  ApplyVaccListarDosisByDependienteScreen: undefined;
+  ApplyVaccineConsultaScreen: undefined;
+
   DependentScreen: undefined;
   TextInputScreen: undefined;
   PullToRefreshScreen: undefined;
@@ -100,6 +106,8 @@ export const Navigator = () => {
 
                <Stack.Screen name="ApplyVaccinesScreen" component={ ApplyVaccinesScreen } />  
                <Stack.Screen name="ApplyVaccinesAddScreen" component={ ApplyVaccinesAddScreen } />  
+               <Stack.Screen name="ApplyVaccListarDosisByDependienteScreen" component={ ApplyVaccListarDosisByDependienteScreen } />  
+               <Stack.Screen name="ApplyVaccineConsultaScreen" component={ ApplyVaccineConsultaScreen } />  
              
                 <Stack.Screen name="DependentScreen" component={ DependentScreen } />
                 <Stack.Screen name="TextInputScreen" component={TextInputScreen} />

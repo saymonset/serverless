@@ -21,8 +21,10 @@ export const ModalVaccineDosisComponent = ( { getValor, propiedad = 'parent', id
 
       // Sacamos del contexto donde se inicializa estos valores apenas entreen el tab1 de la navigator y este logueadio
     const { authState:{dosis, vaccines} } = useContext(AuthContext)
-    const { estadosOfVenezuela, municipiosOfEstadosOfVenezuela } = PaisScreen(); 
     const [isVisible, setIsVisible] = useState(true);
+
+    const getRandomKey = () => Math.random().toString();
+
 
     const enviarValor = (menuItem: Dosiss | Vaccine) => {
               setIsVisible(false);
@@ -71,7 +73,7 @@ export const ModalVaccineDosisComponent = ( { getValor, propiedad = 'parent', id
                                                                                                                     menuItem={ item } 
                                                                                                                     cerrarModal={ (value) => enviarValor(value)}
                                                                                                                     propiedad={'parent'}/>}
-                                                                                    keyExtractor= { (item) => item._id.toString()}
+                                                                                                                    keyExtractor={getRandomKey}
                                                                                     ListHeaderComponent = { () =>  <HeaderTitleFigma title="Vacunas" 
                                                                                                                     marginTop={(Platform.OS === 'ios') ? 40: 40}
                                                                                                                     stylesFigma={stylesFigma}
@@ -90,7 +92,7 @@ export const ModalVaccineDosisComponent = ( { getValor, propiedad = 'parent', id
                                                                                                                         menuItem={ item } 
                                                                                                                         cerrarModal={ (value) => enviarValor(value)}
                                                                                                                         propiedad={'child'}/>}
-                                                                                    keyExtractor= { (item) => Math.random().toString()}
+                                                                                                                        keyExtractor={getRandomKey}
                                                                                     ListHeaderComponent = { () =>  <HeaderTitleFigma title={`Dosis`}
                                                                                                                     marginTop={(Platform.OS === 'ios') ? 40: 40}
                                                                                                                     stylesFigma={stylesFigma}

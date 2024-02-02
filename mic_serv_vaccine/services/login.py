@@ -19,9 +19,11 @@ def login(udata):
             "token": token,
             "usuario": json.loads(user),
             "more": json.loads(dependent_is_user),
+            "resp":True,
+            "message":"successful"
         }
         return response
-    response = {"statusCode": 401, "body": json.dumps({"message": f"Unauthorized"})}
+    response = {"statusCode": 401, "message": "Unauthorized", "resp":False}
     return response
 
 """Login de objetos"""

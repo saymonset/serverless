@@ -29,6 +29,8 @@ export const enviarMensajePorStatusCode = (statusCode: string): string => {
         break;
       case "200":
             mensaje = "Éxito: la solicitud se ha completado correctamente.";
+      case  "201":
+            mensaje = "Éxito: la solicitud se ha completado correctamente.";
         break;
       case "400":
           mensaje = "Error de cliente: la solicitud es incorrecta.";

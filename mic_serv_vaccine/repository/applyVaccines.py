@@ -4,18 +4,47 @@ from bson.objectid import ObjectId
 from config.mongodb import mongo
 from bson import ObjectId
 from models.applyVaccines import ApplyVaccineModels
-from helps.utils import validar_object_id
+from helps.utils import validar_object_id, get_caracteres_especiales
 
 def crear_applyVaccine_repo(applyVaccineModels:ApplyVaccineModels):
     return mongo.db.apply_vaccines.insert_one(applyVaccineModels.__dict__)
 
-def get_applyVaccine_list_repo(limite:int, desde:int):
-    query = {'status': {'$in': [True, 'True']}}
-    return mongo.db.apply_vaccines.find(query).skip(desde).limit(limite)
+def get_applyVaccine_list_repo(limite:int, desde:int, query:str):
+    contador = get_caracteres_especiales(query)
 
-def get_applyVaccine_counts_repo():
-    query = {'status': {'$in': [True, 'True']}}
-    return mongo.db.apply_vaccines.count_documents(query)
+    if query is not None and (not query.strip() or len(query) == contador):
+        filter_query = {
+            'status': {'$in': [True, 'True']}
+        }
+    else:
+        filter_query = {
+            "$or": [
+                {"lote": {"$regex": query, "$options": "i"}},
+                {"dosis_id": {"$regex": query, "$options": "i"}},
+                {"dependent_id": {"$regex": query, "$options": "i"}}
+            ]
+        }
+
+    return mongo.db.apply_vaccines.find(filter_query).skip(desde).limit(limite)
+
+
+
+def get_applyVaccine_counts_repo(query:str):
+    contador = get_caracteres_especiales(query)
+
+    if query is not None and (not query.strip() or len(query) == contador):
+        filter_query = {
+            'status': {'$in': [True, 'True']}
+        }
+    else:
+        filter_query = {
+            "$or": [
+                {"lote": {"$regex": query, "$options": "i"}},
+                {"dosis_id": {"$regex": query, "$options": "i"}},
+                {"dependent_id": {"$regex": query, "$options": "i"}}
+            ]
+        }
+    return mongo.db.apply_vaccines.count_documents(filter_query)
 
 def get_applyVaccine_repo(id):
     if validar_object_id(id):

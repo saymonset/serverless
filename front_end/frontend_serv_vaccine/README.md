@@ -49,7 +49,13 @@ yarn add @react-navigation/bottom-tabs
 8. Instalar venezuela
 npm install venezuela --save
 
+9. 
+yarn add react-native-document-picker
+
 yarn add @react-navigation/material-bottom-tabs react-native-paper react-native-vector-icons
+
+npm install --save react-native-snap-carousel
+npm install --save @types/react-native-snap-carousel
 
 yarn add uuid
 

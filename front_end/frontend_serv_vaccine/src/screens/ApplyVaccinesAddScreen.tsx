@@ -9,17 +9,12 @@ import { useDispatch, useSelector } from 'react-redux';
  
 import { ModalMessageComponent } from '../components/ModalMessageComponent';
 import { useNavigation } from '@react-navigation/native';
-import { ApplyVaccine, Dependent, Dosiss } from '../interfaces';
-import { PaisScreen } from '../hooks/usePaisScreen';
+import { ApplyVaccine, Dosiss } from '../interfaces';
 import {  comunStylesFigma } from '../theme/comunFigmaTheme'
 import { CalendarFigmaComponent } from '../components/CalendarFigmaComponent';
 import { ModalVaccineDosisComponent } from '../components/ModalVaccineDosisComponent';
-import { UseGenderComponent } from '../components/GenderComponent';
-import { UseRelationShipComponent } from '../components/RelationShipComponent';
-//import { dependentThunksAddModify,  removeErrorThunks, clearDependenThunks } from '../store/slices/applyvaccines';
 import { LoadingScreen } from './LoadingScreen';
 import { useApplyVaccines } from '../hooks/useApplyVaccines';
-import { AuthContext } from '../context/AuthContext';
 import { Vaccine } from '../interfaces/vaccine-interfaces';
 
 
@@ -29,27 +24,11 @@ export const ApplyVaccinesAddScreen = () => {
   const [isVisibleParent, setIsVisibleParent] = useState(false);
   const [isVisibleChild, setIsVisibleChild] = useState(false);
   const [idParent, setIdParent] = useState('');
+  const [idDosis, setIdDosis] = useState('');
   const [parentName, setParentName] = useState('');
-  const [municipio, setMunicipio] = useState("");
-  const [selectedGeneroId, setSelectedGeneroId] = React.useState("");
-  const [selecteRelationShipId, setSelectedRelationShipId] = React.useState("");
-
-  const {   limite, tableData, total, isLoading, message} = useSelector( (state: store ) => state.applyVaccineStore);
-
-
-
-  const onSexoTrigger = (value: string) => {
-    setSelectedGeneroId(value);
-  }
-
-
-  const onRelationShipSelectTrigger = (value:string) => {
-    setSelectedRelationShipId(value);
-  }
-
-      const {  usuario:{ phone, token }, user_id  } = useSelector((state: store) => state.loginStore);
-
-      const {   dependent_id } = useSelector( (state: store ) => state.applyVaccineStore);
+  const [child, setChild] = useState("");
+  const {  usuario:{ phone, token }, user_id  } = useSelector((state: store) => state.loginStore);
+ 
 
    
 
@@ -58,6 +37,11 @@ export const ApplyVaccinesAddScreen = () => {
         image, 
         dosis_id, 
         vaccination_date,
+        useApplyVaccineAddModify,
+        resp,
+        dependent_id,
+        total, isLoading, message,
+        handlerRemoveMessageApplyVaccine,
         onChange,} = useApplyVaccines();
  
   
@@ -73,19 +57,18 @@ export const ApplyVaccinesAddScreen = () => {
     navigation.navigate('HomeFigmaTabRootScreen' as never)
   }
 
-  const onClearError = async () => {
-   // await removeErrorThunks(dispatch)
-  }
+  
 
   const cerrarModal = () => {
     setIsVisible(false);
     //Borramos mensajes del thrunk
-    onClearError();
+    handlerRemoveMessageApplyVaccine();
 
-    // if (resp) {
-    //   //initPerfiles(limite, token);
-    //   navigation.navigate('HomeFigmaTabRootScreen' as never)
-    // }
+  /* The above code appears to be written in TypeScript and React. It seems to be commented out code that is checking if a variable "resp" is truthy. If it is, it may be navigating to a screen called 'HomeFigmaTabRootScreen' using the "navigation" object. However, the code is currently commented out, so it is not being executed. */
+    if (resp) {
+      //initPerfiles(limite, token);
+       navigation.navigate('ApplyVaccinesScreen' as never)
+    }
   }
 
   const abrirModal = () => {
@@ -94,21 +77,16 @@ export const ApplyVaccinesAddScreen = () => {
 
     
  
-  // useEffect(() => {
-  //   if (message?.length === 0) return;
-  //    // Si la respuesta es positiva entonces no sacamos ningun mensaje en el modal y nos vamos a otra pagina
-  //    if (resp) {
-  //      cerrarModal();
-  //    } else {
-  //      abrirModal();
-  //    }
-  //  }, [message])
+  useEffect(() => {
+    if (message?.length === 0) return;
+       abrirModal();
+   }, [message])
 
-  // useEffect(() => {
-  //  //seteamos de  que parentName es o ciudad
-  //   setParentName(state);
-  //   setMunicipio(city);
-  // }, [])
+  useEffect(() => {
+   //seteamos de  que parentName es o ciudad
+    // setParentName(state);
+    // setChild(city);
+  }, [])
 
   const showModalEstado = async () => {
     setIsVisibleParent(true);
@@ -124,16 +102,13 @@ export const ApplyVaccinesAddScreen = () => {
       const id : string = menuItem._id?.$oid;
       setIdParent(id)
       setParentName(`${menuItem.name}`)
-      console.log('---------1-----------');
-      console.log(menuItem.name)
-      console.log('---------2s-----------');
-    //  onChange(`${menuItem.capital}-${menuItem.parentName}`, 'state')
-      setMunicipio('');
+      setChild('');
     }
     if (propiedad === 'child') {
+      const idDosis : string = menuItem._id?.$oid;
+      setIdDosis(idDosis)
       setIsVisibleChild(false);
-      setMunicipio(`${menuItem.name}`);
-     // onChange(`${menuItem.capital}-${menuItem.municipio}`, 'city')
+      setChild(`${menuItem.name}`);
     }
   }
  
@@ -143,19 +118,15 @@ export const ApplyVaccinesAddScreen = () => {
         _id,
         lote, 
         image, 
-        dosis_id, 
+        dosis_id:idDosis, 
         dependent_id,  
         vaccination_date,
         status:true
     };
     let applyVaccine: ApplyVaccine = { ...obj };
     console.log({ applyVaccine })
-   // dependentAddModify(dependent, token, dependentsResume, total);
-
-   /***
-    * 
-    status:           boolean;
-    */
+    useApplyVaccineAddModify(applyVaccine, token, total);
+ 
   }
 
   const onDateSelection = (date: Date) => {
@@ -249,7 +220,7 @@ export const ApplyVaccinesAddScreen = () => {
                                                     ]}>{parentName}</Text>
 
                                                  {/* Devuelve el item y propiedad a la funcion getValor que tengo actualmente 
-                                                     Propiedad puede ser parentName o  municipio para ver que se va  allenar
+                                                     Propiedad puede ser parentName o  child para ver que se va  allenar
                                                      Aqui la p[ropiedad es parentNames]
                                                  */}
                                                    {/* En showModalEstado es donde  colocamos visible el isVisibleParent a true */}
@@ -274,7 +245,7 @@ export const ApplyVaccinesAddScreen = () => {
                                         { parentName && ( <View style = {{ marginTop:5}}>
                                                                             <Text  style={[ 
                                                                                     ( Platform.OS === 'ios' ) && comunStylesFigma.inputFieldIOS
-                                                                                ]}>NomDosis</Text>
+                                                                                ]}>{ child}</Text>
 
                                                                     {isVisibleChild && (<ModalVaccineDosisComponent getValor = { ( item, propiedad ) => getValor( item, propiedad )}
                                                                                                                   propiedad = 'child' 

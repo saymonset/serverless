@@ -12,6 +12,7 @@ import {  ApplyVaccine, LIMITE_PAGE } from '../../../interfaces';
     image:            '',
     lote:             '',
     vaccination_date: '',
+    
 
     status:true,
     isLoading: false,
@@ -42,16 +43,13 @@ export const applyVaccineSlice = createSlice({
             state.isLoading = false;
         },
         setDependentById: ( state, { payload } ) => {
-            console.log('-------------1----------')
-            console.log({payload})
-            console.log('-------------2----------')
             state.dependent_id = payload;
             state.isEdit = true;
         },
         editFalseApplyVaccine: (state, /* action */ ) => {
             state.isEdit = false;
         },
-        ResponseApplyVaccine: ( state, { payload } ) => {
+        responseApplyVaccine: ( state, { payload } ) => {
             state.statusCode = payload.statusCode;
             state.resp = payload.resp;
             state.message = payload.message;
@@ -99,7 +97,11 @@ export const applyVaccineSlice = createSlice({
             state.desde = payload.desde;
             state.limite = payload.limite;
             state.total = payload.total;
+            console.log('antes state='+state.currentPage)
             state.currentPage = payload.currentPage;
+            //onsole.log('despues'+payload.currentPage)
+            console.log('despues state='+state.currentPage)
+            console.log(' desde pyload slice core' )
         },
         
        addMessageApplyVaccine: ( state, { payload } ) =>{
@@ -119,7 +121,7 @@ export const {  startLoadingApplyVaccine,
                 stopLoadingApplyVaccine,
                 setDependentById,
                 editFalseApplyVaccine,
-                ResponseApplyVaccine,
+                responseApplyVaccine,
                 byIdApplyVaccine,
                 deleteApplyVaccine,
                 clearApplyVaccine,

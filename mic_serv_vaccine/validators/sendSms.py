@@ -27,3 +27,11 @@ def isValidCode(code):
         return {"resp": True}
     except ValueError:
         return {"statusCode": 400, "resp": False, "message": "El code debe ser numero"}
+
+def isValidCi(ci):
+    if not ci:
+        return {"statusCode": 400, "resp": False, "message": "CI es obligatorio"}
+    
+    return {"resp": True}
+
+   

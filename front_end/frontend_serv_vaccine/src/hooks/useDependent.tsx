@@ -3,6 +3,8 @@ import { useForm } from './useForm';
 import { Dependent, DependentsResume, DesdeLimite, NextPrevioPage } from '../interfaces';
 import { dependentByIdThunks, dependentDeleteThunks, dependentThunksAddModify, editFalseDependentThunks, loadDataThunks } from '../store/slices/dependent/dependentThunks.js';
 import { useDispatch, useSelector } from 'react-redux';
+import { clearDependent, startLoadingDependent } from '../store/slices/dependent';
+
 
 
 
@@ -12,8 +14,13 @@ export const useDependent = () => {
 
     {/** Estas variables vienen del store */}
     let {  name:nameStore,  lastname:lastnameStore, phone:phoneStore, email:emailStore,  birth:birthStore, gender_id:gender_idStore,
-       status:statusStore,age:ageStore, isChildren:isChildrenStore , state:stateStore, city:cityStore, edo:edoStore,
-       dependentsResume } = useSelector( (state: store ) => state.dependentStore);
+           age:ageStore, isChildren:isChildrenStore , state:stateStore, city:cityStore, edo:edoStore,
+           dependentsResume,total, limite, desde, currentPage, isLoading,
+           _id:_idStore, lote:loteStore,  image:imageStore, dosis_id:dosis_idStore,  vaccination_date:vaccination_dateStore,
+           status:statusStore
+      } = useSelector( (state: store ) => state.dependentStore);
+
+       
 
        {/** Estas variables son para inicializar el formulario */}
     let inic = {
@@ -116,6 +123,13 @@ export const useDependent = () => {
     useEffect(() => {
       loadDataFromStore(dependentsResume);
     }, [dependentsResume])
+
+
+     const handlerClearDependent = async ()  => {
+      dispatch(clearDependent());
+    }
+
+
     
 
     const onDependent = async() => {
@@ -123,6 +137,7 @@ export const useDependent = () => {
     }
 
   return {
+         handlerClearDependent,
          onGeneroSelectTrigger,
          onUserSelectTrigger,
          onRelationShipSelectTrigger,
@@ -154,6 +169,18 @@ export const useDependent = () => {
          setIsVisible,
          isVisible,
          initPerfiles,
-         loadData
+         loadData,
+         total, 
+         limite, 
+         desde, 
+         currentPage, 
+         isLoading,
+
+         _idStore,
+         loteStore,
+         imageStore, 
+         dosis_idStore,  
+         vaccination_dateStore,
+         statusStore
   }
 }

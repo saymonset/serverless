@@ -14,14 +14,14 @@ from services.applyVaccines import delete_applyVaccines_service, update_apply_va
 applyVaccines = Blueprint('applyVaccines', __name__)
 
 
-ns_applyVaccines = Namespace('ApplyVaccines', 'ApplyVaccines related endpoints')
+ns_applyVaccines = Namespace('applyVaccines', 'ApplyVaccines related endpoints')
 
 model = ns_applyVaccines.model('ApplyVaccines', {
-    'vacinne_id': fields.String(required=True, description='ID of vaccine'),
+    'dosis_id': fields.String(required=True, description='dosis_id of vaccine'),
     'dependent_id': fields.String(required=True, description='Dependent or family'),
     'lote': fields.String(required=True, description='Lote of vaccine'),
     'image': fields.String(required=False, description='Imagen to vaccine'),
-    'date_apply': fields.String(required=True, description='Application of vaccine')
+    'vaccination_date': fields.String(required=True, description='vaccination_date Application of vaccine')
 })
 
 @ns_applyVaccines.route('/', methods = [ 'POST' ])
@@ -34,9 +34,9 @@ class getApplyVaccinessswgger(Resource):
         data = ns_applyVaccines.payload
 
         #Validamos vaccine
-        result = get_vaccine_repo(data["vacinne_id"])
-        if result is None or "error" in result:
-           return {"error": "El id no es una instancia de la clase Vaccine"}
+        # result = get_vaccine_repo(data["vacinne_id"])
+        # if result is None or "error" in result:
+        #    return {"error": "El id no es una instancia de la clase Vaccine"}
 
 
         #Validamos dependent
@@ -45,21 +45,22 @@ class getApplyVaccinessswgger(Resource):
            return {"error": "El id no es una instancia de la clase dependent_id"}
            
         #     # Validar campos obligatprios
-        result = validar_fecha(data['date_apply'])
-        if not bool(result["resp"]):  return result 
+        # result = validar_fecha(data['date_apply'])
+        # if not bool(result["resp"]):  return result 
 
 
         return create_apply_vaccine_service(data)
  
 
  
-@ns_applyVaccines.route('/<limite>/<desde>', methods = [ 'GET' ])
+@ns_applyVaccines.route('/<limite>/<desde>/<query>', methods = [ 'GET' ])
 class get_ApplyVaccinesList(Resource):        
     @ns_applyVaccines.doc(params={'limite': {'default': 20}, 'desde': {'default': 0}})
     @ns_applyVaccines.doc(security='apikey')
     @jwt_required()
-    def get(self, limite=None, desde=None):
-        return get_applyVaccinesList_service(limite, desde)    
+    def get(self, limite=None, desde=None, query=None):
+        return get_applyVaccinesList_service(limite, desde, query)    
+  
 
 @ns_applyVaccines.route('/<id>', methods = [  'GET', 'PUT', 'DELETE' ])
 class getApplyVaccinesswgger(Resource):

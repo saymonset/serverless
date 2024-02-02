@@ -75,7 +75,9 @@ def get_phone_in_users_repo(phone):
 
 def get_user_repo_list(limite:int, desde:int):
     query = {'status': {'$in': [True, 'True']}}
+
     return mongo.db.users.find({}).skip(desde).limit(limite)
+    #return cursor
 
 def get_user_counts_repo():
     query = {'status': {'$in': [True, 'True']}}
@@ -99,6 +101,14 @@ def isValidBdUser(data):
         }
         return result
     
+    return {"resp":True}
+
+def isValidBdEmail(data):
+    email = data.get("email")
+    userDependent = checkUserDependent({"email": email}) 
+    if userDependent:
+        return {"resp":False,
+                    "email":"El email existe en bd"}
     return {"resp":True}
  
     #

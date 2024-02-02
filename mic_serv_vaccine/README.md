@@ -1,19 +1,24 @@
 
-pip install -r requirements.txt
-sls plugin install -n serverless-wsgi
-
-#Baja report
-# https://fthfr5gtoi.execute-api.us-east-1.amazonaws.com/$default/scheme/
- 
-#Para des[plegar local
-serverless wsgi serve --port 5001
-sls wsgi serve --port 5001
-
-#Para desplegar en amazon
-sls remove --stage qa
-sls deploy --stage qa
-
-
+#  Preparar el env de python
 virtualenv venv
 source ./venv/bin/activate
+
+# Instalar para ambiente local
+sls plugin install -n serverless-wsgi
+
+#Instalar librerias en requirement.txt
+
 pip install -r requirements.txt 
+
+# Para levantar proyecto en aws
+sls deploy --stage qa  
+
+
+# Para remover proyecto en aws
+sls remove --stage qa
+
+
+# Para levantar proyecto localmente
+serverless wsgi serve --port 5001
+
+: 

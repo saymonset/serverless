@@ -90,11 +90,6 @@ export const AuthProvider = ( { children }:  any ) => {
          dispatch( { type:'dosisLoad', payload:{
             selections:dosis
         }})
-        // console.log(datadosisResp.data);
-       // console.log(datadosisResp.data.dosiss);
-       
-      //  genderLoad(gendersResp.data.genders);
-       // relationshipLoad(relationshipsResp.data.relationships);
     }
 
     const genderLoad = async(genders: GenderElement[] = []) => {

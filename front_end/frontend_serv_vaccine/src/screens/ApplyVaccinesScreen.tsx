@@ -14,48 +14,50 @@ import { useDependent } from '../hooks/useDependent';
 import { SearchInputComponent } from '../components/SearchInputComponent';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useApplyVaccines } from '../hooks/useApplyVaccines';
+import { useLogin } from '../hooks/useLogin';
 
 
 
 const screenWidth = Dimensions.get("window").width;
 
 export const ApplyVaccinesScreen =  () => {
-
-           
-
+            let { dependentById, editFalseDependent, isEdit  } = useApplyVaccines();
             const { top } = useSafeAreaInsets();
             const [ term, setTerm ] = useState('');
-            
-           
             let keyCounter = 0;
- 
             const { initPerfiles, 
                     dataFiltred, 
-                    loadData} = useDependent();
-            const {  usuario:{ token }  } = useSelector((state: store) => state.loginStore);
-            const {  total, limite, desde, currentPage, isLoading } = useSelector( (state: store ) => state.dependentStore);
+                    loadData,
+                    total, 
+                    limite, 
+                    desde, 
+                    currentPage, 
+                    isLoading,
+                    handlerClearDependent
+                  } = useDependent();
+                  const { token } = useLogin();
 
             //En caso que sea isEdit nvegamos a la pagina agregar o midificar
-            const {  isEdit } = useSelector( (state: store ) => state.applyVaccineStore);
+         //   const {  isEdit } = useSelector( (state: store ) => state.applyVaccineStore);
 
             {/** Estas variables applyVaccineStore del store */}
          
-            let { dependentById, editFalseDependent  } = useApplyVaccines();
+
             
             const navigation = useNavigation();
 
             const dispatch = useDispatch();
 
             const addFamily = async ()=> {
-                    dispatch(beforedependentAddThunks());
+              handlerClearDependent();
                    
                   
             }
 
             const applyVaccinePerson = ( id: string)=>{
               // Clocamos el id del dependiente en el store de apply vaccine y la bandera ee ediotar en trrue
-              console.log({isEdit})
                  dependentById(id);
+                 navigation.navigate( 'ApplyVaccinesAddScreen' as never)
             }
 
             {/** LLenar data */}
@@ -65,13 +67,13 @@ export const ApplyVaccinesScreen =  () => {
           // }
 
       /* This `useEffect` hook is triggered whenever the `dependentById` value changes. It checks if the `isEdit` flag is true, and if so, it calls the `editFalseDependent` function and navigates to the 'ApplyVaccinesAddScreen' screen using the `navigation.navigate` function. This is used to handle the scenario where the user wants to edit a dependent's vaccine application. */
-          useEffect(() => {
-             if (isEdit){
+          // useEffect(() => {
+          //    if (isEdit){
                  
-                  editFalseDependent();
-                  navigation.navigate( 'ApplyVaccinesAddScreen' as never)
-             }
-          }, [dependentById])  
+          //         editFalseDependent();
+          //         navigation.navigate( 'ApplyVaccinesAddScreen' as never)
+          //    }
+          // }, [dependentById])  
 
           const handlePreviousPage = () => {
             let limiteDesde ={
@@ -118,7 +120,7 @@ export const ApplyVaccinesScreen =  () => {
                 useEffect(() => {
         
                     initPerfiles(limite, token);
-                    dispatch( clearDependenThunks());
+                     handlerClearDependent();
 
                       let limiteDesde ={
                           limite,

@@ -48,8 +48,9 @@ def get_userList_service(limite, desde):
     
     data = get_user_repo_list(limite, desde)
     total = get_user_counts_repo()
-
     result = json_util.dumps(data)
+  
+
     diccionario = {
         'total': total,
         'limite':limite,
@@ -57,20 +58,38 @@ def get_userList_service(limite, desde):
         'users': json.loads(result)
     }
 
+    # La informacion complementaria de cada usuario viene por la tabla dependents. Accedemos a la tabla
+    # Dependents y tomamos la informacion que falta del usuario en la clave: more
+
+    acumulado = []  # Crear una lista vacía para acumular los resultados
+    for user in diccionario["users"]:
+        user_id = user["_id"]["$oid"]
+        data=get_userbyId_service_data(user_id)
+        acumulado.append(data)  # Agregar cada resultado a la lista acumulada
+
+    diccionario["users"] = json.loads(json_util.dumps(acumulado))  # Actualizar el diccionario con la lista acumulada
+
     return jsonify(diccionario)
+
+
+def get_userbyId_service_data(id):
+        data = get_user_repo(id)
+        dependent_is_user = checkUserDependent({'isUser': True, "user_id":ObjectId(id) })
+        dependent_is_user = json_util.dumps(dependent_is_user)
+        
+        response_data = {
+                'user': data,
+                'more': json.loads(dependent_is_user),
+        }
+        return response_data 
 
 # """Obtener una objeto"""
 def get_userbyId_service(id):
     data = get_user_repo(id)
-    print(data)
     dependent_is_user = checkUserDependent({'isUser': True, "user_id":ObjectId(id) })
     dependent_is_user = json_util.dumps(dependent_is_user)
-    
-    response_data = {
-            'user': data,
-            'more': json.loads(dependent_is_user),
-    }
-    response = Response(json.dumps(json.loads(json_util.dumps(response_data))), status=200, mimetype='application/json')
+ 
+    response = Response(json.dumps(json.loads(json_util.dumps(get_userbyId_service_data(id)))), status=200, mimetype='application/json')
     return response 
 
 def delete_user_service(id):

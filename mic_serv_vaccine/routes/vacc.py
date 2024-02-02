@@ -7,8 +7,8 @@ from validators.vaccine import isValidVaccine
 from repository.vacc import isValidBdVaccine, isValidBdVaccineUpdate
 import json
 from bson.objectid import ObjectId
-from flask_jwt_extended import jwt_required
-
+from flask_jwt_extended import jwt_required, JWTManager
+ 
  
 
 ns_vaccine = Namespace('vaccine', 'Vaccine related endpoints')
@@ -16,11 +16,12 @@ ns_vaccine = Namespace('vaccine', 'Vaccine related endpoints')
 model = ns_vaccine.model('Vaccines', {
     'name': fields.String(required=True, description='Name of vaccine'),
     'description': fields.String(required=True, description='Description of vaccine'),
-    'disease': fields.String(required=True, description='Disease of vaccine'),
-    'dosis': fields.String(required=True, description='Dosis of vaccine'),
+    'disease_prevents': fields.String(required=True, description='Disease of vaccine'),
     'application_age': fields.String(required=True, description='Application age of vaccine'),
     'isChildren': fields.Boolean(required=True, description='isChildren to vaccine')
 })
+
+
 
 @ns_vaccine.route('/', methods = [ 'POST' ])
 class getVaccinessswgger(Resource):
@@ -35,14 +36,25 @@ class getVaccinessswgger(Resource):
         result =  isValidBdVaccine(data)
         return create_vaccine_service(data) if bool(result["resp"])  else result  
 
+ 
 
-@ns_vaccine.route('/<limite>/<desde>', methods = [ 'GET' ])
-class get_vaccionesList(Resource):        
-    @ns_vaccine.doc(params={'limite': {'default': 20}, 'desde': {'default': 0}})
-    @ns_vaccine.doc(security='apikey')
-    @jwt_required()
-    def get(self, limite=None, desde=None):
-         return get_vaccines_list_service(limite, desde)
+@ns_vaccine.route('/<limite>/<desde>/<query>', methods = [ 'GET' ])
+class getvaccineswgger(Resource):       
+   @ns_vaccine.doc(params={'limite': {'default': 20}, 'desde': {'default': 0}})
+   @ns_vaccine.doc(security='apikey')
+   @jwt_required() 
+   def get(self, limite, desde, query=None):
+    #   #Validamos id pk de entrada
+    #   result = get_user_repo(get_jwt_identity())
+    #   if result is None or "error" in result:
+    #      return {    "error":False,
+    #                  "resp":False,
+    #                  "statusCode": "badToken",
+    #                  "ValueError": "El token no es valido",
+    #                  "message":"El token no es valido",
+    #        } 
+           
+      return get_vaccines_list_service(limite, desde,query)
 
   
 @ns_vaccine.route('/<id>', methods = [  'GET', 'PUT', 'DELETE' ])

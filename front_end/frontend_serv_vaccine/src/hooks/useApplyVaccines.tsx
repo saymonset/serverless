@@ -1,18 +1,30 @@
 import React, { useEffect, useState } from 'react'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useForm } from './useForm';
-import { Dependent, DependentsResume, DesdeLimite, NextPrevioPage } from '../interfaces';
-import { dependentByIdThunks, editFalseApplyVaccineThunks} from '../store/slices/applyvaccines/applyVaccinesThunks.js';
+ 
+import { ApplyVaccine, ApplyVaccineResponse, Dependent, DependentsResume, DesdeLimite, LIMITE_PAGE, NextPrevioPage } from '../interfaces';
+ 
 import { useDispatch, useSelector } from 'react-redux';
+import { useDependent } from './useDependent';
+import {   startLoadingApplyVaccine, stopLoadingApplyVaccine, setDependentById,
+  editFalseApplyVaccine, addMessageApplyVaccine, removeMessageApplyVaccine, responseApplyVaccine, loadDataApplyVaccine, byIdApplyVaccine } from '../store/slices/applyvaccines';
+import { useLogin } from './useLogin';
+import vaccinesApi from '../api/vaccinesApi';
+import { enviarMensajePorStatusCode } from '../utils/enviarMensajePorStatusCode';
 
 
 
 export const useApplyVaccines = () => {
 
-  const [dataFiltred, setDataFiltred] = useState<DependentsResume[]>([]);
-
+  const {  isEdit, resp, dependent_id , total, isLoading, message, tableData,
+      limite, desde, currentPage} = useSelector( (state: store ) => state.applyVaccineStore);
+ 
     {/** Estas variables vienen del store */}
-    let { _id:_idStore, lote:loteStore,  image:imageStore, dosis_id:dosis_idStore,  vaccination_date:vaccination_dateStore,
-       status:statusStore } = useSelector( (state: store ) => state.dependentStore);
+    let { _idStore, loteStore,  imageStore, dosis_idStore,  vaccination_dateStore,
+          statusStore } = useDependent();
+    const { token } = useLogin();
+    
+       
 
        {/** Estas variables son para inicializar el formulario */}
     let inic = {
@@ -23,99 +35,209 @@ export const useApplyVaccines = () => {
       vaccination_date:vaccination_dateStore,
       status:statusStore,
     }
-    // console.log('----------saymons---------')
-    // console.log({dependent_idStore})
-    // console.log('----------saymons--------II-')
-    // console.log({inic})
     const { _id, lote,  image, dosis_id,  vaccination_date, status, onChange } = useForm({...inic});
      
-
-
-    // const [selectedGeneroId, setSelectedGeneroId] = React.useState("");
-    // const [selecteRelationShipId, setSelectedRelationShipId] = React.useState("");
-    // const [selectedUserId, setSelectedUserId] = React.useState("");
+ 
     const dispatch = useDispatch();
-
-  //   {/**   datos de la tabla  */}
-  // const [isVisible, setIsVisible] = useState(false);
+    const handlerRemoveMessageApplyVaccine =  ()  => {
+      const payload =  {};
+      dispatch( removeMessageApplyVaccine(payload))
+    }
+ const useApplyVaccineAddModify = async ( applyVaccine: ApplyVaccine, token:string , total:number)  => {
   
-  // const loadDataFromStore = (data:DependentsResume[]) => {
-  //   setDataFiltred(data);
-  // }
+    try {
+   
+      if (token) {
+        await AsyncStorage.setItem('token', token ); 
+      }
+       
+        dispatch( startLoadingApplyVaccine());
+        let data0 =  {} as any;
+        let vaccination_dateStr = '';
+        const { _id, vaccination_date,  ...resto } = applyVaccine;
+        if (vaccination_date instanceof Date) {
+            vaccination_dateStr = vaccination_date.toISOString();
+          // Resto del código...
+        } else {
+            // Manejar el caso en el que `birth` no sea de tipo `Date`
+            vaccination_dateStr = vaccination_date;
+        }
 
-  // const loadData = async(limiteDesde: DesdeLimite,currentPage:number, nextPrev:NextPrevioPage, token:string, term: string) => {
-  //   await dispatch(loadDataThunks( limiteDesde, currentPage, nextPrev, token, term));
-  // }
-  // const dependentDelete = async( id:String, token: String, dependentsResume: DependentsResume[] ) => {
-  //     dispatch(dependentDeleteThunks(id, token, dependentsResume ))
-  // }
-  // const dependentAddModify = async(dependent: Dependent, token: string, dependentsResume:DependentsResume, total:number) => {
-  //   await dispatch(dependentThunksAddModify(dependent, token, dependentsResume, total));
-  // }
+        let idFind = _id;
+        let totalNew =  total;
+
+        if(_id){
+          let applyVaccine = Object.assign({}, resto, { vaccination_date: vaccination_dateStr });
+          data0 = await vaccinesApi.put(`/applyVaccines/${_id}`, {...applyVaccine});
+        }else{
+          let applyVaccine = Object.assign({}, resto, { vaccination_date: vaccination_dateStr });
+          data0 = await vaccinesApi.post(`/applyVaccines/`, {...applyVaccine});
+        }
+        let { data } = data0;
+
+       let {resp, statusCode, message} = data;
+        
+
+       if (statusCode == 401 || !resp) {
+            dispatch( addMessageApplyVaccine( enviarMensajePorStatusCode(statusCode)))
+            return 
+        }
+       let payload = {
+             resp,
+             message:enviarMensajePorStatusCode("201"),
+             isLoading: false,
+             tableData:[],
+             total:0
+       }
+            dispatch( responseApplyVaccine(payload));
+            console.log(resp, statusCode, message)
+            return 
+    } catch (error) {
+         dispatch( addMessageApplyVaccine("Error: "+error))
+    }
+}
+
+
+const handleByIdApplyVaccine = ({_id, dependent_id, dosis_id, image, vaccination_date, lote}:ApplyVaccine) => {
+ 
+     const payload = {
+          _id, 
+          dependent_id, 
+          dosis_id, 
+          image, 
+          vaccination_date, 
+          lote
+     }
+     dispatch(byIdApplyVaccine(payload));
+}
+ 
+// byIdApplyVaccine: ( state, { payload } ) => {
+//   state._id = payload._id
+//   state.dependent_id = payload.dependent_id;
+//   state.dosis_id = payload.dosis_id;
+//   state.image = payload.image;
+//   state.lote = payload.lote;
+//   state.vaccination_date = payload.vaccination_date;
+//   state.isEdit = true;
+// },
+
+
+const handlePreviousPage =  (total: number, currentPage: number) => {
+  if (currentPage > 1) {
+    return currentPage = currentPage -1;
+  }
+  return currentPage;
+};
+ 
+
+const handleNextPage =  (total: number, currentPage: number) => {
+ 
+  if (currentPage < total) {
+     return currentPage = currentPage + 1;
+  }
+  return currentPage;
+};
+  const whereGo =   (nextPrevioPage:NextPrevioPage, total:number, currentPage: number) => {
+    const { nextPage } = nextPrevioPage;
+   // console.log({nextPrevioPage, total, currentPage})
+   switch (nextPage) {
+         case 'next':
+           // Lógica para ir a la siguiente página
+           return handleNextPage(total, currentPage);
+           break;
+         case 'prev':
+           // Lógica para ir a la página anterior
+           return handlePreviousPage(total, currentPage);
+           break;
+         case 'none':
+           // Lógica para no realizar ninguna acción
+           return currentPage = 1;
+           break;
+         default:
+           break;
+       }
+     
+       return currentPage;
+  }
 
   const dependentById = async(id: string) => {
-    await dispatch(dependentByIdThunks(id));
+    try {
+      dispatch( startLoadingApplyVaccine());
+      if (token) {
+        await AsyncStorage.setItem('token', token ); 
+      }
+        const payload = id;
+        //Pmos la data
+        let desde =      0;
+        let limite =     LIMITE_PAGE;
+
+        loadData({
+          limite,
+          desde
+        }, 1, {
+          nextPage:'none'
+        }, token, id)
+
+         dispatch( setDependentById(payload) );
+         dispatch( stopLoadingApplyVaccine() );
+    } catch (error) {
+         dispatch( addMessageApplyVaccine("Error: "+error))
+    }
   }
 
-  const editFalseDependent = () => {
-      dispatch(editFalseApplyVaccineThunks( ));
-  }
-  //   
-  // const deleteRow = async(id:string, token:stringx) => {
-  //   await dispatch(dependentDeleteThunks( id, token ));
-    
-  // };
-
-  // const updateRow = async(id:string, token:string, showModal:(value:boolean)=>void) => {
-  //   await dispatch(dependentByIdThunks( id, token ));
-  //   showModal(true);
-  // };
 
 
+  // nextPrev es faBorderNone, prev o next, 
+  const loadData = async(  desdeLimite: DesdeLimite, currentPage :number, nextPrev:NextPrevioPage, token:string, idDependent: string ) =>{
+    try {
+      dispatch( startLoadingApplyVaccine());
+      if (token) {
+        await AsyncStorage.setItem('token', token ); 
+      }
+
+       
+      dispatch( setDependentById(idDependent) );
+       
+      
+      const { desde, limite } = desdeLimite;
+      
+      const {data} = await vaccinesApi.get(`/applyVaccines/${limite}/${desde}/${idDependent}`);
+      
+      const { apply_vaccines, total, error } = data;
    
-  // const updateRowFigma =  async(id:string, token:string) => {
+      currentPage = whereGo (nextPrev, total, currentPage);
+      console.log({ currentPage, nextPrev})
+      // console.log('--------se dispara--------?-----')
+      // console.log({currentPage})
+      // console.log('--------se dispara--------2----')
+      //console.log({limite, desde, currentPage, total});
+ 
+      let payload = {
+        tableData:apply_vaccines,
+        desde,
+        limite,
+        currentPage,
+        total
+      };
     
-  //     dispatch(await dependentByIdThunks( id, token ));
-   
-  // };
-   
-
-    // let onGeneroSelectTrigger = (value:string) => {
-    //     setSelectedGeneroId(value);
-    // }
-
-
-    // const onUserSelectTrigger = (value:string) => {
-    //     setSelectedUserId(value);
-    // }
-
-
-
-    // const onRelationShipSelectTrigger = (value:string) => {
-    //     setSelectedRelationShipId(value);
-    // }
-
-
-    // const initPerfiles = async (limite:number, token: string) => {
-
-    //   let limiteDesde ={
-    //     limite,
-    //     desde:0
-    //   }
-    //   let prev: NextPrevioPage ={
-    //     nextPage:'none'
-    //   }
-    // //  loadData(limiteDesde, prev);
-    //   let currentPage = 0;
-    //   await dispatch(loadDataThunks( limiteDesde, currentPage, prev, token ));
-    // } 
-    
+      dispatch( loadDataApplyVaccine(payload) );
+      dispatch( stopLoadingApplyVaccine() );
+      if (error) {
+         throw error
+        return 
+      }
+    } catch (error) {
+      dispatch( stopLoadingApplyVaccine() );
+      dispatch( addMessageApplyVaccine("Error: "+error))
+    }
+}
 
  
 
-    // const onDependent = async(dependent_id: string ) => {
-
-    // }
+  const editFalseDependent = () => {
+      dispatch( editFalseApplyVaccine());
+  }
+  
 
   return {
         //  onGeneroSelectTrigger,
@@ -129,7 +251,21 @@ export const useApplyVaccines = () => {
          vaccination_date,
          onChange,
          dependentById,
+         handleByIdApplyVaccine,
          editFalseDependent,
+         isEdit,
+         useApplyVaccineAddModify,
+         resp,
+         dependent_id,
+         total, 
+         limite, desde, currentPage,
+         isLoading, 
+         message,
+         handlerRemoveMessageApplyVaccine,
+         loadData,
+         tableData,
+         token
+         
         //  selectedGeneroId,
         //  selecteRelationShipId,
         //  selectedUserId,

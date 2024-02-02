@@ -25,4 +25,10 @@ def validar_email(email):
         return False
 
 
+def get_caracteres_especiales(query):
+    contador = 0
+    for caracter in query:
+        if caracter == "'" or caracter == '"':
+            contador += 1
+    return contador
          

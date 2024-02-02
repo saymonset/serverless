@@ -8,11 +8,11 @@ export interface DosisResponse {
 }
 
 export interface Dosiss {
-    _id:           ID;
-    age_frequency: string;
-    name:          string;
-    status:        boolean;
-    vacinne_id:    string;
+    _id?:           ID;
+    age_frequency?: string;
+    name?:          string;
+    status?:        boolean;
+    vacinne_id?:    string;
 }
 
 export interface ID {

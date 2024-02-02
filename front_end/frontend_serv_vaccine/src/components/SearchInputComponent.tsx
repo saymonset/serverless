@@ -9,9 +9,10 @@ import { BackePageComponente } from './BackePageComponente';
 interface Props {
         style?: StyleProp<ViewStyle>;
         onDebounce: (value: string) => void;
+        goPage?: string;
 }
 //interface Props extends StackScreenProps<any, any> {}
-export const SearchInputComponent = (  {  onDebounce, style }:Props) => {
+export const SearchInputComponent = (  {  onDebounce, style, goPage = ""}:Props) => {
 
     const [textValue, setTextValue] = useState('');
 
@@ -21,6 +22,9 @@ export const SearchInputComponent = (  {  onDebounce, style }:Props) => {
         onDebounce(  debouncedValue  );
     }, [debouncedValue])
     
+    if (goPage==""){
+        goPage = "HomeFigmaTab1Screen";
+    }
 
   return (
     <View style={{
@@ -29,9 +33,11 @@ export const SearchInputComponent = (  {  onDebounce, style }:Props) => {
         }}>
         <View style = {styles.goBack} >
             {/**  Boton regreso */}
+
+            
           
             <BackePageComponente 
-                        page="HomeFigmaTab1Screen"
+                        page = {goPage}
                         title1='Vacunación'
                         title2='Exportar'
                         />

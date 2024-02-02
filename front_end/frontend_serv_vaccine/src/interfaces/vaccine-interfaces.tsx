@@ -8,13 +8,13 @@ export interface VaccineResponse {
 }
 
 export interface Vaccine {
-    _id:              ID;
-    application_age:  string;
-    description:      string;
-    disease_prevents: string;
-    isChildren:       boolean;
-    name:             string;
-    status:           boolean;
+    _id?:              ID;
+    application_age?:  string;
+    description?:      string;
+    disease_prevents?: string;
+    isChildren?:       boolean;
+    name?:             string;
+    status?:           boolean;
 }
 
 export interface ID {

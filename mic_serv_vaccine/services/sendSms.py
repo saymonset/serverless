@@ -100,6 +100,9 @@ def sendSms_phone(phone, rand_num):
         resp =    {"resp":False,
                     "statusCode": 501,
                     "error":"Hubo un error al mandar el mensaje, por favor intente nuevamente."}
+        resp =    {"resp":True,
+                    "statusCode": 501,
+                    "error":"Temporal envio de sms. Esta hardoCode!"}
         print(str(e))
     
         return resp

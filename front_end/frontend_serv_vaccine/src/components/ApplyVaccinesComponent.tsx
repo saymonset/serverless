@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useDependent } from '../hooks/useDependent';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
+import { useApplyVaccines } from '../hooks/useApplyVaccines';
  
 
 
@@ -24,25 +25,19 @@ export const ApplyVaccinesComponent = ( { obj, applyVaccinePerson } : Props) => 
   const {  usuario:{ token }  } = useSelector((state: store) => state.loginStore);
 
   //const iniForm =  {name:'', lastname:'', phone:'', email:'', birth: new Date(), gender_id:'', status:true}
-  const {  dependentById, editFalseDependent } = useDependent();
-
-  let { isEdit } = useSelector( (state: store ) => state.dependentStore);
+  //const {  dependentById, editFalseDependent } = useDependent();
+  let { dependentById  } = useApplyVaccines();
+  //let { isEdit } = useSelector( (state: store ) => state.dependentStore);
   
-   const edit = async (dependent: Dependent) => {
-    // await  updateRowFigma(dependent._id+'', token);
-     // useDependent();
+   const edit = async (dependent: any) => {
+     
      const id = dependent._id+'';
-     dependentById( id, token );
+      // Clocamos el id del dependiente en el store de apply vaccine y la bandera ee ediotar en trrue
+      dependentById(id);
+      console.log('--------ApplyVaccListarDosisByDependienteScreen------------');
+      navigation.navigate( 'ApplyVaccListarDosisByDependienteScreen' as never);
    }
-
-   useEffect(() => {
-    // Actualizar el estado del formulario usando el método 'onChange'
-    
-     if (isEdit){
-        editFalseDependent();
-         navigation.navigate( 'PerfilFigmaAddScreen' as never);
-     }
-   }, [isEdit])
+ 
    
 
   return (

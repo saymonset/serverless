@@ -15,13 +15,13 @@ export interface ApplyVaccineResponse {
 }
 
 export interface ApplyVaccine {
-    _id:              ID;
-    dependent_id:     string;
-    dosis_id:         string;
-    image:            string;
-    lote:             string;
-    status:           boolean;
-    vaccination_date: string;
+    _id?:              ID;
+    dependent_id?:     string;
+    dosis_id?:         string;
+    image?:            string;
+    lote?:             string;
+    status?:           boolean;
+    vaccination_date: Date;
 }
 
 export interface ID {

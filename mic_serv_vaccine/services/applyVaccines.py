@@ -15,11 +15,11 @@ from datetime import datetime
 """Registro de vacunas"""
     
 def create_apply_vaccine_service(data):
-    vacinne_id = data.get("vacinne_id")
+    dosis_id = data.get("dosis_id")
     dependent_id = data.get("dependent_id")
     lote = data.get("lote")
     image = data.get("image")
-    date_apply = data.get("date_apply")
+    vaccination_date = data.get("vaccination_date")
     #datetime.strptime(data.get("date_apply"), "%Y-%m-%d")
     # Obtener la fecha actual
     fecha_actual = date.today()
@@ -27,29 +27,34 @@ def create_apply_vaccine_service(data):
     # Convertir la fecha actual a un objeto datetime
     fecha_actual_datetime = datetime.combine(fecha_actual, datetime.min.time())
     status = data.get("status", True)
-    if vacinne_id:
+    if dosis_id:
         # Crea un nuevo documento de usuario
-        applyVaccineModels = ApplyVaccineModels(vacinne_id=vacinne_id, 
+        applyVaccineModels = ApplyVaccineModels(dosis_id=dosis_id, 
                                                 dependent_id=dependent_id, 
                                                 lote=lote, 
                                                 image=image, 
-                                                date_apply=date_apply, 
-                                                date_system = fecha_actual_datetime,
+                                                vaccination_date=vaccination_date, 
                                                 status=status)
         response = crear_applyVaccine_repo(applyVaccineModels)
  
         result = {
                # "id": str(response.inserted_id),
-                "vacinne_id": vacinne_id,
+                "dosis_id": dosis_id,
                 "dependent_id":dependent_id, 
                 "lote":lote, 
                 "image":image, 
-                "date_apply":date_apply, 
-                "status": status
+                "vaccination_date":vaccination_date, 
+                "status": status,
+                "statusCode": 201,
+                 "resp":True,
+            }
+        return json.loads(json_util.dumps(result))
+    else:
+        result = {
+                "statusCode": 400,
+                 "resp":False,
             }
         return result
-    else:
-        return "Invalid payload", 400
 
  
 
@@ -57,32 +62,38 @@ def create_apply_vaccine_service(data):
 """Obtiene las vacunas"""
 
 
-def get_applyVaccinesList_service(limite, desde):
+def get_applyVaccinesList_service(limite, desde, query):
     limite = int(limite)
     desde = int(desde)
-    data = get_applyVaccine_list_repo(limite, desde)
+    data = get_applyVaccine_list_repo(limite, desde, query)
     result = json_util.dumps(data)
-    total = get_applyVaccine_counts_repo()
+    total = get_applyVaccine_counts_repo(query)
     diccionario = {
         'total': total,
         'limite':limite,
         'desde':desde,
-        'apply_vaccines': json.loads(result)
+        'apply_vaccines': json.loads(result),
+        "statusCode": 201,
+         "resp":True,
     }
     return jsonify((diccionario))
+
+ 
 
 """Obtener una Vacuna"""
 
 
 def get_apply__vaccine_service(id):
     data = get_applyVaccine_repo(id)
-    vaccine = None
-    if data is not None and data['vacinne_id'] is not None:
-       vaccine = get_vaccine_repo(data['vacinne_id'])
+    dosis = None
+    if data is not None and data['dosis_id'] is not None:
+       dosis = get_vaccine_repo(data['dosis_id'])
 
     response_data = {
             'result': data,
-            'vaccine':vaccine
+            'dosis':dosis,
+            "statusCode": 201,
+            "resp":True,
     }
     response = Response(json.dumps(json.loads(json_util.dumps(response_data))), status=200, mimetype='application/json')
     return response
@@ -100,15 +111,28 @@ def update_apply_vaccine_service(id, data):
         # Realiza las operaciones necesarias
         response = update_applyVaccine_repo(id, data)
         if response.modified_count >= 1:
-            return "La vaccine ah sido actualizada correctamente", 200
+            result = {
+                "message":"La vaccine ah sido actualizada correctamente", 
+                "statusCode": 200,
+                 "resp":True,
+            }
+            return result
         else:
-            return "La apply vaccine no fue encontrada", 404
+            result = {
+                "message":"La apply vaccine no fue encontrada", 
+                "statusCode": 404,
+                 "resp":False,
+            }
+            return result
     else:
         # Maneja el error o muestra un mensaje de error
         result = {
-             "TypeError": id,
-             "ValueError": "La cadena no es un ObjectId válido" 
-        }
+                "TypeError": id,
+                "ValueError": "La cadena no es un ObjectId válido" ,
+                "message":"La cadena no es un ObjectId válido", 
+                "statusCode": 404,
+                 "resp":False,
+            }
         return result    
 
  
@@ -124,6 +148,20 @@ def delete_applyVaccines_service(id):
         if response.deleted_count >= 1:
             return "La apply_vaccine ha sido eliminada correctamente", 200
         else:
-            return "La apply_vaccine no fue encontrada", 404
+            result = {
+                "TypeError": id,
+                "ValueError": "La apply_vaccine no fue encontrada",
+                "message":"La apply_vaccine no fue encontrada", 
+                "statusCode": 404,
+                 "resp":False,
+            }
+            return result
     else:
-         return "No existe registro para el id:"+id, 400       
+         result = {
+                "TypeError": id,
+                "ValueError": "No existe registro para el id:"+id,
+                "message":"No existe registro para el id:"+id, 
+                "statusCode": 400,
+                 "resp":False,
+            }
+         return result

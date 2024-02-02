@@ -20,14 +20,15 @@ def verifyToken(request):
     document for authorization.
     """
     token = request.headers.get('Authorization')
-    if token is None or "Bearer" not in token or find_one_blacklist_repo({'token': token}):
+    if token is None or "Bearer" not in token:
+       
         return {'Token': False,'usuario':'unauthorized', 'resp':False}
-
     try:
       userId = get_jwt_identity()
       if (userId):
         query = {'_id': ObjectId(userId) }
         usuario = find_one_repo(query)
+        
         if usuario is not None:
             return {'Token': True,  'usuario':usuario, 'resp':True}
         else:
@@ -35,4 +36,5 @@ def verifyToken(request):
       else:
         return {'Token': False,'usuario':'unauthorized', 'resp':False}
     except Exception as e:
+            print( e)
             return {'error': 'Invalid token', 'resp':False}
