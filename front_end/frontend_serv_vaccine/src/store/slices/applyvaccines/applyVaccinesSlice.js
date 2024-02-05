@@ -29,6 +29,7 @@ import {  ApplyVaccine, LIMITE_PAGE } from '../../../interfaces';
     currentPage:0,
     isDelete: false,
     isConsultVaccine: false,
+    isConsultVaccineForDosis: false,
     isAddApplyVaccine    : false,
 
   };
@@ -99,12 +100,19 @@ export const applyVaccineSlice = createSlice({
         loadDataApplyVaccine: ( state, { payload } ) => {
             state.tableData = payload.tableData;
             state.vaccineuniqueFromTableData = payload.vaccineuniqueFromTableData
-            state.dosisFilterbyVaccineIdFromTableData = payload.dosisFilterbyVaccineIdFromTableData;
+            state.dosisFilterbyVaccineIdFromTableData = [];
+            state.isConsultVaccineForDosis = false;
             state.isLoading = false;
             state.desde = payload.desde;
             state.limite = payload.limite;
             state.total = payload.total;
             state.currentPage = payload.currentPage;
+        },
+        loadbyVaccineId: ( state, { payload } ) => {
+            state.isConsultVaccineForDosis = false;
+        },
+        loadbyDosis: ( state, { payload } ) => {
+            state.isConsultVaccineForDosis = true;
         },
         loadDosisFilterbyVaccineId: ( state, { payload } ) => {
             state.dosisFilterbyVaccineIdFromTableData = payload.dosisFilterbyVaccineIdFromTableData;
@@ -149,5 +157,7 @@ export const {  startLoadingApplyVaccine,
                 removeMessageApplyVaccine,
                 onIsConsultVaccine,
                 onIsAddApplyVaccine,
-                onIsOffVaccine
+                onIsOffVaccine,
+                loadbyVaccineId,
+                loadbyDosis
             } = applyVaccineSlice.actions;

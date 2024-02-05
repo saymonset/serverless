@@ -46,7 +46,7 @@ export const ApplyVaccinesListScreen =  () => {
                      navigation.navigate( 'ApplyVaccinesAddScreen' as never)
                  } 
                  if (isConsultVaccine){
-                     navigation.navigate( 'ApplyVaccineByDependentListScreen' as never)
+                     navigation.navigate( 'ApplyVaccineConsultaScreen' as never)
                  } 
                  
             }

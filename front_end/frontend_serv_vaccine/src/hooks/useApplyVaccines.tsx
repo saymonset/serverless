@@ -8,7 +8,7 @@ import { useDependent } from './useDependent';
 import {
   startLoadingApplyVaccine, stopLoadingApplyVaccine, setDependentById, setDependent,
   addMessageApplyVaccine, removeMessageApplyVaccine, responseApplyVaccine, loadDataApplyVaccine,
-  loadDosisFilterbyVaccineId
+  loadDosisFilterbyVaccineId, loadbyVaccineId, loadbyDosis
 } from '../store/slices/applyvaccines';
 import { useLogin } from './useLogin';
 import vaccinesApi from '../api/vaccinesApi';
@@ -21,7 +21,7 @@ export const useApplyVaccines = () => {
 
     
   const { resp, dependent_id, dependent, total, isLoading, message, tableData,vaccineuniqueFromTableData, dosisFilterbyVaccineIdFromTableData,
-    limite, desde, currentPage, isConsultVaccine, isAddApplyVaccine } = useSelector((state: store) => state.applyVaccineStore);
+    limite, desde, currentPage, isConsultVaccine, isAddApplyVaccine, isConsultVaccineForDosis } = useSelector((state: store) => state.applyVaccineStore);
 
   {/** Estas variables vienen del store */ }
   let { _idStore, loteStore, imageStore, dosis_idStore, vaccination_dateStore,
@@ -103,27 +103,23 @@ export const useApplyVaccines = () => {
 
 
   const handleByIdApplyVaccine = ( applyVaccine : ApplyVaccine) => {
-
-    // const payload = {
-    //   ...applyVaccine
-    // }
-    //dosisFilterByvaccineId
-    console.log('--------llenar dodisi-----------------');
     const   { dosis:{ vaccine} } = applyVaccine
 
     let payload = {
       dosisFilterbyVaccineIdFromTableData: dosisFilterByvaccineId( vaccine._id.$oid )
     }
-
-    console.log( payload );
-   
-    ;
-    console.log('------------2-------');
     dispatch(loadDosisFilterbyVaccineId(payload))
   }
 
+  const onLoadbyVaccine = () =>{
+    //Apagamos el sw de filtrar por el arreglo de dosis de cada vacuna, para que cargue el arreglo de vacunas del store apply_vaccines
+    dispatch(loadbyVaccineId({}));
+  }
 
-
+  const onLoadbyDosis = () =>{
+    //Apagamos el sw de filtrar por el arreglo de dosis de cada vacuna, para que cargue el arreglo de vacunas del store apply_vaccines
+    dispatch(loadbyDosis({}));
+  }
 
   const handlePreviousPage = (total: number, currentPage: number) => {
     if (currentPage > 1) {
@@ -196,8 +192,6 @@ export const useApplyVaccines = () => {
         currentPage,
         total
       };
-
-  
       dispatch(loadDataApplyVaccine(payload));
       dispatch(stopLoadingApplyVaccine());
       if (error) {
@@ -209,6 +203,8 @@ export const useApplyVaccines = () => {
       dispatch(addMessageApplyVaccine("Error: " + error))
     }
   }
+
+
 
   const vaccineUnique = (apply_vaccines:  any) =>{
     let apply_vaccinesAux = [];
@@ -268,7 +264,10 @@ export const useApplyVaccines = () => {
     dosisFilterbyVaccineIdFromTableData,
     token,
     isConsultVaccine,
-    isAddApplyVaccine
+    isAddApplyVaccine,
+    isConsultVaccineForDosis,
+    onLoadbyVaccine,
+    onLoadbyDosis
 
     //  selectedGeneroId,
     //  selecteRelationShipId,

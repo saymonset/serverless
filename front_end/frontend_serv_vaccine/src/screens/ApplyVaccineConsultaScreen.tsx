@@ -17,17 +17,69 @@ import { ApplyVaccineByDependentListComponent } from '../components/ApplyVaccine
 
 const screenWidth = Dimensions.get("window").width;
 
-export const ApplyVaccinesDetailScreen =  () => {
+export const ApplyVaccineConsultaScreen =  () => {
          
-  let {  dependent , isLoading,
-              dosisFilterbyVaccineIdFromTableData, } = useApplyVaccines();
+  let { loadVaccineAppliedByDependent, dependent_id, dependent , isLoading,
+              total, 
+              limite, 
+              desde, 
+              currentPage, 
+              vaccineuniqueFromTableData,
+              isConsultVaccineForDosis,
+              onLoadbyVaccine, handleByIdApplyVaccine,
+              onLoadbyDosis} = useApplyVaccines();
+
+              
 
             const { top } = useSafeAreaInsets();
+            const navigation = useNavigation();
 
             let keyCounter = 0;
- 
+
+            const { token } = useLogin();
+
+            const goPage = (value: any) => {
+              handleByIdApplyVaccine({...value});
+              onLoadbyDosis();
+              navigation.navigate("ApplyVaccinesConsultaDetailScreen" as never);
+          };
+
+      
+
+          const handlePreviousPage = () => {
+              let limiteDesde ={
+                  limite,
+                  desde:desde-limite>=0?desde-limite:limite-desde
+              }
+              let prev: NextPrevioPage ={
+                nextPage:'prev'
+              }
+              loadVaccineAppliedByDependent(limiteDesde, currentPage,  prev, token, dependent_id)
+          };
+          const handleNextPage  = () => {
+            let limiteDesde ={
+                limite,
+                desde:desde+limite
+            }
+
+            let next: NextPrevioPage ={
+              nextPage:'next'
+            }
+            loadVaccineAppliedByDependent(limiteDesde, currentPage,  next, token, dependent_id)
+          };
        
-         
+          useEffect(() => {
+            let desde = 0;
+            let limite = LIMITE_PAGE;
+      
+            loadVaccineAppliedByDependent({
+              limite,
+              desde
+            }, 1, {
+              nextPage: 'none'
+            }, token, dependent_id)
+            
+          }, [])
           
            
   return (
@@ -67,10 +119,10 @@ export const ApplyVaccinesDetailScreen =  () => {
                       width: screenWidth - 40,
                       top: (Platform.OS === 'ios') ? top : top + 30
                     }} 
-                     goPage={"ApplyVaccinesListScreen"} ></SearchInputComponent>
+                     goPage="ApplyVaccinesListScreen"></SearchInputComponent>
                    
                     <FlatList
-                            data={dosisFilterbyVaccineIdFromTableData}
+                            data={vaccineuniqueFromTableData}
                             keyExtractor={() => {
                               keyCounter++;
                               return keyCounter.toString();
@@ -92,12 +144,17 @@ export const ApplyVaccinesDetailScreen =  () => {
                               <View style={{marginBottom:10,
                                             marginTop:5}}>
                                 <ApplyVaccineByDependentListComponent applyVaccine={item}
-                                                     />
+                                                   goPage  = { ( value )  => goPage( value )}  />
                               </View>
                             )}
                           />
-       
-             
+                        
+                   {/* Controles del paginador */}
+                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop:20, marginBottom:(Platform.OS === 'ios') ? 0: 10 }}>
+                  <Button title="Anterior" onPress={handlePreviousPage} disabled={currentPage === 1 || isLoading} />
+                  <Text style={{ marginHorizontal: 10, color:'white' }}>Página {currentPage} / { Math.ceil(total / limite ) }</Text>
+                  <Button title="Siguiente" onPress={handleNextPage} disabled={currentPage === Math.ceil(total / limite ) ||isLoading} />
+                </View>
        </View>
       </View>
   </View>

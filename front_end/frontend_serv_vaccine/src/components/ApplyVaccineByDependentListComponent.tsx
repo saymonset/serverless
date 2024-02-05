@@ -2,7 +2,6 @@
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { useNavigation } from '@react-navigation/native';
 import { useApplyVaccines } from '../hooks/useApplyVaccines';
 import { ApplyVaccine } from '../interfaces';
  
@@ -11,18 +10,22 @@ import { ApplyVaccine } from '../interfaces';
 
 interface Props {
     applyVaccine: ApplyVaccine;
+    goPage: (applyVaccine: ApplyVaccine | null) => void;
 }
 
-export const ApplyVaccineByDependentListComponent = ( { applyVaccine } : Props) => {
+export const ApplyVaccineByDependentListComponent = ( { applyVaccine, goPage } : Props) => {
 
-  let { handleByIdApplyVaccine  } = useApplyVaccines();
-  const navigation = useNavigation();
+  let { isConsultVaccineForDosis } = useApplyVaccines();
+
 
 
    const edit = async (applyVaccine:ApplyVaccine) => {
       // Clocamos el id del dependiente en el store de apply vaccine y la bandera ee ediotar en trrue
-      handleByIdApplyVaccine(applyVaccine);
-      navigation.navigate("ApplyVaccinesDetailScreen" as never);
+      if (!isConsultVaccineForDosis){
+            goPage( applyVaccine)
+      }else{
+            goPage( null )
+      }
    }
  
    
@@ -42,10 +45,10 @@ export const ApplyVaccineByDependentListComponent = ( { applyVaccine } : Props) 
                       </View>    
                       <View style={{ marginLeft: 30, marginRight:80,}}>
                               <Text style={styles.strong}>{ 'Nombre: '+applyVaccine.dosis.vaccine.name }</Text>
-                              {/* <Text style={styles.strong}>{'Previene: '+applyVaccine.dosis.vaccine.disease_prevents}</Text> */}
+                              <Text style={styles.strong}>{'Previene: '+applyVaccine.dosis.vaccine.disease_prevents}</Text>
                               <Text style={styles.strong}>{'Descripción: '+applyVaccine.dosis.vaccine.description}</Text>
-                              {/* <Text style={styles.strong}>{'Lote: '+applyVaccine.lote}</Text>
-                              <Text style={styles.strong}>{'Fecha: '+applyVaccine.vaccination_date}</Text> */}
+                              <Text style={styles.strong}>{'Lote: '+applyVaccine.lote}</Text>
+                              <Text style={styles.strong}>{'Fecha: '+applyVaccine.vaccination_date}</Text>
                       </View>
                   </View>
             </TouchableOpacity>
