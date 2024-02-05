@@ -101,7 +101,7 @@ export const Navigator = () => {
                   <Stack.Screen name="RegisterScreen" component={ RegisterScreen } /> 
             </>)
           : (<>
-               {/** Este HomeScreen es el principa que llama el menu*/}
+               {/** Este HomeScreen es el principal que llama el menu*/}
                <Stack.Screen name="HomeFigmaTabRootScreen" component={ HomeFigmaTabRootScreen } />  
                <Stack.Screen name="PerfilFigmaAddScreen" component={ PerfilFigmaAddScreen } />  
                <Stack.Screen name="PerfilesFigmaScreen" component={ PerfilesFigmaScreen } />  

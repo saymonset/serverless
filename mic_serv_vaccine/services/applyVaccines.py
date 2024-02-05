@@ -78,7 +78,10 @@ def get_applyVaccinesList_service(limite, desde, query):
         dependent_id = d['dependent_id']
         data_dependent = get_dependentsbyId_servicWithOutJson(dependent_id);
         d['dependent'] = data_dependent
+        del d['dependent_id'] # Eliminar el campo dosis_id del resultado    
+        del d['dosis_id'] # Eliminar el campo dosis_id del resultado    
         new_data.append(d)  # Append the modified object to the new_data list
+    
 
     result = json_util.dumps(new_data)
     

@@ -53,6 +53,7 @@ const TabsAndroid = () => {
           }
     })}
     >
+      {/* En HomeFigmaTab1Screen aparece la tarjeta de (Consultas, Vacunacion, Embarazo, Patologias ) . PROXIMAS CITAS, CUIDA TU SALUD */}
       <BottomTabAndroid.Screen name="HomeFigmaTab1Screen" options={{title:''}} component={HomeFigmaTab1Screen} />
       <BottomTabAndroid.Screen name="PerfilesFigmaScreen" options={{title:''}} component={PerfilesFigmaScreen} />
       <BottomTabAndroid.Screen name="HomeFigmaTab3Screen" options={{title:''}} component={HomeFigmaTab3Screen} />

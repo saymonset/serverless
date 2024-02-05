@@ -7,18 +7,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useDependent } from './useDependent';
 import {
   startLoadingApplyVaccine, stopLoadingApplyVaccine, setDependentById, setDependent,
-  addMessageApplyVaccine, removeMessageApplyVaccine, responseApplyVaccine, loadDataApplyVaccine, byIdApplyVaccine
+  addMessageApplyVaccine, removeMessageApplyVaccine, responseApplyVaccine, loadDataApplyVaccine,
+  loadDosisFilterbyVaccineId
 } from '../store/slices/applyvaccines';
 import { useLogin } from './useLogin';
 import vaccinesApi from '../api/vaccinesApi';
 import { enviarMensajePorStatusCode } from '../utils/enviarMensajePorStatusCode';
+import { Vaccine } from '../interfaces/apply-vaccines-interfaces';
 
 
 
 export const useApplyVaccines = () => {
 
     
-  const { resp, dependent_id, dependent, total, isLoading, message, tableData,
+  const { resp, dependent_id, dependent, total, isLoading, message, tableData,vaccineuniqueFromTableData, dosisFilterbyVaccineIdFromTableData,
     limite, desde, currentPage, isConsultVaccine, isAddApplyVaccine } = useSelector((state: store) => state.applyVaccineStore);
 
   {/** Estas variables vienen del store */ }
@@ -100,27 +102,27 @@ export const useApplyVaccines = () => {
   }
 
 
-  const handleByIdApplyVaccine = ({ _id, dependent_id, dosis_id, image, vaccination_date, lote }: ApplyVaccine) => {
+  const handleByIdApplyVaccine = ( applyVaccine : ApplyVaccine) => {
 
-    const payload = {
-      _id,
-      dependent_id,
-      dosis_id,
-      image,
-      vaccination_date,
-      lote
+    // const payload = {
+    //   ...applyVaccine
+    // }
+    //dosisFilterByvaccineId
+    console.log('--------llenar dodisi-----------------');
+    const   { dosis:{ vaccine} } = applyVaccine
+
+    let payload = {
+      dosisFilterbyVaccineIdFromTableData: dosisFilterByvaccineId( vaccine._id.$oid )
     }
-    dispatch(byIdApplyVaccine(payload));
+
+    console.log( payload );
+   
+    ;
+    console.log('------------2-------');
+    dispatch(loadDosisFilterbyVaccineId(payload))
   }
 
-  // byIdApplyVaccine: ( state, { payload } ) => {
-  //   state._id = payload._id
-  //   state.dependent_id = payload.dependent_id;
-  //   state.dosis_id = payload.dosis_id;
-  //   state.image = payload.image;
-  //   state.lote = payload.lote;
-  //   state.vaccination_date = payload.vaccination_date;
-  // },
+
 
 
   const handlePreviousPage = (total: number, currentPage: number) => {
@@ -162,77 +164,76 @@ export const useApplyVaccines = () => {
   }
 
   const dependentById = async (id: string) => {
-    try {
-      dispatch(startLoadingApplyVaccine({}));
-      if (token) {
-        await AsyncStorage.setItem('token', token);
-      }
       const payload = id;
-      //Pmos la data
-      let desde = 0;
-      let limite = LIMITE_PAGE;
-
-      loadData({
-        limite,
-        desde
-      }, 1, {
-        nextPage: 'none'
-      }, token, id)
-
       dispatch(setDependentById(payload));
-      dispatch(stopLoadingApplyVaccine());
-    } catch (error) {
-      dispatch(addMessageApplyVaccine("Error: " + error))
-    }
+      const { data: { result } } = await vaccinesApi.get(`/dependent/${payload}`);
+      //LLenamos dependent toda su data en el store
+      dispatch(setDependent(result))
   }
 
 
 
   // nextPrev es faBorderNone, prev o next, 
-  const loadData = async (desdeLimite: DesdeLimite, currentPage: number, nextPrev: NextPrevioPage, token: string, idDependent: string) => {
+  const loadVaccineAppliedByDependent = async (desdeLimite: DesdeLimite, currentPage: number, nextPrev: NextPrevioPage, token: string, idDependent: string) => {
     try {
 
       if (token) {
         await AsyncStorage.setItem('token', token);
       }
-
       dispatch(startLoadingApplyVaccine());
 
-      const { data: { result } } = await vaccinesApi.get(`/dependent/${idDependent}`);
-      console.log('-----------1--------------');
-      let dependent = result;
-      //LLenamos dependent toda su data en el store
-      dispatch(setDependent(dependent))
-      dispatch(setDependentById(idDependent));
-
-
       const { desde, limite } = desdeLimite;
-
       const { data } = await vaccinesApi.get(`/applyVaccines/${limite}/${desde}/${idDependent}`);
-
       const { apply_vaccines, total, error } = data;
-
       currentPage = whereGo(nextPrev, total, currentPage);
-
 
       let payload = {
         tableData: apply_vaccines,
+        vaccineuniqueFromTableData: vaccineUnique(apply_vaccines),
+        dosisFilterbyVaccineIdFromTableData: [],
         desde,
         limite,
         currentPage,
         total
       };
 
+  
       dispatch(loadDataApplyVaccine(payload));
-      dispatch(stopLoadingApplyVaccine({}));
+      dispatch(stopLoadingApplyVaccine());
       if (error) {
         throw error
         return
       }
     } catch (error) {
-      dispatch(stopLoadingApplyVaccine({}));
+      dispatch(stopLoadingApplyVaccine());
       dispatch(addMessageApplyVaccine("Error: " + error))
     }
+  }
+
+  const vaccineUnique = (apply_vaccines:  any) =>{
+    let apply_vaccinesAux = [];
+      if (apply_vaccines){
+            // Crear un mapa para almacenar las vacunas únicas
+            const uniqueVaccinesMap = new Map();
+            // Filtrar y almacenar las vacunas únicas en el mapa
+            apply_vaccines.forEach(apply_vaccine => {
+              const vaccineId = apply_vaccine.dosis.vaccine._id.$oid;
+              if (!uniqueVaccinesMap.has(vaccineId)) {
+                uniqueVaccinesMap.set(vaccineId, apply_vaccine);
+              }
+            });
+             // Obtener las vacunas únicas del mapa
+             apply_vaccinesAux = Array.from(uniqueVaccinesMap.values());
+      }
+      return apply_vaccinesAux;
+  }
+  const dosisFilterByvaccineId = ( vaccine_id:string) =>{
+    
+    const filteredVaccines = tableData?.filter(vaccine => {
+      return vaccine.dosis.vaccine._id.$oid === vaccine_id;
+    });
+
+    return filteredVaccines;
   }
 
 
@@ -261,8 +262,10 @@ export const useApplyVaccines = () => {
     isLoading,
     message,
     handlerRemoveMessageApplyVaccine,
-    loadData,
+    loadVaccineAppliedByDependent,
     tableData,
+    vaccineuniqueFromTableData,
+    dosisFilterbyVaccineIdFromTableData,
     token,
     isConsultVaccine,
     isAddApplyVaccine

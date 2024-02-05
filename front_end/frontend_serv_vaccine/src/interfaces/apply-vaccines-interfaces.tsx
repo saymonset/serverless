@@ -12,10 +12,8 @@ export interface ApplyVaccineResponse {
 export interface ApplyVaccine {
     _id:              ID;
     dependent:        Dependent;
-    dependent_id:     string;
     dosis:            Dosis;
-    dosis_id:         string;
-    image:            string;
+    image:            null;
     lote:             string;
     status:           boolean;
     vaccination_date: string;
@@ -26,21 +24,17 @@ export interface ID {
 }
 
 export interface Dependent {
-    _id:             ID;
-    age:             number;
-    birth:           string;
-    city:            string;
-    email:           string;
-    gender_id:       string;
-    isChildren:      boolean;
-    isUser:          boolean;
-    lastname:        string;
-    name:            string;
-    phone:           string;
-    relationship_id: string;
-    state:           string;
-    status:          boolean;
-    user_id:         string;
+    _id:       ID;
+    birth:     string;
+    email:     string;
+    gender_id: string;
+    isUser:    boolean;
+    lastname:  string;
+    name:      string;
+    phone:     string;
+    status:    boolean;
+    token:     string;
+    user_id:   ID;
 }
 
 export interface Dosis {
@@ -49,7 +43,6 @@ export interface Dosis {
     name:          string;
     status:        boolean;
     vaccine:       Vaccine;
-    vacinne_id:    string;
 }
 
 export interface Vaccine {

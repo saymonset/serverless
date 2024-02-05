@@ -9,7 +9,7 @@ import {  ApplyVaccine, LIMITE_PAGE } from '../../../interfaces';
     _id:'',
     dependent_id:     '',
     dependent: {},
-    dosis_id:         '',
+    dosis:         {},
     image:            '',
     lote:             '',
     vaccination_date: '',
@@ -21,6 +21,8 @@ import {  ApplyVaccine, LIMITE_PAGE } from '../../../interfaces';
     resp: false,
     statusCode:'',
     tableData: [],
+    vaccineuniqueFromTableData: [],
+    dosisFilterbyVaccineIdFromTableData: [],
     desde:      0,
     limite:     LIMITE_PAGE,
     total:      0,
@@ -62,7 +64,7 @@ export const applyVaccineSlice = createSlice({
         byIdApplyVaccine: ( state, { payload } ) => {
             state._id = payload._id
             state.dependent_id = payload.dependent_id;
-            state.dosis_id = payload.dosis_id;
+            state.dosis = payload.dosis;
             state.image = payload.image;
             state.lote = payload.lote;
             state.vaccination_date = payload.vaccination_date;
@@ -70,7 +72,7 @@ export const applyVaccineSlice = createSlice({
         deleteApplyVaccine: ( state, { payload } ) => {
             state._id = '';
             state.dependent_id =     '';
-            state.dosis_id =         '';
+            state.dosis =         {};
             state.image =            '';
             state.lote =             '';
             state.vaccination_date = '';
@@ -84,7 +86,7 @@ export const applyVaccineSlice = createSlice({
         clearApplyVaccine: ( state ) => {
             state._id = '';
             state.dependent_id =     '';
-            state.dosis_id =         '';
+            state.dosis =         {};
             state.image =            '';
             state.lote =             '';
             state.vaccination_date = '';
@@ -96,11 +98,16 @@ export const applyVaccineSlice = createSlice({
         },
         loadDataApplyVaccine: ( state, { payload } ) => {
             state.tableData = payload.tableData;
+            state.vaccineuniqueFromTableData = payload.vaccineuniqueFromTableData
+            state.dosisFilterbyVaccineIdFromTableData = payload.dosisFilterbyVaccineIdFromTableData;
             state.isLoading = false;
             state.desde = payload.desde;
             state.limite = payload.limite;
             state.total = payload.total;
             state.currentPage = payload.currentPage;
+        },
+        loadDosisFilterbyVaccineId: ( state, { payload } ) => {
+            state.dosisFilterbyVaccineIdFromTableData = payload.dosisFilterbyVaccineIdFromTableData;
         },
         
        addMessageApplyVaccine: ( state, { payload } ) =>{
@@ -137,6 +144,7 @@ export const {  startLoadingApplyVaccine,
                 deleteApplyVaccine,
                 clearApplyVaccine,
                 loadDataApplyVaccine,
+                loadDosisFilterbyVaccineId,
                 addMessageApplyVaccine,
                 removeMessageApplyVaccine,
                 onIsConsultVaccine,

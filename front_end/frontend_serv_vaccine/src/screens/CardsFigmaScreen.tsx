@@ -62,6 +62,7 @@ const PreviewLayout = ({
   const goPage = (selectedValue: string) => {
         switch (selectedValue) {
           case 'Consultas':
+            // Este metodo: Segun la bandera que se coloca en el store me condiciona este componentre: ApplyVaccinesListScreen, ApplyVaccinesComponent
             onConsultVaccine();
             navigation.navigate( 'ApplyVaccinesListScreen' as never)
             break;
@@ -70,6 +71,7 @@ const PreviewLayout = ({
              
             break;
           case 'Vacunación':
+            // Este metodo: Segun la bandera que se coloca en el store me condiciona este componentre: ApplyVaccinesListScreen, ApplyVaccinesComponent
             onAddApplyVaccine();
             navigation.navigate( 'ApplyVaccinesListScreen' as never)
             break;

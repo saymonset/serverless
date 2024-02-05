@@ -16,15 +16,18 @@ export const HomeFigmaTab1Screen = () => {
   }, [])
   
   return (
-
+ 
     <View style={styles.container}>
       <View style={[styles.card, { marginTop: 10, marginBottom: (Platform.OS==='ios') ? 40 : 0 }]}>
+        {/* ` En CardsFigmaScreen aparece la tarjeta de (Consultas, Vacunacion, Embarazo, Patologias ) .` */}
            <CardsFigmaScreen/>
       </View>
       <View style={[styles.card, { marginTop: 0, marginBottom: 0 }]}>
+         {/* ` En NextAppointmentsScreen aparece PROXIMAS CITAS */}
            <NextAppointmentsScreen/>
       </View>
       <View style={[styles.card, { marginTop: 10, marginBottom: 5 }]} >
+        {/* ` En NextAppointmentsScreen aparece CUIDA TU SALUD */}
             <WatchYourHealthScreen/>
       </View>
     </View>
