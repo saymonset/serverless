@@ -6,7 +6,7 @@ import json
 from config.mongodb  import   mongo
 from models.dosis  import   DosisModels
 from repository.dosis import   crear_dosis_repo, get_dosis_repoLst, get_dosis_counts_repo
-from repository.dosis import   get_dosis_repo, update_dosis_repo, delete_dosis_repo
+from repository.dosis import   get_dosis_repo, update_dosis_repo, delete_dosis_repo, get_dosis_ByVaccine
 from helps.utils import validar_object_id
 from repository.vacc import   get_vaccine_repo
 
@@ -72,6 +72,10 @@ def get_dosiss_list_service(limite, desde, query):
 
 
 def get_dosis_service(id):
+     #Este metodo trabaja de manera cruda antes de convertirlo application/json para envirlo l client html
+    return Response(json_util.dumps(get_dosis_service_without_application_json(id)), mimetype="application/json")
+
+def get_dosis_service_without_application_json(id):
     data = get_dosis_repo(id)
     result = json_util.dumps(data)
    
@@ -80,19 +84,27 @@ def get_dosis_service(id):
 
     # Acceder a los valores del diccionario parsed_data
     vaccine_id = parsed_data['vacinne_id']
-    # name = parsed_data['name']
-    # age_frequency = parsed_data['age_frequency']
-    # status = parsed_data['status']
+    dosis_ids= get_dosis_service_ByVaccine(vaccine_id)
 
-    data_vac = get_vaccine_repo(vaccine_id)
-    resultvac = json_util.dumps(data_vac)
+
+    vaccine = get_vaccine_repo(vaccine_id)
+    resultvac = json_util.dumps(vaccine)
+    dosis_ids_vac = json_util.dumps(dosis_ids)
        # Analizar la cadena JSON
     parsed_data_vac = json.loads(resultvac)
-    #print(parsed_data_vac)
+    #parsed_dosis_ids_vac = json.loads(dosis_ids_vac)
      # Agregar la variable data_vac al diccionario parsed_data
-    parsed_data['data_vac'] = parsed_data_vac
+    parsed_data['vaccine'] = parsed_data_vac
+    del parsed_data['vacinne_id']  # Eliminar el campo dosis_id del resultado
 
-    return Response(json_util.dumps(parsed_data), mimetype="application/json")
+    return parsed_data
+
+def get_dosis_service_ByVaccine(vaccine_id):
+    data = get_dosis_ByVaccine(vaccine_id)
+    result = json_util.dumps(data)
+    # Analizar la cadena JSON
+    parsed_data = json.loads(result)
+    return parsed_data
 
 
 

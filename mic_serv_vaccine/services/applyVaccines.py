@@ -6,9 +6,11 @@ from bson.json_util import dumps
 import json
 from models.applyVaccines import  ApplyVaccineModels
 from services.vacc import  get_vaccine_service 
+from services.dosis import  get_dosis_service_without_application_json
 from repository.applyVaccines import update_applyVaccine_repo, crear_applyVaccine_repo, get_applyVaccine_repo,get_applyVaccine_counts_repo
 from repository.applyVaccines import delete_apply_vaccine_repo, get_applyVaccine_repo, find_one_applyVaccine_repo, get_applyVaccine_list_repo
 from repository.vacc import  get_vaccine_repo
+from services.dependent import  get_dependentsbyId_servicWithOutJson
 from helps.utils import validar_object_id
 from datetime import date
 from datetime import datetime
@@ -66,7 +68,21 @@ def get_applyVaccinesList_service(limite, desde, query):
     limite = int(limite)
     desde = int(desde)
     data = get_applyVaccine_list_repo(limite, desde, query)
-    result = json_util.dumps(data)
+    new_data = []  # Initialize an empty list for the modified objects 
+    for d in data:
+        #Recuperamos la data de la dosis
+        dosis_id = d['dosis_id']
+        data_dosis = get_dosis_service_without_application_json(dosis_id)
+        d['dosis'] = data_dosis
+        #Recuperamos data del dependent
+        dependent_id = d['dependent_id']
+        data_dependent = get_dependentsbyId_servicWithOutJson(dependent_id);
+        d['dependent'] = data_dependent
+        new_data.append(d)  # Append the modified object to the new_data list
+
+    result = json_util.dumps(new_data)
+    
+    #result = json_util.dumps(data)
     total = get_applyVaccine_counts_repo(query)
     diccionario = {
         'total': total,
@@ -87,11 +103,12 @@ def get_apply__vaccine_service(id):
     data = get_applyVaccine_repo(id)
     dosis = None
     if data is not None and data['dosis_id'] is not None:
-       dosis = get_vaccine_repo(data['dosis_id'])
+       dosis = get_dosis_service_without_application_json(data['dosis_id'])
+       data['dosis'] = dosis;
+       del data['dosis_id']  # Eliminar el campo dosis_id del resultado
 
     response_data = {
             'result': data,
-            'dosis':dosis,
             "statusCode": 201,
             "resp":True,
     }

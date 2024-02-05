@@ -1,12 +1,11 @@
 import React, {useState} from 'react';
 import {View, TouchableOpacity, Text, StyleSheet, Image} from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import type {PropsWithChildren} from 'react';
+import { useDispatch } from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Row } from 'react-native-reanimated-table';
 import { comunStylesFigma } from '../theme/comunFigmaTheme';
 import { useNavigation } from '@react-navigation/native';
-
+import {  onIsConsultVaccine, onIsAddApplyVaccine  } from '../store/slices/applyvaccines/applyVaccinesSlice';
 
 interface CardProps {
     title: string;
@@ -48,17 +47,31 @@ const PreviewLayout = ({
 }: PreviewLayoutProps) => {
   
   const navigation = useNavigation();
+
+  const dispatch = useDispatch();
+
+  const onConsultVaccine =  ()  => {
+    const payload =  {};
+    dispatch( onIsConsultVaccine(payload))
+  }
  
+  const onAddApplyVaccine =  ()  => {
+    const payload =  {};
+    dispatch( onIsAddApplyVaccine(payload))
+  }
   const goPage = (selectedValue: string) => {
         switch (selectedValue) {
           case 'Consultas':
-            navigation.navigate( 'PerfilFigmaAddScreen' as never)
+            onConsultVaccine();
+            navigation.navigate( 'ApplyVaccinesListScreen' as never)
             break;
+
           case 'Patologías':
              
             break;
           case 'Vacunación':
-            navigation.navigate( 'ApplyVaccinesScreen' as never)
+            onAddApplyVaccine();
+            navigation.navigate( 'ApplyVaccinesListScreen' as never)
             break;
           case 'Embarazo':
             break;

@@ -80,13 +80,17 @@ def get_dependentList_service(limite, desde, user_id, query):
 
 # """Obtener una objeto"""
 def get_dependentsbyId_service(id):
-    data = get_dependentById_repo(id)
+    data = get_dependentsbyId_servicWithOutJson(id)
     
     response_data = {
             'result': data,
     }
     response = Response(json.dumps(json.loads(json_util.dumps(response_data))), status=200, mimetype='application/json')
     return response
+def get_dependentsbyId_servicWithOutJson(id):
+    data = get_dependentById_repo(id)
+    
+    return data
 
 def delete_dependent_service(id):
     data = get_dependentById_repo(id)

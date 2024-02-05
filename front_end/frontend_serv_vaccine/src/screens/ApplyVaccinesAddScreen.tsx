@@ -1,11 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Keyboard, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 
 import { BackgroundSendPhoneFigma } from '../components/BackgroundSendPhoneFigma';
 import { HeaderTitleFigma } from '../components/HeaderTitleFigmaComponent';
 import { stylesFigma } from '../theme/sendPhoneFigmaTheme';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
  
 import { ModalMessageComponent } from '../components/ModalMessageComponent';
 import { useNavigation } from '@react-navigation/native';
@@ -27,7 +27,7 @@ export const ApplyVaccinesAddScreen = () => {
   const [idDosis, setIdDosis] = useState('');
   const [parentName, setParentName] = useState('');
   const [child, setChild] = useState("");
-  const {  usuario:{ phone, token }, user_id  } = useSelector((state: store) => state.loginStore);
+  const {  usuario:{ token } } = useSelector((state: store) => state.loginStore);
  
 
    
@@ -43,18 +43,11 @@ export const ApplyVaccinesAddScreen = () => {
         total, isLoading, message,
         handlerRemoveMessageApplyVaccine,
         onChange,} = useApplyVaccines();
- 
-  
- 
+
   const navigation = useNavigation();
-
-
-  const dispatch = useDispatch();
-
   const onBack = async () => {
     Keyboard.dismiss();
-   //dispatch( clearDependenThunks());
-    navigation.navigate('HomeFigmaTabRootScreen' as never)
+    navigation.navigate('ApplyVaccinesListScreen' as never)
   }
 
   
@@ -66,8 +59,7 @@ export const ApplyVaccinesAddScreen = () => {
 
   /* The above code appears to be written in TypeScript and React. It seems to be commented out code that is checking if a variable "resp" is truthy. If it is, it may be navigating to a screen called 'HomeFigmaTabRootScreen' using the "navigation" object. However, the code is currently commented out, so it is not being executed. */
     if (resp) {
-      //initPerfiles(limite, token);
-       navigation.navigate('ApplyVaccinesScreen' as never)
+       navigation.navigate('ApplyVaccinesListScreen' as never)
     }
   }
 
@@ -99,13 +91,13 @@ export const ApplyVaccinesAddScreen = () => {
   const getValor = (menuItem: Dosiss | Vaccine, propiedad: any) => {
     if (propiedad === 'parent') {
       setIsVisibleParent(false);
-      const id : string = menuItem._id?.$oid;
+      const id : string = menuItem?._id?.$oid ?? "";
       setIdParent(id)
       setParentName(`${menuItem.name}`)
       setChild('');
     }
     if (propiedad === 'child') {
-      const idDosis : string = menuItem._id?.$oid;
+      const idDosis : string = menuItem?._id?.$oid ?? "";
       setIdDosis(idDosis)
       setIsVisibleChild(false);
       setChild(`${menuItem.name}`);
@@ -144,7 +136,7 @@ export const ApplyVaccinesAddScreen = () => {
         marginBottom: 0,
         marginLeft: 15,
         marginHorizontal: 1,
-        marginTop: (Platform.OS === 'ios') ? 30 : 30
+        marginTop: 30
       }}>
         <TouchableOpacity onPress={() => onBack()} style={{ marginTop: 0 }}>
           <Ionicons name="arrow-back-circle-outline" size={40} color="black" />

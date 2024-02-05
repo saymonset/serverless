@@ -8,6 +8,7 @@ import {  ApplyVaccine, LIMITE_PAGE } from '../../../interfaces';
   const initialState: ApplyVaccine = {
     _id:'',
     dependent_id:     '',
+    dependent: {},
     dosis_id:         '',
     image:            '',
     lote:             '',
@@ -25,7 +26,8 @@ import {  ApplyVaccine, LIMITE_PAGE } from '../../../interfaces';
     total:      0,
     currentPage:0,
     isDelete: false,
-    isEdit: false
+    isConsultVaccine: false,
+    isAddApplyVaccine    : false,
 
   };
 
@@ -44,11 +46,11 @@ export const applyVaccineSlice = createSlice({
         },
         setDependentById: ( state, { payload } ) => {
             state.dependent_id = payload;
-            state.isEdit = true;
         },
-        editFalseApplyVaccine: (state, /* action */ ) => {
-            state.isEdit = false;
+        setDependent: ( state, { payload } ) => {
+            state.dependent = payload;
         },
+        
         responseApplyVaccine: ( state, { payload } ) => {
             state.statusCode = payload.statusCode;
             state.resp = payload.resp;
@@ -64,7 +66,6 @@ export const applyVaccineSlice = createSlice({
             state.image = payload.image;
             state.lote = payload.lote;
             state.vaccination_date = payload.vaccination_date;
-            state.isEdit = true;
         },
         deleteApplyVaccine: ( state, { payload } ) => {
             state._id = '';
@@ -78,6 +79,7 @@ export const applyVaccineSlice = createSlice({
             state.isDelete = true;
             state.tableData = payload.tableData;
             state.total = state.total - 1;
+            state.dependent  = {}
         },
         clearApplyVaccine: ( state ) => {
             state._id = '';
@@ -89,6 +91,7 @@ export const applyVaccineSlice = createSlice({
             state.message = '';
             state.isLoading = false;
             state.isDelete = false;
+            state.dependent  = {}
             
         },
         loadDataApplyVaccine: ( state, { payload } ) => {
@@ -97,11 +100,7 @@ export const applyVaccineSlice = createSlice({
             state.desde = payload.desde;
             state.limite = payload.limite;
             state.total = payload.total;
-            console.log('antes state='+state.currentPage)
             state.currentPage = payload.currentPage;
-            //onsole.log('despues'+payload.currentPage)
-            console.log('despues state='+state.currentPage)
-            console.log(' desde pyload slice core' )
         },
         
        addMessageApplyVaccine: ( state, { payload } ) =>{
@@ -114,17 +113,33 @@ export const applyVaccineSlice = createSlice({
             state.isDelete = false;
            
         },
+        onIsConsultVaccine: (state, { payload }) => {
+            state.isConsultVaccine = true;
+            state.isAddApplyVaccine    = false;
+        },
+        onIsAddApplyVaccine: (state, { payload }) => {
+            state.isConsultVaccine   = false;
+            state.isAddApplyVaccine  = true;
+        },
+        onIsOffVaccine: (state, { payload }) => {
+            state.isConsultVaccine = false;
+            state.isAddApplyVaccine    = false;
+        }
     }
 });
 // Action creators are generated for each case reducer function
 export const {  startLoadingApplyVaccine,
                 stopLoadingApplyVaccine,
                 setDependentById,
-                editFalseApplyVaccine,
+                setDependent,
                 responseApplyVaccine,
                 byIdApplyVaccine,
                 deleteApplyVaccine,
                 clearApplyVaccine,
                 loadDataApplyVaccine,
                 addMessageApplyVaccine,
-                removeMessageApplyVaccine} = applyVaccineSlice.actions;
+                removeMessageApplyVaccine,
+                onIsConsultVaccine,
+                onIsAddApplyVaccine,
+                onIsOffVaccine
+            } = applyVaccineSlice.actions;

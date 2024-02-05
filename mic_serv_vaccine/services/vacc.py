@@ -7,6 +7,7 @@ from config.mongodb  import   mongo
 from models.vaccine  import   VaccineModels
 from repository.vacc import   crear_vacuna_repo, get_vaccines_repo, get_vaccines_counts_repo
 from repository.vacc import   get_vaccine_repo, update_vaccine_repo, delete_vaccine_repo
+from services.dosis  import   get_dosis_service_ByVaccine
 from helps.utils import validar_object_id
 
 
@@ -68,9 +69,15 @@ def get_vaccines_list_service(limite, desde, query):
 
 
 def get_vaccine_service(id):
+    return Response(get_vaccine_serviceWithout_Application_Json(id), mimetype="application/json")
+
+def get_vaccine_serviceWithout_Application_Json(id):
     data = get_vaccine_repo(id)
+    #result = json_util.dumps(data)
+    dosis_ids= get_dosis_service_ByVaccine(id)
+    data['dosis_ids'] = dosis_ids;
     result = json_util.dumps(data)
-    return Response(result, mimetype="application/json")
+    return result
 
 
 """Actualizacion de vacuna"""

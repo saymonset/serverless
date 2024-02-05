@@ -64,6 +64,10 @@ def get_dosis_repo(id):
                 "message": "La cadena no es un ObjectId válido" 
          }
         return result
+
+def get_dosis_ByVaccine(vacinne_id):
+        return mongo.db.dosis.find({"vacinne_id": vacinne_id})
+ 
  
 
 def update_dosis_repo(id, data):

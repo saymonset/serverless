@@ -1,7 +1,6 @@
 import { AnyAction } from 'redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {   startLoadingApplyVaccine, stopLoadingApplyVaccine, setDependentById,
-           editFalseApplyVaccine } from './applyVaccinesSlice'
+import {   startLoadingApplyVaccine, stopLoadingApplyVaccine, setDependentById } from './applyVaccinesSlice'
    
 
 export const dependentByIdThunks = ( id:String, token: String ): AnyAction  => {
@@ -19,12 +18,3 @@ export const dependentByIdThunks = ( id:String, token: String ): AnyAction  => {
     }
   }
 } 
-
-
- 
-
-export const editFalseApplyVaccineThunks = (): AnyAction  => {
-  return async ( dispatch, getState) => {
-      dispatch( editFalseApplyVaccine());
-   }
-}
