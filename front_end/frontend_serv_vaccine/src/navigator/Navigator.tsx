@@ -29,7 +29,6 @@ import { Dependent } from '../interfaces/dependent-interfaces';
 import { ApplyVaccinesDependentsScreen } from '../screens/ApplyVaccinesDependentsScreen';
 import { ApplyVaccinesAddScreen } from '../screens/ApplyVaccinesAddScreen';
 import { ApplyVaccineConsultaScreen } from '../screens/ApplyVaccineConsultaScreen';
-import { ApplyVaccinesConsultationScreen } from '../screens/ApplyVaccinesConsultationScreen';
 import { ApplyVaccinesDetailScreen } from '../screens/ApplyVaccinesDetailScreen';
  
 
@@ -56,7 +55,6 @@ export type RootStackParams = {
   ApplyVaccinesDependentsScreen: undefined;
   ApplyVaccinesAddScreen: undefined;
   ApplyVaccineConsultaScreen: undefined;
-  ApplyVaccinesConsultationScreen: undefined;
   ApplyVaccinesDetailScreen: undefined;
 
   DependentScreen: undefined;
@@ -109,7 +107,6 @@ export const Navigator = () => {
                <Stack.Screen name="ApplyVaccinesDependentsScreen" component={ ApplyVaccinesDependentsScreen } />  
                <Stack.Screen name="ApplyVaccinesAddScreen" component={ ApplyVaccinesAddScreen } />  
                <Stack.Screen name="ApplyVaccineConsultaScreen" component={ ApplyVaccineConsultaScreen } />  
-               <Stack.Screen name="ApplyVaccinesConsultationScreen" component={ ApplyVaccinesConsultationScreen } />  
                <Stack.Screen name="ApplyVaccinesDetailScreen" component={ ApplyVaccinesDetailScreen } />  
              
                 <Stack.Screen name="DependentScreen" component={ DependentScreen } />
