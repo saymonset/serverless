@@ -8,7 +8,7 @@ import { useDependent } from './useDependent';
 import {
   startLoadingApplyVaccine, stopLoadingApplyVaccine, setDependentById, setDependent,
   addMessageApplyVaccine, removeMessageApplyVaccine, responseApplyVaccine, loadDataApplyVaccine,
-  loadDosisFilterbyVaccineId, loadbyVaccineId, loadbyDosis
+  loadDosisFilterbyVaccineId, loadbyDosisOff, loadbyDosis
 } from '../store/slices/applyvaccines';
 import { useLogin } from './useLogin';
 import vaccinesApi from '../api/vaccinesApi';
@@ -111,9 +111,9 @@ export const useApplyVaccines = () => {
     dispatch(loadDosisFilterbyVaccineId(payload))
   }
 
-  const onLoadbyVaccine = () =>{
+  const onLoadbyDosisOff = () =>{
     //Apagamos el sw de filtrar por el arreglo de dosis de cada vacuna, para que cargue el arreglo de vacunas del store apply_vaccines
-    dispatch(loadbyVaccineId({}));
+    dispatch(loadbyDosisOff({}));
   }
 
   const onLoadbyDosis = () =>{
@@ -266,7 +266,7 @@ export const useApplyVaccines = () => {
     isConsultVaccine,
     isAddApplyVaccine,
     isConsultVaccineForDosis,
-    onLoadbyVaccine,
+    onLoadbyDosisOff,
     onLoadbyDosis
 
     //  selectedGeneroId,

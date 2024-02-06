@@ -12,6 +12,9 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useApplyVaccines } from '../hooks/useApplyVaccines';
 import { useLogin } from '../hooks/useLogin';
 import { ApplyVaccineByDependentListComponent } from '../components/ApplyVaccineByDependentListComponent';
+import { ApplyVaccinesDetailScreen } from './ApplyVaccinesDetailScreen';
+import { ApplyVaccinesVaccineDetailScreen } from './ApplyVaccinesVaccineDetailScreen';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
 
@@ -26,7 +29,7 @@ export const ApplyVaccineConsultaScreen =  () => {
               currentPage, 
               vaccineuniqueFromTableData,
               isConsultVaccineForDosis,
-              onLoadbyVaccine, handleByIdApplyVaccine,
+              onLoadbyDosisOff, handleByIdApplyVaccine,
               onLoadbyDosis} = useApplyVaccines();
 
               
@@ -38,35 +41,7 @@ export const ApplyVaccineConsultaScreen =  () => {
 
             const { token } = useLogin();
 
-            const goPage = (value: any) => {
-              handleByIdApplyVaccine({...value});
-              onLoadbyDosis();
-              navigation.navigate("ApplyVaccinesDetailScreen" as never);
-          };
-
-      
-
-          const handlePreviousPage = () => {
-              let limiteDesde ={
-                  limite,
-                  desde:desde-limite>=0?desde-limite:limite-desde
-              }
-              let prev: NextPrevioPage ={
-                nextPage:'prev'
-              }
-              loadVaccineAppliedByDependent(limiteDesde, currentPage,  prev, token, dependent_id)
-          };
-          const handleNextPage  = () => {
-            let limiteDesde ={
-                limite,
-                desde:desde+limite
-            }
-
-            let next: NextPrevioPage ={
-              nextPage:'next'
-            }
-            loadVaccineAppliedByDependent(limiteDesde, currentPage,  next, token, dependent_id)
-          };
+         
        
           useEffect(() => {
             let desde = 0;
@@ -81,82 +56,53 @@ export const ApplyVaccineConsultaScreen =  () => {
             
           }, [])
           
+
+          const onBack = async () => {
+            if (isConsultVaccineForDosis){
+              onLoadbyDosisOff();
+            }else{
+              navigation.navigate('ApplyVaccinesDependentsScreen' as never)
+            }
+           
+          }
            
   return (
     <View style={styles.container}>
-    <View style={[styles.card, { marginTop: 10, marginBottom: (Platform.OS==='ios') ? 40 : 0 }]}>
+    <View style={[styles.card, { marginTop: 20, marginBottom: (Platform.OS==='ios') ? 10 : 0 }]}>
        <View style = {{ ... styles.globalMargin,
                      alignItems:'center',
                      flex:1, 
+                     marginRight: 0,
                      backgroundColor:'white'}}>
-                  <View style={{
-                                ...styles.search
-                                }}>
-                        <Text style = {{ ...comunStylesFigma.hola}}></Text>
-                        <View style = {{ flex: 1 }} />
-                        {/* Flecha de busqueda */}
+                  
 
-                        {/* Agregamos usuario */}
-                        <TouchableOpacity 
-                              onPress={()=> console.log()}
-                              activeOpacity={0.9}>
-                              <Icon
-                                  name = "add-circle-outline"
-                                  color = "black"
-                                  size = { 40 }
-                              />
-                         </TouchableOpacity>     
+                
 
-                         
-                  </View> 
+                 <View style={{
+                    flexDirection: 'row',
+                    justifyContent: 'flex-start',
+                    marginBottom: 0,
+                    marginLeft: 15,
+                    marginHorizontal: 1,
+                    marginTop: (Platform.OS === 'ios') ? 0 : 0
+                  }}>
+                    <TouchableOpacity onPress={() => onBack()} style={{ marginTop: 0, marginRight:320 }}>
+                      <Ionicons name="arrow-back-circle-outline" size={40} color="black" />
+                    </TouchableOpacity>
+                  </View>       
                  {  ( isLoading ) ? <LoadingScreen /> :
                 <>
-                    <SearchInputComponent
-                        onDebounce={(value) => console.log(value)}
-                        style={{
-                          position: 'absolute',
-                          zIndex: 999,
-                          width: screenWidth - 40,
-                          top: (Platform.OS === 'ios') ? top : top + 30
-                        }} 
-                        goPage="ApplyVaccinesDependentsScreen"></SearchInputComponent>
-                      
-                        <FlatList
-                                data={vaccineuniqueFromTableData}
-                                keyExtractor={() => {
-                                  keyCounter++;
-                                  return keyCounter.toString();
-                                }}
-                                showsHorizontalScrollIndicator={true}
-                                numColumns={1}
-                                horizontal={false}
-                                ItemSeparatorComponent={() => <View style={{ height: 1, backgroundColor: 'lightgray'}} />}
-                                ListHeaderComponent={  <HeaderTitleFigma title={`Listar vacunas aplicadas por ${dependent.name} ${dependent.lastname}`}
-                                marginTop={(Platform.OS === 'ios') ? 120: 120}
-                                stylesFigma={stylesFigma}
-                                type='big'
-                                
-                                marginBottom={20}
-                                textAlign='center'
-                                ></HeaderTitleFigma> }
-                                
-                                renderItem={({ item }) => (
-                                  <View style={{marginBottom:10,
-                                                marginTop:5}}>
-                                    <ApplyVaccineByDependentListComponent applyVaccine={item}
-                                                      goPage  = { ( value )  => goPage( value )}  />
-                                  </View>
-                                )}
-                              />
-                            
-                      {/* Controles del paginador */}
-                    <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop:20, marginBottom:(Platform.OS === 'ios') ? 0: 10 }}>
-                      <Button title="Anterior" onPress={handlePreviousPage} disabled={currentPage === 1 || isLoading} />
-                      <Text style={{ marginHorizontal: 10, color:'white' }}>Página {currentPage} / { Math.ceil(total / limite ) }</Text>
-                      <Button title="Siguiente" onPress={handleNextPage} disabled={currentPage === Math.ceil(total / limite ) ||isLoading} />
-                    </View>
+                   
+                   <View style={{
+                     flex:1,
+                  }}>
+                      { !isConsultVaccineForDosis &&  <ApplyVaccinesVaccineDetailScreen/>}
+                      { isConsultVaccineForDosis && <ApplyVaccinesDetailScreen/>}
+                      </View>
                 </>
                } 
+
+              
                 
        </View>
       </View>

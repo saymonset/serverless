@@ -108,7 +108,7 @@ export const applyVaccineSlice = createSlice({
             state.total = payload.total;
             state.currentPage = payload.currentPage;
         },
-        loadbyVaccineId: ( state, { payload } ) => {
+        loadbyDosisOff: ( state, { payload } ) => {
             state.isConsultVaccineForDosis = false;
         },
         loadbyDosis: ( state, { payload } ) => {
@@ -158,6 +158,6 @@ export const {  startLoadingApplyVaccine,
                 onIsConsultVaccine,
                 onIsAddApplyVaccine,
                 onIsOffVaccine,
-                loadbyVaccineId,
+                loadbyDosisOff,
                 loadbyDosis
             } = applyVaccineSlice.actions;
