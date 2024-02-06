@@ -7,7 +7,6 @@ import { HomeFigmaTab4Screen } from './HomeFigmaTab4Screen';
 import { colores } from '../theme/comunFigmaTheme';
 import { Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import useEffect from 'react';
 
 
 export const  HomeFigmaTabRootScreen = () => {

@@ -16,7 +16,7 @@ import { ApplyVaccineByDependentListComponent } from '../components/ApplyVaccine
 
 const screenWidth = Dimensions.get("window").width;
 
-export const ApplyVaccinesConsultaDetailScreen =  () => {
+export const ApplyVaccinesDetailScreen =  () => {
 
   const navigation = useNavigation();
          
@@ -61,46 +61,46 @@ export const ApplyVaccinesConsultaDetailScreen =  () => {
 
                          
                   </View> 
-                 {  ( isLoading ) && <LoadingScreen /> }
-                
-                 <SearchInputComponent
-                    onDebounce={(value) => console.log(value)}
-                    style={{
-                      position: 'absolute',
-                      zIndex: 999,
-                      width: screenWidth - 40,
-                      top: (Platform.OS === 'ios') ? top : top + 30
-                    }} 
-                     goPage={"ApplyVaccinesListScreen"} ></SearchInputComponent>
-                   
-                    <FlatList
-                            data={dosisFilterbyVaccineIdFromTableData}
-                            keyExtractor={() => {
-                              keyCounter++;
-                              return keyCounter.toString();
-                            }}
-                            showsHorizontalScrollIndicator={true}
-                            numColumns={1}
-                            horizontal={false}
-                            ItemSeparatorComponent={() => <View style={{ height: 1, backgroundColor: 'lightgray'}} />}
-                            ListHeaderComponent={  <HeaderTitleFigma title={`Listar vacunas aplicadas por ${dependent.name} ${dependent.lastname}`}
-                            marginTop={(Platform.OS === 'ios') ? 120: 120}
-                            stylesFigma={stylesFigma}
-                            type='big'
-                            
-                            marginBottom={20}
-                            textAlign='center'
-                            ></HeaderTitleFigma> }
-                            
-                            renderItem={({ item }) => (
-                              <View style={{marginBottom:10,
-                                            marginTop:5}}>
-                                <ApplyVaccineByDependentListComponent applyVaccine={item}
-                                                  goPage  = { ( value )  => goPage( value )}                     />
-                              </View>
-                            )}
-                          />
-       
+                 {  ( isLoading ) ? <LoadingScreen />  :
+                          <>
+                                <SearchInputComponent
+                                    onDebounce={(value) => console.log(value)}
+                                    style={{
+                                      position: 'absolute',
+                                      zIndex: 999,
+                                      width: screenWidth - 40,
+                                      top: (Platform.OS === 'ios') ? top : top + 30
+                                    }} 
+                                    goPage={"ApplyVaccinesDependentsScreen"} ></SearchInputComponent>
+                                    <FlatList
+                                            data={dosisFilterbyVaccineIdFromTableData}
+                                            keyExtractor={() => {
+                                              keyCounter++;
+                                              return keyCounter.toString();
+                                            }}
+                                            showsHorizontalScrollIndicator={true}
+                                            numColumns={1}
+                                            horizontal={false}
+                                            ItemSeparatorComponent={() => <View style={{ height: 1, backgroundColor: 'lightgray'}} />}
+                                            ListHeaderComponent={  <HeaderTitleFigma title={`Listar vacunas aplicadas por ${dependent.name} ${dependent.lastname}`}
+                                            marginTop={(Platform.OS === 'ios') ? 120: 120}
+                                            stylesFigma={stylesFigma}
+                                            type='big'
+                                            
+                                            marginBottom={20}
+                                            textAlign='center'
+                                            ></HeaderTitleFigma> }
+                                            
+                                            renderItem={({ item }) => (
+                                              <View style={{marginBottom:10,
+                                                            marginTop:5}}>
+                                                <ApplyVaccineByDependentListComponent applyVaccine={item}
+                                                                  goPage  = { ( value )  => goPage( value )}                     />
+                                              </View>
+                                            )}
+                                          />
+                             </>
+                         } 
              
        </View>
       </View>

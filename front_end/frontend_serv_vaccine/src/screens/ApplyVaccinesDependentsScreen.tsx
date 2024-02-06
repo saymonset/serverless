@@ -17,7 +17,7 @@ import { useLogin } from '../hooks/useLogin';
 
 const screenWidth = Dimensions.get("window").width;
 
-export const ApplyVaccinesListScreen =  () => {
+export const ApplyVaccinesDependentsScreen =  () => {
 
             let { dependentById, isConsultVaccine, isAddApplyVaccine } = useApplyVaccines();
             const { top } = useSafeAreaInsets();
@@ -126,52 +126,55 @@ export const ApplyVaccinesListScreen =  () => {
                        
                          
                   </View> 
-                 {  ( isLoading ) && <LoadingScreen /> }
+                 {  ( isLoading ) ? <LoadingScreen /> : 
                 
-                 <SearchInputComponent
-                    onDebounce={(value) => setTerm(value)}
-                    style={{
-                      position: 'absolute',
-                      zIndex: 999,
-                      width: screenWidth - 40,
-                      top: (Platform.OS === 'ios') ? top  : top + 40
-                    }}   ></SearchInputComponent>
-                    <FlatList
-                            data={dataFiltred}
-                            keyExtractor={() => {
-                              keyCounter++;
-                              return keyCounter.toString();
-                            }}
-                            showsHorizontalScrollIndicator={true}
-                            numColumns={1}
-                            horizontal={false}
-                            ItemSeparatorComponent={() => <View style={{ height: 1, backgroundColor: 'lightgray'}} />}
-                            ListHeaderComponent={  <HeaderTitleFigma 
-                            title={isAddApplyVaccine ? 'Aplicar Vacuna' : 
-                                   isConsultVaccine ? 'Consultar Vacuna' : 'Familiares'}
-                            marginTop={(Platform.OS === 'ios') ? 140: 140}
-                            stylesFigma={stylesFigma}
-                            type='big'
-                            
-                            marginBottom={20}
-                            textAlign='center'
-                            ></HeaderTitleFigma> }
-                            
-                            renderItem={({ item }) => (
-                              <View style={{marginBottom:10,
-                                            marginTop:15}}>
-                                <ApplyVaccinesComponent obj={item}
-                                                       applyVaccinePerson = {  (id:string) => applyVaccinePerson(id)} />
-                              </View>
-                            )}
-                          />
-                        
-                   {/* Controles del paginador */}
-                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop:20, marginBottom:(Platform.OS === 'ios') ? 0: 10 }}>
-                  <Button title="Anterior" onPress={handlePreviousPage} disabled={currentPage === 1 || isLoading} />
-                  <Text style={{ marginHorizontal: 10, color:'white' }}>Página {currentPage} / { Math.ceil(total / limite ) }</Text>
-                  <Button title="Siguiente" onPress={handleNextPage} disabled={currentPage === Math.ceil(total / limite ) ||isLoading} />
-                </View>
+                                <>
+                                    <SearchInputComponent
+                                        onDebounce={(value) => setTerm(value)}
+                                        style={{
+                                          position: 'absolute',
+                                          zIndex: 999,
+                                          width: screenWidth - 40,
+                                          top: (Platform.OS === 'ios') ? top  : top + 40
+                                        }}   ></SearchInputComponent>
+                                        <FlatList
+                                                data={dataFiltred}
+                                                keyExtractor={() => {
+                                                  keyCounter++;
+                                                  return keyCounter.toString();
+                                                }}
+                                                showsHorizontalScrollIndicator={true}
+                                                numColumns={1}
+                                                horizontal={false}
+                                                ItemSeparatorComponent={() => <View style={{ height: 1, backgroundColor: 'lightgray'}} />}
+                                                ListHeaderComponent={  <HeaderTitleFigma 
+                                                title={isAddApplyVaccine ? 'Aplicar Vacuna' : 
+                                                      isConsultVaccine ? 'Consultar Vacuna' : 'Familiares'}
+                                                marginTop={(Platform.OS === 'ios') ? 140: 140}
+                                                stylesFigma={stylesFigma}
+                                                type='big'
+                                                
+                                                marginBottom={20}
+                                                textAlign='center'
+                                                ></HeaderTitleFigma> }
+                                                
+                                                renderItem={({ item }) => (
+                                                  <View style={{marginBottom:10,
+                                                                marginTop:15}}>
+                                                    <ApplyVaccinesComponent obj={item}
+                                                                          applyVaccinePerson = {  (id:string) => applyVaccinePerson(id)} />
+                                                  </View>
+                                                )}
+                                              />
+                                            
+                                      {/* Controles del paginador */}
+                                    <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop:20, marginBottom:(Platform.OS === 'ios') ? 0: 10 }}>
+                                      <Button title="Anterior" onPress={handlePreviousPage} disabled={currentPage === 1 || isLoading} />
+                                      <Text style={{ marginHorizontal: 10, color:'white' }}>Página {currentPage} / { Math.ceil(total / limite ) }</Text>
+                                      <Button title="Siguiente" onPress={handleNextPage} disabled={currentPage === Math.ceil(total / limite ) ||isLoading} />
+                                    </View>
+                                </>
+                }
        </View>
       </View>
   </View>

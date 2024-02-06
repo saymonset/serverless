@@ -47,7 +47,7 @@ export const ApplyVaccinesAddScreen = () => {
   const navigation = useNavigation();
   const onBack = async () => {
     Keyboard.dismiss();
-    navigation.navigate('ApplyVaccinesListScreen' as never)
+    navigation.navigate('ApplyVaccinesDependentsScreen' as never)
   }
 
   
@@ -59,7 +59,7 @@ export const ApplyVaccinesAddScreen = () => {
 
   /* The above code appears to be written in TypeScript and React. It seems to be commented out code that is checking if a variable "resp" is truthy. If it is, it may be navigating to a screen called 'HomeFigmaTabRootScreen' using the "navigation" object. However, the code is currently commented out, so it is not being executed. */
     if (resp) {
-       navigation.navigate('ApplyVaccinesListScreen' as never)
+       navigation.navigate('ApplyVaccinesDependentsScreen' as never)
     }
   }
 

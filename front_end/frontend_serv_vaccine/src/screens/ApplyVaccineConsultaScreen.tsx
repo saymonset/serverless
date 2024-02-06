@@ -41,7 +41,7 @@ export const ApplyVaccineConsultaScreen =  () => {
             const goPage = (value: any) => {
               handleByIdApplyVaccine({...value});
               onLoadbyDosis();
-              navigation.navigate("ApplyVaccinesConsultaDetailScreen" as never);
+              navigation.navigate("ApplyVaccinesDetailScreen" as never);
           };
 
       
@@ -109,52 +109,55 @@ export const ApplyVaccineConsultaScreen =  () => {
 
                          
                   </View> 
-                 {  ( isLoading ) && <LoadingScreen /> }
+                 {  ( isLoading ) ? <LoadingScreen /> :
+                <>
+                    <SearchInputComponent
+                        onDebounce={(value) => console.log(value)}
+                        style={{
+                          position: 'absolute',
+                          zIndex: 999,
+                          width: screenWidth - 40,
+                          top: (Platform.OS === 'ios') ? top : top + 30
+                        }} 
+                        goPage="ApplyVaccinesDependentsScreen"></SearchInputComponent>
+                      
+                        <FlatList
+                                data={vaccineuniqueFromTableData}
+                                keyExtractor={() => {
+                                  keyCounter++;
+                                  return keyCounter.toString();
+                                }}
+                                showsHorizontalScrollIndicator={true}
+                                numColumns={1}
+                                horizontal={false}
+                                ItemSeparatorComponent={() => <View style={{ height: 1, backgroundColor: 'lightgray'}} />}
+                                ListHeaderComponent={  <HeaderTitleFigma title={`Listar vacunas aplicadas por ${dependent.name} ${dependent.lastname}`}
+                                marginTop={(Platform.OS === 'ios') ? 120: 120}
+                                stylesFigma={stylesFigma}
+                                type='big'
+                                
+                                marginBottom={20}
+                                textAlign='center'
+                                ></HeaderTitleFigma> }
+                                
+                                renderItem={({ item }) => (
+                                  <View style={{marginBottom:10,
+                                                marginTop:5}}>
+                                    <ApplyVaccineByDependentListComponent applyVaccine={item}
+                                                      goPage  = { ( value )  => goPage( value )}  />
+                                  </View>
+                                )}
+                              />
+                            
+                      {/* Controles del paginador */}
+                    <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop:20, marginBottom:(Platform.OS === 'ios') ? 0: 10 }}>
+                      <Button title="Anterior" onPress={handlePreviousPage} disabled={currentPage === 1 || isLoading} />
+                      <Text style={{ marginHorizontal: 10, color:'white' }}>Página {currentPage} / { Math.ceil(total / limite ) }</Text>
+                      <Button title="Siguiente" onPress={handleNextPage} disabled={currentPage === Math.ceil(total / limite ) ||isLoading} />
+                    </View>
+                </>
+               } 
                 
-                 <SearchInputComponent
-                    onDebounce={(value) => console.log(value)}
-                    style={{
-                      position: 'absolute',
-                      zIndex: 999,
-                      width: screenWidth - 40,
-                      top: (Platform.OS === 'ios') ? top : top + 30
-                    }} 
-                     goPage="ApplyVaccinesListScreen"></SearchInputComponent>
-                   
-                    <FlatList
-                            data={vaccineuniqueFromTableData}
-                            keyExtractor={() => {
-                              keyCounter++;
-                              return keyCounter.toString();
-                            }}
-                            showsHorizontalScrollIndicator={true}
-                            numColumns={1}
-                            horizontal={false}
-                            ItemSeparatorComponent={() => <View style={{ height: 1, backgroundColor: 'lightgray'}} />}
-                            ListHeaderComponent={  <HeaderTitleFigma title={`Listar vacunas aplicadas por ${dependent.name} ${dependent.lastname}`}
-                            marginTop={(Platform.OS === 'ios') ? 120: 120}
-                            stylesFigma={stylesFigma}
-                            type='big'
-                            
-                            marginBottom={20}
-                            textAlign='center'
-                            ></HeaderTitleFigma> }
-                            
-                            renderItem={({ item }) => (
-                              <View style={{marginBottom:10,
-                                            marginTop:5}}>
-                                <ApplyVaccineByDependentListComponent applyVaccine={item}
-                                                   goPage  = { ( value )  => goPage( value )}  />
-                              </View>
-                            )}
-                          />
-                        
-                   {/* Controles del paginador */}
-                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop:20, marginBottom:(Platform.OS === 'ios') ? 0: 10 }}>
-                  <Button title="Anterior" onPress={handlePreviousPage} disabled={currentPage === 1 || isLoading} />
-                  <Text style={{ marginHorizontal: 10, color:'white' }}>Página {currentPage} / { Math.ceil(total / limite ) }</Text>
-                  <Button title="Siguiente" onPress={handleNextPage} disabled={currentPage === Math.ceil(total / limite ) ||isLoading} />
-                </View>
        </View>
       </View>
   </View>

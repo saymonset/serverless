@@ -44,11 +44,17 @@ export const ApplyVaccineByDependentListComponent = ( { applyVaccine, goPage } :
                           <Icon name="eyedrop-outline" size={50} color={"black"} />
                       </View>    
                       <View style={{ marginLeft: 30, marginRight:80,}}>
-                              <Text style={styles.strong}>{ 'Nombre: '+applyVaccine.dosis.vaccine.name }</Text>
-                              <Text style={styles.strong}>{'Previene: '+applyVaccine.dosis.vaccine.disease_prevents}</Text>
-                              <Text style={styles.strong}>{'Descripción: '+applyVaccine.dosis.vaccine.description}</Text>
-                              <Text style={styles.strong}>{'Lote: '+applyVaccine.lote}</Text>
-                              <Text style={styles.strong}>{'Fecha: '+applyVaccine.vaccination_date}</Text>
+                                                             <Text style={ styles.title}>{ 'Nombre: '+applyVaccine.dosis.vaccine.name }</Text>
+                              { !isConsultVaccineForDosis && <Text style={styles.subTitle}>{'Previene: '+applyVaccine.dosis.vaccine.disease_prevents}</Text>}     
+                              { !isConsultVaccineForDosis &&  <Text style={styles.subTitle}>{'Descripción: '+applyVaccine.dosis.vaccine.description}</Text>}    
+
+                              { isConsultVaccineForDosis && <Text style={styles.subTitle}>{'Dosis: '+applyVaccine.dosis.name}</Text>}     
+                              { isConsultVaccineForDosis &&  <Text style={styles.subTitle}>{'Lote: '+applyVaccine.lote}</Text>}     
+                              { isConsultVaccineForDosis && <Text style={styles.subTitle}>{'Fecha: '+applyVaccine.vaccination_date}</Text>}     
+                              { isConsultVaccineForDosis && <Text style={styles.subTitle}>{'Frecuencia: '+applyVaccine.dosis.age_frequency}</Text>}     
+                              
+                              
+                              
                       </View>
                   </View>
             </TouchableOpacity>
@@ -94,5 +100,13 @@ const styles = StyleSheet.create({
         borderRadius:10,
         backgroundColor:  'rgba(173, 216, 230, 0.2)'
     },
+    subTitle :{
+        fontSize: 16,
+        opacity: 0.8
+    },
+    title: {
+        fontSize: 20,
+        fontWeight: 'bold'
+    }
      
 });

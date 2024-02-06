@@ -62,18 +62,18 @@ const PreviewLayout = ({
   const goPage = (selectedValue: string) => {
         switch (selectedValue) {
           case 'Consultas':
-            // Este metodo: Segun la bandera que se coloca en el store me condiciona este componentre: ApplyVaccinesListScreen, ApplyVaccinesComponent
+            // Este metodo: Segun la bandera que se coloca en el store me condiciona este componentre: ApplyVaccinesDependentsScreen, ApplyVaccinesComponent
             onConsultVaccine();
-            navigation.navigate( 'ApplyVaccinesListScreen' as never)
+            navigation.navigate( 'ApplyVaccinesDependentsScreen' as never)
             break;
 
           case 'Patologías':
              
             break;
           case 'Vacunación':
-            // Este metodo: Segun la bandera que se coloca en el store me condiciona este componentre: ApplyVaccinesListScreen, ApplyVaccinesComponent
+            // Este metodo: Segun la bandera que se coloca en el store me condiciona este componentre: ApplyVaccinesDependentsScreen, ApplyVaccinesComponent
             onAddApplyVaccine();
-            navigation.navigate( 'ApplyVaccinesListScreen' as never)
+            navigation.navigate( 'ApplyVaccinesDependentsScreen' as never)
             break;
           case 'Embarazo':
             break;

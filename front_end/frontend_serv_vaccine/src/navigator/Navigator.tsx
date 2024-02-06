@@ -26,11 +26,11 @@ import { SearchScreen } from '../screens/SearchScreen';
 import { PerfilFigmaAddScreen } from '../screens/PerfilFigmaAddScreen';
 import { PerfilesFigmaScreen } from '../screens/PerfilesFigmaScreen';
 import { Dependent } from '../interfaces/dependent-interfaces';
-import { ApplyVaccinesListScreen } from '../screens/ApplyVaccinesListScreen';
+import { ApplyVaccinesDependentsScreen } from '../screens/ApplyVaccinesDependentsScreen';
 import { ApplyVaccinesAddScreen } from '../screens/ApplyVaccinesAddScreen';
 import { ApplyVaccineConsultaScreen } from '../screens/ApplyVaccineConsultaScreen';
 import { ApplyVaccinesConsultationScreen } from '../screens/ApplyVaccinesConsultationScreen';
-import { ApplyVaccinesConsultaDetailScreen } from '../screens/ApplyVaccinesConsultaDetailScreen';
+import { ApplyVaccinesDetailScreen } from '../screens/ApplyVaccinesDetailScreen';
  
 
 export type RootStackParams = {
@@ -53,11 +53,11 @@ export type RootStackParams = {
   PerfilFigmaAddScreen: Dependent;
   PerfilesFigmaScreen: undefined;
 
-  ApplyVaccinesListScreen: undefined;
+  ApplyVaccinesDependentsScreen: undefined;
   ApplyVaccinesAddScreen: undefined;
   ApplyVaccineConsultaScreen: undefined;
   ApplyVaccinesConsultationScreen: undefined;
-  ApplyVaccinesConsultaDetailScreen: undefined;
+  ApplyVaccinesDetailScreen: undefined;
 
   DependentScreen: undefined;
   TextInputScreen: undefined;
@@ -106,11 +106,11 @@ export const Navigator = () => {
                <Stack.Screen name="PerfilFigmaAddScreen" component={ PerfilFigmaAddScreen } />  
                <Stack.Screen name="PerfilesFigmaScreen" component={ PerfilesFigmaScreen } />  
 
-               <Stack.Screen name="ApplyVaccinesListScreen" component={ ApplyVaccinesListScreen } />  
+               <Stack.Screen name="ApplyVaccinesDependentsScreen" component={ ApplyVaccinesDependentsScreen } />  
                <Stack.Screen name="ApplyVaccinesAddScreen" component={ ApplyVaccinesAddScreen } />  
                <Stack.Screen name="ApplyVaccineConsultaScreen" component={ ApplyVaccineConsultaScreen } />  
                <Stack.Screen name="ApplyVaccinesConsultationScreen" component={ ApplyVaccinesConsultationScreen } />  
-               <Stack.Screen name="ApplyVaccinesConsultaDetailScreen" component={ ApplyVaccinesConsultaDetailScreen } />  
+               <Stack.Screen name="ApplyVaccinesDetailScreen" component={ ApplyVaccinesDetailScreen } />  
              
                 <Stack.Screen name="DependentScreen" component={ DependentScreen } />
                 <Stack.Screen name="TextInputScreen" component={TextInputScreen} />
