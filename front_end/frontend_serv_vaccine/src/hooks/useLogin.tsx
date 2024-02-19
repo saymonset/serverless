@@ -2,7 +2,7 @@ import React from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useSelector } from 'react-redux';
 export const useLogin = () => {
-    const {  usuario:{ token }  } = useSelector((state: store) => state.loginStore);
+    const {  token   } = useSelector((state: store) => state.loginStore);
     let renovarToken = async() => {
         if (token){
           await AsyncStorage.setItem('token', token ); 

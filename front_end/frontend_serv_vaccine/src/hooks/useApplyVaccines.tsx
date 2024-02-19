@@ -1,4 +1,7 @@
 import { PermissionsAndroid } from 'react-native';
+import Share from 'react-native-share';
+import FileViewer from 'react-native-file-viewer';
+
 // Import Components
 import {
   Text,
@@ -244,7 +247,7 @@ export const useApplyVaccines = () => {
     });
    console.log('aqui vamos!!!---------');
     RNFetchBlob.config(configOptions || {})
-      .fetch('GET', `${baseURL}/reporte`, {})
+      .fetch('GET', `${baseURL}/reporte`, {'Cache-Control': 'no-store' })
       .then(res => {
  
         if (Platform.OS === 'ios') {
@@ -260,23 +263,53 @@ export const useApplyVaccines = () => {
             });
   };
 
+
+
+  const actualDownload_android = async () => {
+    const url = `${baseURL}/reporte`; // Reemplaza con la URL del archivo Excel que deseas descargar
+  
+    const { dirs } = RNFetchBlob.fs;
+    const dirToSave = dirs.DownloadDir; // Directorio de descarga en Android
+  
+    const headers = {
+      'Cache-Control': 'no-store',
+      'Authorization': `Bearer ${token}`
+    };
+  
+    try {
+      const response = await RNFetchBlob.config({
+        fileCache: true,
+        path: `${dirToSave}/archivo_excel.xlsx`, // Ruta de destino del archivo Excel descargado
+      }).fetch('GET', url, headers);
+  
+      // Verificar si la descarga fue exitosa
+      if (response.respInfo.status === 200) {
+        console.log('Archivo Excel descargado exitosamente');
+  
+        console.log(response.path())
+        // Abrir el archivo Excel utilizando react-native-file-viewer
+        const filePath = response.path();
+        await FileViewer.open(filePath, { showOpenWithDialog: true });
+      } else {
+        console.log('Error al descargar el archivo Excel');
+      }
+    } catch (error) {
+      console.log('Error al descargar el archivo Excel:', error);
+    }
+  };
+  
+
+  
+
   const getPermission = async () => {
     if (Platform.OS === 'ios') {
       actualDownload();
     } else {
       try {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-          {
-            title: 'Storage Permission',
-            message: 'Please grant permission to access storage.',
-            buttonNeutral: 'Ask Me Later',
-            buttonNegative: 'Cancel',
-            buttonPositive: 'OK',
-          }
-        );
-        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-          actualDownload();
+        const granted = await hasAndroidPermission();
+       
+        if (granted) {
+         await actualDownload_android();
         } else {
           console.log("please grant permission");
         }
@@ -284,6 +317,22 @@ export const useApplyVaccines = () => {
         console.log("display error",err)    }
     }
   };
+
+  const hasAndroidPermission = async () => {
+    if (Number(Platform.Version) >= 33) {
+      return true;
+    }
+  
+    const permission = PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE;
+  
+    const hasPermission = await PermissionsAndroid.check(permission);
+    if (hasPermission) {
+      return true;
+    }
+  
+    const status = await PermissionsAndroid.request(permission);
+    return status === 'granted';
+  }
 
 
   // nextPrev es faBorderNone, prev o next, 

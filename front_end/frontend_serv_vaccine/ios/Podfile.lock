@@ -497,6 +497,8 @@ PODS:
     - React-Core
   - RNDateTimePicker (7.6.1):
     - React-Core
+  - RNFileViewer (2.1.5):
+    - React-Core
   - RNFS (2.20.0):
     - React-Core
   - RNGestureHandler (2.13.4):
@@ -504,6 +506,8 @@ PODS:
     - React-Core
   - RNScreens (3.27.0):
     - RCT-Folly (= 2021.07.22.00)
+    - React-Core
+  - RNShare (10.0.2):
     - React-Core
   - RNVectorIcons (10.0.3):
     - RCT-Folly (= 2021.07.22.00)
@@ -582,9 +586,11 @@ DEPENDENCIES:
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCMaskedView (from `../node_modules/@react-native-masked-view/masked-view`)"
   - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
+  - RNFileViewer (from `../node_modules/react-native-file-viewer`)
   - RNFS (from `../node_modules/react-native-fs`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNScreens (from `../node_modules/react-native-screens`)
+  - RNShare (from `../node_modules/react-native-share`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -695,12 +701,16 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-masked-view/masked-view"
   RNDateTimePicker:
     :path: "../node_modules/@react-native-community/datetimepicker"
+  RNFileViewer:
+    :path: "../node_modules/react-native-file-viewer"
   RNFS:
     :path: "../node_modules/react-native-fs"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNScreens:
     :path: "../node_modules/react-native-screens"
+  RNShare:
+    :path: "../node_modules/react-native-share"
   RNVectorIcons:
     :path: "../node_modules/react-native-vector-icons"
   Yoga:
@@ -763,9 +773,11 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: f2974eca860c16a3e56eea5771fda8d12e2d2057
   RNCMaskedView: f7c74478c83c4fdfc5cf4df51f80c0dd5cf125c6
   RNDateTimePicker: 8fb39263b721223e095248acaf6f406d5b7f6713
+  RNFileViewer: ce7ca3ac370e18554d35d6355cffd7c30437c592
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
   RNGestureHandler: 6e46dde1f87e5f018a54fe5d40cd0e0b942b49ee
   RNScreens: 3c2d122f5e08c192e254c510b212306da97d2581
+  RNShare: 859ff710211285676b0bcedd156c12437ea1d564
   RNVectorIcons: 64e6a523ac30a3241efa9baf1ffbcc5e76ff747a
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   Yoga: b76f1acfda8212aa16b7e26bcce3983230c82603
