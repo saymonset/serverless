@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import {  ApplyVaccine, LIMITE_PAGE } from '../../../interfaces';
+import { passwordRecoveryThunks } from '../sendSms';
  
  
 // {
@@ -9,7 +10,6 @@ import {  ApplyVaccine, LIMITE_PAGE } from '../../../interfaces';
     _id:'',
     dependent_id:     '',
     dependent: {},
-    dosis:         {},
     image:            '',
     lote:             '',
     vaccination_date: '',
@@ -22,7 +22,8 @@ import {  ApplyVaccine, LIMITE_PAGE } from '../../../interfaces';
     statusCode:'',
     tableData: [],
     vaccineuniqueFromTableData: [],
-    dosisFilterbyVaccineIdFromTableData: [],
+    dosis: [],
+    vaccine: {},
     desde:      0,
     limite:     LIMITE_PAGE,
     total:      0,
@@ -73,7 +74,8 @@ export const applyVaccineSlice = createSlice({
         deleteApplyVaccine: ( state, { payload } ) => {
             state._id = '';
             state.dependent_id =     '';
-            state.dosis =         {};
+            state.dosis =         [];
+            state.vaccine = {};
             state.image =            '';
             state.lote =             '';
             state.vaccination_date = '';
@@ -87,7 +89,8 @@ export const applyVaccineSlice = createSlice({
         clearApplyVaccine: ( state ) => {
             state._id = '';
             state.dependent_id =     '';
-            state.dosis =         {};
+            state.dosis =         [];
+            state.vaccine = {};
             state.image =            '';
             state.lote =             '';
             state.vaccination_date = '';
@@ -100,7 +103,8 @@ export const applyVaccineSlice = createSlice({
         loadDataApplyVaccine: ( state, { payload } ) => {
             state.tableData = payload.tableData;
             state.vaccineuniqueFromTableData = payload.vaccineuniqueFromTableData
-            state.dosisFilterbyVaccineIdFromTableData = [];
+            state.dosis = [];
+            state.vaccine = {};
             state.isConsultVaccineForDosis = false;
             state.isLoading = false;
             state.desde = payload.desde;
@@ -115,7 +119,12 @@ export const applyVaccineSlice = createSlice({
             state.isConsultVaccineForDosis = true;
         },
         loadDosisFilterbyVaccineId: ( state, { payload } ) => {
-            state.dosisFilterbyVaccineIdFromTableData = payload.dosisFilterbyVaccineIdFromTableData;
+            state.dosis = payload.dosis;
+        
+            state.vaccine = payload.vaccine;
+            console.log('payload imot0000000000')
+            console.log(payload.vaccine)
+            console.log('payload fint------------1-----')
         },
         
        addMessageApplyVaccine: ( state, { payload } ) =>{

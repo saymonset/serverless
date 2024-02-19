@@ -42,6 +42,7 @@ export const ApplyVaccinesDependentsScreen =  () => {
             const applyVaccinePerson = ( id: string)=>{
               // Clocamos el id del dependiente en el store de apply vaccine y la bandera ee ediotar en trrue
                  dependentById(id);
+                 //Desde el tab de inicio consultar o aplicar , se seteo esta bandera : isAddApplyVaccine
                  if (isAddApplyVaccine){
                      navigation.navigate( 'ApplyVaccinesAddScreen' as never)
                  } 
@@ -72,10 +73,6 @@ export const ApplyVaccinesDependentsScreen =  () => {
             }
             loadData(limiteDesde, currentPage,  next, token, term)
           };
-
-          
-         
-          
 
                 useEffect(() => {
                         setTerm(term);

@@ -14,7 +14,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useForm } from './useForm';
 
-import { ApplyVaccine, DesdeLimite, LIMITE_PAGE, NextPrevioPage } from '../interfaces';
+import { ApplyVaccine, DesdeLimite, LIMITE_PAGE, NextPrevioPage, VaccApplyVaccineResponse } from '../interfaces';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { useDependent } from './useDependent';
@@ -38,8 +38,8 @@ import RNFetchBlob from 'rn-fetch-blob';
 export const useApplyVaccines = () => {
 
     
-  const { resp, dependent_id, dependent, total, isLoading, message, tableData,vaccineuniqueFromTableData, dosisFilterbyVaccineIdFromTableData,
-    limite, desde, currentPage, isConsultVaccine, isAddApplyVaccine, isConsultVaccineForDosis } = useSelector((state: store) => state.applyVaccineStore);
+  const { resp, dependent_id, dependent, total, isLoading, message, tableData,vaccineuniqueFromTableData, dosis,
+    limite, desde, currentPage, isConsultVaccine, isAddApplyVaccine, isConsultVaccineForDosis, vaccine } = useSelector((state: store) => state.applyVaccineStore);
 
   {/** Estas variables vienen del store */ }
   let { _idStore, loteStore, imageStore, dosis_idStore, vaccination_dateStore,
@@ -120,13 +120,42 @@ export const useApplyVaccines = () => {
   }
 
 
-  const handleByIdApplyVaccine = ( applyVaccine : ApplyVaccine) => {
-    const   { dosis:{ vaccine} } = applyVaccine
+  const handleByIdApplyVaccine = async(dosisId:string, dependentId:string, token:string) => {
 
-    let payload = {
-      dosisFilterbyVaccineIdFromTableData: dosisFilterByvaccineId( vaccine._id.$oid )
-    }
+   
+
+
+    try {
+
+      if (token) {
+        await AsyncStorage.setItem('token', token);
+      }
+      dispatch(startLoadingApplyVaccine());
+      console.log({dosisId, dependentId})
+      const { data } = await vaccinesApi.get<VaccApplyVaccineResponse>(`/vaccine/vaccdosisdependet/${dosisId}/${dependentId}`);
+      const { vacc_apply_vaccines} = data;
+   
+      const [user, vaccine, dosis] =  vacc_apply_vaccines;
+      //Saco de 
+     
+   
+      if (vacc_apply_vaccines){
+      
+        let payload = {
+             dosis:dosis.dosis,
+             vaccine:vaccine.vaccine
+         }
     dispatch(loadDosisFilterbyVaccineId(payload))
+      }
+     
+     
+      dispatch(stopLoadingApplyVaccine());
+      
+    } catch (error) {
+      dispatch(stopLoadingApplyVaccine());
+      dispatch(addMessageApplyVaccine("Error: " + error))
+      console.log('errror-------');
+    }
   }
 
   const onLoadbyDosisOff = () =>{
@@ -204,7 +233,8 @@ export const useApplyVaccines = () => {
       let payload = {
         tableData: apply_vaccines,
         vaccineuniqueFromTableData: vaccineUnique(apply_vaccines),
-        dosisFilterbyVaccineIdFromTableData: [],
+        dosis: [],
+        vaccine:{},
         desde,
         limite,
         currentPage,
@@ -339,13 +369,9 @@ export const useApplyVaccines = () => {
   const exportVaccineAppliedByDependent = async (token:string) => {
     try {
 
-      console.log("Hola Token----------II------");
       getPermission();
     //  const { data } = await vaccinesApi.get(`/reporte`);
      // console.log(data);
- 
-
-      console.log("Hola Token------------IV----");
    
        
     } catch (error) {
@@ -410,7 +436,8 @@ export const useApplyVaccines = () => {
     loadVaccineAppliedByDependent,
     tableData,
     vaccineuniqueFromTableData,
-    dosisFilterbyVaccineIdFromTableData,
+    dosis,
+    vaccine,
     token,
     isConsultVaccine,
     isAddApplyVaccine,

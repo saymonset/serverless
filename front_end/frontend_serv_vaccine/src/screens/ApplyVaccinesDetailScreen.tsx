@@ -5,6 +5,7 @@ import { stylesFigma } from '../theme/appFigmaTheme';
 import { LoadingScreen } from './LoadingScreen';
 import { useApplyVaccines } from '../hooks/useApplyVaccines';
 import { ApplyVaccineByDependentListComponent } from '../components/ApplyVaccineByDependentListComponent';
+import { ApplyVaccineDosisByDependent } from '../components/ApplyVaccineDosisByDependent';
 
 
 
@@ -12,20 +13,21 @@ import { ApplyVaccineByDependentListComponent } from '../components/ApplyVaccine
 export const ApplyVaccinesDetailScreen =  () => {
 
   let {  dependent , isLoading,
-              dosisFilterbyVaccineIdFromTableData, onLoadbyDosisOff} = useApplyVaccines();
+    dosis, onLoadbyDosisOff} = useApplyVaccines();
             let keyCounter = 0;
             const goPage = (value: any) => {
               onLoadbyDosisOff();
           };  
 
           
-           
+           console.log('-----------------q--------------');
+           console.log({dosis})
   return (
     <>
                  {  ( isLoading ) ? <LoadingScreen />  :
                           <>
                                     <FlatList
-                                            data={dosisFilterbyVaccineIdFromTableData}
+                                            data={dosis}
                                             keyExtractor={() => {
                                               keyCounter++;
                                               return keyCounter.toString();
@@ -38,7 +40,7 @@ export const ApplyVaccinesDetailScreen =  () => {
                                             renderItem={({ item }) => (
                                               <View style={{marginBottom:10,
                                                             marginTop:5}}>
-                                                <ApplyVaccineByDependentListComponent applyVaccine={item}
+                                                <ApplyVaccineDosisByDependent dosis={item}
                                                                   goPage  = { ( value )  => goPage( value )}                     />
                                               </View>
                                             )}

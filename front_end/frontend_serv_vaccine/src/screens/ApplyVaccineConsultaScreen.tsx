@@ -25,9 +25,6 @@ export const ApplyVaccineConsultaScreen =  () => {
   let { loadVaccineAppliedByDependent, dependent_id,  isLoading,
               isConsultVaccineForDosis,
               onLoadbyDosisOff } = useApplyVaccines();
-
-              
-
             const { top } = useSafeAreaInsets();
             const navigation = useNavigation();
 
@@ -90,10 +87,10 @@ export const ApplyVaccineConsultaScreen =  () => {
                    <View style={{
                      flex:1,
                   }}>
-                    {/* Esto !isConsultVaccineForDosis es porque te vas a inyectar */}
+                    {/* COSULTA  VACUNA: */}
                       { !isConsultVaccineForDosis &&  <ApplyVaccinesVaccineDetailScreen/>}
 
-                      {/* esto es isConsultVaccineForDosis porque te vas a consultar las vacunas aplicadas */}
+                      {/* COONSULTAR  VACUNA Y DETALLES DE  DOSIS */}
                       { isConsultVaccineForDosis && <ApplyVaccinesDetailScreen/>}
                       </View>
                 </>

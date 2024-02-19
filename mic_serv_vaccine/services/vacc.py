@@ -102,10 +102,19 @@ def vaccdosisdependet(dosisId, dependentId):
         # print(dosisVacc)
         # print(d)
         data = get_apply__vaccineOfDosisAndDependent_repo(dosisVacc, dependentId)
+        print('--------------------')
+        print(data)
         if data is None: 
            d['isApplied'] = False  # Agregar el nuevo key 'isApplied' con valor True
+           d['lote']= None
+           d['image']= None
+           d['vaccination_date']= None
         else:
            d['isApplied'] = True  # Agregar el nuevo key 'isApplied' con valor True   
+           d['lote']= data['lote']
+           d['image']=data['image']
+           d['vaccination_date']=data['vaccination_date']
+
 
         d['dependentId'] = dependentId
         d['dosisId'] = dosisVacc;

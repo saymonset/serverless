@@ -5,12 +5,13 @@ import { stylesFigma } from '../theme/appFigmaTheme';
 import { LoadingScreen } from './LoadingScreen';
 import { useApplyVaccines } from '../hooks/useApplyVaccines';
 import { ApplyVaccineByDependentListComponent } from '../components/ApplyVaccineByDependentListComponent';
+import { useLogin } from '../hooks/useLogin';
 
 
 
 
 export const ApplyVaccinesVaccineDetailScreen =  () => {
-
+  const { token } = useLogin();
   let {   dependent , 
           isLoading,
           vaccineuniqueFromTableData, 
@@ -20,7 +21,15 @@ export const ApplyVaccinesVaccineDetailScreen =  () => {
           let keyCounter = 0;
 
           const goPage = (value: any) => {
-            handleByIdApplyVaccine({...value});
+            
+           
+        
+           // console.log(value);
+            const {  dosis, dependent } = value;
+            const { _id:{$oid:dosisId} } = dosis;
+            const { _id:{$oid:dependentId} } = dependent;
+            //console.log({dosisId, dependentId});
+            handleByIdApplyVaccine(dosisId, dependentId, token);
             onLoadbyDosis();
           };  
 
