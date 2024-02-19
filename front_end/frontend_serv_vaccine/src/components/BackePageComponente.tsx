@@ -3,6 +3,8 @@ import { Keyboard, Platform, StyleSheet, Text, TouchableOpacity, View } from 're
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
+import { useApplyVaccines } from '../hooks/useApplyVaccines';
+import { useLogin } from '../hooks/useLogin';
 
 interface Props extends StackScreenProps<any, any> {
   page: string;
@@ -17,12 +19,18 @@ interface Props extends StackScreenProps<any, any> {
 export const BackePageComponente = ({ navigation, page, title1="", title2="" }: Props) => {
 
   const navigationAux = useNavigation();
+  let { exportVaccineAppliedByDependent } = useApplyVaccines();
+  const { token } = useLogin();
 
   const onBack = async () => {
     Keyboard.dismiss();
     navigation ?  navigation.replace(page) : navigationAux.navigate(page);
    
   };
+
+  const onExportar = async () => {
+     await exportVaccineAppliedByDependent(token);
+  }
 
   return (
     
@@ -36,7 +44,10 @@ export const BackePageComponente = ({ navigation, page, title1="", title2="" }: 
         <Ionicons name="arrow-back-circle-outline" size={40} color="black" />
       </TouchableOpacity>
       <Text style={{marginTop:10}}> { title1 }</Text>
-      <Text style={{marginTop:10}}> { title2 }</Text>
+      
+      <TouchableOpacity onPress={() => onExportar()} style={{ marginTop: 0 }}>
+          <Text style={{marginTop:10}}> { title2  }</Text>
+      </TouchableOpacity>
     </View>
   );
 };

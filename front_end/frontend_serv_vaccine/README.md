@@ -60,3 +60,5 @@ npm install --save @types/react-native-snap-carousel
 yarn add uuid
 
 npx pod-install
+
+yarn add react-native-fs

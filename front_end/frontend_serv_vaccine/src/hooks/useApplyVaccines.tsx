@@ -1,3 +1,13 @@
+import { PermissionsAndroid } from 'react-native';
+// Import Components
+import {
+  Text,
+  View,
+  Image,
+  StyleSheet,
+  Platform,
+  TouchableOpacity,
+} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useForm } from './useForm';
 
@@ -11,11 +21,16 @@ import {
   loadDosisFilterbyVaccineId, loadbyDosisOff, loadbyDosis
 } from '../store/slices/applyvaccines';
 import { useLogin } from './useLogin';
-import vaccinesApi from '../api/vaccinesApi';
+import vaccinesApi, { baseURL } from '../api/vaccinesApi';
 import { enviarMensajePorStatusCode } from '../utils/enviarMensajePorStatusCode';
-import { Vaccine } from '../interfaces/apply-vaccines-interfaces';
+
+// Import React Component
+import React from 'react';
 
 
+
+// Import RNFetchBlob for the file download
+import RNFetchBlob from 'rn-fetch-blob';
 
 export const useApplyVaccines = () => {
 
@@ -204,7 +219,92 @@ export const useApplyVaccines = () => {
     }
   }
 
+  const actualDownload = () => {
+    const { dirs } = RNFetchBlob.fs;
+    const dirToSave =
+      Platform.OS === 'ios' ? dirs.DocumentDir : dirs.DownloadDir;
+    const configfb = {
+      fileCache: true,
+      addAndroidDownloads: {
+        useDownloadManager: true,
+        notification: true,
+        mediaScannable: true,
+        title: `Invoice.xlsx`,
+        path: `${dirs.DownloadDir}/Invoice.xlsx`,
+      },
+      useDownloadManager: true,
+      notification: true,
+      mediaScannable: true,
+      title: 'Invoice.xlsx',
+      path: `${dirToSave}/Invoice.xlsx`,
+    };
+    const configOptions = Platform.select({
+      ios: configfb,
+      android: configfb,
+    });
+   console.log('aqui vamos!!!---------');
+    RNFetchBlob.config(configOptions || {})
+      .fetch('GET', `${baseURL}/reporte`, {})
+      .then(res => {
+ 
+        if (Platform.OS === 'ios') {
+          RNFetchBlob.fs.writeFile(configfb.path, res.data, 'base64');
+          RNFetchBlob.ios.previewDocument(configfb.path);
+        }
+        if (Platform.OS === 'android') {
+          console.log("file downloaded")      
+ }
+      })
+      .catch(e => {
+        console.log('invoice Download==>', e);
+            });
+  };
 
+  const getPermission = async () => {
+    if (Platform.OS === 'ios') {
+      actualDownload();
+    } else {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+          {
+            title: 'Storage Permission',
+            message: 'Please grant permission to access storage.',
+            buttonNeutral: 'Ask Me Later',
+            buttonNegative: 'Cancel',
+            buttonPositive: 'OK',
+          }
+        );
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          actualDownload();
+        } else {
+          console.log("please grant permission");
+        }
+      } catch (err) {
+        console.log("display error",err)    }
+    }
+  };
+
+
+  // nextPrev es faBorderNone, prev o next, 
+  const exportVaccineAppliedByDependent = async (token:string) => {
+    try {
+
+      console.log("Hola Token----------II------");
+      getPermission();
+    //  const { data } = await vaccinesApi.get(`/reporte`);
+     // console.log(data);
+ 
+
+      console.log("Hola Token------------IV----");
+   
+       
+    } catch (error) {
+      console.log(error)
+    }
+  }
+ 
+ 
 
   const vaccineUnique = (apply_vaccines:  any) =>{
     let apply_vaccinesAux = [];
@@ -267,7 +367,8 @@ export const useApplyVaccines = () => {
     isAddApplyVaccine,
     isConsultVaccineForDosis,
     onLoadbyDosisOff,
-    onLoadbyDosis
+    onLoadbyDosis,
+    exportVaccineAppliedByDependent
 
     //  selectedGeneroId,
     //  selecteRelationShipId,

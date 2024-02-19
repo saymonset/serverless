@@ -1,7 +1,7 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const baseURL = 'https://77sw5iql30.execute-api.us-east-1.amazonaws.com/api';
+export const baseURL = 'https://77sw5iql30.execute-api.us-east-1.amazonaws.com/api';
 
 const vaccinesApi = axios.create({ baseURL });
 

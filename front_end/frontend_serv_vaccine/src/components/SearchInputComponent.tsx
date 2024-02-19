@@ -36,6 +36,7 @@ export const SearchInputComponent = (  {  onDebounce, style, goPage = ""}:Props)
 
             
           
+          {/* Para Buscar y EXPORTAR */}
             <BackePageComponente 
                         page = {goPage}
                         title1='Vacunación'

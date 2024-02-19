@@ -30,10 +30,11 @@ export const ApplyVaccinesDetailScreen =  () => {
                                               keyCounter++;
                                               return keyCounter.toString();
                                             }}
-                                            showsHorizontalScrollIndicator={true}
+                                            showsHorizontalScrollIndicator={false}
                                             numColumns={1}
                                             horizontal={false}
                                             ItemSeparatorComponent={() => <View style={{ height: 1, backgroundColor: 'lightgray'}} />}
+                                            style={{marginTop:10}}
                                             renderItem={({ item }) => (
                                               <View style={{marginBottom:10,
                                                             marginTop:5}}>
