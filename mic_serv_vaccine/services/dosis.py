@@ -75,29 +75,29 @@ def get_dosis_service(id):
      #Este metodo trabaja de manera cruda antes de convertirlo application/json para envirlo l client html
     return Response(json_util.dumps(get_dosis_service_without_application_json(id)), mimetype="application/json")
 
-def get_dosis_service_without_application_json(id):
-    data = get_dosis_repo(id)
+def get_dosis_service_without_application_json(dosisId):
+    #Obtengo la dosis con el id
+    data = get_dosis_repo(dosisId)
     result = json_util.dumps(data)
-   
-    # Analizar la cadena JSON
+    # Obtengo la dosis para agregarle mas datos al diccionario
     parsed_data = json.loads(result)
 
-    # Acceder a los valores del diccionario parsed_data
+    #La parse_data es la dosis y de hay obtengo la vacuna
     vaccine_id = parsed_data['vacinne_id']
+    #Obtengo todas las dosis de la vacuna
     dosis_ids= get_dosis_service_ByVaccine(vaccine_id)
 
 
     vaccine = get_vaccine_repo(vaccine_id)
     resultvac = json_util.dumps(vaccine)
     dosis_ids_vac = json_util.dumps(dosis_ids)
-       # Analizar la cadena JSON
     parsed_data_vac = json.loads(resultvac)
-    #parsed_dosis_ids_vac = json.loads(dosis_ids_vac)
-     # Agregar la variable data_vac al diccionario parsed_data
+    # Agregar la variable vaccine al diccionario de dosis que se obtuve en parse_data al principio
     parsed_data['vaccine'] = parsed_data_vac
     del parsed_data['vacinne_id']  # Eliminar el campo dosis_id del resultado
 
     return parsed_data
+
 
 def get_dosis_service_ByVaccine(vaccine_id):
     data = get_dosis_ByVaccine(vaccine_id)

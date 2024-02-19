@@ -9,7 +9,7 @@ from validators.applyVaccines import isValidApplyVaccine
 from repository.vacc  import isValidBdVaccine, isValidBdVaccineUpdate, get_vaccine_repo
 from repository.dependent  import  get_dependentById_repo
 from flask_jwt_extended import jwt_required
-from services.applyVaccines import delete_applyVaccines_service, update_apply_vaccine_service, create_apply_vaccine_service, get_apply__vaccine_service, get_applyVaccinesList_service
+from services.applyVaccines import get_apply_vaccineOfDosisAndDependent_service, delete_applyVaccines_service, update_apply_vaccine_service, create_apply_vaccine_service, get_apply__vaccine_service, get_applyVaccinesList_service
 
 applyVaccines = Blueprint('applyVaccines', __name__)
 
@@ -52,6 +52,12 @@ class getApplyVaccinessswgger(Resource):
         return create_apply_vaccine_service(data)
  
 
+@ns_applyVaccines.route('/vaccineOfDosisAndDependent/<dosisId>/<dependentId>', methods = [ 'GET' ])
+class get_apply__vaccineOfDosisAndDependent_service(Resource):        
+    @ns_applyVaccines.doc(security='apikey')
+    @jwt_required()
+    def get(self, dosisId, dependentId):
+        return get_apply_vaccineOfDosisAndDependent_service(dosisId, dependentId) 
  
 @ns_applyVaccines.route('/<limite>/<desde>/<query>', methods = [ 'GET' ])
 class get_ApplyVaccinesList(Resource):        

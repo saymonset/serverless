@@ -22,15 +22,9 @@ const screenWidth = Dimensions.get("window").width;
 
 export const ApplyVaccineConsultaScreen =  () => {
          
-  let { loadVaccineAppliedByDependent, dependent_id, dependent , isLoading,
-              total, 
-              limite, 
-              desde, 
-              currentPage, 
-              vaccineuniqueFromTableData,
+  let { loadVaccineAppliedByDependent, dependent_id,  isLoading,
               isConsultVaccineForDosis,
-              onLoadbyDosisOff, handleByIdApplyVaccine,
-              onLoadbyDosis} = useApplyVaccines();
+              onLoadbyDosisOff } = useApplyVaccines();
 
               
 
@@ -46,7 +40,7 @@ export const ApplyVaccineConsultaScreen =  () => {
           useEffect(() => {
             let desde = 0;
             let limite = LIMITE_PAGE;
-      
+            /*** Aqui llnamos todas las vacunas aplicadas por el dependiente */
             loadVaccineAppliedByDependent({
               limite,
               desde
@@ -96,7 +90,10 @@ export const ApplyVaccineConsultaScreen =  () => {
                    <View style={{
                      flex:1,
                   }}>
+                    {/* Esto !isConsultVaccineForDosis es porque te vas a inyectar */}
                       { !isConsultVaccineForDosis &&  <ApplyVaccinesVaccineDetailScreen/>}
+
+                      {/* esto es isConsultVaccineForDosis porque te vas a consultar las vacunas aplicadas */}
                       { isConsultVaccineForDosis && <ApplyVaccinesDetailScreen/>}
                       </View>
                 </>

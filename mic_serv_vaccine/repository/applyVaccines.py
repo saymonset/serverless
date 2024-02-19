@@ -46,6 +46,7 @@ def get_applyVaccine_counts_repo(query:str):
         }
     return mongo.db.apply_vaccines.count_documents(filter_query)
 
+
 def get_applyVaccine_repo(id):
     if validar_object_id(id):
         # La cadena es un ObjectId válido
@@ -59,6 +60,10 @@ def get_applyVaccine_repo(id):
         }
         return result
 
+def get_apply__vaccineOfDosisAndDependent_repo(dosisId, dependentId):
+     
+    return mongo.db.apply_vaccines.find_one({"dosis_id": dosisId, "dependent_id":dependentId})
+    
 def update_applyVaccine_repo(id, data):
     if validar_object_id(id):
         # La cadena es un ObjectId válido

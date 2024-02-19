@@ -7,7 +7,10 @@ from config.mongodb  import   mongo
 from models.vaccine  import   VaccineModels
 from repository.vacc import   crear_vacuna_repo, get_vaccines_repo, get_vaccines_counts_repo
 from repository.vacc import   get_vaccine_repo, update_vaccine_repo, delete_vaccine_repo
-from services.dosis  import   get_dosis_service_ByVaccine
+from repository.dosis import    get_dosis_repo
+from services.dosis  import   get_dosis_service_ByVaccine, get_dosis_service_without_application_json
+from services.dependent import  get_dependentsbyId_servicWithOutJson
+from repository.applyVaccines import get_apply__vaccineOfDosisAndDependent_repo
 from helps.utils import validar_object_id
 
 
@@ -72,12 +75,79 @@ def get_vaccine_service(id):
     return Response(get_vaccine_serviceWithout_Application_Json(id), mimetype="application/json")
 
 def get_vaccine_serviceWithout_Application_Json(id):
+    #Obtenemos el diccionario  de la vacuna por su id de vacuna
     data = get_vaccine_repo(id)
-    #result = json_util.dumps(data)
+    #Obtenemos las dosis de esa vacuna
     dosis_ids= get_dosis_service_ByVaccine(id)
+    #En el diionario le sumamos los dosis_ids
     data['dosis_ids'] = dosis_ids;
+    # Obtenemos  la data como run nuevo resul para enviar
     result = json_util.dumps(data)
     return result
+
+ #Obtenemos todas las dosis de la vacuna y vemos cuales dosis a sido aplicada a este familiar o dependent
+def vaccdosisdependet(dosisId, dependentId):
+    #Obtenemos la  vacuna de la dosis
+    vaccineId = get_vacc_of_dosis(dosisId)
+    #Obtenemos el diccionario  de la vacuna por su id de vacuna
+    vaccine = get_vaccine_repo(vaccineId)
+
+    data_dependent = get_dependentsbyId_servicWithOutJson(dependentId);
+    #Obtenemos las dosis de esa vacuna
+    dosis_ids= get_dosis_service_ByVaccine(vaccineId)
+    new_dosis_ids = []  # Nuevo arreglo para almacenar las dosis modificadas
+    vacc_vaccine_apply = []  # Nuevo arreglo para almacenar las dosis modificadas
+    for d in dosis_ids:
+        dosisVacc =  d['_id']['$oid']
+        # print(dosisVacc)
+        # print(d)
+        data = get_apply__vaccineOfDosisAndDependent_repo(dosisVacc, dependentId)
+        if data is None: 
+           d['isApplied'] = False  # Agregar el nuevo key 'isApplied' con valor True
+        else:
+           d['isApplied'] = True  # Agregar el nuevo key 'isApplied' con valor True   
+
+        d['dependentId'] = dependentId
+        d['dosisId'] = dosisVacc;
+        #No se aplica el formato json 
+       
+        #d['dependent'] = data_dependent
+         #No se aplica el formato json 
+        #data_dosis = get_dosis_service_without_application_json(dosisVacc)
+        #d['dosis'] = data_dosis;
+        #del d['dependent_id'] # Eliminar el campo dosis_id del resultado    
+        #del d['dosis_id'] # Eliminar el campo dosis_id del resultado    
+        new_dosis_ids.append(d)  # Agregar la dosis modificada al nuevo arreglo
+ 
+    # Agregar new_dosis_ids a vacc_vaccine_apply
+    vacc_vaccine_apply.append(data_dependent);
+    vacc_vaccine_apply.append({"vaccine":vaccine});
+    vacc_vaccine_apply.append({"dosis":new_dosis_ids})
+    response_data = {
+            'vacc_apply_vaccines': vacc_vaccine_apply,
+            "statusCode": 201,
+            "resp":True,
+    }
+    response = Response(json.dumps(json.loads(json_util.dumps(response_data))), status=200, mimetype='application/json')
+    return response
+
+
+def get_vacc_of_dosis(dosis):
+    #Obtengo la dosis con el id
+    data = get_dosis_repo(dosis)
+    result = json_util.dumps(data)
+    # Obtengo la dosis para agregarle mas datos al diccionario
+    parsed_data = json.loads(result)
+
+    #La parse_data es la dosis y de hay obtengo la vacuna
+    vaccine_id = parsed_data['vacinne_id']
+    # #Obtengo todas las dosis de la vacuna
+    # dosis_ids= get_dosis_service_ByVaccine(vaccine_id)
+
+
+    # dosis_ids_vac = json_util.dumps(dosis_ids)
+
+    return vaccine_id;   
 
 
 """Actualizacion de vacuna"""
