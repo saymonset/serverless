@@ -73,5 +73,10 @@ export const stylesFigma = StyleSheet.create({
         //backgroundColor: 'lightblue',
         borderRadius: 10,
       },
+      cierrepopup: {
+       marginLeft:290,
+       marginTop:10
+      },
+      
 
 })

@@ -50,7 +50,12 @@ export const ApplyVaccinesAddScreen = () => {
     navigation.navigate('ApplyVaccinesDependentsScreen' as never)
   }
 
-  
+  const handlerCerrarModal = (resp:boolean) => {
+    if(resp){
+      setIsVisibleParent(false);
+      setIsVisibleChild(false);
+    }
+  }
 
   const cerrarModal = () => {
     setIsVisible(false);
@@ -158,7 +163,63 @@ export const ApplyVaccinesAddScreen = () => {
             ></HeaderTitleFigma>
                 <ScrollView>
                         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                          <View style = { styles.globalMargin }>        
+                          <View style = { styles.globalMargin }> 
+                                         
+                                          {/* VACUNAS parentName */}
+                                          <View style = {{ marginTop:5}}>
+                                                <Text  style={[ 
+                                                        comunStylesFigma.inputField,
+                                                        ( Platform.OS === 'ios' ) && comunStylesFigma.inputFieldIOS
+                                                    ]}>{parentName}</Text>
+
+                                                 {/* Devuelve el item y propiedad a la funcion getValor que tengo actualmente 
+                                                     Propiedad puede ser parentName o  child para ver que se va  allenar
+                                                     Aqui la p[ropiedad es parentNames]
+                                                 */}
+                                                   {/* En showModalEstado es donde  colocamos visible el isVisibleParent a true */}
+                                                {isVisibleParent && (<ModalVaccineDosisComponent getValor = { ( item, propiedad ) => getValor( item, propiedad )}
+                                                                                      propiedad = 'parent' 
+                                                                                      onCerrarModal =  { (value) => handlerCerrarModal( value )}
+                                                                                    />
+                                                                )
+                                                }    
+                                                <TouchableOpacity
+                                                    style={[
+                                                        {marginTop:10},
+                                                        (Platform.OS === 'ios') && comunStylesFigma.inputFieldIOS,
+                                                        { backgroundColor: 'gray', justifyContent: 'center', alignItems: 'center' }
+                                                    ]}
+                                                    // En showModalEstado es donde  colocamos visible el isVisibleParent a true
+                                                    onPress={() => showModalEstado()}
+                                                    >
+                                                    <Text style={ { color:'white'} }>Vacunas</Text>
+                                                </TouchableOpacity>
+                                        </View>  
+                                        {/* DOSIS */}
+                                        { parentName && ( <View style = {{ marginTop:5}}>
+                                                                            <Text  style={[ 
+                                                                                    ( Platform.OS === 'ios' ) && comunStylesFigma.inputFieldIOS
+                                                                                ]}>{ child}</Text>
+
+                                                                    {isVisibleChild && (<ModalVaccineDosisComponent getValor = { ( item, propiedad ) => getValor( item, propiedad )}
+                                                                                                                  propiedad = 'child' 
+                                                                                                                  idParent={ idParent}
+                                                                                                                  onCerrarModal =  { (value) => handlerCerrarModal( value )}
+                                                                                                    />
+                                                                               )
+                                                                     }    
+                                                                            <TouchableOpacity
+                                                                                style={[
+                                                                                    {marginTop:10},
+                                                                                    (Platform.OS === 'ios') && comunStylesFigma.inputFieldIOS,
+                                                                                    { backgroundColor: 'gray', justifyContent: 'center', alignItems: 'center' }
+                                                                                ]}
+                                                                                onPress={() => showModalMunicipio()}
+                                                                                >
+                                                                                <Text style={{ color: 'white' }}> Dosis</Text>
+                                                                                </TouchableOpacity>
+                                                       </View>    )}  
+
                                         <View style = {{ marginVertical:20}}>
                                             <Text>Lote:<Text style={{ color: 'skyblue' }}> *</Text></Text>
                                             <TextInput 
@@ -204,58 +265,7 @@ export const ApplyVaccinesAddScreen = () => {
                                         </View>
 
                                        
-                                        {/* parentName */}
-                                        <View style = {{ marginTop:5}}>
-                                                <Text  style={[ 
-                                                        comunStylesFigma.inputField,
-                                                        ( Platform.OS === 'ios' ) && comunStylesFigma.inputFieldIOS
-                                                    ]}>{parentName}</Text>
-
-                                                 {/* Devuelve el item y propiedad a la funcion getValor que tengo actualmente 
-                                                     Propiedad puede ser parentName o  child para ver que se va  allenar
-                                                     Aqui la p[ropiedad es parentNames]
-                                                 */}
-                                                   {/* En showModalEstado es donde  colocamos visible el isVisibleParent a true */}
-                                                {isVisibleParent && (<ModalVaccineDosisComponent getValor = { ( item, propiedad ) => getValor( item, propiedad )}
-                                                                                      propiedad = 'parent' 
-                                                                                    />
-                                                                )
-                                                }    
-                                                <TouchableOpacity
-                                                    style={[
-                                                        {marginTop:10},
-                                                        (Platform.OS === 'ios') && comunStylesFigma.inputFieldIOS,
-                                                        { backgroundColor: 'gray', justifyContent: 'center', alignItems: 'center' }
-                                                    ]}
-                                                    // En showModalEstado es donde  colocamos visible el isVisibleParent a true
-                                                    onPress={() => showModalEstado()}
-                                                    >
-                                                    <Text style={ { color:'white'} }>Vacunas:</Text>
-                                                </TouchableOpacity>
-                                        </View>  
-                                        {/* Municipio */}
-                                        { parentName && ( <View style = {{ marginTop:5}}>
-                                                                            <Text  style={[ 
-                                                                                    ( Platform.OS === 'ios' ) && comunStylesFigma.inputFieldIOS
-                                                                                ]}>{ child}</Text>
-
-                                                                    {isVisibleChild && (<ModalVaccineDosisComponent getValor = { ( item, propiedad ) => getValor( item, propiedad )}
-                                                                                                                  propiedad = 'child' 
-                                                                                                                  idParent={ idParent}
-                                                                                                    />
-                                                                               )
-                                                                     }    
-                                                                            <TouchableOpacity
-                                                                                style={[
-                                                                                    {marginTop:10},
-                                                                                    (Platform.OS === 'ios') && comunStylesFigma.inputFieldIOS,
-                                                                                    { backgroundColor: 'gray', justifyContent: 'center', alignItems: 'center' }
-                                                                                ]}
-                                                                                onPress={() => showModalMunicipio()}
-                                                                                >
-                                                                                <Text style={{ color: 'white' }}> Dosis</Text>
-                                                                                </TouchableOpacity>
-                                                       </View>    )}  
+                                      
                                             {/* Crear una nueva cuenta */}
                                             <View style={{...comunStylesFigma.buttonContainer,  alignItems:'center', marginTop:10, marginBottom:50}  }>
                                                 {  isLoading && (  <LoadingScreen />  )}

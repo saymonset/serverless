@@ -15,9 +15,10 @@ interface Props1  {
     getValor: (menuItem:Dosiss | Vaccine, propiedad: string) => void;
     propiedad?: 'parent' | 'child';
     idParent?: string;
+    onCerrarModal  : (resp:boolean ) => void;
 }
 
-export const ModalVaccineDosisComponent = ( { getValor, propiedad = 'parent', idParent = '' }: Props1) => {
+export const ModalVaccineDosisComponent = ( { getValor, propiedad = 'parent', idParent = '', onCerrarModal }: Props1) => {
 
       // Sacamos del contexto donde se inicializa estos valores apenas entreen el tab1 de la navigator y este logueadio
     const { authState:{dosis, vaccines} } = useContext(AuthContext)
@@ -26,13 +27,15 @@ export const ModalVaccineDosisComponent = ( { getValor, propiedad = 'parent', id
     const getRandomKey = () => Math.random().toString();
 
 
-    const enviarValor = (menuItem: Dosiss | Vaccine) => {
-              setIsVisible(false);
+    const enviarValor = (menuItem: Dosiss | Vaccine ) => {
+                 setIsVisible(false);
             //   El que llamo este metodo dependiendo de lo que tenag la propiedad actua pra su logica
-              getValor( menuItem, propiedad);
-          }
+                getValor( menuItem, propiedad);
+    }
  
-   
+    const cerrarModalEnX = () => {
+        onCerrarModal(true);
+   }
 
 
   return (
@@ -65,6 +68,17 @@ export const ModalVaccineDosisComponent = ( { getValor, propiedad = 'parent', id
                                                             elevation: 10,
                                                             borderRadius: 5
                                                         }}>
+                                                              <TouchableOpacity
+                                                                        activeOpacity={0.8}
+                                                                        onPress = { () => {
+                                                                            cerrarModalEnX();
+                                                                        }
+                                                                        }
+                                                                        >
+                                                                            <View style={{...stylesFigma.cierrepopup}}><Text>X</Text></View>
+                                                                        </TouchableOpacity>
+                                                                 
+                                                                  
                                                                     <View style={{flex:1, ...stylesFigma.globalMargin}}>
                                                                    { propiedad==='parent' && (
                                                                                     <FlatList

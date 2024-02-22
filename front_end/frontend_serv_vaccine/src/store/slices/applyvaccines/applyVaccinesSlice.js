@@ -122,9 +122,6 @@ export const applyVaccineSlice = createSlice({
             state.dosis = payload.dosis;
         
             state.vaccine = payload.vaccine;
-            console.log('payload imot0000000000')
-            console.log(payload.vaccine)
-            console.log('payload fint------------1-----')
         },
         
        addMessageApplyVaccine: ( state, { payload } ) =>{
