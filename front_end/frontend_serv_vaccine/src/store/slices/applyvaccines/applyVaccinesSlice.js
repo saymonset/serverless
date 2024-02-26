@@ -114,13 +114,13 @@ export const applyVaccineSlice = createSlice({
         },
         loadbyDosisOff: ( state, { payload } ) => {
             state.isConsultVaccineForDosis = false;
+            
         },
         loadbyDosis: ( state, { payload } ) => {
             state.isConsultVaccineForDosis = true;
         },
         loadDosisFilterbyVaccineId: ( state, { payload } ) => {
             state.dosis = payload.dosis;
-        
             state.vaccine = payload.vaccine;
         },
         

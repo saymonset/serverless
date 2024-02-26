@@ -120,10 +120,29 @@ export const useApplyVaccines = () => {
   }
 
   const findDosisByVaccineOfDependent = async(vaccineId:string, dependentId:string, token:string) => {
-    console.log('------------1-------------');
-    console.log({vaccineId});
-        console.log({vaccineId, dependentId, token});
-        console.log('------------2-------------');     
+    try {
+        if (token) {
+          await AsyncStorage.setItem('token', token);
+        }
+        dispatch(startLoadingApplyVaccine());
+        const { data } = await vaccinesApi.get<VaccApplyVaccineResponse>(`/vaccine/vaccfindfromvaccidanddependetid/${vaccineId}/${dependentId}`);
+        const { vacc_apply_vaccines } = data;
+        if (vacc_apply_vaccines && vacc_apply_vaccines.length > 0){
+          //En la posicion 2 esta las dosis aplicadas o no aplicadas al dependiente de la vacuna
+          const { vaccine } = vacc_apply_vaccines[1];
+          const { dosis } = vacc_apply_vaccines[2];
+          const payload = {
+            vaccine,
+            dosis
+          }
+          dispatch(loadDosisFilterbyVaccineId( payload ))
+          dispatch(stopLoadingApplyVaccine());
+        }
+      } catch (error) {
+        dispatch(stopLoadingApplyVaccine());
+        dispatch(addMessageApplyVaccine("Error: " + error))
+      }
+        
   }
 
 
@@ -157,7 +176,6 @@ export const useApplyVaccines = () => {
     } catch (error) {
       dispatch(stopLoadingApplyVaccine());
       dispatch(addMessageApplyVaccine("Error: " + error))
-      console.log('errror-------');
     }
   }
 

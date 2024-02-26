@@ -29,7 +29,7 @@ export const ApplyVaccinesVaccineDetailScreen =  () => {
             const { _id:{$oid:dosisId} } = dosis;
             const { _id:{$oid:dependentId} } = dependent;
             //console.log({dosisId, dependentId});
-            handleByIdApplyVaccine(dosisId, dependentId, token);
+            //handleByIdApplyVaccine(dosisId, dependentId, token);
             onLoadbyDosis();
           };  
 

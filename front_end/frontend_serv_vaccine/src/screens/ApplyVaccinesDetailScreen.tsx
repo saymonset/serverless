@@ -19,9 +19,6 @@ export const ApplyVaccinesDetailScreen =  () => {
               onLoadbyDosisOff();
           };  
 
-          
-           console.log('-----------------q--------------');
-           console.log({dosis})
   return (
     <>
                  {  ( isLoading ) ? <LoadingScreen />  :

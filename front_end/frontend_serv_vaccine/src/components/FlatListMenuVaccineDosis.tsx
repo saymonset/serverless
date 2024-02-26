@@ -1,20 +1,20 @@
 import React, { useContext } from 'react'
-import { Text, View, StyleSheet } from 'react-native';
+import { format } from 'date-fns';
+import { Text, View, StyleSheet, Platform } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { Dosiss } from '../interfaces';
-import { Pais } from '../interfaces/appInterfaces'
-import { Vaccine } from '../interfaces/vaccine-interfaces';
+import { Vaccine, Dosi } from '../interfaces/vaccine-withdosis-for-dependent-interfaces';
+import Ionicons from 'react-native-vector-icons/Ionicons';
  
 
 interface Props {
-    menuItem: Dosiss | Vaccine;
-    cerrarModal: (menuItem:Dosiss | Vaccine) => void;
+    menuItem: Dosi | Vaccine;
+    cerrarModal: (menuItem:Dosi | Vaccine) => void;
     propiedad?: 'parent' | 'child'
 }
 
 export const FlatListMenuVaccineDosis = ({ menuItem, cerrarModal, propiedad = 'parent'  }:Props) => {
 
-  const enviar = (  menuItem: Dosiss | Vaccine) => {
+  const enviar = (  menuItem: Dosi | Vaccine) => {
     cerrarModal(menuItem);
   }
 
@@ -28,7 +28,36 @@ export const FlatListMenuVaccineDosis = ({ menuItem, cerrarModal, propiedad = 'p
     }
       >
         { propiedad === 'parent' && (<Text onPress={() => enviar(menuItem)} style = { styles.itemText}>{ menuItem.name }</Text>)} 
-        { propiedad === 'child' && (<Text onPress={() => enviar(menuItem)} style = { styles.itemText}>{ menuItem.name }</Text>)} 
+        {propiedad === 'child' && (
+                       <View  style={{ flexDirection: 'row'}}>
+                                <Text    onPress={menuItem.isApplied ? undefined : () => enviar(menuItem)}
+                                    style={[
+                                      styles.itemText,
+                                    ]}
+                                  >
+                                  {menuItem.name}
+                                </Text>
+                                {menuItem.isApplied && ( <Text    onPress={menuItem.isApplied ? undefined : () => enviar(menuItem)}
+                                                        style={[
+                                                          styles.itemText,
+                                                        ]}
+                                                      >
+                                                     {format(new Date(menuItem.vaccination_date), 'dd/MM/yyyy')}
+                                                    </Text>) }
+                                <View style={{ flex: 1 }}></View>
+                                {menuItem.isApplied ? (
+                                                    <View style={{ marginLeft: Platform.OS === 'ios' ? 1 : 10,marginTop:-5 }}>
+                                                      <Ionicons name="checkmark-done-circle-outline" size={40} color="black" />
+                                                    </View>
+                                                  )
+                                                  :
+                                                  (
+                                                    <View style={{ marginLeft: Platform.OS === 'ios' ? 1 : 10,marginTop:-5 }}>
+                                                      <Ionicons name="ellipse-outline" size={40} color="black" />
+                                                    </View>
+                                                  )}
+                       </View>
+                      )}
             {/* <View style = {{ flex: 1 }} /> */}
     </TouchableOpacity>
   )

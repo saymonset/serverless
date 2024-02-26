@@ -62,3 +62,5 @@ yarn add uuid
 npx pod-install
 
 yarn add react-native-fs
+
+npm install date-fns

@@ -36,8 +36,6 @@ export const ApplyVaccinesComponent = ( { obj, applyVaccinePerson } : Props) => 
                    { isConsultVaccine &&   <Ionicons name="medkit-outline" size={50} color="black" />  }
                 </TouchableOpacity>
             </View>
-           
-           
       </View>
   )
 }

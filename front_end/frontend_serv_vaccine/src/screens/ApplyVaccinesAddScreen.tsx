@@ -15,7 +15,8 @@ import { CalendarFigmaComponent } from '../components/CalendarFigmaComponent';
 import { ModalVaccineDosisComponent } from '../components/ModalVaccineDosisComponent';
 import { LoadingScreen } from './LoadingScreen';
 import { useApplyVaccines } from '../hooks/useApplyVaccines';
-import { Vaccine } from '../interfaces/vaccine-interfaces';
+import { Vaccine } from '../interfaces/vaccine-withdosis-for-dependent-interfaces';
+import { useVaccine } from '../hooks/useVaccine';
 
 
 export const ApplyVaccinesAddScreen = () => {
@@ -28,7 +29,7 @@ export const ApplyVaccinesAddScreen = () => {
   const [parentName, setParentName] = useState('');
   const [child, setChild] = useState("");
   const {  usuario:{ token } } = useSelector((state: store) => state.loginStore);
- 
+  const { loadVaccinesResponseUse } =  useVaccine();
 
    
 
@@ -81,9 +82,8 @@ export const ApplyVaccinesAddScreen = () => {
    }, [message])
 
   useEffect(() => {
-   //seteamos de  que parentName es o ciudad
-    // setParentName(state);
-    // setChild(city);
+   //Buscamos las vacunas
+   loadVaccinesResponseUse(token);
   }, [])
 
   const showModalEstado = async () => {

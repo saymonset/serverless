@@ -13,6 +13,7 @@ export interface Dosiss {
     name?:          string;
     status?:        boolean;
     vacinne_id?:    string;
+    isApplied: boolean;
 }
 
 export interface ID {

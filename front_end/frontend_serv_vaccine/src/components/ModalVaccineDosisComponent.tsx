@@ -9,7 +9,9 @@ import { ItemSeparator } from './ItemSeparator';
 import { Pais } from '../interfaces/appInterfaces';
 import { AuthContext } from '../context/AuthContext';
 import { Dosiss } from '../interfaces';
-import { Vaccine } from '../interfaces/vaccine-interfaces';
+import { Vaccine } from '../interfaces/vaccine-withdosis-for-dependent-interfaces';
+import { useVaccine } from '../hooks/useVaccine';
+import { useApplyVaccines } from '../hooks/useApplyVaccines';
 
 interface Props1  {
     getValor: (menuItem:Dosiss | Vaccine, propiedad: string) => void;
@@ -21,8 +23,10 @@ interface Props1  {
 export const ModalVaccineDosisComponent = ( { getValor, propiedad = 'parent', idParent = '', onCerrarModal }: Props1) => {
 
       // Sacamos del contexto donde se inicializa estos valores apenas entreen el tab1 de la navigator y este logueadio
-    const { authState:{dosis, vaccines} } = useContext(AuthContext)
+    //const { authState:{dosis, vaccines} } = useContext(AuthContext)
     const [isVisible, setIsVisible] = useState(true);
+    const {  vaccines } =  useVaccine();
+    const {  dosis } =  useApplyVaccines();
 
     const getRandomKey = () => Math.random().toString();
 
@@ -37,6 +41,10 @@ export const ModalVaccineDosisComponent = ( { getValor, propiedad = 'parent', id
         onCerrarModal(true);
    }
 
+   useEffect(() => {
+ 
+   }, [])
+   
 
   return (
     <>
@@ -80,7 +88,7 @@ export const ModalVaccineDosisComponent = ( { getValor, propiedad = 'parent', id
                                                                  
                                                                   
                                                                     <View style={{flex:1, ...stylesFigma.globalMargin}}>
-                                                                   { propiedad==='parent' && (
+                                                                    { propiedad==='parent' && (
                                                                                     <FlatList
                                                                                     data={ vaccines || []}
                                                                                     renderItem={ ( { item } ) =><FlatListMenuVaccineDosis 
@@ -99,6 +107,7 @@ export const ModalVaccineDosisComponent = ( { getValor, propiedad = 'parent', id
                                                                                     />
                                                                    )}  
 
+                                                                   
                                                                     { propiedad==='child' && (
                                                                                     <FlatList
                                                                                     data={ dosis?.filter((d: Dosiss) => d.vacinne_id === String(idParent)) || []  }
@@ -127,3 +136,5 @@ export const ModalVaccineDosisComponent = ( { getValor, propiedad = 'parent', id
       
   )
 }
+
+

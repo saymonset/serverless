@@ -1,6 +1,6 @@
 import vaccinesApi from "../api/vaccinesApi";
 import { DosisResponse, Dosiss } from "../interfaces";
-import { Vaccine } from "../interfaces/vaccine-interfaces";
+import { Vaccine } from "../interfaces/vaccine-withdosis-for-dependent-interfaces";
 
 export const getDosisById = async(dosis_id:string, token: string) => {
         let  dosis1=  vaccinesApi.get<Dosiss>(`/dosis/${dosis_id}`, {

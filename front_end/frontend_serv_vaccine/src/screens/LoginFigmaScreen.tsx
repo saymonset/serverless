@@ -70,6 +70,8 @@ const onSecurityInputChange = (value) => {
        navigation.replace("WelcomeScreen")
     }
 
+    //En caso que el login sea un exito, el store coloca la variable status en authenticated y automaticamente se habilita  navigator.tsx
+    // su status : (status == 'authenticated')
     const onLogin = async ( event ) => {
           event.preventDefault();
           Keyboard.dismiss();
