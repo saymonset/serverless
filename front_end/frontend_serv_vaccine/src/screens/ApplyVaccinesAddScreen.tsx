@@ -42,6 +42,7 @@ export const ApplyVaccinesAddScreen = () => {
         dependent_id,
         total, isLoading, message,
         handlerRemoveMessageApplyVaccine,
+        findDosisByVaccineOfDependent,
         onChange,} = useApplyVaccines();
 
   const navigation = useNavigation();
@@ -94,10 +95,14 @@ export const ApplyVaccinesAddScreen = () => {
   }
 
   const getValor = (menuItem: Dosiss | Vaccine, propiedad: any) => {
+    // Parent es la vacuna
     if (propiedad === 'parent') {
       setIsVisibleParent(false);
       const id : string = menuItem?._id?.$oid ?? "";
-      setIdParent(id)
+      setIdParent(id);
+      let vaccineId = id;
+      findDosisByVaccineOfDependent(vaccineId, dependent_id, token);
+      // Para setear el nombre al cliente de la vacuna?
       setParentName(`${menuItem.name}`)
       setChild('');
     }
@@ -121,7 +126,6 @@ export const ApplyVaccinesAddScreen = () => {
         status:true
     };
     let applyVaccine: ApplyVaccine = { ...obj };
-    console.log({ applyVaccine })
     useApplyVaccineAddModify(applyVaccine, token, total);
  
   }

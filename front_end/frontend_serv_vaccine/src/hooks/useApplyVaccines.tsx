@@ -119,12 +119,15 @@ export const useApplyVaccines = () => {
     }
   }
 
+  const findDosisByVaccineOfDependent = async(vaccineId:string, dependentId:string, token:string) => {
+    console.log('------------1-------------');
+    console.log({vaccineId});
+        console.log({vaccineId, dependentId, token});
+        console.log('------------2-------------');     
+  }
+
 
   const handleByIdApplyVaccine = async(dosisId:string, dependentId:string, token:string) => {
-
-   
-
-
     try {
 
       if (token) {
@@ -424,6 +427,7 @@ export const useApplyVaccines = () => {
     onChange,
     dependentById,
     handleByIdApplyVaccine,
+    findDosisByVaccineOfDependent,
     useApplyVaccineAddModify,
     resp,
     dependent_id,

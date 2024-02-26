@@ -2,7 +2,7 @@ from flask import Blueprint
 from flask_restx import Namespace, Resource, fields, Api
 from flask import request, Response, Flask
 import json
-from services.vacc import vaccdosisdependet, create_vaccine_service, get_vaccines_list_service, get_vaccine_service, update_vaccine_service, delete_vaccine_service
+from services.vacc import vaccfindfromvaccidanddependetid_srv,vaccdosisdependet_srv, create_vaccine_service, get_vaccines_list_service, get_vaccine_service, update_vaccine_service, delete_vaccine_service
 from validators.vaccine import isValidVaccine
 from repository.vacc import isValidBdVaccine, isValidBdVaccineUpdate
 import json
@@ -55,26 +55,21 @@ class getvaccineswgger(Resource):
     #        } 
            
       return get_vaccines_list_service(limite, desde,query)
-
+#Obtengo todas las vacunas y dosis aplicadas o no aplicadas
 @ns_vaccine.route('/vaccdosisdependet/<dosisId>/<dependentId>', methods = [ 'GET' ])
 class getvaccdosisdependet(Resource):       
    @ns_vaccine.doc(security='apikey')
    @jwt_required() 
    def get(self, dosisId, dependentId):
-    #   #Validamos id pk de entrada
-    #   result = get_user_repo(get_jwt_identity())
-    #   if result is None or "error" in result:
-    #      return {    "error":False,
-    #                  "resp":False,
-    #                  "statusCode": "badToken",
-    #                  "ValueError": "El token no es valido",
-    #                  "message":"El token no es valido",
-    #        } 
-           
-      return vaccdosisdependet(dosisId, dependentId)
+      return vaccdosisdependet_srv(dosisId, dependentId)
 
       
-
+@ns_vaccine.route('/vaccfindfromvaccidanddependetid/<vacId>/<dependentId>', methods = [ 'GET' ])
+class vaccfindfromvaccidanddependetid(Resource):       
+   @ns_vaccine.doc(security='apikey')
+   @jwt_required() 
+   def get(self, vacId, dependentId):
+      return vaccfindfromvaccidanddependetid_srv(vacId, dependentId)
   
 @ns_vaccine.route('/<id>', methods = [  'GET', 'PUT', 'DELETE' ])
 class getVaccionesswgger(Resource):

@@ -11,8 +11,8 @@ export interface ApplyVaccineResponse {
 
 export interface ApplyVaccine {
     _id:              ID;
-    dependent:        Dependent;
-    dosis:            Dosis;
+    dependent?:        Dependent;
+    dosis?:            Dosis;
     image:            null;
     lote:             string;
     status:           boolean;
