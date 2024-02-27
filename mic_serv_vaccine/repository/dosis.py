@@ -72,8 +72,7 @@ def get_dosis_ByVaccine(vacinne_id):
 
 def update_dosis_repo(id, data):
     if validar_object_id(id):
-        # La cadena es un ObjectId válido
-        # Realiza las operaciones necesarias
+ 
         return mongo.db.dosis.update_one({"_id":{'$eq': ObjectId(id)}}, {"$set": data})
     else:
         # Maneja el error o muestra un mensaje de error
@@ -110,7 +109,7 @@ def isValidBddosisUpdate(id, data):
     query = {'name': name, '_id': {'$ne': ObjectId(id)}}
     dosis = find_one_repo(query)
     if dosis:
-        return {"resp":False,
+        return {"resp":True,
                 "name":"El nombre ya existe en bd"}
     
     return {"resp":True}

@@ -296,7 +296,6 @@ export const useApplyVaccines = () => {
       ios: configfb,
       android: configfb,
     });
-   console.log('aqui vamos!!!---------');
     RNFetchBlob.config(configOptions || {})
       .fetch('GET', `${baseURL}/reporte`, {'Cache-Control': 'no-store' })
       .then(res => {
@@ -354,7 +353,7 @@ export const useApplyVaccines = () => {
 
   const getPermission = async () => {
     if (Platform.OS === 'ios') {
-      actualDownload();
+              actualDownload();
     } else {
       try {
         const granted = await hasAndroidPermission();
@@ -390,6 +389,7 @@ export const useApplyVaccines = () => {
   const exportVaccineAppliedByDependent = async (token:string) => {
     try {
 
+      console.log('excel file open simons, dependent_id = ' + dependent_id);
       getPermission();
     //  const { data } = await vaccinesApi.get(`/reporte`);
      // console.log(data);

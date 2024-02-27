@@ -39,7 +39,7 @@ export const ApplyVaccinesVaccineDetailScreen =  () => {
     <>
                  {  ( isLoading ) ? <LoadingScreen />  :
                           <>
-                                    <FlatList
+                             <FlatList
                                 data={vaccineuniqueFromTableData}
                                 keyExtractor={() => {
                                   keyCounter++;

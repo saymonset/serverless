@@ -15,6 +15,8 @@ import { ApplyVaccineByDependentListComponent } from '../components/ApplyVaccine
 import { ApplyVaccinesDetailScreen } from './ApplyVaccinesDetailScreen';
 import { ApplyVaccinesVaccineDetailScreen } from './ApplyVaccinesVaccineDetailScreen';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { BackePageComponente } from '../components/BackePageComponente';
+import { Exportar } from '../components/Exportar';
 
 
 
@@ -22,9 +24,10 @@ const screenWidth = Dimensions.get("window").width;
 
 export const ApplyVaccineConsultaScreen =  () => {
          
-  let { loadVaccineAppliedByDependent, dependent_id,  isLoading,
-              isConsultVaccineForDosis,
-              onLoadbyDosisOff } = useApplyVaccines();
+            let { loadVaccineAppliedByDependent, dependent_id,  isLoading,
+                        isConsultVaccineForDosis,
+                        onLoadbyDosisOff } = useApplyVaccines();
+
             const { top } = useSafeAreaInsets();
             const navigation = useNavigation();
 
@@ -65,9 +68,6 @@ export const ApplyVaccineConsultaScreen =  () => {
                      flex:1, 
                      marginRight: 0,
                      backgroundColor:'white'}}>
-                  
-
-                
 
                  <View style={{
                     flexDirection: 'row',
@@ -80,7 +80,11 @@ export const ApplyVaccineConsultaScreen =  () => {
                     <TouchableOpacity onPress={() => onBack()} style={{ marginTop: 0, marginRight:320 }}>
                       <Ionicons name="arrow-back-circle-outline" size={40} color="black" />
                     </TouchableOpacity>
-                  </View>       
+                    <Exportar></Exportar>
+                  </View>   
+
+                
+           
                  {  ( isLoading ) ? <LoadingScreen /> :
                 <>
                    

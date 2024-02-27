@@ -65,6 +65,24 @@ def create_apply_vaccine_service(data):
 
 
 def get_applyVaccinesList_service(limite, desde, query):
+     
+
+    result = get_applyVaccinesListWithoutJSOn_service(limite, desde, query)
+    
+    #result = json_util.dumps(data)
+    total = get_applyVaccine_counts_repo(query)
+    diccionario = {
+        'total': total,
+        'limite':limite,
+        'desde':desde,
+        'apply_vaccines': json.loads(result),
+        "statusCode": 201,
+         "resp":True,
+    }
+    return jsonify((diccionario))
+
+#Sin llevarlo a JSON
+def get_applyVaccinesListWithoutJSOn_service(limite, desde, query):
     limite = int(limite)
     desde = int(desde)
     #El query es el dependent
@@ -93,17 +111,7 @@ def get_applyVaccinesList_service(limite, desde, query):
 
     result = json_util.dumps(new_data)
     
-    #result = json_util.dumps(data)
-    total = get_applyVaccine_counts_repo(query)
-    diccionario = {
-        'total': total,
-        'limite':limite,
-        'desde':desde,
-        'apply_vaccines': json.loads(result),
-        "statusCode": 201,
-         "resp":True,
-    }
-    return jsonify((diccionario))
+    return result    
 
  
 

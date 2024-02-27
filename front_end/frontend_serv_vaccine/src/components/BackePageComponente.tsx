@@ -24,13 +24,11 @@ export const BackePageComponente = ({ navigation, page, title1="", title2="" }: 
 
   const onBack = async () => {
     Keyboard.dismiss();
-    navigation ?  navigation.replace(page) : navigationAux.navigate(page);
+    navigation ?  navigation.replace(page) : navigationAux.navigate(page as never);
    
   };
 
-  const onExportar = async () => {
-     await exportVaccineAppliedByDependent(token);
-  }
+
 
   return (
     
@@ -45,9 +43,7 @@ export const BackePageComponente = ({ navigation, page, title1="", title2="" }: 
       </TouchableOpacity>
       <Text style={{marginTop:10}}> { title1 }</Text>
       
-      <TouchableOpacity onPress={() => onExportar()} style={{ marginTop: 0 }}>
-          <Text style={{marginTop:10}}> { title2  }</Text>
-      </TouchableOpacity>
+   
     </View>
   );
 };

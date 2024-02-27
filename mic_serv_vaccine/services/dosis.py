@@ -19,11 +19,16 @@ def create_dosis_service(data):
     vacinne_id = data.get("vacinne_id")
     name = data.get("name")
     age_frequency = data.get("age_frequency", None)
+    rowReporte = data.get("rowReporte", None)
+    columnReporte = data.get("columnReporte", None)
     status = data.get("status", True)
     if vacinne_id:
          # Crea un nuevo documento de usuario
         dosisModels = DosisModels(name=name, vacinne_id=vacinne_id, 
-                                       age_frequency=age_frequency, status=status)
+                                       age_frequency=age_frequency, 
+                                       rowReporte= rowReporte,
+                                       columnReporte = columnReporte,
+                                       status=status)
         
         response = crear_dosis_repo(dosisModels)
 
@@ -72,8 +77,20 @@ def get_dosiss_list_service(limite, desde, query):
 
 
 def get_dosis_service(id):
-     #Este metodo trabaja de manera cruda antes de convertirlo application/json para envirlo l client html
-    return Response(json_util.dumps(get_dosis_service_without_application_json(id)), mimetype="application/json")
+    dosis = get_dosis_repo(id)
+    if dosis is None:
+        return {
+            "error": True,
+            "resp": False,
+            "vaccine":None,
+            "TypeError": 'dosisIdNotExist',
+            "statusCode": "dosisIdNotExist",
+            "ValueError": "dosisIdNotExist",
+            "message": "No hay dosis para el id {}".format(id)
+        }
+    else:
+        return Response(json_util.dumps(get_dosis_service_without_application_json(id)), mimetype="application/json")
+
 
 def get_dosis_service_without_application_json(dosisId):
     #Obtengo la dosis con el id
@@ -81,6 +98,7 @@ def get_dosis_service_without_application_json(dosisId):
     result = json_util.dumps(data)
     # Obtengo la dosis para agregarle mas datos al diccionario
     parsed_data = json.loads(result)
+   
 
     #La parse_data es la dosis y de hay obtengo la vacuna
     vaccine_id = parsed_data['vacinne_id']
@@ -96,6 +114,7 @@ def get_dosis_service_without_application_json(dosisId):
     parsed_data['vaccine'] = parsed_data_vac
     del parsed_data['vacinne_id']  # Eliminar el campo dosis_id del resultado
 
+ 
     return parsed_data
 
 
@@ -133,7 +152,7 @@ def update_dosis_service(id, data):
                 "resp":True,
                 "TypeError": id,
                 "statusCode": "uptdateSuccess",
-                "ValueError": "La dosis fue actualizada correctamente" ,
+                "ValueError": "" ,
                 "message": "La dosis fue actualizada correctamente" 
          }
         else:

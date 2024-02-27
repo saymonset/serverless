@@ -4,10 +4,14 @@ class DosisModels:
     def __init__(self, vacinne_id:str, 
                        name:str,  
                        age_frequency:str,  
-                       status:bool):
+                       status:bool,
+                       rowReporte:str,
+                       columnReporte:str):
         self.vacinne_id = vacinne_id
         self.name = name
         self.age_frequency = age_frequency
         self.status = status
+        self.rowReporte = rowReporte
+        self.columReporte = columnReporte
  
 

@@ -31,21 +31,6 @@ export const SearchInputComponent = (  {  onDebounce, style, goPage = ""}:Props)
         ...styles.container,
         ...style as any
         }}>
-        <View style = {styles.goBack} >
-            {/**  Boton regreso */}
-
-            
-          
-          {/* Para Buscar y EXPORTAR */}
-            <BackePageComponente 
-                        page = {goPage}
-                        title1='Vacunación'
-                        title2='Exportar'
-                        />
-          
-            
-           
-        </View>    
             
         <View style={styles.textBackground}>
             <TextInput

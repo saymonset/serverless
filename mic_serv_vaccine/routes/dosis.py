@@ -16,7 +16,9 @@ ns_dosis = Namespace('dosis', 'dosis related endpoints')
 model = ns_dosis.model('dosis', {
     'name': fields.String(required=True, description='Name of dosis'),
     'vacinne_id': fields.String(required=True, description='vacinne_id of dosis'),
-    'age_frequency': fields.String(required=True, description='age_frequency of dosis')
+    'age_frequency': fields.String(required=True, description='age_frequency of dosis'),
+    'rowReporte': fields.String(required=True, description='Row report of excel'),
+    'columReporte': fields.String(required=True, description='Column report of excel'),
 })
 
 
