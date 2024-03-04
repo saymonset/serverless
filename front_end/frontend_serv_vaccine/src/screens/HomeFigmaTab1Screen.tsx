@@ -11,6 +11,7 @@ export const HomeFigmaTab1Screen = () => {
   const {  getGeneroRaltionSchipLoads } = useContext(AuthContext)
   useEffect(() => {
   
+        // Cargamos En el contexto el select box para seleccionar los parientes: (Hermano, Tio, ..etc)
         getGeneroRaltionSchipLoads();
   }, [])
   
@@ -19,7 +20,7 @@ export const HomeFigmaTab1Screen = () => {
     <View style={styles.container}>
       <View style={[styles.card, { marginTop: 10, marginBottom: (Platform.OS==='ios') ? 40 : 0 }]}>
         {/* ` En CardsFigmaScreen aparece la tarjeta de (Consultas, Vacunacion, Embarazo, Patologias ) .` */}
-           <CardsFigmaScreen/>
+        <CardsFigmaScreen/>
       </View>
       <View style={[styles.card, { marginTop: 0, marginBottom: 0 }]}>
          {/* ` En NextAppointmentsScreen aparece PROXIMAS CITAS */}

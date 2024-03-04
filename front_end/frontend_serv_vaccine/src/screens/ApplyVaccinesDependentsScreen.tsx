@@ -12,6 +12,7 @@ import { SearchInputComponent } from '../components/SearchInputComponent';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useApplyVaccines } from '../hooks/useApplyVaccines';
 import { useLogin } from '../hooks/useLogin';
+import { BackePageComponente } from '../components/BackePageComponente';
 
 
 
@@ -107,6 +108,9 @@ export const ApplyVaccinesDependentsScreen =  () => {
                 }, [])
   return (
     <View style={styles.container}>
+                 
+           {/**  Boton regreso */}
+           <BackePageComponente  page="HomeFigmaTabRootScreen" />
     <View style={[styles.card, { marginTop: 10, marginBottom: (Platform.OS==='ios') ? 40 : 0 }]}>
        <View style = {{ ... styles.globalMargin,
                      alignItems:'center',
