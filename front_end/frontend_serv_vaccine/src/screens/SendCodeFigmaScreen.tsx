@@ -10,6 +10,7 @@ import { SendCodeFigmaComponent } from '../components/SendCodeFigmaComponent';
 import { removeErrorSmsThunks } from '../store/slices/sendSms/sendSmsThunks';
 import {  removeErrorThunks } from '../store/slices/register/index';
 import { ModalMessageComponent } from '../components/ModalMessageComponent';
+import { ApplyVaccineByDependentListComponent } from '../components/ApplyVaccineByDependentListComponent';
 
 interface Props extends StackScreenProps<any, any> {}
 
@@ -106,8 +107,10 @@ export const SendCodeFigmaScreen = ({ navigation }: Props) => {
 
                                                                                 
                              
-                  
-                                              
+{/*                   
+                                En el useEffcet de esta pantalla se monitorea la resp que viene del store  
+                                actualizado por <SendCodeFigmaComponent> </SendCodeFigmaComponent>    y  se todo es
+                                 ApplyVaccineByDependentListComponentse navega a    SeguridadFigmaScreen       */}
                                 <SendCodeFigmaComponent navigation = { navigation }></SendCodeFigmaComponent>
 
                                 { isVisible && (<ModalMessageComponent getValor = { () => cerrarModal() }

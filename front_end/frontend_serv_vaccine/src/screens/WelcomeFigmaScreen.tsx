@@ -1,10 +1,6 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import React, { useContext } from 'react'
-import { Alert, Image, Keyboard, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useForm } from '../hooks/useForm';
-import { WhiteLogo } from '../components/WhiteLogo';
+import {  Image, KeyboardAvoidingView, Platform, Text, TouchableOpacity, View } from 'react-native';
 import { BackgroundFigma } from '../components/BackgroundFigma';
 import { HeaderTitleFigma } from '../components/HeaderTitleFigmaComponent';
 import { stylesFigma } from '../theme/appFigmaTheme';

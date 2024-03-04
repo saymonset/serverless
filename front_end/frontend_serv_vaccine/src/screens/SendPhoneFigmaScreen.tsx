@@ -98,6 +98,9 @@ export const SendPhoneFigmaScreen = ({ navigation }: Props) => {
                                                                                           type='small'
                                                                                           ></HeaderTitleFigma>
                   
+                                {/* Una vez que mande el phone, se actualiza una bandera en el store isSendCode y 
+                                esta en true  te redirije a colocar el codigo envisdo 
+                            en  la pantala SendPhoneFigmaScreen en cerrarModal */}
                                 <SendPhonFigmaComponent navigation = { navigation }></SendPhonFigmaComponent>
 
                                

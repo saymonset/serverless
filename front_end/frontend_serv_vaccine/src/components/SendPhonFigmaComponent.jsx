@@ -1,21 +1,13 @@
-import React, {  useState, useContext, useEffect, useRef} from 'react';
+import React, {  useState, useRef} from 'react';
 import { Text, View, TextInput, Platform,  TouchableOpacity, Keyboard , Alert} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { StackScreenProps } from '@react-navigation/stack';
-import {   store } from '../store' 
 import {  sendSmsThunks } from '../store/slices/sendSms/index' ;
 import { stylesFigma } from '../theme/sendPhoneFigmaTheme';
 import { HeaderTitleFigma } from '../components/HeaderTitleFigmaComponent';
 
 import { LoadingScreen } from '../screens/LoadingScreen';
 
-
-// interface Props extends StackScreenProps<any, any> {}
-
-interface Props extends StackScreenProps<any, any> {
-    //onSubmit: (string) => void; // Define the submit function type
-  }
-
+ 
 
 export const  SendPhonFigmaComponent = ({ navigation }) => {
    
@@ -47,6 +39,9 @@ export const  SendPhonFigmaComponent = ({ navigation }) => {
       if( codValue.trim().length <= 1) return;
       if( inputValue.trim().length <= 1) return;
       let phone = codValue.trim()+inputValue.trim()
+         {/* Una vez que mande el phone, se actualiza una bandera en el store isSendCode y 
+                                esta en true  te redirije a colocar el codigo envisdo 
+                            en  la pantala SendPhoneFigmaScreen en cerrarModal */}
       await dispatch(sendSmsThunks( phone ));
       setInputValue('');
       setCodValue( '' );

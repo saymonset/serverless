@@ -38,12 +38,11 @@ export const  SendCodeFigmaComponent = ({ navigation }) => {
   return (
       <>
 
-        <View  style={{ //backgroundColor:'green', 
+        <View  style={{  
                        flex:1, 
                        flexDirection:'column', 
                        justifyContent:'space-between'}}>
                                         <View style={{
-                                             // backgroundColor:'yellow', 
                                             flex:1}}>
                                             <TextInput 
                                                     placeholder="123456 |"
@@ -66,7 +65,6 @@ export const  SendCodeFigmaComponent = ({ navigation }) => {
                                         <View style={ {
                                                      marginTop:0,
                                                      paddingBottom:30,
-                                                    // backgroundColor:'blue', 
                                                      justifyContent:'flex-start',
                                                      alignItems:'center',
                                                      flex:1}}> 
