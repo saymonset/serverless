@@ -1,26 +1,16 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect } from 'react'
-import {   Button, Dimensions, FlatList, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import Icon from 'react-native-vector-icons/Ionicons';
-import {  LIMITE_PAGE, NextPrevioPage } from '../interfaces';
-import { comunStylesFigma } from '../theme/comunFigmaTheme';
-import { HeaderTitleFigma } from '../components/HeaderTitleFigmaComponent';
-import { stylesFigma } from '../theme/appFigmaTheme';
+import {     Platform, StyleSheet, TouchableOpacity, View } from 'react-native'
+import {  LIMITE_PAGE } from '../interfaces';
 import { LoadingScreen } from './LoadingScreen';
-import { SearchInputComponent } from '../components/SearchInputComponent';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useApplyVaccines } from '../hooks/useApplyVaccines';
 import { useLogin } from '../hooks/useLogin';
-import { ApplyVaccineByDependentListComponent } from '../components/ApplyVaccineByDependentListComponent';
 import { ApplyVaccinesDetailScreen } from './ApplyVaccinesDetailScreen';
 import { ApplyVaccinesVaccineDetailScreen } from './ApplyVaccinesVaccineDetailScreen';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { BackePageComponente } from '../components/BackePageComponente';
 import { Exportar } from '../components/Exportar';
 
 
-
-const screenWidth = Dimensions.get("window").width;
 
 export const ApplyVaccineConsultaScreen =  () => {
          
@@ -28,10 +18,7 @@ export const ApplyVaccineConsultaScreen =  () => {
                         isConsultVaccineForDosis,
                         onLoadbyDosisOff } = useApplyVaccines();
 
-            const { top } = useSafeAreaInsets();
             const navigation = useNavigation();
-
-            let keyCounter = 0;
 
             const { token } = useLogin();
 
@@ -55,7 +42,7 @@ export const ApplyVaccineConsultaScreen =  () => {
             if (isConsultVaccineForDosis){
               onLoadbyDosisOff();
             }else{
-              navigation.navigate('ApplyVaccinesDependentsScreen' as never)
+              navigation.navigate('ConsultVaccinesDependentsScreen' as never)
             }
            
           }
