@@ -26,6 +26,7 @@ import { ApplyVaccinesDependentsScreen } from '../screens/ApplyVaccinesDependent
 import { ApplyVaccinesAddScreen } from '../screens/ApplyVaccinesAddScreen';
 import { ApplyVaccineConsultaScreen } from '../screens/ApplyVaccineConsultaScreen';
 import { ApplyVaccinesDetailScreen } from '../screens/ApplyVaccinesDetailScreen';
+import { ConsultVaccinesDependentsScreen } from '../screens/ConsultVaccinesDependentsScreen';
  
 
 export type RootStackParams = {
@@ -46,6 +47,7 @@ export type RootStackParams = {
   PerfilesFigmaScreen: undefined;
 
   ApplyVaccinesDependentsScreen: undefined;
+  ConsultVaccinesDependentsScreen: undefined;
   ApplyVaccinesAddScreen: undefined;
   ApplyVaccineConsultaScreen: undefined;
   ApplyVaccinesDetailScreen: undefined;
@@ -95,6 +97,7 @@ export const Navigator = () => {
                <Stack.Screen name="PerfilesFigmaScreen" component={ PerfilesFigmaScreen } />  
 
                <Stack.Screen name="ApplyVaccinesDependentsScreen" component={ ApplyVaccinesDependentsScreen } />  
+               <Stack.Screen name="ConsultVaccinesDependentsScreen" component={ ConsultVaccinesDependentsScreen } />  
                <Stack.Screen name="ApplyVaccinesAddScreen" component={ ApplyVaccinesAddScreen } />  
                <Stack.Screen name="ApplyVaccineConsultaScreen" component={ ApplyVaccineConsultaScreen } />  
                <Stack.Screen name="ApplyVaccinesDetailScreen" component={ ApplyVaccinesDetailScreen } />  

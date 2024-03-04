@@ -18,9 +18,9 @@ import { BackePageComponente } from '../components/BackePageComponente';
 
 const screenWidth = Dimensions.get("window").width;
 
-export const ApplyVaccinesDependentsScreen =  () => {
+export const  ConsultVaccinesDependentsScreen =  () => {
 
-            let { dependentById, isConsultVaccine, isAddApplyVaccine } = useApplyVaccines();
+            let { dependentById, isConsultVaccine } = useApplyVaccines();
             const { top } = useSafeAreaInsets();
             const [ term, setTerm ] = useState('');
             let keyCounter = 0;
@@ -43,7 +43,7 @@ export const ApplyVaccinesDependentsScreen =  () => {
             const applyVaccinePerson = ( id: string)=>{
               // Clocamos el id del dependiente en el store de apply vaccine y la bandera ee ediotar en trrue
                  dependentById(id);
-                 navigation.navigate( 'ApplyVaccinesAddScreen' as never)
+                     navigation.navigate( 'ApplyVaccineConsultaScreen' as never)
             }
 
           const handlePreviousPage = () => {
@@ -143,7 +143,7 @@ export const ApplyVaccinesDependentsScreen =  () => {
                                                 horizontal={false}
                                                 ItemSeparatorComponent={() => <View style={{ height: 1, backgroundColor: 'lightgray'}} />}
                                                 ListHeaderComponent={  <HeaderTitleFigma 
-                                                title={ 'Aplicar Vacuna' }
+                                                title={isConsultVaccine ? 'Consultar Vacuna' : 'Familiares'}
                                                 marginTop={(Platform.OS === 'ios') ? 140: 140}
                                                 stylesFigma={stylesFigma}
                                                 type='big'

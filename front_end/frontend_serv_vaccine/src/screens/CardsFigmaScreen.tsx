@@ -64,7 +64,7 @@ const PreviewLayout = ({
           case 'Consultas':
             // Este metodo: Segun la bandera que se coloca en el store me condiciona este componentre: ApplyVaccinesDependentsScreen, ApplyVaccinesComponent
             onConsultVaccine();
-            navigation.navigate( 'ApplyVaccinesDependentsScreen' as never)
+            navigation.navigate( 'ConsultVaccinesDependentsScreen' as never)
             break;
 
           case 'Patologías':
