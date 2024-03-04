@@ -44,7 +44,7 @@ export const SendPhoneFigmaScreen = ({ navigation }: Props) => {
 
   const   onClearError = async () => {
     await removeErrorSmsThunks(dispatch);
-    //Borra mensajees de registerScreen
+    //Borra mensajees 
     await removeErrorThunks(dispatch)
    } 
     

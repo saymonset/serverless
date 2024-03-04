@@ -6,10 +6,6 @@ import { PullToRefreshScreen } from '../screens/PullToRefreshScreen';
 import { CustomSectionListScreen } from '../screens/CustomSectionListScreen';
 import { ModalScreen } from '../screens/ModalScreen';
 
-import { LoginScreen } from '../screens/LoginScreen';
-import { RegisterScreen } from '../screens/RegisterScreen';
-
-import { SendSmsScreen } from '../screens/SendSmsScreen';
 import { DependentScreen } from '../screens/DependentScreen';
 import { WelcomeScreen } from '../screens/WelcomeFigmaScreen';
 import { SendPhoneFigmaScreen } from '../screens/SendPhoneFigmaScreen';
@@ -43,9 +39,6 @@ export type RootStackParams = {
   SendCodeFigmaScreen: undefined;
   SeguridadFigmaScreen: undefined;
   RegistrodatosFigmaScreen: undefined;
-  LoginScreen: undefined;
-  SendSmsScreen: undefined;
-  RegisterScreen: undefined;
 
   // Parte privada autenticado
   HomeFigmaTabRootScreen: undefined;
@@ -94,9 +87,6 @@ export const Navigator = () => {
                   <Stack.Screen name="SendCodeFigmaScreen" component={ SendCodeFigmaScreen } />
                   <Stack.Screen name="SeguridadFigmaScreen" component={ SeguridadFigmaScreen } />
                   <Stack.Screen name="RegistrodatosFigmaScreen" component={ RegistrodatosFigmaScreen } /> 
-                  <Stack.Screen name="LoginScreen" component={ LoginScreen } />
-                  <Stack.Screen name="SendSmsScreen" component={ SendSmsScreen } />
-                  <Stack.Screen name="RegisterScreen" component={ RegisterScreen } /> 
             </>)
           : (<>
                {/** Este HomeScreen es el principal que llama el menu de abajo y cards*/}

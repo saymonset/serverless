@@ -62,7 +62,7 @@ const onInputChange = (value) => {
 
       const   onClearError = async () => {
             await removeErrorSmsThunks(dispatch);
-            //Borra mensajees de registerScreen
+            //Borra mensajees 
             await removeErrorThunks(dispatch)
       } 
 

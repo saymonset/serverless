@@ -96,7 +96,7 @@ const onSecurityInputChange = (value) => {
 
   const   onClearError = async () => {
     await removeErrorSmsThunks(dispatch);
-    //Borra mensajees de registerScreen
+    //Borra mensajees 
     await removeErrorSmsThunks(dispatch)
    } 
     
