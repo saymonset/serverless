@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { comunStylesFigma } from '../theme/comunFigmaTheme';
 import { useNavigation } from '@react-navigation/native';
+import { logoutThunks } from '../store/slices/login/loginThunks'
 import {  onIsConsultVaccine, onIsAddApplyVaccine  } from '../store/slices/applyvaccines/applyVaccinesSlice';
 
 interface CardProps {
@@ -16,7 +17,7 @@ interface CardProps {
 export const CardsFigmaScreen = () => {
   const [alignItems, setAlignItems] = useState('Consultas');
 
- 
+
 
   return (
     <PreviewLayout
@@ -82,14 +83,26 @@ const PreviewLayout = ({
         }
   }
   
+  const logout =async () => {
+    
+    await dispatch(logoutThunks());
+}
+
   return (
   <View style={{padding: 5, flex: 1, backgroundColor:'white'}}>
     <View style={{flexDirection:'column'}}>
-      <View style={{alignItems:'flex-end'}}>
-        <View>
-          <Icon name='notifications-outline' size = { 20 } color = { "black" }/>
-        </View>
-      </View>
+
+    <TouchableOpacity
+              
+                onPress={() =>logout()}
+              >
+                <View style={{alignItems:'flex-end'}}>
+                        <View>
+                          <Icon name='arrow-back-circle-outline' size = { 20 } color = { "black" }/>
+                        </View>
+                </View>
+              </TouchableOpacity>
+     
       <View  style={{flexDirection:'row', 
                      alignItems:'center',
                      }}>
