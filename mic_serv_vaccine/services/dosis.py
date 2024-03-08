@@ -19,6 +19,7 @@ def create_dosis_service(data):
     vacinne_id = data.get("vacinne_id")
     name = data.get("name")
     age_frequency = data.get("age_frequency", None)
+    expires_in_days = data.get("expires_in_days", -1)
     rowReporte = data.get("rowReporte", None)
     columnReporte = data.get("columnReporte", None)
     status = data.get("status", True)
@@ -26,6 +27,7 @@ def create_dosis_service(data):
          # Crea un nuevo documento de usuario
         dosisModels = DosisModels(name=name, vacinne_id=vacinne_id, 
                                        age_frequency=age_frequency, 
+                                       expires_in_days= expires_in_days,
                                        rowReporte= rowReporte,
                                        columnReporte = columnReporte,
                                        status=status)
@@ -37,6 +39,7 @@ def create_dosis_service(data):
              "name": name,
              "vacinne_id": vacinne_id,
              "age_frequency": age_frequency,
+             "expires_in_days":expires_in_days,
              "status": True
         }
         return result
@@ -150,7 +153,7 @@ def update_dosis_service(id, data):
             return {
                 "error":False,
                 "resp":True,
-                "TypeError": id,
+                "TypeError": "",
                 "statusCode": "uptdateSuccess",
                 "ValueError": "" ,
                 "message": "La dosis fue actualizada correctamente" 
