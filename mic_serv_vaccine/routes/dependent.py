@@ -133,17 +133,17 @@ class postauxDependentswgger(Resource):
                               "message":"Relationship_id no es una instancia de la clase relationship_id",
                   }
          
-        
-        if 'email' in data and not validar_email(data["email"]):
-           return {           "error":False,
-                              "resp":False,
-                              "statusCode": "badNotValidEmail",
-                              "ValueError": "No es valido el email",
-                              "message":"No es valido el email",
-                  }
+      #   No se valida o se exige mail a los dependent
+      #   if 'email' in data and not validar_email(data["email"]):
+      #      return {           "error":False,
+      #                         "resp":False,
+      #                         "statusCode": "badNotValidEmail",
+      #                         "ValueError": "No es valido el email",
+      #                         "message":"No es valido el email",
+      #             }
          
-        result = isValidBdEmail(data)
-        if not bool(result["resp"]):  return result 
+      #   result = isValidBdEmail(data)
+      #   if not bool(result["resp"]):  return result 
            #Validamos CI
         result = checkUserDependent({"name": data["name"], "lastname": data["lastname"]
                                      ,'isUser': False

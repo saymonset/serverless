@@ -66,7 +66,8 @@ export const WelcomeScreen = ({ navigation }: Props) => {
                            
                            <View style={ {flex:1, marginBottom:40 }}> 
                             
-                              {/* Boton login */}
+                            
+                                   {/* Crear una nueva cuenta */}
                               <View style={ {...stylesFigma.buttonContainer, top:30} }>
                                   <TouchableOpacity
                                       activeOpacity={ 0.8 }
@@ -76,7 +77,7 @@ export const WelcomeScreen = ({ navigation }: Props) => {
                                       <Text style={ stylesFigma.buttonText } >Comienza ahora</Text>
                                   </TouchableOpacity>
                               </View>
-                              {/* Crear una nueva cuenta */}
+                           {/* Boton login */}
                               <View style={ stylesFigma.buttonContainer  }>
                                   <TouchableOpacity
                                       activeOpacity={ 0.8 }

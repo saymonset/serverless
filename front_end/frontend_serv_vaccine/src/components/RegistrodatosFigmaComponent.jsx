@@ -80,12 +80,13 @@ export const RegistrodatosFigmaComponent = ( { onLogin, onRegisterScreen }: Prop
                     let register: Register = { ...obj  };
                     await dispatch(registerThunks( register));
                 
-                    {/** Nos vamos a la pantalla principal */}
+                    {/** Ya lo registramos y Nos vamos a la pantalla principal con este metodo que se ejcuta en la pantalla anterior */}
                     onRegisterScreen();
   }
 
         const onDateSelection = (date:Date)=>{
-            onChange(date, 'birth')
+            // Serialize the date object to a string con date.toISOString()
+            onChange(date.toISOString(), 'birth')
         }
 
       
@@ -105,96 +106,12 @@ export const RegistrodatosFigmaComponent = ( { onLogin, onRegisterScreen }: Prop
                             <SafeAreaView 
                             style={[comunStylesFigma.container]}>
                                                 <View style={[comunStylesFigma.column]}>
-                                                    <View style = {{ marginVertical:20}}>
-                                                        <Text style={ comunStylesFigma.label }>Nombre:<Text style={{ color: 'skyblue' }}> *</Text></Text>
-                                                        <TextInput 
-                                                            placeholder="Enter your name:"
-                                                            placeholderTextColor="rgba(0,0,0,0.4)"
-                                                            underlineColorAndroid="rgba(0,0,0,0.4)"
-                                                            style={[ 
-                                                                comunStylesFigma.inputField,
-                                                                ( Platform.OS === 'ios' ) && comunStylesFigma.inputFieldIOS
-                                                            ]}
-                                                            selectionColor="white"
-
-                                                            onChangeText={ (value) => onChange(value, 'name') }
-                                                            value={ name }
-                                                            onSubmitEditing={ onRegister }
-
-                                                            autoCapitalize="words"
-                                                            autoCorrect={ false }
-                                                        />
-                                                    </View> 
-                                                    <View style = {{ marginVertical:20}}>
-                                                        <Text style={ comunStylesFigma.label }>Apellido:<Text style={{ color: 'skyblue' }}> *</Text></Text>
-                                                        <TextInput 
-                                                            placeholder="Enter your lastname:"
-                                                            placeholderTextColor="rgba(0,0,0,0.4)"
-                                                            underlineColorAndroid="rgba(0,0,0,0.4)"
-                                                            style={[ 
-                                                                comunStylesFigma.inputField,
-                                                                ( Platform.OS === 'ios' ) && comunStylesFigma.inputFieldIOS
-                                                            ]}
-                                                            selectionColor="white"
-
-                                                            onChangeText={ (value) => onChange(value, 'lastname') }
-                                                            value={ lastname }
-                                                            onSubmitEditing={ onRegister }
-
-                                                            autoCapitalize="words"
-                                                            autoCorrect={ false }
-                                                        />
-                                                    </View> 
-                                                    <View style = {{ marginVertical:20}}>
-                                                                <Text style={ comunStylesFigma.label }>Sexo:<Text style={{ color: 'skyblue' }}> *</Text></Text>
-                                                                <UseGenderComponent onPress={ onSelectTrigger }/> 
-                                                    </View>  
-                                                    <View style = {{ marginVertical:20}}>
-                                                                <Text style={ comunStylesFigma.label }>Cedula:<Text style={{ color: 'skyblue' }}> *</Text></Text>
-                                                                <TextInput 
-                                                                    placeholder="V- 12345678"
-                                                                    placeholderTextColor="rgba(0,0,0,0.4)"
-                                                                    underlineColorAndroid="rgba(0,0,0,0.4)"
-                                                                    style={[ 
-                                                                        comunStylesFigma.inputField,
-                                                                        ( Platform.OS === 'ios' ) && comunStylesFigma.inputFieldIOS
-                                                                    ]}
-                                                                    selectionColor="white"
-
-                                                                    onChangeText={ (value) => onChange(value, 'ci') }
-                                                                    value={ ci }
-                                                                    onSubmitEditing={ onRegister }
-
-                                                                    autoCapitalize="words"
-                                                                    autoCorrect={ false }
-                                                                />
-                                                    </View>  
-                                                    <View style = {{ marginVertical:20}}>
-                                                            <Text style={ comunStylesFigma.label }>Dirección de correo electrónico:<Text style={{ color: 'skyblue' }}> *</Text></Text>
-                                                            <TextInput 
-                                                                placeholder="Enter your email:"
-                                                                placeholderTextColor="rgba(0,0,0,0.4)"
-                                                                keyboardType="email-address"
-                                                                underlineColorAndroid="rgba(0,0,0,0.4)"
-                                                                style={[ 
-                                                                    comunStylesFigma.inputField,
-                                                                    ( Platform.OS === 'ios' ) && comunStylesFigma.inputFieldIOS
-                                                                ]}
-                                                                selectionColor="white"
-
-                                                                onChangeText={ (value) => onChange(value, 'email') }
-                                                                value={ email }
-                                                                onSubmitEditing={ onRegister }
-
-
-                                                                autoCapitalize="none"
-                                                                autoCorrect={ false }
-                                                            />
-                                                    </View>
+                                                    {/* FECHA DE NACIMIENTO */}
                                                     <View style = {{ marginTop:20}}>
                                                                 <Text style={ comunStylesFigma.label }>Fecha de nacimiento:</Text>
                                                                 <CalendarFigmaComponent onDateSelection= {(value) => onDateSelection(value)}/>
                                                     </View>
+                                                    {/* ESTADO */}
                                                     <View style = {{ marginTop:10}}>
                                                                 <Text  style={[ 
                                                                         comunStylesFigma.inputField,
@@ -220,6 +137,7 @@ export const RegistrodatosFigmaComponent = ( { onLogin, onRegisterScreen }: Prop
                                                                 </TouchableOpacity>
 
                                                     </View>  
+                                                     {/* MUNICIPIO */}
                                                     { estado && ( <View style = {{ marginTop:10}}>
                                                                             <Text  style={[ 
                                                                                     comunStylesFigma.inputField,
@@ -244,6 +162,98 @@ export const RegistrodatosFigmaComponent = ( { onLogin, onRegisterScreen }: Prop
                                                                                 <Text style={{ color: 'white' }}> Municipio</Text>
                                                                                 </TouchableOpacity>
                                                      </View>    )}
+                                                     {/* NOMBRE */}
+                                                    <View style = {{ marginVertical:20}}>
+                                                        <Text style={ comunStylesFigma.label }>Nombre:<Text style={{ color: 'skyblue' }}> *</Text></Text>
+                                                        <TextInput 
+                                                            placeholder="Enter your name:"
+                                                            placeholderTextColor="rgba(0,0,0,0.4)"
+                                                            underlineColorAndroid="rgba(0,0,0,0.4)"
+                                                            style={[ 
+                                                                comunStylesFigma.inputField,
+                                                                ( Platform.OS === 'ios' ) && comunStylesFigma.inputFieldIOS
+                                                            ]}
+                                                            selectionColor="white"
+
+                                                            onChangeText={ (value) => onChange(value, 'name') }
+                                                            value={ name }
+                                                          //  onSubmitEditing={ onRegister }
+
+                                                            autoCapitalize="words"
+                                                            autoCorrect={ false }
+                                                        />
+                                                    </View> 
+                                                     {/* APELLIDO */}
+                                                    <View style = {{ marginVertical:20}}>
+                                                        <Text style={ comunStylesFigma.label }>Apellido:<Text style={{ color: 'skyblue' }}> *</Text></Text>
+                                                        <TextInput 
+                                                            placeholder="Enter your lastname:"
+                                                            placeholderTextColor="rgba(0,0,0,0.4)"
+                                                            underlineColorAndroid="rgba(0,0,0,0.4)"
+                                                            style={[ 
+                                                                comunStylesFigma.inputField,
+                                                                ( Platform.OS === 'ios' ) && comunStylesFigma.inputFieldIOS
+                                                            ]}
+                                                            selectionColor="white"
+
+                                                            onChangeText={ (value) => onChange(value, 'lastname') }
+                                                            value={ lastname }
+                                                           // onSubmitEditing={ onRegister }
+
+                                                            autoCapitalize="words"
+                                                            autoCorrect={ false }
+                                                        />
+                                                    </View> 
+                                                     {/* SEXO */}
+                                                    <View style = {{ marginVertical:20}}>
+                                                                <Text style={ comunStylesFigma.label }>Sexo:<Text style={{ color: 'skyblue' }}> *</Text></Text>
+                                                                <UseGenderComponent onPress={ onSelectTrigger }/> 
+                                                    </View>  
+                                                     {/* CEDULA */}
+                                                    <View style = {{ marginVertical:20}}>
+                                                                <Text style={ comunStylesFigma.label }>Cedula:<Text style={{ color: 'skyblue' }}> *</Text></Text>
+                                                                <TextInput 
+                                                                    placeholder="V- 12345678"
+                                                                    placeholderTextColor="rgba(0,0,0,0.4)"
+                                                                    underlineColorAndroid="rgba(0,0,0,0.4)"
+                                                                    style={[ 
+                                                                        comunStylesFigma.inputField,
+                                                                        ( Platform.OS === 'ios' ) && comunStylesFigma.inputFieldIOS
+                                                                    ]}
+                                                                    selectionColor="white"
+
+                                                                    onChangeText={ (value) => onChange(value, 'ci') }
+                                                                    value={ ci }
+                                                                   //onSubmitEditing={ onRegister }
+
+                                                                    autoCapitalize="words"
+                                                                    autoCorrect={ false }
+                                                                />
+                                                    </View>  
+                                                     {/* EMAIL */}
+                                                    <View style = {{ marginVertical:20}}>
+                                                            <Text style={ comunStylesFigma.label }>Dirección de correo electrónico:<Text style={{ color: 'skyblue' }}> *</Text></Text>
+                                                            <TextInput 
+                                                                placeholder="Enter your email:"
+                                                                placeholderTextColor="rgba(0,0,0,0.4)"
+                                                                keyboardType="email-address"
+                                                                underlineColorAndroid="rgba(0,0,0,0.4)"
+                                                                style={[ 
+                                                                    comunStylesFigma.inputField,
+                                                                    ( Platform.OS === 'ios' ) && comunStylesFigma.inputFieldIOS
+                                                                ]}
+                                                                selectionColor="white"
+
+                                                                onChangeText={ (value) => onChange(value, 'email') }
+                                                                value={ email }
+                                                               // onSubmitEditing={ onRegister }
+
+
+                                                                autoCapitalize="none"
+                                                                autoCorrect={ false }
+                                                            />
+                                                    </View>
+                                                    
                                                       {/* Crear una nueva cuenta */}
                                         <View style={{...comunStylesFigma.buttonContainer,  alignItems:'center', marginTop:10, marginBottom:50}  }>
                                             <TouchableOpacity 

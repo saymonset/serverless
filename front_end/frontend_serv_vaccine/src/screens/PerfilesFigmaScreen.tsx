@@ -176,7 +176,7 @@ export const PerfilesFigmaScreen =  () => {
                       position: 'absolute',
                       zIndex: 999,
                       width: screenWidth - 40,
-                      top: (Platform.OS === 'ios') ? top : top + 30
+                      top: (Platform.OS === 'ios') ? top +30 : top + 50
                     }}   ></SearchInputComponent>
                     <FlatList
                             data={dataFiltred}

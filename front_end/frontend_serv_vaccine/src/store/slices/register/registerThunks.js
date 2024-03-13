@@ -16,12 +16,13 @@ export const registerThunks = ( register:Register ): AnyAction  => {
           if (token){
             await AsyncStorage.setItem('token', token ); 
           }
+          console.log({register})
           // TODO: realizar peticion http
            const {data} = await vaccinesApi.post(`/users/p`,{ ...register  } );
 
           const { statusCode, body, message, resp, } = data;
+       
           if (statusCode == 401 || !resp) {
-              dispatch( addMessage(enviarMensajePorStatusCode(statusCode)))
               return 
           }
           const payload: Register = {

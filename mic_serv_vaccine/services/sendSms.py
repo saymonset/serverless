@@ -19,28 +19,36 @@ from repository.user import   crear_users_repo, update_status_user_repo, get_pho
 
 
 def sendSms_service(data):
+    #Tomamos el telefono que se envia
     phone = data.get("phone")
     if phone:
         rand_num = random.randint(99999,999999)
         user =  get_phone_in_users_repo(phone)
+        print('------------------1------------------------')
         if user:
+            #Si no toiene status el usuqariop, se coloca como unverified su status
             if 'status' not in user:
+                print('------------------2------------------------')
                 data = {'status': 'unverified'}
                 update_status_user_repo(user['_id'], data)
                 user =  get_phone_in_users_repo(phone)
+             #Si tiene como statu verified, se le manda de nuevo su codigo de tlf   
             if user['status'] == 'unverified':
-
+                print('------------------3------------------------')
                 result = sendSms_phone(phone, rand_num)
                 if not bool(result["resp"]):  return result 
-                
+                print('------------------4------------------------')
                 data = {'last_code': rand_num}
                 update_status_user_repo(user['_id'], data)
                 response = {
                     "resp":True,
                     'statusCode': 201,
+                    'last_code':rand_num,
                     'message': "Code was sent successfully."
                 }
             else:
+                    #El usuqario pide que se le reenvie erl codigo nuevo porque ya esta verificado
+                    print('------------------5------------------------')
                     result = sendSms_phone(phone, rand_num)
                     if not bool(result["resp"]):  return result 
                     
@@ -49,17 +57,12 @@ def sendSms_service(data):
                     response = {
                         "resp":True,
                         'statusCode': 201,
+                         'last_code':rand_num,
                         'message': "Code was sent successfully."
                     }
-                # result = sendSms_phone(phone, rand_num)
-                # response = {
-                #     "resp":True,
-                #     'statusCode': 201,
-                #     'message': "Phone number is already registered."
-                # }
-        
         else:    
-
+            print('------------------6------------------------')
+            #Es primera ves refgistradose en el telefono
             result = sendSms_phone(phone, rand_num)
             if not bool(result["resp"]):  return result 
             
@@ -73,11 +76,13 @@ def sendSms_service(data):
             #users.insert_one(user).inserted_id
             response = {
                 "resp":True,
+                 'last_code':rand_num,
                 'statusCode': 201,
                 'message': 'Code was sent successfully.'
             }
         return response
     else:
+        print('------------------7------------------------')
         return "Invalid payload", 400
 
 

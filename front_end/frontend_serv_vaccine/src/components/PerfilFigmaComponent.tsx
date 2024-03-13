@@ -7,7 +7,8 @@ import { Dependent } from '../interfaces/dependent-interfaces';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDependent } from '../hooks/useDependent';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { useNavigation } from '@react-navigation/native';
+import { type NavigationProp, useNavigation } from '@react-navigation/native';
+import { type RootStackParams } from '../navigator/Navigator';
  
 
 
@@ -20,27 +21,25 @@ interface Props {
 export const PerfilFigmaComponent = ( { obj, deleteRow } : Props) => {
 
   const dispatch = useDispatch();
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp<RootStackParams>>();
   const {  usuario:{ token }  } = useSelector((state: store) => state.loginStore);
 
-  //const iniForm =  {name:'', lastname:'', phone:'', email:'', birth: new Date(), gender_id:'', status:true}
   const {  dependentById, editFalseDependent } = useDependent();
 
   let { isEdit } = useSelector( (state: store ) => state.dependentStore);
   
    const edit = async (dependent: Dependent) => {
-    // await  updateRowFigma(dependent._id+'', token);
-     // useDependent();
      const id = dependent._id+'';
+     /* Actaulizamos el store y colocamos v en true. Como cambio se dispara el useEffect */
      dependentById( id, token );
    }
 
    useEffect(() => {
     // Actualizar el estado del formulario usando el método 'onChange'
-    
      if (isEdit){
         editFalseDependent();
-         navigation.navigate( 'PerfilFigmaAddScreen' as never);
+         navigation.navigate( 'PerfilFigmaAddScreen', {});
+         //navigation.navigate( 'PerfilFigmaAddScreen' );
      }
    }, [isEdit])
    
@@ -48,6 +47,7 @@ export const PerfilFigmaComponent = ( { obj, deleteRow } : Props) => {
   return (
   <>
      <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
+          {/* //En este boton lo editamos */}
            <TouchableOpacity
                 onPress={ () => edit(obj) }
                 activeOpacity={0.5}>

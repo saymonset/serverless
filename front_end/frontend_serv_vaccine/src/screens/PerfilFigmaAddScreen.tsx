@@ -147,7 +147,8 @@ export const PerfilFigmaAddScreen = () => {
   }
 
   const onDateSelection = (date: Date) => {
-    onChange(date, 'birth')
+      // Serialize the date object to a string con date.toISOString()
+      onChange(date.toISOString(), 'birth')
   }
 
   return (
