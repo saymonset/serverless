@@ -24,9 +24,6 @@ export const SendPhoneFigmaScreen = ({ navigation }: Props) => {
 
     
             const cerrarModal = () => {
-              console.log('-----0-------------')
-              console.log({isSendCode})
-              console.log('-----1-------------')
               setIsVisible(false);
               //Borramos mensajes del thrunk
               onClearError();
@@ -35,7 +32,7 @@ export const SendPhoneFigmaScreen = ({ navigation }: Props) => {
                   navigation.replace('SendCodeFigmaScreen');
               }
               // Aqui si esta el token, regitramos el usuario pidiendo datos
-              if (token){
+              if (token && isSendCode){
                   navigation.replace('RegistrodatosFigmaScreen');
               }
         }

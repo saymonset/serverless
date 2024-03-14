@@ -71,7 +71,26 @@ def delete_user_repo(id):
          return mongo.db.users.delete_one({"_id": ObjectId(id)})
 
 def get_phone_in_users_repo(phone):
-        return mongo.db.users.find_one({"phone": phone})
+        #Buscamos si en la tabla user que es la principal existe el usuario
+        data = mongo.db.users.find_one({"phone": phone})
+        if data is not None:
+            # Chequeamos en la tabla dependent si sta ya registrado como isUser = true
+            resp = checkUserDependent({'user_id': data['_id'], 'isUser': True})
+            #Si ya existe el usuario como depndent tambien y es true su isUser entoncves ya esta registrado
+            if resp is not None:
+                #Respondemos  que existe el usuario
+                return data
+            else:
+                #No existe el usuario en dependent, entoces hay que eliminarlo del pincipal USER para que se vuellva  a crear nuevamente
+                userId = data['_id'];
+                delete_user_repo(userId);
+                return None    
+        else:
+            #No existe el suuario y se crea 
+            return None
+            
+
+       
 
 def get_user_repo_list(limite:int, desde:int):
     query = {'status': {'$in': [True, 'True']}}

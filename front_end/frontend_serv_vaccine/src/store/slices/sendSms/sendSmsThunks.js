@@ -50,8 +50,6 @@ const enviarCodeFirstPrimary = async ( dispatch, phone, ci ) => {
       try {
         let response = await vaccinesApi.post('/sendSms/new', { phone } );
         let {data} = response;
-        console.log('-----------------');
-        console.log({data})
         const {  message, error, resp} = data; 
         if (!message) {
           message = error;
@@ -65,8 +63,6 @@ const enviarCodeFirstPrimary = async ( dispatch, phone, ci ) => {
 
          // Si no existe usuario o telefono, resp = false y procedemos  a mandar codigo
          if (resp){
-          console.log('--------porque???---------');
-          console.log({resp})
                 let payload = {
                   isLoading: false,
                   token: '',
