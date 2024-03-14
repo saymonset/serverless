@@ -91,12 +91,16 @@ def isValidBdUser(data):
         user = find_one_repo(query)
         if not user:
             return {"resp":False,
+                    "error": "El usuarioId no existe en bd",
+                    'statusCode':'badUserNotExist',
                     "name":"El usuarioId no existe en bd"}
     else:
         # Maneja el error o muestra un mensaje de error
         result = {
             "resp":False,
              "TypeError": id,
+             "error": "La cadena no es un ObjectId válido",
+             'statusCode':'badCadenaNotValid',
              "ValueError": "La cadena no es un ObjectId válido" 
         }
         return result
@@ -107,10 +111,13 @@ def isValidBdEmail(data):
     email = data.get("email")
     userDependent = checkUserDependent({"email": email}) 
     if userDependent:
-        return {"resp":False,
+        return {    "resp":False,
+                    "error": "El email existe en bd",
+                    'statusCode':'badExistEmailInBD',
                     "email":"El email existe en bd"}
     return {"resp":True}
  
+ # return {"error": "El email existe en bd", 'resp':False, 'statusCode':'badExistEmail'}    
     #
 
 

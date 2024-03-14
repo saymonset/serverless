@@ -1,7 +1,7 @@
 import { AnyAction } from 'redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import vaccinesApi from '../../../api/vaccinesApi'
-import {   startLoadingRegister, setRegisterResponse, addMessage,removeMessage, setPassword  } from './registerSlice'
+import {   startLoadingRegister,stopLoadingRegister, setRegisterResponse, addMessage,removeMessage, setPassword  } from './registerSlice'
 import {  Register } from '../../../interfaces/register-interfaces';
 import {  enviarMensajePorStatusCode } from '../../../utils/enviarMensajePorStatusCode'
 
@@ -16,13 +16,17 @@ export const registerThunks = ( register:Register ): AnyAction  => {
           if (token){
             await AsyncStorage.setItem('token', token ); 
           }
-          console.log({register})
+        
           // TODO: realizar peticion http
            const {data} = await vaccinesApi.post(`/users/p`,{ ...register  } );
 
+           
+
           const { statusCode, body, message, resp, } = data;
-       
+      
+          console.log({resp, statusCode})
           if (statusCode == 401 || !resp) {
+              dispatch( addMessage( enviarMensajePorStatusCode(statusCode)))
               return 
           }
           const payload: Register = {
@@ -32,14 +36,15 @@ export const registerThunks = ( register:Register ): AnyAction  => {
               
             };
           dispatch( setRegisterResponse(payload) );
+          console.log({message})
 
-          
+          dispatch( stopLoadingRegister());
 
            
           
       } catch (error) {
-      
-           dispatch( addMessage("Error: "+error))
+           dispatch( addMessage( enviarMensajePorStatusCode(error)))
+           console.log(error)
       }
    
     }

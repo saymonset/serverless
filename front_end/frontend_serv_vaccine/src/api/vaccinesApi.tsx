@@ -2,14 +2,19 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch } from 'react-redux';
 import { logoutThunks } from '../store/slices/login/loginThunks'
+import { useNavigation } from '@react-navigation/native';
 
 export const baseURL = 'https://77sw5iql30.execute-api.us-east-1.amazonaws.com/api';
 
 const vaccinesApi = axios.create({ baseURL });
 
 const logout =async () => {
+    //Si el token ya no existe, lo sacamos
+    console.log('Token vencido....');
     const dispatch = useDispatch();
     await dispatch(logoutThunks());
+    const navigation = useNavigation();
+    navigation.navigate( 'WelcomeScreen' as never)
 }
 
 

@@ -40,15 +40,18 @@ class getuserswgger(Resource):
     @ns_users.doc(security="apikey")
     @jwt_required()
     def post(self, **kwargs):
-        #print('---------0-----------------')
+        
+        #Del token obtenemos el  usuario
         result = verifyToken(request)
         if not bool(result["resp"]):
             return result
         usuario = result["usuario"]
         # Obtener los datos del objeto enviado en la solicitud
         data = ns_users.payload
-      
-        #print('---------1-----------------')
+        # Validamos name
+        if usuario is None:
+            # El campo está vacío
+            return {"error": "Missing token" , 'resp':False, 'statusCode':'badMissingToken'}
         # Validamos name
         if data["name"] is None or len(data["name"]) == 0:
             # El campo está vacío
@@ -56,11 +59,9 @@ class getuserswgger(Resource):
         if data["lastname"] is None or len(data["lastname"]) == 0:
             # El campo está vacío
             return {"error": "Missing lastname" , 'resp':False, 'statusCode':'badMissingLastName'}
-
         if data["ci"] is None or len(data["ci"]) == 0:
             # El campo está vacío
             return {"error": "Missing ci" , 'resp':False, 'statusCode':'badMissingCi'}
-            
         if data["gender_id"] is None or len(data["gender_id"]) == 0:
             # El campo está vacío
             return {"error": "Missing gender_id" , 'resp':False, 'statusCode':'badMissingGender_id'}
@@ -68,7 +69,6 @@ class getuserswgger(Resource):
         
 
         #print(data["name"])    
-        #print('---------2-----------------')
         # Validamos CI
         result = find_one_repo({"ci": data["ci"]})
         if result:
@@ -81,15 +81,12 @@ class getuserswgger(Resource):
 
         if not validar_email(data["email"]):
             return {"error": "No es valido el email", 'resp':False, 'statusCode':'badNotValidEmail'}
-       
         result = isValidBdEmail(data)
         if not bool(result["resp"]):  return result 
-
         # Validamos genero
         result = get_gender_repo(data["gender_id"])
         if result is None or "error" in result:
             return {"error": "El id no es una instancia de la clase GenderModels", 'resp':False, 'statusCode':'badGender'}
-
         return create_user_service(data, usuario)
 
 

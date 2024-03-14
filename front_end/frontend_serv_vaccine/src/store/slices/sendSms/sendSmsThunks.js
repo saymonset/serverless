@@ -1,14 +1,13 @@
 import { AnyAction } from 'redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import vaccinesApi from '../../../api/vaccinesApi'
-import {   startLoadingSms, setSmsResponse, addErrorSms,  removeErrorSms, resetSendSms, 
+import {   startLoadingSms, stopLoadingSms, setSmsResponse, addErrorSms,  removeErrorSms, resetSendSms, 
           checkCode, setPassword, passwordUpdate, setCi  } from './sendSmsSlice'
 import {  enviarMensajePorStatusCode } from '../../../utils/enviarMensajePorStatusCode'
 
 
 
 const enviarCode = async ( dispatch, phone, ci ) => {
- 
       try {
         let response = await vaccinesApi.post('/sendSms', { phone } );
         let {data} = response;
@@ -45,9 +44,49 @@ const enviarCode = async ( dispatch, phone, ci ) => {
       } catch (error) {
            dispatch( addErrorSms("Error: "+error));
       }
-        
+}
 
+const enviarCodeFirstPrimary = async ( dispatch, phone, ci ) => {
+      try {
+        let response = await vaccinesApi.post('/sendSms/new', { phone } );
+        let {data} = response;
+        console.log('-----------------');
+        console.log({data})
+        const {  message, error, resp} = data; 
+        if (!message) {
+          message = error;
+        }
        
+        //Si la respuesta es true entonces el usuario existe . Awui solo para usuarios no refgistrados
+         if (!resp){
+          dispatch( addErrorSms("Error: "+message));
+          return;
+         } 
+
+         // Si no existe usuario o telefono, resp = false y procedemos  a mandar codigo
+         if (resp){
+          console.log('--------porque???---------');
+          console.log({resp})
+                let payload = {
+                  isLoading: false,
+                  token: '',
+                  message: 'Success SMS: '+message,
+                  response: null,
+                  //En SendPhoneFigmaScreen , en un useEffect, agarramos esta 
+                  //bandera para dirigirnos a la pagina donde debe escribir el odigo enviado
+                  isSendCode: true,
+                  phone,
+                  resp
+                };
+              dispatch( setSmsResponse(payload) );
+         }
+          
+         dispatch( stopLoadingSms());
+         
+         
+      } catch (error) {
+           dispatch( addErrorSms("Error: "+error));
+      }
 }
 
 export const reEnviarCodeThunks = ( phone ): AnyAction => {
@@ -66,22 +105,29 @@ export const reEnviarCodeThunks = ( phone ): AnyAction => {
 }
 export const sendSmsThunks = (  phone   ): AnyAction  => {
     return async ( dispatch, getState) => {
-
       try {
         dispatch( startLoadingSms())
        //  Enviaamos el codigo para recuperar password
         enviarCode( dispatch, phone );
-        
-     
       } catch (error) {
            console.error({error});
            dispatch( addErrorSms("Error: "+error))
       }
-   
     }
 }
 
-
+export const sendSmsFirstPrimaryThunks = (  phone   ): AnyAction  => {
+  return async ( dispatch, getState) => {
+    try {
+      dispatch( startLoadingSms())
+     //  Enviaamos el codigo para recuperar password
+     enviarCodeFirstPrimary( dispatch, phone );
+    } catch (error) {
+         console.error({error});
+         dispatch( addErrorSms("Error: "+error))
+    }
+  }
+}
 
   // El code es la cedula y con el phone chequeamos que este registrdo
 export const passwordRecoveryThunks = (  phone, code   ): AnyAction  => {

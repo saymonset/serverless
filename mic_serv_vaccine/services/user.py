@@ -27,6 +27,7 @@ def create_user_service(user_data, usuario):
     user_data['isUser'] = True
     user_data['user_id'] = user_id
     message = ''
+    #Chequeamos si esta registrado en dependent y esel usuario principal
     if checkUserDependent({'user_id': user_id, 'isUser': True}) is None:
       crear_dependents_repo(user_data)
       update_status_user_repo(user_id, {'password': password, 'ci': ci, 'city': city, 'state': state} )

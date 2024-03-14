@@ -26,6 +26,9 @@ export const registerSlice = createSlice({
         startLoadingRegister: (state, /* action */ ) => {
             state.isLoading = true;
         },
+        stopLoadingRegister: (state, /* action */ ) => {
+            state.isLoading = false;
+        },
         setRegisterResponse: ( state, { payload } ) => {
             state.name = payload.name;
             state.lastname = payload.lastname;
@@ -56,4 +59,5 @@ export const registerSlice = createSlice({
     }
 });
 // Action creators are generated for each case reducer function
-export const { startLoadingRegister, setRegisterResponse, addMessage, removeMessage, setPassword } = registerSlice.actions;
+export const { startLoadingRegister, stopLoadingRegister,
+     setRegisterResponse, addMessage, removeMessage, setPassword } = registerSlice.actions;

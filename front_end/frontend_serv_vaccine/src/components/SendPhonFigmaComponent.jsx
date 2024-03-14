@@ -1,7 +1,7 @@
 import React, {  useState, useRef} from 'react';
 import { Text, View, TextInput, Platform,  TouchableOpacity, Keyboard , Alert} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import {  sendSmsThunks } from '../store/slices/sendSms/index' ;
+import {  sendSmsThunks, sendSmsFirstPrimaryThunks } from '../store/slices/sendSms/index' ;
 import { stylesFigma } from '../theme/sendPhoneFigmaTheme';
 import { HeaderTitleFigma } from '../components/HeaderTitleFigmaComponent';
 
@@ -42,7 +42,8 @@ export const  SendPhonFigmaComponent = ({ navigation }) => {
          {/* Una vez que mande el phone, se actualiza una bandera en el store isSendCode y 
                                 esta en true  te redirije a colocar el codigo envisdo 
                             en  la pantala SendPhoneFigmaScreen en cerrarModal */}
-      await dispatch(sendSmsThunks( phone ));
+     // await dispatch(sendSmsThunks( phone ));
+      await dispatch(sendSmsFirstPrimaryThunks( phone ));
       setInputValue('');
       setCodValue( '' );
   }
@@ -59,7 +60,7 @@ export const  SendPhonFigmaComponent = ({ navigation }) => {
                     <View  style={{flex:1, flexDirection:'row'}}>
                         <View style={{flex:1,  flexWrap:'wrap', left:30, marginRight:20}}>
                                 <TextInput 
-                                                            placeholder="+00"
+                                                            placeholder="+58"
                                                             placeholderTextColor="rgba(0,0,0,0.4)"
                                                             underlineColorAndroid="rgba(0,0,0,0.4)"
                                                             style={[ 

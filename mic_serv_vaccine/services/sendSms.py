@@ -17,6 +17,31 @@ from repository.user import   crear_users_repo, update_status_user_repo, get_pho
 
 """Registro de objetos"""
 
+def get_phone_in_users_service(phone):
+   
+    if phone:
+        user =  get_phone_in_users_repo(phone)
+        if user:
+            return {
+                  "error": False,
+                  "statusCode": 200,
+                  "resp": False,
+                  "message": "El usuario existe"
+                  }
+        else:
+            return {
+                "error": False,
+                "resp": True,
+                "statusCode": 400,
+                "message": "El usuario no existe",
+            }    
+    else:
+            return {
+                "error": True,
+                "resp": True,
+                "statusCode": 400,
+                "message": "El telefono no existe",
+            }
 
 def sendSms_service(data):
     #Tomamos el telefono que se envia
@@ -26,7 +51,7 @@ def sendSms_service(data):
         user =  get_phone_in_users_repo(phone)
         print('------------------1------------------------')
         if user:
-            #Si no toiene status el usuqariop, se coloca como unverified su status
+            #Si no tiene status el usuqariop, se coloca como unverified su status
             if 'status' not in user:
                 print('------------------2------------------------')
                 data = {'status': 'unverified'}

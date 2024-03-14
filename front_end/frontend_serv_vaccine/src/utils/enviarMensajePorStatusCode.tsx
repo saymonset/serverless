@@ -1,10 +1,18 @@
-
+import { useNavigation } from '@react-navigation/native';
 export const enviarMensajePorStatusCode = (statusCode: string): string => {
     let mensaje: string;
   
     switch (statusCode) {
       case "badMissingName":
         mensaje = "Error de cliente: Falta nombre.";
+        break;
+      case "badExistEmailInBD":
+        mensaje = "Error de cliente: Existe un mismo email registrado.";
+        break;
+      case "badMissingToken":
+        mensaje = "Tiempo de espera agotado";
+        const navigation = useNavigation();
+        navigation.navigate( 'WelcomeScreen' as never)
         break;
       case "badMissingLastName":
         mensaje = "Error de cliente: Falta apellido.";

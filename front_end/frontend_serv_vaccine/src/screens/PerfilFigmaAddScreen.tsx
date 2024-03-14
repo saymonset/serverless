@@ -198,7 +198,7 @@ export const PerfilFigmaAddScreen = () => {
                                                 selectionColor="white"
                                                 onChangeText={ (value) => onChange(value, 'name') }
                                                 value={ name }
-                                                onSubmitEditing={ onAddDependent }
+                                               // onSubmitEditing={ onAddDependent }
                                                 autoCapitalize="words"
                                                 autoCorrect={ false }
                                             />
@@ -216,7 +216,7 @@ export const PerfilFigmaAddScreen = () => {
                                                             selectionColor="white"
                                                             onChangeText={ (value) => onChange(value, 'lastname') }
                                                             value={ lastname }
-                                                            onSubmitEditing={ onAddDependent }
+                                                            //onSubmitEditing={ onAddDependent }
                                                             autoCapitalize="words"
                                                             autoCorrect={ false }
                                                         />
@@ -249,7 +249,7 @@ export const PerfilFigmaAddScreen = () => {
                                                     selectionColor="white"
                                                     onChangeText={ (value) => onChange(value, 'email') }
                                                     value={ email }
-                                                    onSubmitEditing={ onAddDependent }
+                                                   // onSubmitEditing={ onAddDependent }
                                                     autoCapitalize="none"
                                                     autoCorrect={ false }
                                                 />

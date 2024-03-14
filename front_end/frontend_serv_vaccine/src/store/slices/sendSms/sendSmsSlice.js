@@ -22,6 +22,9 @@ export const sendSmsSlice = createSlice({
         startLoadingSms: (state, /* action */ ) => {
             state.isLoading = true;
         },
+        stopLoadingSms: (state, /* action */ ) => {
+            state.isLoading = false;
+        },
         setSmsResponse: ( state, { payload } ) => {
             state.isLoading = false;
             state.isSendCode = true;
@@ -82,5 +85,5 @@ export const sendSmsSlice = createSlice({
     }
 });
 // Action creators are generated for each case reducer function
-export const { startLoadingSms, setSmsResponse, addErrorSms,  removeErrorSms, 
+export const { startLoadingSms, stopLoadingSms, setSmsResponse, addErrorSms,  removeErrorSms, 
              resetSendSms, checkCode, passwordUpdate, setCi, setPhone  } = sendSmsSlice.actions;
