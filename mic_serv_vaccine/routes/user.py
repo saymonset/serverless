@@ -72,7 +72,7 @@ class getuserswgger(Resource):
         # Validamos CI
         result = find_one_repo({"ci": data["ci"]})
         if result:
-            return {"error": "El ci existe en bd" , 'resp':False, 'statusCode':'badCi'}
+            return {"error": "El ci existe en bd" , 'resp':False, 'statusCode':'badCiExist'}
             
 
         result = find_one_repo({"email": data["email"]})
