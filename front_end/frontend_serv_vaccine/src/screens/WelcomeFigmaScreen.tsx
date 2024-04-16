@@ -5,6 +5,7 @@ import { BackgroundFigma } from '../components/BackgroundFigma';
 import { HeaderTitleFigma } from '../components/HeaderTitleFigmaComponent';
 import { stylesFigma } from '../theme/appFigmaTheme';
 import { AuthContext } from '../context/AuthContext';
+import { STAGE, API_URL } from '@env';
 
 interface Props extends StackScreenProps<any, any> {}
 
@@ -15,6 +16,7 @@ export const WelcomeScreen = ({ navigation }: Props) => {
 
     const begin = ( ) => {
           {/*  Cargamos data en el contexto reduce*/}
+          console.log({ API_URL, STAGE})
         getGeneroRaltionSchipLoads();
         navigation.replace('SendPhoneFigmaScreen')
     }
