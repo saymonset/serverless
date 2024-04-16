@@ -7,27 +7,30 @@ export interface VaccApplyVaccineResponse {
 }
 
 export interface VaccApplyVaccine {
-    _id?:             ID;
-    name?:            string;
-    lastname?:        string;
-    email?:           string;
-    phone?:           string;
-    gender_id?:       string;
-    user_id?:         string;
-    relationship_id?: string;
-    state?:           string;
-    city?:            string;
-    status?:          boolean;
-    birth?:           string;
-    isUser?:          boolean;
-    isChildren?:      boolean;
-    age?:             number;
+    dependent?: Dependent;
     vaccine?:         Vaccine;
     dosis?:           Dosi[];
 }
 
 export interface ID {
     $oid: string;
+}
+
+export interface Dependent {
+    _id:        ID;
+    name:       string;
+    lastname:   string;
+    email:      string;
+    birth:      string;
+    gender_id:  string;
+    status:     boolean;
+    token:      string;
+    phone:      string;
+    isUser:     boolean;
+    user_id:    ID;
+    isChildren: boolean;
+    age:        number;
+    days_birth: number;
 }
 
 export interface Dosi {

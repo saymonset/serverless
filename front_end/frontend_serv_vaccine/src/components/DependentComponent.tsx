@@ -112,7 +112,7 @@ export const DependentComponent = ( { onClose, onRegister, width, height }: Prop
        >
             <KeyboardAvoidingView
                 style={{ flex: 1, backgroundColor: '#585858' }}
-                behavior={ ( Platform.OS === 'ios') ? 'padding': 'height' }>
+                behavior={ ( Platform.OS === 'ios') ? 'padding': undefined }>
                             <ScrollView>
                                 <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                                                     <View >                

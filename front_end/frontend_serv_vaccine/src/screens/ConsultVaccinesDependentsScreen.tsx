@@ -43,7 +43,7 @@ export const  ConsultVaccinesDependentsScreen =  () => {
             const applyVaccinePerson = ( id: string)=>{
               // Clocamos el id del dependiente en el store de apply vaccine y la bandera ee ediotar en trrue
                  dependentById(id);
-                     navigation.navigate( 'ApplyVaccineConsultaScreen' as never)
+                 navigation.navigate( 'ApplyVaccineConsultaScreen' as never)
             }
 
           const handlePreviousPage = () => {

@@ -72,7 +72,7 @@ export const RegisterComponent = ( { onLogin, onRegisterScreen }: Props1) => {
     <>
       <KeyboardAvoidingView
                 style={{ flex: 1}}
-                behavior={ ( Platform.OS === 'ios') ? 'padding': 'height' }
+                behavior={ ( Platform.OS === 'ios') ? 'padding': undefined }
             >
 
                 <ScrollView>

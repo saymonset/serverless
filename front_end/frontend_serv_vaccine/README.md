@@ -64,3 +64,5 @@ npx pod-install
 yarn add react-native-fs
 
 npm install date-fns
+
+npm install moment

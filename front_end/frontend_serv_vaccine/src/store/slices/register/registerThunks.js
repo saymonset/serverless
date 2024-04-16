@@ -1,7 +1,8 @@
 import { AnyAction } from 'redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import vaccinesApi from '../../../api/vaccinesApi'
-import {   startLoadingRegister,stopLoadingRegister, setRegisterResponse, addMessage,removeMessage, setPassword  } from './registerSlice'
+import {   startLoadingRegister,stopLoadingRegister, setRegisterResponse, addMessage,removeMessage, setPassword ,
+  setResp } from './registerSlice'
 import {  Register } from '../../../interfaces/register-interfaces';
 import {  enviarMensajePorStatusCode } from '../../../utils/enviarMensajePorStatusCode'
 
@@ -26,6 +27,10 @@ export const registerThunks = ( register:Register ): AnyAction  => {
       
           console.log({resp, statusCode})
           if (statusCode == 401 || !resp) {
+            const payload = {
+              resp
+            };
+              dispatch( setResp(payload) );
               dispatch( addMessage( enviarMensajePorStatusCode(statusCode)))
               return 
           }
@@ -36,7 +41,7 @@ export const registerThunks = ( register:Register ): AnyAction  => {
               
             };
           dispatch( setRegisterResponse(payload) );
-          console.log({message})
+       
 
           dispatch( stopLoadingRegister());
 

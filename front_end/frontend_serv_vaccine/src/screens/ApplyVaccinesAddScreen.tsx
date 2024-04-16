@@ -64,8 +64,8 @@ export const ApplyVaccinesAddScreen = () => {
     //Borramos mensajes del thrunk
     handlerRemoveMessageApplyVaccine();
 
-  /* The above code appears to be written in TypeScript and React. It seems to be commented out code that is checking if a variable "resp" is truthy. If it is, it may be navigating to a screen called 'HomeFigmaTabRootScreen' using the "navigation" object. However, the code is currently commented out, so it is not being executed. */
     if (resp) {
+      //Regresamos a la ventana principal
        navigation.navigate('ApplyVaccinesDependentsScreen' as never)
     }
   }
@@ -180,7 +180,7 @@ export const ApplyVaccinesAddScreen = () => {
                                                      Propiedad puede ser parentName o  child para ver que se va  allenar
                                                      Aqui la p[ropiedad es parentNames]
                                                  */}
-                                                   {/* En showModalEstado es donde  colocamos visible el isVisibleParent a true */}
+                                                   {/* Para ver el popup entonces colocamos en showModalEstado  isVisibleParent a true */}
                                                 {isVisibleParent && (<ModalVaccineDosisComponent getValor = { ( item, propiedad ) => getValor( item, propiedad )}
                                                                                       propiedad = 'parent' 
                                                                                       onCerrarModal =  { (value) => handlerCerrarModal( value )}

@@ -10,20 +10,7 @@ export interface VaccApplyVaccine {
     vaccine?: Vaccine;
     dosis?:   Dosi[];
 }
-
-export interface Dosi {
-    _id:              ID;
-    vacinne_id:       string;
-    name:             string;
-    age_frequency:    string;
-    status:           boolean;
-    isApplied:        boolean;
-    lote:             null;
-    image:            null;
-    vaccination_date: null;
-    dependentId:      string;
-    dosisId:          string;
-}
+ 
 
 export interface ID {
     $oid: string;
@@ -39,5 +26,25 @@ export interface Vaccine {
     status:           boolean;
     lote:             null;
     isApplied?:        boolean;
-
+    expires_in_days:  number;
+    isAlertApply?:     boolean;
 }
+
+export interface Dosi {
+    _id:              ID;
+    vacinne_id:       string;
+    name:             string;
+    age_frequency:    string;
+    status:           boolean;
+    columReporte:     string;
+    rowReporte:       string;
+    expires_in_days:  number;
+    isApplied:        boolean;
+    lote:             null;
+    image:            null;
+    vaccination_date: null;
+    dependentId:      string;
+    dosisId:          string;
+    isAlertApply?:     boolean;
+}
+ 

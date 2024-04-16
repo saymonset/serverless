@@ -49,7 +49,7 @@ export const ApplyVaccinesVaccineDetailScreen =  () => {
                                 numColumns={1}
                                 horizontal={false}
                                 ItemSeparatorComponent={() => <View style={{ height: 1, backgroundColor: 'lightgray'}} />}
-                                ListHeaderComponent={  <HeaderTitleFigma title={`Listar vacunas aplicadas por ${dependent.name} ${dependent.lastname}`}
+                                ListHeaderComponent={  <HeaderTitleFigma title={`Listar vacunas aplicadas por ${dependent?.name} ${dependent?.lastname}`}
                                 marginTop={(Platform.OS === 'ios') ? 0: 0}
                                 stylesFigma={stylesFigma}
                                 type='big'

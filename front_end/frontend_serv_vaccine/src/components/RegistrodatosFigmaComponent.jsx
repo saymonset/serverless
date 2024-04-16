@@ -96,7 +96,7 @@ export const RegistrodatosFigmaComponent = ( { onLogin, onRegisterScreen }: Prop
     <>
       <KeyboardAvoidingView
                 style={{ flex: 1}}
-                behavior={ ( Platform.OS === 'ios') ? 'padding': 'height' }
+                behavior={ ( Platform.OS === 'ios') ? 'padding': undefined }
             >
                 <ScrollView>
                     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>

@@ -56,8 +56,11 @@ export const registerSlice = createSlice({
         setPassword: (state,  { payload } ) => {
            state.password = payload.password;
        },
+       setResp: (state, { payload }) => {
+        state.resp = payload.resp;
+    },
     }
 });
 // Action creators are generated for each case reducer function
 export const { startLoadingRegister, stopLoadingRegister,
-     setRegisterResponse, addMessage, removeMessage, setPassword } = registerSlice.actions;
+     setRegisterResponse, addMessage, removeMessage, setPassword, setResp } = registerSlice.actions;

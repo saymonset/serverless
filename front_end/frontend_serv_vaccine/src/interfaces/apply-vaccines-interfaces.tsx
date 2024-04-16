@@ -17,6 +17,7 @@ export interface ApplyVaccine {
     lote:             string;
     status:           boolean;
     vaccination_date: string;
+    
 }
 
 export interface ID {
@@ -35,6 +36,29 @@ export interface Dependent {
     status:    boolean;
     token:     string;
     user_id:   ID;
+    age?:             number;
+    city?:            string;
+    isChildren?:      boolean;
+    relationship_id?: string;
+    state?:           string;
+    days_birth: number;
+}
+
+export interface Dependent {
+    _id:        ID;
+    name:       string;
+    lastname:   string;
+    email:      string;
+    birth:      string;
+    gender_id:  string;
+    status:     boolean;
+    token:      string;
+    phone:      string;
+    isUser:     boolean;
+    user_id:    ID;
+    isChildren?: boolean;
+    age?:        number;
+    days_birth: number;
 }
 
 export interface Dosis {

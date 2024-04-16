@@ -6,6 +6,9 @@ export const enviarMensajePorStatusCode = (statusCode: string): string => {
       case "badCiExist":
         mensaje = "Error de cliente: Exista la cedula.";
         break;
+      case "badMissingBirth":
+        mensaje = "Error de cliente: Falta fecha de nacimiento.";
+        break;
       case "badMissingName":
         mensaje = "Error de cliente: Falta nombre.";
         break;

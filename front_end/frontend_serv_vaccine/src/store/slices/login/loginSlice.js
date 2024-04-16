@@ -10,6 +10,7 @@ import {  LoginState } from '../../../interfaces'
     token: '',
     message: '',
     user_id:'',
+    usuario:null,
     loginResponse: null,
   };
 
@@ -37,12 +38,14 @@ export const loginSlice = createSlice({
             state.status = payload.status,
             state.token = payload.token,
             state.message = payload.message,
+            state.usuario = null,
             state.loginResponse = payload.loginResponse;
         },
        addError: ( state, { payload } ) =>{
                 state.loginResponse = null,
                 state.isLoading = false;
                 state.status = 'not-authenticated',
+                state.usuario = null,
                 state.message = payload
         },
         removeError: ( state, { payload }) => {

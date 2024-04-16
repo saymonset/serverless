@@ -4,6 +4,8 @@ import { Text, View, StyleSheet, Platform } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Vaccine, Dosi } from '../interfaces/vaccine-withdosis-for-dependent-interfaces';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useApplyVaccines } from '../hooks/useApplyVaccines';
+import { MenuItem } from '../interfaces/appInterfaces';
  
 
 interface Props {
@@ -14,6 +16,8 @@ interface Props {
 
 export const FlatListMenuVaccineDosis = ({ menuItem, cerrarModal, propiedad = 'parent'  }:Props) => {
 
+  const {   dependent } =  useApplyVaccines();
+  
   const enviar = (  menuItem: Dosi | Vaccine) => {
     cerrarModal(menuItem);
   }
@@ -27,7 +31,15 @@ export const FlatListMenuVaccineDosis = ({ menuItem, cerrarModal, propiedad = 'p
        }
     }
       >
-        { propiedad === 'parent' && (<Text onPress={() => enviar(menuItem)} style = { styles.itemText}>{ menuItem.name }</Text>)} 
+        {propiedad === 'parent' && (
+                        <Text
+                          onPress={() => enviar(menuItem)}
+                          style={menuItem.isAlertApply ? styles.itemTextRed : styles.itemText}
+                        >
+                          {menuItem.name}
+                        </Text>
+                      )}
+
         {propiedad === 'child' && (
                        <View  style={{ flexDirection: 'row'}}>
                                 <Text    onPress={menuItem.isApplied ? undefined : () => enviar(menuItem)}
@@ -45,6 +57,8 @@ export const FlatListMenuVaccineDosis = ({ menuItem, cerrarModal, propiedad = 'p
                                                      {format(new Date(menuItem.vaccination_date), 'dd/MM/yyyy')}
                                                     </Text>) }
                                 <View style={{ flex: 1 }}></View>
+
+                                {/* Aqui colocamos el icono si es aplicado o no es aplicadop */}
                                 {menuItem.isApplied ? (
                                                     <View style={{ marginLeft: Platform.OS === 'ios' ? 1 : 10,marginTop:-5 }}>
                                                       <Ionicons name="checkmark-done-circle-outline" size={40} color="black" />
@@ -53,7 +67,7 @@ export const FlatListMenuVaccineDosis = ({ menuItem, cerrarModal, propiedad = 'p
                                                   :
                                                   (
                                                     <View style={{ marginLeft: Platform.OS === 'ios' ? 1 : 10,marginTop:-5 }}>
-                                                      <Ionicons name="ellipse-outline" size={40} color="black" />
+                                                      <Ionicons name="ellipse-outline" size={40} color={dependent.days_birth > menuItem.expires_in_days ? 'red' : 'black'} />
                                                     </View>
                                                   )}
                        </View>
@@ -73,5 +87,10 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         fontSize: 19,
         color: 'black',
+    },
+    itemTextRed: {
+        marginLeft: 10,
+        fontSize: 19,
+        color: 'red',
     }
 })

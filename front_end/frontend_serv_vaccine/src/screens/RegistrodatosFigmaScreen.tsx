@@ -37,7 +37,6 @@ export const RegistrodatosFigmaScreen = ({ navigation }: Props) => {
         setIsVisible(false);
         //Borramos mensajes del thrunk
         onClearError();
-
           if (resp){
               navigation.replace('LoginFigmaScreen')
           }

@@ -84,7 +84,6 @@ export const applyVaccineSlice = createSlice({
             state.isDelete = true;
             state.tableData = payload.tableData;
             state.total = state.total - 1;
-            state.dependent  = {}
         },
         clearApplyVaccine: ( state ) => {
             state._id = '';
@@ -97,7 +96,6 @@ export const applyVaccineSlice = createSlice({
             state.message = '';
             state.isLoading = false;
             state.isDelete = false;
-            state.dependent  = {}
             
         },
         loadDataApplyVaccine: ( state, { payload } ) => {
@@ -122,6 +120,7 @@ export const applyVaccineSlice = createSlice({
         loadDosisFilterbyVaccineId: ( state, { payload } ) => {
             state.dosis = payload.dosis;
             state.vaccine = payload.vaccine;
+            state.dependent = payload.dependent;
         },
         
        addMessageApplyVaccine: ( state, { payload } ) =>{

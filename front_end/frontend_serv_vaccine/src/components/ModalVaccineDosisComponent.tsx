@@ -86,7 +86,7 @@ export const ModalVaccineDosisComponent = ( { getValor, propiedad = 'parent', id
                                                                             <View style={{...stylesFigma.cierrepopup}}><Text>X</Text></View>
                                                                         </TouchableOpacity>
                                                                  
-                                                                  
+                                                                {/* VACUNAS */}
                                                                     <View style={{flex:1, ...stylesFigma.globalMargin}}>
                                                                     { propiedad==='parent' && (
                                                                                     <FlatList
@@ -96,18 +96,18 @@ export const ModalVaccineDosisComponent = ( { getValor, propiedad = 'parent', id
                                                                                                                     cerrarModal={ (value) => enviarValor(value)}
                                                                                                                     propiedad={'parent'}/>}
                                                                                                                     keyExtractor={getRandomKey}
-                                                                                    ListHeaderComponent = { () =>  <HeaderTitleFigma title="Vacunas" 
-                                                                                                                    marginTop={(Platform.OS === 'ios') ? 40: 40}
-                                                                                                                    stylesFigma={stylesFigma}
-                                                                                                                    type='big'
-                                                                                                                    marginBottom={20}
-                                                                                                                    textAlign='center'
-                                                                                                                    ></HeaderTitleFigma> }
-                                                                                    ItemSeparatorComponent = { () => <ItemSeparator/> }
-                                                                                    />
+                                                                                                                ListHeaderComponent = { () =>  <HeaderTitleFigma title="Vacunas" 
+                                                                                                                                                marginTop={(Platform.OS === 'ios') ? 40: 40}
+                                                                                                                                                stylesFigma={stylesFigma}
+                                                                                                                                                type='big'
+                                                                                                                                                marginBottom={20}
+                                                                                                                                                textAlign='center'
+                                                                                                                                                ></HeaderTitleFigma> }
+                                                                                                                ItemSeparatorComponent = { () => <ItemSeparator/> }
+                                                                                                                />
                                                                    )}  
 
-                                                                   
+                                                                      {/* DOSIS */}
                                                                     { propiedad==='child' && (
                                                                                     <FlatList
                                                                                     data={ dosis?.filter((d: Dosiss) => d.vacinne_id === String(idParent)) || []  }
@@ -116,15 +116,15 @@ export const ModalVaccineDosisComponent = ( { getValor, propiedad = 'parent', id
                                                                                                                         cerrarModal={ (value) => enviarValor(value)}
                                                                                                                         propiedad={'child'}/>}
                                                                                                                         keyExtractor={getRandomKey}
-                                                                                    ListHeaderComponent = { () =>  <HeaderTitleFigma title={`Dosis`}
-                                                                                                                    marginTop={(Platform.OS === 'ios') ? 40: 40}
-                                                                                                                    stylesFigma={stylesFigma}
-                                                                                                                    type='big'
-                                                                                                                    marginBottom={20}
-                                                                                                                    textAlign='center'
-                                                                                                                    ></HeaderTitleFigma> }
-                                                                                    ItemSeparatorComponent = { () => <ItemSeparator/> }
-                                                                                    />
+                                                                                                                    ListHeaderComponent = { () =>  <HeaderTitleFigma title={`Dosis`}
+                                                                                                                                                    marginTop={(Platform.OS === 'ios') ? 40: 40}
+                                                                                                                                                    stylesFigma={stylesFigma}
+                                                                                                                                                    type='big'
+                                                                                                                                                    marginBottom={20}
+                                                                                                                                                    textAlign='center'
+                                                                                                                                                    ></HeaderTitleFigma> }
+                                                                                                                    ItemSeparatorComponent = { () => <ItemSeparator/> }
+                                                                                                                    />
                                                                    )}       
                                                                     </View>
                                                         </View>

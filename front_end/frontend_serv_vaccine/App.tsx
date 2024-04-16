@@ -22,9 +22,7 @@ const AppState = ({ children }: any ) => {
     <NavigationContainer>
         <AppState>
           <Provider store={ store}>
-          
               <Navigator></Navigator>
-              
           </Provider>
         </AppState>
     </NavigationContainer>

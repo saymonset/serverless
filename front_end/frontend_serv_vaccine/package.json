@@ -8,8 +8,7 @@
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest",
-    "ios:simulator":"npm run ios -- --simulator='iPhone SE (3rd generation) (D7AFAA7E-54EF-463B-ADC2-087393EF9655)'"
-
+    "ios:simulator": "npm run ios -- --simulator='iPhone SE (3rd generation) (D7AFAA7E-54EF-463B-ADC2-087393EF9655)'"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.4.2",
@@ -26,6 +25,7 @@
     "@types/react-native-snap-carousel": "^3.8.10",
     "axios": "^1.6.2",
     "date-fns": "^3.3.1",
+    "moment": "^2.30.1",
     "react": "18.2.0",
     "react-native": "0.72.6",
     "react-native-datepicker": "^1.7.2",

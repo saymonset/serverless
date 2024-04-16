@@ -1,6 +1,8 @@
 import { PermissionsAndroid } from 'react-native';
 import Share from 'react-native-share';
 import FileViewer from 'react-native-file-viewer';
+import moment from 'moment';
+
 
 // Import Components
 import {
@@ -35,6 +37,16 @@ import React from 'react';
 // Import RNFetchBlob for the file download
 import RNFetchBlob from 'rn-fetch-blob';
 
+export const getApplyVaccineForDependentId = async (dependent_id:any, vaccines:any) => {
+  const promises = vaccines.map(async (vaccine:any) => {
+    // Acceder al valor de _id de cada vacuna
+    const { data } = await vaccinesApi.get<VaccApplyVaccineResponse>(`/vaccine/vaccfindfromvaccidanddependetid/${vaccine._id}/${dependent_id}`);
+    return data;
+  });
+  const results = await Promise.all(promises);
+  return results;
+};
+
 export const useApplyVaccines = () => {
 
     
@@ -58,6 +70,8 @@ export const useApplyVaccines = () => {
     status: statusStore,
   }
   const { _id, lote, image, dosis_id, vaccination_date, status, onChange } = useForm({ ...inic });
+
+
 
 
   const dispatch = useDispatch();
@@ -127,11 +141,16 @@ export const useApplyVaccines = () => {
         dispatch(startLoadingApplyVaccine());
         const { data } = await vaccinesApi.get<VaccApplyVaccineResponse>(`/vaccine/vaccfindfromvaccidanddependetid/${vaccineId}/${dependentId}`);
         const { vacc_apply_vaccines } = data;
+       
         if (vacc_apply_vaccines && vacc_apply_vaccines.length > 0){
           //En la posicion 2 esta las dosis aplicadas o no aplicadas al dependiente de la vacuna
+        //  const { days_birth } = vacc_apply_vaccines[0];
+          const { dependent } = vacc_apply_vaccines[0];
           const { vaccine } = vacc_apply_vaccines[1];
           const { dosis } = vacc_apply_vaccines[2];
+   
           const payload = {
+            dependent,
             vaccine,
             dosis
           }
@@ -231,7 +250,10 @@ export const useApplyVaccines = () => {
       const payload = id;
       dispatch(setDependentById(payload));
       const { data: { result } } = await vaccinesApi.get(`/dependent/${payload}`);
-      //LLenamos dependent toda su data en el store
+      const { birth } = result;
+      const fechaInicial = moment(birth);
+      const hoy = moment();
+      const diasTranscurridos = hoy.diff(fechaInicial, 'days');
       dispatch(setDependent(result))
   }
 
