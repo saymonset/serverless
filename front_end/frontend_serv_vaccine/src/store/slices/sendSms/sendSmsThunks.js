@@ -1,6 +1,6 @@
 import { AnyAction } from 'redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import vaccinesApi from '../../../api/vaccinesApi'
+import vaccinesApi from '../../../config/api/vaccinesApi'
 import {   startLoadingSms, stopLoadingSms, setSmsResponse, addErrorSms,  removeErrorSms, resetSendSms, 
           checkCode, setPassword, passwordUpdate, setCi  } from './sendSmsSlice'
 import {  enviarMensajePorStatusCode } from '../../../utils/enviarMensajePorStatusCode'

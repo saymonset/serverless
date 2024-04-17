@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch, useSelector } from 'react-redux';
 import { loadVaccinesResponse, startVaccines, stopVaccines, store } from '../store/index'
 import { Vaccine, VaccinesResponse } from '../interfaces/vaccines-interfaces';
-import vaccinesApi from '../api/vaccinesApi';
+import vaccinesApi from '../config/api/vaccinesApi';
 import { VaccApplyVaccineResponse } from '../interfaces/vaccApplyVaccine-inerface';
 import { getApplyVaccineForDependentId } from './useApplyVaccines';
 
