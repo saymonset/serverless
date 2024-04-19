@@ -1,11 +1,11 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import React, { useState } from 'react'
 import { Keyboard, KeyboardAvoidingView, Modal, Platform, Text, TouchableOpacity, View } from 'react-native';
-import { BackgroundSendPhoneFigma } from '../components/BackgroundSendPhoneFigma';
-import { HeaderTitleFigma } from '../components/HeaderTitleFigmaComponent';
-import { stylesFigma } from '../theme/sendPhoneFigmaTheme';
+import { BackgroundSendPhoneFigma } from '../../../components/BackgroundSendPhoneFigma';
+import { HeaderTitleFigma } from '../../../components/HeaderTitleFigmaComponent';
+import { stylesFigma } from '../../../theme/sendPhoneFigmaTheme';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { SeguridadFigmaComponent } from '../components/SeguridadFigmaComponent';
+import { SeguridadFigmaComponent } from '../../../components/SeguridadFigmaComponent';
 
 
 interface Props extends StackScreenProps<any, any> {}

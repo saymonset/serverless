@@ -2,15 +2,15 @@ import { StackScreenProps } from '@react-navigation/stack';
 import React, { useEffect, useState } from 'react'
 import {   Keyboard, KeyboardAvoidingView, Platform,  TouchableOpacity, View } from 'react-native';
  
-import { BackgroundSendPhoneFigma } from '../components/BackgroundSendPhoneFigma';
-import { HeaderTitleFigma } from '../components/HeaderTitleFigmaComponent';
-import { stylesFigma } from '../theme/sendPhoneFigmaTheme';
+import { BackgroundSendPhoneFigma } from '../../../components/BackgroundSendPhoneFigma';
+import { HeaderTitleFigma } from '../../../components/HeaderTitleFigmaComponent';
+import { stylesFigma } from '../../../theme/sendPhoneFigmaTheme';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { RegistrodatosFigmaComponent } from '../components/RegistrodatosFigmaComponent';
+import { RegistrodatosFigmaComponent } from '../../../components/RegistrodatosFigmaComponent';
 import { useDispatch, useSelector } from 'react-redux';
-import { removeErrorThunks } from '../store/slices/register/registerThunks';
-import { ModalMessageComponent } from '../components/ModalMessageComponent';
-import { LoadingScreen } from './LoadingScreen';
+import { removeErrorThunks } from '../../../store/slices/register/registerThunks';
+import { ModalMessageComponent } from '../../../components/ModalMessageComponent';
+import { LoadingScreen } from '../../../screens/LoadingScreen';
  
 
 

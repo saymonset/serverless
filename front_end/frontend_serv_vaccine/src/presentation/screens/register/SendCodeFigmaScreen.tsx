@@ -2,15 +2,15 @@ import { StackScreenProps } from '@react-navigation/stack';
 import React, { useEffect, useState } from 'react'
 import { Keyboard, KeyboardAvoidingView, Platform, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { BackgroundSendPhoneFigma } from '../components/BackgroundSendPhoneFigma';
-import { HeaderTitleFigma } from '../components/HeaderTitleFigmaComponent';
-import { stylesFigma } from '../theme/sendPhoneFigmaTheme';
+import { BackgroundSendPhoneFigma } from '../../../components/BackgroundSendPhoneFigma';
+import { HeaderTitleFigma } from '../../../components/HeaderTitleFigmaComponent';
+import { stylesFigma } from '../../../theme/sendPhoneFigmaTheme';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { SendCodeFigmaComponent } from '../components/SendCodeFigmaComponent';
-import { removeErrorSmsThunks } from '../store/slices/sendSms/sendSmsThunks';
-import {  removeErrorThunks } from '../store/slices/register/index';
-import { ModalMessageComponent } from '../components/ModalMessageComponent';
-import { ApplyVaccineByDependentListComponent } from '../components/ApplyVaccineByDependentListComponent';
+import { SendCodeFigmaComponent } from '../../../components/SendCodeFigmaComponent';
+import { removeErrorSmsThunks } from '../../../store/slices/sendSms/sendSmsThunks';
+import {  removeErrorThunks } from '../../../store/slices/register/index';
+import { ModalMessageComponent } from '../../../components/ModalMessageComponent';
+import { ApplyVaccineByDependentListComponent } from '../../../components/ApplyVaccineByDependentListComponent';
 
 interface Props extends StackScreenProps<any, any> {}
 

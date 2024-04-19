@@ -8,11 +8,11 @@ import { ModalScreen } from '../screens/ModalScreen';
 
 import { DependentScreen } from '../screens/DependentScreen';
 import { WelcomeScreen } from '../presentation/screens/home/WelcomeFigmaScreen';
-import { SendPhoneFigmaScreen } from '../screens/SendPhoneFigmaScreen';
-import { SendCodeFigmaScreen } from '../screens/SendCodeFigmaScreen';
-import { SeguridadFigmaScreen } from '../screens/SeguridadFigmaScreen';
-import { RegistrodatosFigmaScreen } from '../screens/RegistrodatosFigmaScreen';
-import { LoginFigmaScreen } from '../screens/LoginFigmaScreen';
+import { SendPhoneFigmaScreen } from '../presentation/screens/register/SendPhoneFigmaScreen';
+import { SendCodeFigmaScreen } from '../presentation/screens/register/SendCodeFigmaScreen';
+import { SeguridadFigmaScreen } from '../presentation/screens/register/SeguridadFigmaScreen';
+import { RegistrodatosFigmaScreen } from '../presentation/screens/register/RegistrodatosFigmaScreen';
+import { LoginFigmaScreen } from '../presentation/screens/auth/LoginFigmaScreen';
 import { PasswordRecoveryScreen1 } from '../screens/PasswordRecoveryScreen1';
 import { SendCodeFigmaRecoveryScreen2 } from '../screens/SendCodeFigmaRecoveryScreen2';
 import { ConfirmPasswordRecoveryFigmaScreen3 } from '../screens/ConfirmPasswordRecoveryFigmaScreen3';

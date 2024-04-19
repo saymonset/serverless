@@ -3,19 +3,19 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Alert, Button, Image, Keyboard, KeyboardAvoidingView, Modal, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useForm } from '../hooks/useForm';
-import { WhiteLogo } from '../components/WhiteLogo';
-import { BackgroundSendPhoneFigma } from '../components/BackgroundSendPhoneFigma';
-import { HeaderTitleFigma } from '../components/HeaderTitleFigmaComponent';
-import { stylesFigma } from '../theme/sendPhoneFigmaTheme';
-import {  SendPhonFigmaComponent } from '../components/SendPhonFigmaComponent';
+import { useForm } from '../../../hooks/useForm';
+import { WhiteLogo } from '../../../components/WhiteLogo';
+import { BackgroundSendPhoneFigma } from '../../../components/BackgroundSendPhoneFigma';
+import { HeaderTitleFigma } from '../../../components/HeaderTitleFigmaComponent';
+import { stylesFigma } from '../../../theme/sendPhoneFigmaTheme';
+import {  SendPhonFigmaComponent } from '../../../components/SendPhonFigmaComponent';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {  removeErrorSmsThunks } from '../store/slices/sendSms/index' ;
-import { ModalMessageComponent } from '../components/ModalMessageComponent';
-import { comunStylesFigma } from '../theme/comunFigmaTheme';
-import { loginCiThunks, removeErrorThunks } from '../store/slices/login/loginThunks'
-import { AuthContext } from '../context/AuthContext';
-import { LoadingScreen } from './LoadingScreen';
+import {  removeErrorSmsThunks } from '../../../store/slices/sendSms/index' ;
+import { ModalMessageComponent } from '../../../components/ModalMessageComponent';
+import { comunStylesFigma } from '../../../theme/comunFigmaTheme';
+import { loginCiThunks, removeErrorThunks } from '../../../store/slices/login/loginThunks'
+import { AuthContext } from '../../../context/AuthContext';
+import { LoadingScreen } from '../../../screens/LoadingScreen';
  
 
 interface Props extends StackScreenProps<any, any> {}

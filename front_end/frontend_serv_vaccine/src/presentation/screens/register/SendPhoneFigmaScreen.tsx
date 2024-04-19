@@ -2,14 +2,14 @@ import { StackScreenProps } from '@react-navigation/stack';
 import React, { useEffect, useState } from 'react'
 import {  KeyboardAvoidingView, Platform, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { BackgroundSendPhoneFigma } from '../components/BackgroundSendPhoneFigma';
-import { HeaderTitleFigma } from '../components/HeaderTitleFigmaComponent';
-import { stylesFigma } from '../theme/sendPhoneFigmaTheme';
-import {  SendPhonFigmaComponent } from '../components/SendPhonFigmaComponent';
-import {  removeErrorSmsThunks } from '../store/slices/sendSms/index' ;
-import {  removeErrorThunks } from '../store/slices/register/index';
-import { ModalMessageComponent } from '../components/ModalMessageComponent';
-import { BackePageComponente } from '../components/BackePageComponente';
+import { BackgroundSendPhoneFigma } from '../../../components/BackgroundSendPhoneFigma';
+import { HeaderTitleFigma } from '../../../components/HeaderTitleFigmaComponent';
+import { stylesFigma } from '../../../theme/sendPhoneFigmaTheme';
+import {  SendPhonFigmaComponent } from '../../../components/SendPhonFigmaComponent';
+import {  removeErrorSmsThunks } from '../../../store/slices/sendSms/index' ;
+import {  removeErrorThunks } from '../../../store/slices/register/index';
+import { ModalMessageComponent } from '../../../components/ModalMessageComponent';
+import { BackePageComponente } from '../../../components/BackePageComponente';
 
 
 interface Props extends StackScreenProps<any, any> {}
