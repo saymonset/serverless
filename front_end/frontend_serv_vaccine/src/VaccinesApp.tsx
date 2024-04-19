@@ -36,8 +36,6 @@ const AppState = ({ children }: any ) => {
            <ApplicationProvider
              {...eva} theme={theme}>
                 <NavigationContainer
-                   
-                 
                 >
                     <AppState>
                     <Provider store={ store}>
