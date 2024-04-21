@@ -7,6 +7,7 @@ import { NextAppointmentsScreen } from './NextAppointmentsScreen';
 import { WatchYourHealthScreen } from './WatchYourHealthScreen';
 
 export const HomeFigmaTab1Screen = () => {
+  const {  usuario:{ token }  } = useSelector((state: store) => state.loginStore);
   const {  getGeneroRaltionSchipLoads } = useContext(AuthContext)
   useEffect(() => {
   

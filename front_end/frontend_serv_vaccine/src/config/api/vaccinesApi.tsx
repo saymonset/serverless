@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { STAGE, API_URL as PROD_URL, API_URL_IOS as API_URL_IOS, API_URL_ANDROID as API_URL_ANDROID} from '@env';
 import { Platform } from 'react-native';
 
+export const baseURL = 'https://77sw5iql30.execute-api.us-east-1.amazonaws.com/api';
 
 
 export const API_URL = 

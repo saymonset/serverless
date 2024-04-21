@@ -6,10 +6,8 @@ import { registerSlice } from './slices/register'
 import { dependentSlice } from './slices/dependent'
 import { applyVaccineSlice } from './slices/applyvaccines'
 import { vaccineSlice } from './slices/vaccines'
-import { useAuthSlice } from './slices/auth'
 export const store = configureStore({
   reducer: {
-    useAuthStore: useAuthSlice.reducer,
     vaccineStore: vaccineSlice.reducer,
     applyVaccineStore: applyVaccineSlice.reducer,
     loginStore: loginSlice.reducer,

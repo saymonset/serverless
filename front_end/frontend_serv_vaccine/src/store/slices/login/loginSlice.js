@@ -1,16 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 import {  LoginState } from '../../../interfaces'
-import { User } from '../../domain/entities/user';
 
 
   const initialState: LoginState = {
-    status: 'not-authenticated',
-    token: '',
     email: '',
     password: '',
     isLoading: false,
-   
-   
+    status: 'not-authenticated',
+    token: '',
     message: '',
     user_id:'',
     usuario:null,
