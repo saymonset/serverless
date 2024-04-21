@@ -1,10 +1,10 @@
 import { AnyAction } from 'redux';
 import {  enviarMensajePorStatusCode } from '../../../utils/enviarMensajePorStatusCode'
 
-import vaccinesApi from '../../../config/api/vaccinesApi'
+import vaccinesApi from '../../../api/vaccinesApi'
 import {   startLoadingLogin, setLoginResponse, removeError, addError, logOut  } from './loginSlice'
 import {  LoginState } from '../../../interfaces'
-import { STAGE, API_URL } from '@env';
+
 
 
 export const loginThunks = ( email, password ): AnyAction  => {
@@ -48,7 +48,6 @@ export const loginCiThunks = ( ci, password ): AnyAction  => {
     try {
         dispatch( startLoadingLogin())
 
-        console.log(API_URL)
         const {data} = await vaccinesApi.post(`/login`,{ ci, password });
         
         const { token, resp, message, more, usuario } = data;
@@ -83,8 +82,6 @@ export const loginCiThunks = ( ci, password ): AnyAction  => {
         dispatch( setLoginResponse(payload) );
         
     } catch (error) {
-      console.log('-------------0--------')
-      console.log({error})
          dispatch( addError("Error: "+error))
     }
   }

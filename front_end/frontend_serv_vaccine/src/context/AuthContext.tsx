@@ -1,7 +1,7 @@
 import React, { createContext, useReducer, useState } from 'react';
 import { authReducer } from './authReducer';
 import { Gender, GenderElement } from '../interfaces/gender-interfaces';
-import vaccinesApi from '../config/api/vaccinesApi';
+import vaccinesApi from '../api/vaccinesApi';
 import { selectOption } from '../interfaces/select-option-interface';
 import { Relationship, RelationShipResponse } from '../interfaces/relationship-interfaces';
  

@@ -26,7 +26,7 @@ import {
   loadDosisFilterbyVaccineId, loadbyDosisOff, loadbyDosis
 } from '../store/slices/applyvaccines';
 import { useLogin } from './useLogin';
-import vaccinesApi, { baseURL } from '../config/api/vaccinesApi';
+import vaccinesApi, { baseURL } from '../api/vaccinesApi';
 import { enviarMensajePorStatusCode } from '../utils/enviarMensajePorStatusCode';
 
 // Import React Component

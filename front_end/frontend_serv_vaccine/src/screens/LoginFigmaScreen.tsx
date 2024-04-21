@@ -16,7 +16,7 @@ import { comunStylesFigma } from '../theme/comunFigmaTheme';
 import { loginCiThunks, removeErrorThunks } from '../store/slices/login/loginThunks'
 import { AuthContext } from '../context/AuthContext';
 import { LoadingScreen } from './LoadingScreen';
- 
+
 
 interface Props extends StackScreenProps<any, any> {}
 

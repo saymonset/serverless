@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import { useEffect } from 'react';
 import { View, Platform, StyleSheet, Text } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
-import vaccinesApi from '../config/api/vaccinesApi';
+import vaccinesApi from '../api/vaccinesApi';
 import {  useSelector } from 'react-redux';
 import { AuthContext } from '../context/AuthContext';
 

@@ -1,4 +1,4 @@
-import vaccinesApi from "../config/api/vaccinesApi";
+import vaccinesApi from "../api/vaccinesApi";
 import { DosisResponse, Dosiss } from "../interfaces";
 import { Vaccine } from "../interfaces/vaccine-withdosis-for-dependent-interfaces";
 

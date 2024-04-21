@@ -1,6 +1,6 @@
 import { AnyAction } from 'redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import vaccinesApi from '../../../config/api/vaccinesApi'
+import vaccinesApi from '../../../api/vaccinesApi'
 import {   startLoadingDependent, setDependentResponse, addMessage, removeMessage, loadDataDependent, setDependentById,
             setDependentDelete, clearDependent, stopLoadingDependent, editFalseDependent, deleteDataDependent } from './dependentSlice'
  import { Dependent, Dependentss, DesdeLimite, NextPrevioPage, PerfilFigma } from '../../../interfaces';

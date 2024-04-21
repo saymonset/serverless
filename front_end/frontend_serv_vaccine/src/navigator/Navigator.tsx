@@ -7,7 +7,7 @@ import { CustomSectionListScreen } from '../screens/CustomSectionListScreen';
 import { ModalScreen } from '../screens/ModalScreen';
 
 import { DependentScreen } from '../screens/DependentScreen';
-import { WelcomeScreen } from '../presentation/screens/home/WelcomeFigmaScreen';
+import { WelcomeScreen } from '../screens/WelcomeFigmaScreen';
 import { SendPhoneFigmaScreen } from '../screens/SendPhoneFigmaScreen';
 import { SendCodeFigmaScreen } from '../screens/SendCodeFigmaScreen';
 import { SeguridadFigmaScreen } from '../screens/SeguridadFigmaScreen';

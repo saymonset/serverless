@@ -1,6 +1,6 @@
 import { AnyAction } from 'redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import vaccinesApi from '../../../config/api/vaccinesApi'
+import vaccinesApi from '../../../api/vaccinesApi'
 import {   startLoadingRegister,stopLoadingRegister, setRegisterResponse, addMessage,removeMessage, setPassword ,
   setResp } from './registerSlice'
 import {  Register } from '../../../interfaces/register-interfaces';

@@ -3,7 +3,7 @@ import React from 'react';
 import { useEffect } from 'react';
 import { View, Platform, StyleSheet, Text } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
-import vaccinesApi from '../config/api/vaccinesApi';
+import vaccinesApi from '../api/vaccinesApi';
 
 interface Props {
     onPress: (value:string)=> void;
