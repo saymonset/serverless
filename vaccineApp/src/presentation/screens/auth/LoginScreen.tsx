@@ -5,6 +5,7 @@ import { ScrollView } from 'react-native-gesture-handler'
 import { useWindowDimensions } from 'react-native';
 import { RootStackParams } from '../../../navigator/StackNavigator';
 import { MyIcon } from '../../components/ui/MyIcon';
+import { API_URL, STAGE } from '@env';
 
 interface Props extends StackScreenProps<RootStackParams, 'LoginScreen'> {}
 
@@ -19,6 +20,8 @@ export const LoginScreen =  ({ navigation }:Props) => {
     });
   
     const {height} = useWindowDimensions();
+
+    console.log({API_URL, STAGE})
   
     const onLogin = async() => {
       // if ( form.email.length === 0 || form.password.length === 0 ) {
