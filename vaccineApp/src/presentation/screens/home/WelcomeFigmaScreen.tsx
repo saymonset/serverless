@@ -4,6 +4,7 @@ import { Button, Layout , Text} from '@ui-kitten/components';
 import React from 'react'
 import {  Image, Platform, useWindowDimensions } from 'react-native';
 import { RootStackParams } from '../../../navigator/StackNavigator';
+import { useSendSms } from '../../hooks/useSendSms';
 import { stylesFigma } from '../theme/appFigmaTheme';
  
 interface Props extends StackScreenProps<RootStackParams, 'WelcomeScreen'> {}
@@ -11,6 +12,16 @@ interface Props extends StackScreenProps<RootStackParams, 'WelcomeScreen'> {}
 export const WelcomeScreen = ({ navigation }:Props) => {
       {/*  Cargamos data en el contexto */}
       const {height} = useWindowDimensions();
+
+
+  const { sendSmsPhone  } =  useSendSms();
+
+
+      const sendSms = ()  =>{
+        sendSmsPhone();
+        navigation.navigate('HomeScreen');
+        
+      }
   return (
     <>
     <Layout style={{flex:1, backgroundColor: '#80BFFF'}}>
@@ -39,7 +50,7 @@ export const WelcomeScreen = ({ navigation }:Props) => {
           <Button 
             disabled={false}
            
-            onPress={() => navigation.navigate('SendPhoneFigmaScreen')}>Comienza ahora</Button>
+            onPress={sendSms}>Comienza ahora</Button>
         </Layout>
           {/* Text */}
           <Layout style={{backgroundColor: '#80BFFF', flex:1, justifyContent:'center', alignItems:'center',

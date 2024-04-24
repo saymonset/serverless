@@ -1,15 +1,25 @@
 import React from 'react'
-import { Icon, Layout, Text, Button } from '@ui-kitten/components';
 import { MainLayout } from '../../layouts/MainLayout';
+import { useSendSms } from '../../hooks/useSendSms';
+import { SendPhoneFigmaScreen } from './SendPhoneFigmaScreen';
+import { SendRegisterFigmaScreen } from './SendRegisterFigmaScreen';
+import { SendCodeFigmaScreen } from './SendCodeFigmaScreen';
 
 function HomeScreen() {
+
+  const { sendSmsStatus  } =  useSendSms();
+
+ 
+
   return (
     <>
 
-<MainLayout
+      <MainLayout
         title="Vaccines"
         subTitle="Aplicación vaccines">
-        <Text> Hola mundo</Text>
+        { (sendSmsStatus === 'isPhone') && <SendPhoneFigmaScreen/> }
+        { (sendSmsStatus === 'isCode') && <SendCodeFigmaScreen/> }
+        { (sendSmsStatus === 'isRegister') && <SendRegisterFigmaScreen/> }
       </MainLayout>
     </>
   )

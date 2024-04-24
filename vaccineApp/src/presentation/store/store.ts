@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { counterSlice } from './slices/counter'
 import { loginSlice } from './slices/login'
+import { sendSmsSlice } from './slices/sendSms'
 export const store = configureStore({
   reducer: {
     counter: counterSlice.reducer,
     loginStore: loginSlice.reducer,
+    sendSmsStore: sendSmsSlice.reducer,
   },
 })
 

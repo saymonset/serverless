@@ -1,35 +1,24 @@
 import { StackScreenProps } from '@react-navigation/stack'
 import { Button, Input, Layout, Text } from '@ui-kitten/components'
-import React, { useEffect, useRef, useState } from 'react'
-import { Alert, Platform, ScrollView } from 'react-native'
+import React, { useRef, useState } from 'react'
+import { Platform, ScrollView } from 'react-native'
 import { RootStackParams } from '../../../navigator/StackNavigator'
-import { useSendSms } from '../../hooks/useSendSms'
 import { MainLayout } from '../../layouts/MainLayout'
 import { stylesFigma } from '../theme/appFigmaTheme'
 
 
-interface Props extends StackScreenProps<RootStackParams, 'SendPhoneFigmaScreen'> {}
-export const SendPhoneFigmaScreen = () => {
+interface Props extends StackScreenProps<RootStackParams, 'SendRegisterFigmaScreen'> {}
+export const SendRegisterFigmaScreen = () => {
 
     const [ inputValue, setInputValue ] = useState('');
     const [ codValue, setCodValue ] = useState('');
     const inputRef = useRef(null);
-
-    const { message, removeError, isLoading, enviarCodeSendSms } =  useSendSms();
-
-    const cerrarModal = () => {
-        Alert.alert('Error', message);
-        //Borramos mensajes del thrunk
-        removeError();
-  }
-    
 
     const onSubmit = async( ) => {
         console.log('pasa');
         if( codValue.trim().length <= 1) return;
         if( inputValue.trim().length <= 1) return;
         let phone = codValue.trim()+inputValue.trim();
-        enviarCodeSendSms(phone);
            {/* Una vez que mande el phone, se actualiza una bandera en el store isSendCode y 
                                   esta en true  te redirije a colocar el codigo envisdo 
                               en  la pantala SendPhoneFigmaScreen en cerrarModal */}
@@ -49,30 +38,17 @@ export const SendPhoneFigmaScreen = () => {
              inputRef.current.focus(); // Salta al campo inputValue
           }
     }
-
-         {/* Solo para sacar mensajes de error por pantalla */}
-         useEffect(() => {
-            if( message && message.length === 0 ) return;
-                 // Si la respuesta es positiva entonces no sacamos ningun mensaje en el modal y nos vamos a otra pagina
-            if( message && message.length > 0 )  cerrarModal();;      
-                   
-                 
-        }, [ message ])
     
   return (
     <>
-
  
         <Layout style={{ flex:1 }}>
         <ScrollView style={{marginHorizontal: 10}}>
         
                {/* Background */} 
-          <Text style={[stylesFigma.title, {textAlign:'left', left:10}]} category="h1">Ingresa tu número de teléfono</Text>
+          <Text style={[stylesFigma.title, {textAlign:'left', left:10}]} category="h1">Registrar</Text>
           
-          <Text style={[stylesFigma.titlesecund, {textAlign:'left', left:10, marginTop:60}]}>Te enviaremos un mensaje SMS para verificar tu número de teléfono</Text>
-
-          
-          <Text style={[stylesFigma.titlesecund, {textAlign:'left', left:10, marginTop:100}]}>Número de télefono</Text>
+           
 
              {/* Inputs */}
             <Layout style={{flex:1, flexDirection:'row', justifyContent:'space-between',marginTop: 10}}>
@@ -122,7 +98,7 @@ export const SendPhoneFigmaScreen = () => {
                         {/* Button */}
                         <Layout style={{marginTop:(Platform.OS === 'ios') ? 20: 20, marginHorizontal:80 }}>
                                 <Button 
-                                    disabled={isLoading}
+                                    disabled={false}
                                 
                                     onPress={onSubmit}>Enviar código</Button>
                         </Layout>
@@ -130,6 +106,7 @@ export const SendPhoneFigmaScreen = () => {
 
         </ScrollView>   
          </Layout>
+     
     </>
   )
 }

@@ -7,9 +7,7 @@ import { LoginResponse } from "../interfaces/login.responses";
 
 
 export class LoginMapper {
-
   static loginResponseToEntity( loginResponse: LoginResponse ):User {
-
     return {
       statusCode: loginResponse.statusCode ?? undefined,
       token:      loginResponse.token ?? undefined,
@@ -18,8 +16,5 @@ export class LoginMapper {
       resp:       loginResponse.resp ?? undefined,
       message:    loginResponse.message ?? undefined,
     }
-
   }
-
-
 }
