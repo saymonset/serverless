@@ -28,6 +28,11 @@ export const stylesFigma = StyleSheet.create({
         color: 'black',
         marginHorizontal:30
     },
+    titlesecundclear: {
+        fontSize: 15,
+        textAlign:"left",
+        marginHorizontal:30
+    },
     buttonContainer: {
         alignItems: 'center',
         marginTop: 50,
@@ -53,6 +58,17 @@ export const stylesFigma = StyleSheet.create({
         textAlign: 'center',
        // fontWeight: 'bold', // Add this line to make the text bold
         },
+    inputFieldIOS: {
+        marginTop:5,
+        borderBottomColor: 'gray',
+        borderBottomWidth: 2,
+        paddingBottom: 4,
+    
+    },
+    inputField: {
+        color:'black',
+        fontSize: 20,
+    },
     newUserContainer: {
         alignItems: 'flex-end',
         marginTop: 10

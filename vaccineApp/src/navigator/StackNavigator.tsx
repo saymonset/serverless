@@ -5,6 +5,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from '../presentation/screens/home/HomeScreen';
 import { LoginScreen } from '../presentation/screens/auth/LoginScreen';
 import RegisterScreen from '../presentation/screens/auth/RegisterScreen';
+import { useDispatch } from 'react-redux';
+import { SendPhoneFigmaScreen } from '../presentation/screens/home/SendPhoneFigmaScreen';
 
  
 
@@ -14,6 +16,7 @@ export type RootStackParams = {
   RegisterScreen: undefined;
   HomeScreen: undefined;
   WelcomeScreen: undefined;
+  SendPhoneFigmaScreen: undefined;
    
 }
 
@@ -23,7 +26,7 @@ export const  StackNavigator = () => {
  
   return (
     <Stack.Navigator 
-       initialRouteName="WelcomeScreen"
+       initialRouteName="SendPhoneFigmaScreen"
        screenOptions={{
         headerShown: false,
         cardStyle: {
@@ -36,6 +39,7 @@ export const  StackNavigator = () => {
                   <Stack.Screen name="HomeScreen" component={   HomeScreen } />
                   <Stack.Screen name="LoginScreen" component={   LoginScreen } />
                   <Stack.Screen name="RegisterScreen" component={   RegisterScreen } />
+                  <Stack.Screen name="SendPhoneFigmaScreen" component={   SendPhoneFigmaScreen } />
   
      
       

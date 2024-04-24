@@ -1,14 +1,14 @@
 
+import { StackScreenProps } from '@react-navigation/stack';
 import { Button, Layout , Text} from '@ui-kitten/components';
 import React from 'react'
 import {  Image, Platform, useWindowDimensions } from 'react-native';
- 
+import { RootStackParams } from '../../../navigator/StackNavigator';
 import { stylesFigma } from '../theme/appFigmaTheme';
  
- 
+interface Props extends StackScreenProps<RootStackParams, 'WelcomeScreen'> {}
 
-
-export const WelcomeScreen = () => {
+export const WelcomeScreen = ({ navigation }:Props) => {
       {/*  Cargamos data en el contexto */}
       const {height} = useWindowDimensions();
   return (
@@ -39,7 +39,7 @@ export const WelcomeScreen = () => {
           <Button 
             disabled={false}
            
-            onPress={() => {}}>Comienza ahora</Button>
+            onPress={() => navigation.navigate('SendPhoneFigmaScreen')}>Comienza ahora</Button>
         </Layout>
           {/* Text */}
           <Layout style={{backgroundColor: '#80BFFF', flex:1, justifyContent:'center', alignItems:'center',
@@ -48,7 +48,7 @@ export const WelcomeScreen = () => {
              status="primary" 
              category="s1"
                style={{ backgroundColor: '#80BFFF',marginTop:(Platform.OS==='ios')?-60:-180 }}
-                onPress={() => {}}
+                onPress={() => navigation.navigate('LoginScreen')}
               >
              Inicia sessión
           </Text>

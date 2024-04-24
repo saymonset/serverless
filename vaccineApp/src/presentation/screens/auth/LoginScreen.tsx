@@ -28,9 +28,7 @@ export const LoginScreen =  ({ navigation }:Props) => {
       if ( form.email.length === 0 || form.password.length === 0 ) {
         return;
       }
-     console.log('----------1-----------');
      // const wasSuccessful = dispatch(loginCiThunks({ ci: form.email, password: form.password }));
-      console.log('----------2----------');
       login( form.email, form.password);
       //if ( wasSuccessful ) return;
     }
@@ -111,7 +109,7 @@ export const LoginScreen =  ({ navigation }:Props) => {
             status="primary" 
             category="s1"
             // onPress={() => dispatch(increment())}
-            onPress={() => dispatch(increment())}
+            onPress={() => navigation.navigate('LoginScreen')}
           >
             {' '}
             crea una{' '}
