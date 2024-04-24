@@ -23,7 +23,7 @@ export const  StackNavigator = () => {
  
   return (
     <Stack.Navigator 
-       initialRouteName="LoginScreen"
+       initialRouteName="WelcomeScreen"
        screenOptions={{
         headerShown: false,
         cardStyle: {

@@ -1,2 +1,2 @@
 export * from './loginSlice'
-export * from './loginThunks.ts'
+export * from './loginThunks'
