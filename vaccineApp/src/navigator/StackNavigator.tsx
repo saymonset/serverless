@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux';
 import { SendPhoneFigmaScreen } from '../presentation/screens/home/SendPhoneFigmaScreen';
 import { SendCodeFigmaScreen } from '../presentation/screens/home/SendCodeFigmaScreen';
 import { SendRegisterFigmaScreen } from '../presentation/screens/home/SendRegisterFigmaScreen';
+import { SeguridadFigmaScreen } from '../presentation/screens/home/SeguridadFigmaScreen';
 
  
 
@@ -21,6 +22,7 @@ export type RootStackParams = {
   SendPhoneFigmaScreen: undefined;
   SendCodeFigmaScreen: undefined;
   SendRegisterFigmaScreen: undefined;
+  SeguridadFigmaScreen: undefined;
    
 }
 
@@ -46,6 +48,7 @@ export const  StackNavigator = () => {
                   <Stack.Screen name="SendPhoneFigmaScreen" component={   SendPhoneFigmaScreen } />
                   <Stack.Screen name="SendCodeFigmaScreen" component={   SendCodeFigmaScreen } />
                   <Stack.Screen name="SendRegisterFigmaScreen" component={   SendRegisterFigmaScreen } />
+                  <Stack.Screen name="SeguridadFigmaScreen" component={   SeguridadFigmaScreen } />
   
      
       

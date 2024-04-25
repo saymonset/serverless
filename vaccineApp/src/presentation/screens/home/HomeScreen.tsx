@@ -4,6 +4,7 @@ import { useSendSms } from '../../hooks/useSendSms';
 import { SendPhoneFigmaScreen } from './SendPhoneFigmaScreen';
 import { SendRegisterFigmaScreen } from './SendRegisterFigmaScreen';
 import { SendCodeFigmaScreen } from './SendCodeFigmaScreen';
+import { SeguridadFigmaScreen } from './SeguridadFigmaScreen';
 
 function HomeScreen() {
 
@@ -19,6 +20,7 @@ function HomeScreen() {
         subTitle="Aplicación vaccines">
         { (sendSmsStatus === 'isPhone') && <SendPhoneFigmaScreen/> }
         { (sendSmsStatus === 'isCode') && <SendCodeFigmaScreen/> }
+        { (sendSmsStatus === 'isSeguridad') && <SeguridadFigmaScreen/> }
         { (sendSmsStatus === 'isRegister') && <SendRegisterFigmaScreen/> }
       </MainLayout>
     </>

@@ -9,6 +9,7 @@ export interface SendSmsState {
     sendSmsStatus: SendSmsStatus;
     token?: string | null;
     message?: string;
+    password?:string;
     
     
   }
@@ -21,6 +22,7 @@ export interface SendSmsState {
     sendSmsStatus:'',
     token: '',
     message: '',
+    password:'',
   };
 
 export const sendSmsSlice = createSlice({
@@ -40,9 +42,14 @@ export const sendSmsSlice = createSlice({
             state.code = payload.code;
             state.isLoading = false;
         },
+        sendSeguridadStore: (state, { payload } ) => {
+            state.sendSmsStatus = 'isSeguridad';
+            state.token = payload.token;
+            state.isLoading = false;
+        },
         sendRegisterStore: (state, { payload } ) => {
             state.sendSmsStatus = 'isRegister';
-            state.token = payload.token;
+            state.password = payload.password;
             state.isLoading = false;
         },
        addErrorStore: ( state, { payload } ) =>{
@@ -60,4 +67,6 @@ export const sendSmsSlice = createSlice({
     }
 });
 // Action creators are generated for each case reducer function
-export const { startLoadingStore, sendPhoneStore, sendCodeStore, sendRegisterStore, addErrorStore, removeErrorStore  } = sendSmsSlice.actions;
+export const { startLoadingStore, sendPhoneStore, sendCodeStore, 
+    sendRegisterStore, addErrorStore, removeErrorStore,
+    sendSeguridadStore  } = sendSmsSlice.actions;

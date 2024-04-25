@@ -8,7 +8,10 @@ import { StackNavigator } from './navigator/StackNavigator';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import { Provider } from 'react-redux';
 import { store } from './presentation/store';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
  
+// Create a client
+const queryClient = new QueryClient()
 
 export const VaccineApp = () => {
     const colorScheme = useColorScheme();
@@ -18,7 +21,7 @@ export const VaccineApp = () => {
         ? theme['color-basic-800']
         : theme['color-basic-100'];
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
    
            <IconRegistry icons={EvaIconsPack} />
             <ApplicationProvider {...eva} theme={theme}>
@@ -30,7 +33,7 @@ export const VaccineApp = () => {
             </ApplicationProvider>
    
            
-    </>
+    </QueryClientProvider>
     
 
   )

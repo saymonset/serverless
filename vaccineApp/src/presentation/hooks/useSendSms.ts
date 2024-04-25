@@ -6,7 +6,7 @@ import { CheckCode } from '../../domain/entities/CheckCode';
 import { SendSms } from '../../domain/entities/SendSms';
 import { SendSmsStatus } from '../../infrastructure/interfaces/sendSms.status';
 import { RootState } from '../store';
-import { addErrorStore, removeErrorStore, sendCodeStore, sendPhoneStore, sendRegisterStore, startLoadingStore } from '../store/slices/sendSms';
+import { addErrorStore, removeErrorStore, sendCodeStore, sendPhoneStore, sendRegisterStore, sendSeguridadStore, startLoadingStore } from '../store/slices/sendSms';
 
 export const useSendSms = () => {
   
@@ -65,13 +65,9 @@ export const useSendSms = () => {
     }
 
     const checkCode = async ( phone: string, code: string ) => {
-
       try {
         dispatch( startLoadingStore());
-
-        
           let data: CheckCode =  await checkCodeAction(phone, code);
-       
           let { resp, message, token} = data; 
           if (!message) {
                message = '';
@@ -85,16 +81,25 @@ export const useSendSms = () => {
               phone,
               resp
             };
+          dispatch( sendSeguridadStore(payload) );
+      } catch (error) {
+           dispatch( addErrorStore("Error: "+error));
+      }
+    }
+    const putPassword = async ( password: string ) => {
+      try {
+        dispatch( startLoadingStore());
+           
+           let payload = {
+              password
+            };
           dispatch( sendRegisterStore(payload) );
-
-         
-
-      
       } catch (error) {
            dispatch( addErrorStore("Error: "+error));
       }
     }
 
+    
     const reEnviarCode = async (phone:string) =>{
         enviarCodeSendSms(phone)
     }
@@ -107,6 +112,7 @@ export const useSendSms = () => {
     removeError,
     reEnviarCode,
     checkCode,
+    putPassword,
     code,
     phone,
     isLoading, 
