@@ -4,7 +4,7 @@ import * as eva from '@eva-design/eva';
 import React from 'react'
 import { Text, useColorScheme, View} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { StackNavigator } from './navigator/StackNavigator';
+import { StackNavigator } from './presentation/navigation/StackNavigator';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import { Provider } from 'react-redux';
 import { store } from './presentation/store';

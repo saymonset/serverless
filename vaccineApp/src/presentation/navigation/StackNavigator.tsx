@@ -1,15 +1,15 @@
 import  React from 'react';
  
-import { WelcomeScreen } from '../presentation/screens/home/WelcomeFigmaScreen';
+import { WelcomeScreen } from '../screens/home/WelcomeFigmaScreen';
 import { createStackNavigator } from '@react-navigation/stack';
-import HomeScreen from '../presentation/screens/home/HomeScreen';
-import { LoginScreen } from '../presentation/screens/auth/LoginScreen';
-import RegisterScreen from '../presentation/screens/auth/RegisterScreen';
+import HomeScreen from '../screens/home/HomeScreen';
+import { LoginScreen } from '../screens/auth/LoginScreen';
+import RegisterScreen from '../screens/auth/RegisterScreen';
 import { useDispatch } from 'react-redux';
-import { SendPhoneFigmaScreen } from '../presentation/screens/home/SendPhoneFigmaScreen';
-import { SendCodeFigmaScreen } from '../presentation/screens/home/SendCodeFigmaScreen';
-import { SendRegisterFigmaScreen } from '../presentation/screens/home/SendRegisterFigmaScreen';
-import { SeguridadFigmaScreen } from '../presentation/screens/home/SeguridadFigmaScreen';
+import { SendPhoneFigmaScreen } from '../screens/home/SendPhoneFigmaScreen';
+import { SendCodeFigmaScreen } from '../screens/home/SendCodeFigmaScreen';
+import { SendRegisterFigmaScreen } from '../screens/home/SendRegisterFigmaScreen';
+import { SeguridadFigmaScreen } from '../screens/home/SeguridadFigmaScreen';
 
  
 
@@ -32,7 +32,7 @@ export const  StackNavigator = () => {
  
   return (
     <Stack.Navigator 
-       initialRouteName="WelcomeScreen"
+       initialRouteName="SendRegisterFigmaScreen"
        screenOptions={{
         headerShown: false,
         cardStyle: {

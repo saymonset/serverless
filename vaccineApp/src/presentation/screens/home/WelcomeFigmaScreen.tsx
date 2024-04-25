@@ -3,7 +3,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { Button, Layout , Text} from '@ui-kitten/components';
 import React from 'react'
 import {  Image, Platform, useWindowDimensions } from 'react-native';
-import { RootStackParams } from '../../../navigator/StackNavigator';
+import { RootStackParams } from '../../navigation/StackNavigator';
 import { useSendSms } from '../../hooks/useSendSms';
 import { stylesFigma } from '../theme/appFigmaTheme';
  

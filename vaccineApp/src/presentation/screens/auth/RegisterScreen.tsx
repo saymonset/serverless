@@ -1,7 +1,7 @@
 import { ScrollView, useWindowDimensions, View } from 'react-native'
 import React, { Component } from 'react'
 import { StackScreenProps } from '@react-navigation/stack'
-import { RootStackParams } from '../../../navigator/StackNavigator'
+import { RootStackParams } from '../../navigation/StackNavigator'
 import { Button, Input, Layout, Text } from '@ui-kitten/components'
 import { MyIcon } from '../../components/ui/MyIcon'
 

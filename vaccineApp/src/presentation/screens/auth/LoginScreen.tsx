@@ -3,7 +3,7 @@ import { Button, Input, Layout, Text } from '@ui-kitten/components'
 import { useEffect, useState } from 'react';
 import { ScrollView } from 'react-native-gesture-handler'
 import { Alert, useWindowDimensions } from 'react-native';
-import { RootStackParams } from '../../../navigator/StackNavigator';
+import { RootStackParams } from '../../navigation/StackNavigator';
 import { MyIcon } from '../../components/ui/MyIcon';
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '../../store';

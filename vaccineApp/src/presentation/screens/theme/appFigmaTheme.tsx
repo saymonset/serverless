@@ -69,6 +69,10 @@ export const stylesFigma = StyleSheet.create({
         color:'black',
         fontSize: 20,
     },
+    label: {
+        color: 'black',
+        fontWeight: 'bold',
+    },
     newUserContainer: {
         alignItems: 'flex-end',
         marginTop: 10
