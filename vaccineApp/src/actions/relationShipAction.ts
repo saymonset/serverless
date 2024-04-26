@@ -1,5 +1,5 @@
 import vaccinesApi from "../config/api/vaccinesApi";
-import {  GenderElement, GenderResponse } from "../infrastructure/interfaces/gender";
+import { Relationship, RelationShipResponse } from "../infrastructure/interfaces/relationship";
 
 
 // const returnMapper = ( data: SendSMSResponse ): SendSms => {
@@ -7,12 +7,12 @@ import {  GenderElement, GenderResponse } from "../infrastructure/interfaces/gen
 //   }
   
 
-  export const getGendersAction = async ():Promise<GenderElement[] > => {
+  export const relationShipAction = async ():Promise<Relationship[] > => {
     try {
-      let  { data } = await vaccinesApi.get<GenderResponse>(`/genders/20/0`);
-      let genders : GenderElement[] = data?.genders ?? [];
+      let  { data } = await vaccinesApi.get<RelationShipResponse>(`/relationships/20/0`);
+      let objs : Relationship[] = data?.relationships ?? [];
       
-      return genders;
+      return objs;
     } catch (error) {
       const message = error instanceof Error ? error.message : 'An unknown error occurred';
       return {

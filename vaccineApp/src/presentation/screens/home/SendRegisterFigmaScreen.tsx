@@ -11,12 +11,14 @@ import { Municipios } from '../../components/Municipios'
 import { SelectSimpleUsageShowcase } from '../../components/ui/SelectSimpleUsageShowcase'
 import { useGender } from '../../hooks/useGender'
 import { selectOption } from '../../../infrastructure/interfaces/select-option'
+import { useRelationShip } from '../../hooks/useRelationShip'
 
 
 interface Props extends StackScreenProps<RootStackParams, 'SendRegisterFigmaScreen'> {}
 export const SendRegisterFigmaScreen = () => {
     const {height} = useWindowDimensions(); 
     const { loadGender, isLoading, genders } =  useGender();
+    const { loadRelationShip, isLoading:isLoadingrc, relationships } =  useRelationShip();
     
 
      
@@ -30,6 +32,7 @@ export const SendRegisterFigmaScreen = () => {
     const handlerGender = (  value : selectOption) => {
         console.log( value);
     }
+  
 
     const onSubmit = async( ) => {
         console.log('pasa');
@@ -57,6 +60,7 @@ export const SendRegisterFigmaScreen = () => {
    useEffect(() => {
    
     loadGender();
+    loadRelationShip();
    }, [])
    
 
@@ -145,6 +149,7 @@ export const SendRegisterFigmaScreen = () => {
                                         items={ genders} 
                                         onPress = { handlerGender}></SelectSimpleUsageShowcase>
                         </Layout> )}
+                  
                            {/* CEDULA */}
                         <Layout style = {{ marginVertical:20}}>
                                     <Text style={ stylesFigma.label }>Cedula:<Text style={{ color: 'skyblue' }}> *</Text></Text>
