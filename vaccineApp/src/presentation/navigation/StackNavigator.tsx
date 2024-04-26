@@ -32,7 +32,7 @@ export const  StackNavigator = () => {
  
   return (
     <Stack.Navigator 
-       initialRouteName="SendRegisterFigmaScreen"
+       initialRouteName="WelcomeScreen"
        screenOptions={{
         headerShown: false,
         cardStyle: {

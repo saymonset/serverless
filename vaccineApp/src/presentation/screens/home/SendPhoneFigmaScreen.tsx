@@ -80,7 +80,7 @@ export const SendPhoneFigmaScreen = () => {
                         <Input
                         placeholder="+58"
                         placeholderTextColor="rgba(0,0,0,0.4)"
-                        underlineColorAndroid="rgba(0,0,0,0.4)"
+                        underlineColorAndroid="rgba(0,0,0,0)"
                         style={[ 
                             stylesFigma.inputField,
                             ( Platform.OS === 'ios' ) && stylesFigma.inputFieldIOS
@@ -98,7 +98,7 @@ export const SendPhoneFigmaScreen = () => {
                             ref={inputRef} // Referencia al campo inputValue
                             placeholder="Número de télefono"
                             placeholderTextColor="rgba(0,0,0,0.4)"
-                            underlineColorAndroid="rgba(0,0,0,0.4)"
+                            underlineColorAndroid="rgba(0,0,0,0)"
                             style={[ 
                                 stylesFigma.inputField,
                                 ( Platform.OS === 'ios' ) && stylesFigma.inputFieldIOS

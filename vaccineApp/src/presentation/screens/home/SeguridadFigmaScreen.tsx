@@ -77,7 +77,7 @@ export const SeguridadFigmaScreen = () => {
                             <Input
                                     placeholder="******"
                                     placeholderTextColor="rgba(0,0,0,0.4)"
-                                    underlineColorAndroid="rgba(0,0,0,0.4)"
+                                    underlineColorAndroid="rgba(0,0,0,0)"
                                     secureTextEntry={secureText}
                                     maxLength={16}
                                     style={[ 

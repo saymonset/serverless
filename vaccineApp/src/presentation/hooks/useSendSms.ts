@@ -7,6 +7,7 @@ import { SendSms } from '../../domain/entities/SendSms';
 import { SendSmsStatus } from '../../infrastructure/interfaces/sendSms.status';
 import { RootState } from '../store';
 import { addErrorStore, removeErrorStore, sendCodeStore, sendPhoneStore, sendRegisterStore, sendSeguridadStore, startLoadingStore } from '../store/slices/sendSms';
+import { StorageAdapter } from '../../config/adapters/storage-adapter';
 
 export const useSendSms = () => {
   
@@ -82,8 +83,10 @@ export const useSendSms = () => {
               resp
             };
           dispatch( sendSeguridadStore(payload) );
+         await StorageAdapter.setItem('token', token ?? '');
       } catch (error) {
            dispatch( addErrorStore("Error: "+error));
+           StorageAdapter.removeItem('token');
       }
     }
     const putPassword = async ( password: string ) => {

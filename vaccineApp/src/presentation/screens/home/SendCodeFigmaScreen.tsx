@@ -15,7 +15,7 @@ export const SendCodeFigmaScreen = () => {
     const [ codValue, setCodValue ] = useState('');
     const inputRef = useRef(null);
 
-    const { message, phone , code, reEnviarCode, removeError, checkCode, isLoading} =  useSendSms();
+    const { message, phone , reEnviarCode, removeError, checkCode, isLoading} =  useSendSms();
 
     const onSubmit = async ( ) => {
         if( inputValue.trim().length <= 1) return;
@@ -59,12 +59,12 @@ export const SendCodeFigmaScreen = () => {
 
              {/* Inputs */}
             <Layout style={{flex:1, flexDirection:'row', justifyContent:'space-between',marginTop: 10}}>
-                <Layout   style={{flex:2, right: ( Platform.OS === 'ios' )?0:90, marginBottom:0}}>
+                <Layout   style={{flex:2, right: ( Platform.OS === 'ios' )?0:0, marginBottom:0}}>
                     <Input
 
                             placeholder="123456 |"
                             placeholderTextColor="rgba(0,0,0,0.4)"
-                            underlineColorAndroid="rgba(0,0,0,0.4)"
+                            underlineColorAndroid="rgba(0,0,0,0)"
                             style={[ 
                                 stylesFigma.inputField,
                                 ( Platform.OS === 'ios' ) && stylesFigma.inputFieldIOS,

@@ -1,6 +1,6 @@
 import { StackScreenProps } from '@react-navigation/stack'
 import { Button, Input, Layout, Text , Datepicker} from '@ui-kitten/components'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Platform, ScrollView, useWindowDimensions } from 'react-native'
 import { RootStackParams } from '../../navigation/StackNavigator'
 import { stylesFigma } from '../theme/appFigmaTheme'
@@ -9,18 +9,27 @@ import { StyleSheet } from 'react-native';
 import { Estados } from '../../components/Estados'
 import { Municipios } from '../../components/Municipios'
 import { SelectSimpleUsageShowcase } from '../../components/ui/SelectSimpleUsageShowcase'
+import { useGender } from '../../hooks/useGender'
+import { selectOption } from '../../../infrastructure/interfaces/select-option'
 
 
 interface Props extends StackScreenProps<RootStackParams, 'SendRegisterFigmaScreen'> {}
 export const SendRegisterFigmaScreen = () => {
-
     const {height} = useWindowDimensions(); 
+    const { loadGender, isLoading, genders } =  useGender();
+    
+
+     
 
     const [ date, setDate ] = useState(new Date());
     const inputRef = useRef(null);
     const [idEstado, setIdEstado] = useState(0);
     const [estado, setEstado] = useState('');
     const [municipio, setMunicipio] = useState('');
+
+    const handlerGender = (  value : selectOption) => {
+        console.log( value);
+    }
 
     const onSubmit = async( ) => {
         console.log('pasa');
@@ -43,6 +52,14 @@ export const SendRegisterFigmaScreen = () => {
         setMunicipio(value?.capital);
        
    }
+ 
+
+   useEffect(() => {
+   
+    loadGender();
+   }, [])
+   
+
   return (
     <>
          <Layout style={{ flex:1 }}>
@@ -122,10 +139,12 @@ export const SendRegisterFigmaScreen = () => {
                         </Layout>   
 
                         {/* SEXO */}
-                        <Layout style = {{ marginVertical:20}}>
+                       {genders &&(<Layout style = {{ marginVertical:20}}>
                                 <Text style={ stylesFigma.label }>Sexo:<Text style={{ color: 'skyblue' }}> *</Text></Text>
-                                <SelectSimpleUsageShowcase></SelectSimpleUsageShowcase>
-                        </Layout> 
+                                <SelectSimpleUsageShowcase 
+                                        items={ genders} 
+                                        onPress = { handlerGender}></SelectSimpleUsageShowcase>
+                        </Layout> )}
                            {/* CEDULA */}
                         <Layout style = {{ marginVertical:20}}>
                                     <Text style={ stylesFigma.label }>Cedula:<Text style={{ color: 'skyblue' }}> *</Text></Text>

@@ -1,9 +1,10 @@
 import axios from 'axios';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
+ 
 // import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { STAGE, API_URL as PROD_URL, API_URL_IOS as API_URL_IOS, API_URL_ANDROID as API_URL_ANDROID} from '@env';
 import { Platform } from 'react-native';
+import { StorageAdapter } from '../adapters/storage-adapter';
 //import { logoutThunks } from '../../presentation/store';
 
 
@@ -36,12 +37,13 @@ const logout =async () => {
 
 vaccinesApi.interceptors.request.use(
     async (config) => {
-        const token = null;//await AsyncStorage.getItem('token');
+        const token = await StorageAdapter.getItem('token');
+        //console.log({token})
         if (token) {
               config.headers['X-Token'] = `Bearer ${token}`;
               config.headers['Authorization'] = `Bearer ${token}`;
         }else{
-            logout();
+           //+58 logout();
         }
         return config;
     },
