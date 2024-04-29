@@ -6,6 +6,7 @@ import { RootStackParams } from '../../navigation/StackNavigator'
 import { useSendSms } from '../../hooks/useSendSms'
 import { MainLayout } from '../../layouts/MainLayout'
 import { stylesFigma } from '../theme/appFigmaTheme'
+import { LoadingScreen } from '../loading/LoadingScreen'
 
 
 interface Props extends StackScreenProps<RootStackParams, 'SendPhoneFigmaScreen'> {}
@@ -115,6 +116,8 @@ export const SendPhoneFigmaScreen = () => {
             </Layout>
 
             <Layout style={{ flex:1 }}>
+                       {  isLoading && (  <LoadingScreen />  )}
+
                         <Text style={[stylesFigma.titlesecund, {textAlign:'left', left:10, marginTop:20}]}>
                         Al continuar acepta nuestra Politica de Privacidad y
                                                 acepta que ha leído nuestros Términos y condiciones de Uso.

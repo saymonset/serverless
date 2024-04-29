@@ -1,3 +1,3 @@
 
 
-export type SendSmsStatus = 'isPhone' | 'isCode' | 'isRegister' | 'isSeguridad' | '';
+export type SendSmsStatus = 'isPhone' | 'isCode' | 'isRegister' | 'isSeguridad' | 'isLogin' | '';

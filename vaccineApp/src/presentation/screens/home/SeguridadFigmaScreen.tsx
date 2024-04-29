@@ -7,6 +7,7 @@ import { MyIcon } from '../../components/ui/MyIcon'
 import { useSendSms } from '../../hooks/useSendSms'
 import { MainLayout } from '../../layouts/MainLayout'
 import { stylesFigma } from '../theme/appFigmaTheme'
+import { LoadingScreen } from '../loading/LoadingScreen'
 
 
 interface Props extends StackScreenProps<RootStackParams, 'SeguridadFigmaScreen'> {}
@@ -115,7 +116,8 @@ export const SeguridadFigmaScreen = () => {
                           
 
                       
-                       
+                       {  isLoading && (  <LoadingScreen />  )}
+
                         <Layout style={{marginTop:(Platform.OS === 'ios') ? 20: 20, marginHorizontal:80 }}>
                                 <Button 
                                     disabled={isLoading}

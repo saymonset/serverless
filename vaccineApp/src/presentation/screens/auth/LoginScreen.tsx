@@ -49,7 +49,7 @@ export const LoginScreen =  ({ navigation }:Props) => {
        {/* Solo para sacar mensajes de error por pantalla */}
        useEffect(() => {
         if( message?.length === 0 ) return;
-        Alert.alert('Error', message);
+        Alert.alert('Info', message);
        }, [ message ])
 
     return (

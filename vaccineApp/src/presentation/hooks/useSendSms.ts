@@ -1,17 +1,18 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { checkCodeAction } from '../../actions/checkCodeAction';
-import { enviarCode } from '../../actions/sendSmsAction';
+import { enviarCodeAction, reEnviarCodeAction } from '../../actions/sendSmsAction';
 import { CheckCode } from '../../domain/entities/CheckCode';
 import { SendSms } from '../../domain/entities/SendSms';
 import { SendSmsStatus } from '../../infrastructure/interfaces/sendSms.status';
 import { RootState } from '../store';
-import { addErrorStore, removeErrorStore, sendCodeStore, sendPhoneStore, sendRegisterStore, sendSeguridadStore, startLoadingStore } from '../store/slices/sendSms';
+import { addErrorStore, removeErrorStore, sendCodeStore, sendPhoneStore, sendRegisterStore, sendSeguridadStore, startLoadingStore,
+  sendIsLoginStore } from '../store/slices/sendSms';
 import { StorageAdapter } from '../../config/adapters/storage-adapter';
 
 export const useSendSms = () => {
   
-    const {  code, phone, isLoading, resp, sendSmsStatus, token, message
+    const {  code, phone, isLoading, resp, sendSmsStatus, token, message, password
      } = useSelector((state: RootState) => state.sendSmsStore);
 
      const dispatch = useDispatch();
@@ -41,10 +42,9 @@ export const useSendSms = () => {
 
 
     const enviarCodeSendSms = async ( phone: string ) => {
-
       try {
         dispatch( startLoadingStore());
-        let data: SendSms =  await enviarCode(phone);
+        let data: SendSms =  await enviarCodeAction(phone);
        
         let { resp, message, last_code:code} = data; 
         if (!message) {
@@ -60,10 +60,39 @@ export const useSendSms = () => {
             resp
           };
         dispatch( sendCodeStore(payload) );
+       
       } catch (error) {
            dispatch( addErrorStore("Error: "+error));
       }
     }
+    const reEnviarCodeSendSms = async ( phone: string ) => {
+      try {
+        dispatch( startLoadingStore());
+        let data: SendSms =  await reEnviarCodeAction(phone);
+       
+        let { resp, message, last_code:code} = data; 
+        if (!message) {
+             message = '';
+        }
+         if (!resp){
+          dispatch( addErrorStore("Error: "+message));
+          return;
+         }
+         let payload = {
+            code,
+            phone,
+            resp
+          };
+        dispatch( sendCodeStore(payload) );
+       
+      } catch (error) {
+           dispatch( addErrorStore("Error: "+error));
+      }
+    }
+
+     
+
+    
 
     const checkCode = async ( phone: string, code: string ) => {
       try {
@@ -104,7 +133,7 @@ export const useSendSms = () => {
 
     
     const reEnviarCode = async (phone:string) =>{
-        enviarCodeSendSms(phone)
+        reEnviarCodeSendSms(phone)
     }
 
   return {
@@ -116,6 +145,8 @@ export const useSendSms = () => {
     reEnviarCode,
     checkCode,
     putPassword,
+   
+    password,
     code,
     phone,
     isLoading, 

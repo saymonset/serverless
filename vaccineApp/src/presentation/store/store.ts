@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit'
 import { counterSlice } from './slices/counter'
 import { genderSlice } from './slices/gender'
 import { loginSlice } from './slices/login'
+import { registerSlice } from './slices/register'
 import { relationShipSlice } from './slices/relationShip'
 import { sendSmsSlice } from './slices/sendSms'
 export const store = configureStore({
@@ -11,6 +12,7 @@ export const store = configureStore({
     sendSmsStore: sendSmsSlice.reducer,
     genderStore: genderSlice.reducer,
     relationShipStore: relationShipSlice.reducer,
+    registerStore: registerSlice.reducer,
   },
 })
 

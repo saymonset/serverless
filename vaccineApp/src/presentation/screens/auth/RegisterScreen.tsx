@@ -73,6 +73,8 @@ export const RegisterScreen =  ({ navigation }:Props) => {
             ingresar{' '}
           </Text>
         </Layout>
+        {/* Información para crear cuenta */}
+        <Layout style={{height: 150}} />
       </ScrollView>
     </Layout>
     )

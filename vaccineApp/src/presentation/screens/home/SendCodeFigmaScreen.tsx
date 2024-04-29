@@ -6,6 +6,7 @@ import { RootStackParams } from '../../navigation/StackNavigator'
 import { useSendSms } from '../../hooks/useSendSms'
 import { MainLayout } from '../../layouts/MainLayout'
 import { stylesFigma } from '../theme/appFigmaTheme'
+import { LoadingScreen } from '../loading/LoadingScreen'
 
 
 interface Props extends StackScreenProps<RootStackParams, 'SendCodeFigmaScreen'> {}
@@ -84,6 +85,9 @@ export const SendCodeFigmaScreen = () => {
             </Layout>
 
             <Layout style={{ flex:1 }}>
+              
+                        {  isLoading && (  <LoadingScreen />  )}
+
                         <Text style={[stylesFigma.titlesecund, {textAlign:'left', left:10, marginTop:20}]}>
                         ¿No has recibido ningún código?
                         </Text>

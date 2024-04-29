@@ -52,6 +52,11 @@ export const sendSmsSlice = createSlice({
             state.password = payload.password;
             state.isLoading = false;
         },
+        sendIsLoginStore: (state) => {
+            state.sendSmsStatus = 'isLogin';
+            state.isLoading = false;
+        },
+        
        addErrorStore: ( state, { payload } ) =>{
                 state.isLoading = false;
                 state.message = payload;
@@ -69,4 +74,4 @@ export const sendSmsSlice = createSlice({
 // Action creators are generated for each case reducer function
 export const { startLoadingStore, sendPhoneStore, sendCodeStore, 
     sendRegisterStore, addErrorStore, removeErrorStore,
-    sendSeguridadStore  } = sendSmsSlice.actions;
+    sendSeguridadStore, sendIsLoginStore  } = sendSmsSlice.actions;
