@@ -92,13 +92,7 @@ export const SendRegisterFigmaScreen = () => {
     
      // Si la respuesta es positiva entonces no sacamos ningun mensaje en el modal y nos vamos a otra pagina
      if (resp){
-       // Alert.alert('Info', message);
-        // console.log('------1------')
-        // navigation.reset({
-        //     index:0,
-        //     routes:[{name:'LoginScreen'}]
-        // });
-        // console.log('------2------')
+       //TODO
       } else{
         Alert.alert('Error', message);
       }

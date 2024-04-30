@@ -2,7 +2,7 @@ import React from 'react'
 import { MainLayout } from '../../layouts/MainLayout';
 import { useSendSms } from '../../hooks/useSendSms';
 import { SendPhoneFigmaScreen } from './SendPhoneFigmaScreen';
-import { SendRegisterFigmaScreen } from './SendRegisterFigmaScreen';
+import { SendRegisterFigmaScreen } from '../auth/SendRegisterFigmaScreen';
 import { SendCodeFigmaScreen } from './SendCodeFigmaScreen';
 import { SeguridadFigmaScreen } from './SeguridadFigmaScreen';
 import { LoginScreen } from '../auth/LoginScreen';

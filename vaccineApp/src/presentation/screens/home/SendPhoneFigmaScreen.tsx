@@ -31,11 +31,7 @@ export const SendPhoneFigmaScreen = () => {
         if( inputValue.trim().length <= 1) return;
         let phone = codValue.trim()+inputValue.trim();
         enviarCodeSendSms(phone);
-           {/* Una vez que mande el phone, se actualiza una bandera en el store isSendCode y 
-                                  esta en true  te redirije a colocar el codigo envisdo 
-                              en  la pantala SendPhoneFigmaScreen en cerrarModal */}
-       // await dispatch(sendSmsThunks( phone ));
-      //  await dispatch(sendSmsFirstPrimaryThunks( phone ));
+         
         setInputValue('');
         setCodValue( '' );
     }

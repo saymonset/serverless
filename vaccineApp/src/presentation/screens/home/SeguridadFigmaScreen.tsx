@@ -1,7 +1,7 @@
 import { StackScreenProps } from '@react-navigation/stack'
 import { Button, Input, Layout, Text } from '@ui-kitten/components'
 import React, { useEffect, useRef, useState } from 'react'
-import { Alert, Platform, ScrollView, TouchableOpacity } from 'react-native'
+import { Alert, Platform, Pressable, ScrollView, TouchableOpacity } from 'react-native'
 import { RootStackParams } from '../../navigation/StackNavigator'
 import { MyIcon } from '../../components/ui/MyIcon'
 import { useSendSms } from '../../hooks/useSendSms'
@@ -98,12 +98,12 @@ export const SeguridadFigmaScreen = () => {
                     </Layout>
                     <Layout style={{flex:1, marginLeft:20}} 
                             >
-                         <TouchableOpacity
+                         <Pressable
                                                  
                                                 onPress={toggleSecureText}
                                             >
-                                                 { secureText ?  (<MyIcon name="eye-off-outline" /> ):(<MyIcon name="eye-outline" /> )}
-                        </TouchableOpacity>
+                                                 { secureText ?  (<MyIcon name="eye-outline" /> ):(<MyIcon name="eye-off-outline" /> )}
+                        </Pressable>
                       
                     </Layout>
                 </Layout>

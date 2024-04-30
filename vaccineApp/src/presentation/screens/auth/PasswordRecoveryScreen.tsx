@@ -1,6 +1,6 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import { Button, Divider, Input, Layout, Text } from '@ui-kitten/components'
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ScrollView } from 'react-native-gesture-handler'
 import { Alert, Platform, Pressable, useWindowDimensions } from 'react-native';
 import { RootStackParams } from '../../navigation/StackNavigator';
@@ -17,9 +17,9 @@ import { LoadingScreen } from '../loading/LoadingScreen';
 import { WelcomeScreen } from '../home/WelcomeFigmaScreen';
 
 
-interface Props extends StackScreenProps<RootStackParams, 'LoginScreen'> {}
+interface Props extends StackScreenProps<RootStackParams, 'PasswordRecoveryScreen'> {}
 
-export const LoginScreen =  () => {
+export const PasswordRecoveryScreen =  () => {
   {
    
     const navigation = useNavigation();
@@ -28,6 +28,10 @@ export const LoginScreen =  () => {
 
     const { value } = useSelector((state: RootState) => state.counter)
     const dispatch= useDispatch();
+
+    const [ inputValue, setInputValue ] = useState('');
+    const [ codValue, setCodValue ] = useState('');
+    const inputRef = useRef(null);
       
     const onLogin = async() => {
       if ( form.ci.length === 0 || form.password.length === 0 ) {
@@ -74,7 +78,23 @@ export const LoginScreen =  () => {
       }
   }
 
+  const onCodInputChange = (value:string) => {
+    setCodValue( value );
+    if (value.length === 3 && inputRef.current) {
+         inputRef.current.focus(); // Salta al campo inputValue
+      }
+  }
+  
+  const onSubmit = async( ) => {
+    console.log('pasa');
+    if( codValue.trim().length <= 1) return;
+    if( inputValue.trim().length <= 1) return;
+    let phone = codValue.trim()+inputValue.trim();
+   // enviarCodeSendSms(phone);
      
+    setInputValue('');
+    setCodValue( '' );
+}
 
 
        {/* Solo para sacar mensajes de error por pantalla */}
@@ -85,12 +105,12 @@ export const LoginScreen =  () => {
 
     return (
       <Layout style={{flex: 1}}>
-      <ScrollView style={{marginHorizontal: 20}}>
+      <ScrollView style={{marginHorizontal:20}}>
         <Layout style={{paddingTop: height * 0.030}}>
-          <Text category="h1">Iniciar sesión</Text>
+          <Text category="h1">Contraseña olvidada</Text>
          
           <Layout style = {{ marginVertical:10}}>
-             <Text style = {{ marginVertical:10}} category="p2">Cedula de identidad</Text>
+             <Text style = {{ marginVertical:10}} category="p2">Cedula de identidad <Text style={{ color: 'skyblue'}}>*</Text></Text>
              {/* Inputs */}
                 <Input 
                     placeholder="V- 12345678"
@@ -99,6 +119,7 @@ export const LoginScreen =  () => {
                     style={[ 
                       stylesFigma.inputField,
                         ( Platform.OS === 'ios' ) && stylesFigma.inputFieldIOS,
+                        {marginRight:90}
                     ]}
                     selectionColor="white"
                     onChangeText={ (ci) => setForm({ ...form, ci })}
@@ -108,47 +129,49 @@ export const LoginScreen =  () => {
                     autoCorrect={ false }
                 />
            </Layout>
-          <Layout style = {{ marginVertical:10, marginTop:0}}>
+           <Layout style={{flexDirection:'row'}}>
+                       <Text style = {{ marginVertical:10}} category="p2">Número de telefono. <Text style={{ color: 'skyblue'}}>*</Text></Text>
+                     
+                  </Layout>
            
-                  <Text style = {{ marginVertical:10}} category="p2">Contraseña</Text>
-              <Layout style={{ flexDirection:'row'}}>   
-                  <Layout style={{flex:9, marginBottom:0}}> 
-                      {/* Inputs */}
-                      <Input 
-                            placeholder="******"
+           <Layout style={{flex:1, flexDirection:'row', justifyContent:'space-between',marginTop: 0}}>
+                <Layout  style={{flex:1,  flexWrap:'wrap', left:0, marginRight:0}}>
+                        <Input
+                        placeholder="+58"
+                        placeholderTextColor="rgba(0,0,0,0.4)"
+                        underlineColorAndroid="rgba(0,0,0,0)"
+                        style={[ 
+                            stylesFigma.inputField,
+                            ( Platform.OS === 'ios' ) && stylesFigma.inputFieldIOS
+                        ]}
+                        onChangeText={ (value) => onCodInputChange(value) }
+                        value={ codValue }
+                        onSubmitEditing={ onSubmit }
+                        autoCapitalize="none"
+                        autoCorrect={ false }
+                        maxLength={3} // Limita la entrada a tres caracteres
+                    />
+                </Layout>
+                <Layout   style={{flex:2, right: ( Platform.OS === 'ios' )?60:90, marginBottom:0}}>
+                    <Input
+                            ref={inputRef} // Referencia al campo inputValue
+                            placeholder="Número de télefono"
                             placeholderTextColor="rgba(0,0,0,0.4)"
                             underlineColorAndroid="rgba(0,0,0,0)"
-                            secureTextEntry={secureText}
-                            maxLength={16}
                             style={[ 
                                 stylesFigma.inputField,
-                                ( Platform.OS === 'ios' ) && stylesFigma.inputFieldIOS,
+                                ( Platform.OS === 'ios' ) && stylesFigma.inputFieldIOS
                             ]}
-                            selectionColor="white"
-                            onChangeText={ (password) => {
-                                 setForm({ ...form, password })
-                                onInputChange(password);
-                                onSecurityInputChange( password );
-                            } }
-                            value={ form.password }
-                            onSubmitEditing={ onLogin }
+                            selectionColor="rgba(0,0,0,0.4)"
+                            onChangeText={ (value) => onInputChange(value) }
+                            value={ inputValue }
+                            onSubmitEditing={ onSubmit }
                             autoCapitalize="none"
                             autoCorrect={ false }
-                            />
-                  </Layout> 
-                  <Layout style={{flex:1, marginLeft:1}}>
-                          <Pressable
-                                                onPress={toggleSecureText}
-                                            >
-                                                 { secureText ?  (<MyIcon name="eye-outline" /> ):(<MyIcon name="eye-off-outline" /> )}
-                        </Pressable>                          
-                  </Layout>
-             </Layout>   
-             { showWarnings && (<Layout style={{flexDirection:'row', marginTop:10}}>
-                                       <MyIcon name="alert-triangle-outline" />
-                                       <Text style={{textAlign:'center', color:'red'}}>Debe contener al menos 8 caracteres</Text>
-                                   </Layout>)}  
-           </Layout>
+                            maxLength={15} // Limita la entrada a tres caracteres
+                    />
+                </Layout>
+            </Layout>
 
 
         </Layout>
@@ -157,15 +180,18 @@ export const LoginScreen =  () => {
         <Layout style={{height: 10}} />
 
         {/* Button */}
-        <Layout style={{marginTop:(Platform.OS === 'ios') ? 20: 20, marginHorizontal:80, alignItems: 'flex-end',
-            flexDirection: 'row',
-            justifyContent: 'center', }}>
+        <Layout style={{marginTop:(Platform.OS === 'ios') ? 20: 200, marginHorizontal:0, alignItems:'center'}}>
           <Button 
              activeOpacity={ 0.8 }
-             style={  [{...stylesFigma.button} ]}
+             style={{ paddingHorizontal: 20,
+                      paddingVertical: 5,
+                      borderRadius: 100,
+                      marginHorizontal: 1,
+                      width:270,
+                      backgroundColor: '#0077FF'}}
              onPress= { onLogin }>
               
-              <Text style={ stylesFigma.buttonText } >Entrar</Text>
+              <Text style={ stylesFigma.buttonText } >Recuperar mi contraseña</Text>
 
             </Button>
         </Layout>
@@ -173,31 +199,20 @@ export const LoginScreen =  () => {
         {/* Espacio */}
         <Layout style={{height: 50}} />
 
-        <Layout
-          style={{
-            alignItems: 'flex-end',
-            flexDirection: 'row',
-            justifyContent: 'center',
-          }}>
-          <Text onPress={ () => navigation.navigate("PasswordRecoveryScreen" as never) }
-                   style={{color:'skyblue'}}>¿Olvidates tu contraseña?</Text>
-         
-        </Layout>
        
-          {/* <Text style={{ marginHorizontal:120, marginBottom:0, borderBottomColor: 'rgba(0,0,0,0.1)', borderBottomWidth: 2 }} />  */}
-          <Divider style={{ marginTop:20, marginHorizontal:60, marginBottom:0, borderBottomColor: 'rgba(0,0,0,0.1)', borderBottomWidth: 2 }} />
+          
         {   ( isLoading ) && <LoadingScreen /> }    
          {/* Espacio */}
          <Layout  style={{marginTop:(Platform.OS === 'ios') ? 180: 360}} />
          <Layout style={{marginTop:0, marginLeft:(Platform.OS === 'ios') ? 70: 180}}>
               <Pressable onPress={() => {}}>
                 <Layout style={{flexDirection:'row'}}>
-                      <Text 
-                              style={{ color: 'black' }}>¿No tienes cuenta aun?
+                      <Text onPress={ () => navigation.navigate("PasswordRecoveryScreen" as never) }
+                              style={{ color: 'black' }}>¿Necesitas ayuda?
                               
                       </Text>
                       <Text  onPress={() => navigation.navigate('WelcomeScreen' as never)} 
-                             style={{ color: 'skyblue',paddingLeft:10 }}>Registrate</Text>
+                             style={{ color: 'skyblue',paddingLeft:10 }}>Contactanos</Text>
                   </Layout>
               </Pressable>
           </Layout>
