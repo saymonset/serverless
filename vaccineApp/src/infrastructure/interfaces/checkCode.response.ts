@@ -6,3 +6,4 @@ export interface CheckCodeResponse {
     message?:    string;
     token?:      string;
 }
+

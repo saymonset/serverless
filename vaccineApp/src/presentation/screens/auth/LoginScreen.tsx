@@ -15,6 +15,7 @@ import { useNavigation } from '@react-navigation/native';
 import { stylesFigma } from '../theme/appFigmaTheme';
 import { LoadingScreen } from '../loading/LoadingScreen';
 import { WelcomeScreen } from '../home/WelcomeFigmaScreen';
+import { useSendSms } from '../../hooks/useSendSms';
 
 
 interface Props extends StackScreenProps<RootStackParams, 'LoginScreen'> {}
@@ -25,6 +26,7 @@ export const LoginScreen =  () => {
     const navigation = useNavigation();
     const {height} = useWindowDimensions();
     const { login, token, message, isLoading } =  useLogin();
+    const { clearSendSmsStatus, sendSmsPhone } =  useSendSms();
 
     const { value } = useSelector((state: RootState) => state.counter)
     const dispatch= useDispatch();
@@ -179,7 +181,13 @@ export const LoginScreen =  () => {
             flexDirection: 'row',
             justifyContent: 'center',
           }}>
-          <Text onPress={ () => navigation.navigate("PasswordRecoveryScreen" as never) }
+          <Text onPress={ () => {
+            /* Limpiamods los estados del sendSmsStatus */
+                  clearSendSmsStatus();
+                  /* Colocamos la bandera del phone para pedirla junto a la cedula  en SendCodeRecoveryFigmaScreen*/
+                  sendSmsPhone();
+                  navigation.navigate("SendCodeRecoveryFigmaScreen" as never);
+          } }
                    style={{color:'skyblue'}}>¿Olvidates tu contraseña?</Text>
          
         </Layout>

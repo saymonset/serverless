@@ -15,6 +15,7 @@ import { useNavigation } from '@react-navigation/native';
 import { stylesFigma } from '../theme/appFigmaTheme';
 import { LoadingScreen } from '../loading/LoadingScreen';
 import { WelcomeScreen } from '../home/WelcomeFigmaScreen';
+import { useSendSms } from '../../hooks/useSendSms';
 
 
 interface Props extends StackScreenProps<RootStackParams, 'PasswordRecoveryScreen'> {}
@@ -24,84 +25,56 @@ export const PasswordRecoveryScreen =  () => {
    
     const navigation = useNavigation();
     const {height} = useWindowDimensions();
-    const { login, token, message, isLoading } =  useLogin();
+   // const {   token, message, isLoading } =  useLogin();
+    const {message, isLoading, sendSmsStatus, passwordRecovery, removeError } =  useSendSms();
 
     const { value } = useSelector((state: RootState) => state.counter)
     const dispatch= useDispatch();
-
-    const [ inputValue, setInputValue ] = useState('');
+    const [ tlf, setTlf ] = useState('');
     const [ codValue, setCodValue ] = useState('');
-    const inputRef = useRef(null);
+    const tlfRef = useRef(null);
       
-    const onLogin = async() => {
-      if ( form.ci.length === 0 || form.password.length === 0 ) {
-        return;
-      }
-     // const wasSuccessful = dispatch(loginCiThunks({ ci: form.email, password: form.password }));
-      //login( form.ci, form.password);
-      //if ( wasSuccessful ) return;
-      if( form.password.trim().length <= 7){
-        setShowWarnings(true);
-        return;
-      }
-     // await dispatch(loginCiThunks( ci, password));
-    }
-    
-
-    // const { login } = useAuthStore();
-    
-    const [form, setForm] = useState({
-      ci: '',
-      password: '',
-    });
-
-    const [secureText, setSecureText] = useState(true);
-    const [showWarnings, setShowWarnings] = useState(false);
-    const [isVisible, setIsVisible] = useState(false);
-    const [ password, setPassword ] = useState('');
-  
  
-
-    const onInputChange = (value:any) => {
-      setPassword( value );
+    const [form, setForm] = useState({
+      ci: '' 
+    });
+    
+    const onSubmit = async( ) => {
+      if ( form.ci.length === 0 )  return;
+      if( codValue.trim().length <= 1) return;
+      if( tlf.trim().length <= 1) return;
+      let phone = codValue.trim()+tlf.trim()
+      let ci = form.ci;
+      passwordRecovery(phone, ci);
+      setTlf('');
+      setCodValue( '' );
+      setForm({ci:''});
   }
-  
-  
-  const toggleSecureText = () => {
-    setSecureText(!secureText);
+ 
+  const onInputChange = (value:any) => {
+      setTlf( value );
   }
-  
-   
-  const onSecurityInputChange = (value:string) => {
-    if (value.length > 8) {
-        setShowWarnings(false);
-      }
-  }
+ 
 
   const onCodInputChange = (value:string) => {
     setCodValue( value );
-    if (value.length === 3 && inputRef.current) {
-         inputRef.current.focus(); // Salta al campo inputValue
+    if (value.length === 3 && tlfRef.current) {
+         tlfRef.current.focus(); // Salta al campo tlfRef
       }
   }
   
-  const onSubmit = async( ) => {
-    console.log('pasa');
-    if( codValue.trim().length <= 1) return;
-    if( inputValue.trim().length <= 1) return;
-    let phone = codValue.trim()+inputValue.trim();
-   // enviarCodeSendSms(phone);
-     
-    setInputValue('');
-    setCodValue( '' );
-}
 
+       
 
        {/* Solo para sacar mensajes de error por pantalla */}
        useEffect(() => {
         if( message?.length === 0 ) return;
         Alert.alert('Info', message);
+        removeError();
        }, [ message ])
+
+  
+       
 
     return (
       <Layout style={{flex: 1}}>
@@ -110,9 +83,10 @@ export const PasswordRecoveryScreen =  () => {
           <Text category="h1">Contraseña olvidada</Text>
          
           <Layout style = {{ marginVertical:10}}>
-             <Text style = {{ marginVertical:10}} category="p2">Cedula de identidad <Text style={{ color: 'skyblue'}}>*</Text></Text>
-             {/* Inputs */}
+             <Text  style = {{ marginVertical:10}}  category="p2">Cedula de identidad <Text style={{ color: 'skyblue'}}>*</Text></Text>
+             {/* CEDULA */}
                 <Input 
+                  
                     placeholder="V- 12345678"
                     placeholderTextColor="rgba(0,0,0,0.4)"
                     underlineColorAndroid="rgba(0,0,0,0)"
@@ -124,7 +98,7 @@ export const PasswordRecoveryScreen =  () => {
                     selectionColor="white"
                     onChangeText={ (ci) => setForm({ ...form, ci })}
                     value={ form.ci }
-                    onSubmitEditing={ onLogin }
+                    onSubmitEditing={ onSubmit }
                     autoCapitalize="words"
                     autoCorrect={ false }
                 />
@@ -135,6 +109,7 @@ export const PasswordRecoveryScreen =  () => {
                   </Layout>
            
            <Layout style={{flex:1, flexDirection:'row', justifyContent:'space-between',marginTop: 0}}>
+                {/* CODIGO */}
                 <Layout  style={{flex:1,  flexWrap:'wrap', left:0, marginRight:0}}>
                         <Input
                         placeholder="+58"
@@ -152,9 +127,10 @@ export const PasswordRecoveryScreen =  () => {
                         maxLength={3} // Limita la entrada a tres caracteres
                     />
                 </Layout>
+                 {/* TELEFONO */}
                 <Layout   style={{flex:2, right: ( Platform.OS === 'ios' )?60:90, marginBottom:0}}>
                     <Input
-                            ref={inputRef} // Referencia al campo inputValue
+                            ref={tlfRef} // Referencia al campo inputValue
                             placeholder="Número de télefono"
                             placeholderTextColor="rgba(0,0,0,0.4)"
                             underlineColorAndroid="rgba(0,0,0,0)"
@@ -164,7 +140,7 @@ export const PasswordRecoveryScreen =  () => {
                             ]}
                             selectionColor="rgba(0,0,0,0.4)"
                             onChangeText={ (value) => onInputChange(value) }
-                            value={ inputValue }
+                            value={ tlf }
                             onSubmitEditing={ onSubmit }
                             autoCapitalize="none"
                             autoCorrect={ false }
@@ -189,7 +165,7 @@ export const PasswordRecoveryScreen =  () => {
                       marginHorizontal: 1,
                       width:270,
                       backgroundColor: '#0077FF'}}
-             onPress= { onLogin }>
+             onPress= { onSubmit }>
               
               <Text style={ stylesFigma.buttonText } >Recuperar mi contraseña</Text>
 

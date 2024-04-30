@@ -26,3 +26,35 @@ const returnMapper = ( data: CheckCodeResponse ): CheckCode => {
       return returnMapper(data);
     }
   };
+
+
+  export const passwordRecoveryAction = async (phone: string, code: string)  => {
+    try {
+        let response = await vaccinesApi.post('/CheckCode/passwordRecovery', { phone, code } );
+        let {data} = response;
+       
+      return returnMapper(data);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'An unknown error occurred';
+      console.log(error);
+      const data: CheckCodeResponse ={}
+      data['message'] =   message;
+      data['resp'] =   false;
+      return returnMapper(data);
+    }
+  };
+  export const passwordUpdateAction = async (phone: string, code: string, password:string)  => {
+    try {
+        let response = await vaccinesApi.post('/CheckCode/passwordUpdate', { phone, code, password } );
+        let {data} = response;
+       
+      return returnMapper(data);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'An unknown error occurred';
+      console.log(error);
+      const data: CheckCodeResponse ={}
+      data['message'] =   message;
+      data['resp'] =   false;
+      return returnMapper(data);
+    }
+  };

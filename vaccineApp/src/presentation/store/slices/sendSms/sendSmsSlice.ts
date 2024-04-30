@@ -2,7 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 import { SendSmsStatus } from '../../../../infrastructure/interfaces/sendSms.status';
 
 export interface SendSmsState {
-    phone:      string;
+    phone?:      string;
+    ci?: string,
     code?:      string;
     isLoading: boolean;
     resp?:boolean;
@@ -16,6 +17,7 @@ export interface SendSmsState {
 
   const initialState: SendSmsState = {
     phone: '',
+    ci:'',
     code:undefined,
     isLoading: false,
     resp:false,
@@ -41,6 +43,10 @@ export const sendSmsSlice = createSlice({
             state.phone = payload.phone;
             state.code = payload.code;
             state.isLoading = false;
+        },
+        ciPhoneStore: (state, { payload } ) => {
+            state.phone = payload.phone;
+            state.ci = payload.ci;
         },
         sendSeguridadStore: (state, { payload } ) => {
             state.sendSmsStatus = 'isSeguridad';
@@ -68,10 +74,30 @@ export const sendSmsSlice = createSlice({
             state.isLoading = false;
             state.resp = false;
             state.isLoading = false;
+        },
+        passwordUpdate: ( state, { payload } ) =>  {
+            //state.sendSmsStatus = 'isLogin';
+            state.message = payload.message;
+            state.resp = payload.resp;
+            state.token = '';
+            state.isLoading = false;
+            state.phone = '';
+            state.ci = '';
+            state.code = '';
+        },
+        clearSendSmsStatusStore: ( state, { payload }) => {
+            state.sendSmsStatus = '';
+            state.phone = '';
+            state.ci = '';
+            state.code = '';
+            state.isLoading = false;
+            state.resp = false;
+            state.message = '';
         } 
     }
 });
 // Action creators are generated for each case reducer function
 export const { startLoadingStore, sendPhoneStore, sendCodeStore, 
     sendRegisterStore, addErrorStore, removeErrorStore,
-    sendSeguridadStore, sendIsLoginStore  } = sendSmsSlice.actions;
+    sendSeguridadStore, sendIsLoginStore, clearSendSmsStatusStore, ciPhoneStore,
+    passwordUpdate  } = sendSmsSlice.actions;
