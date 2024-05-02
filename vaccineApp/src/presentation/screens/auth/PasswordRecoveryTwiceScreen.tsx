@@ -46,7 +46,7 @@ export const PasswordRecoveryTwiceScreen =  () => {
       }
      
       if (!ci || !phone){
-        Alert.alert('Error', 'ci or phone missing in the store');
+        //Alert.alert('Error', 'ci or phone missing in the store');
         return;
       }
       if (inputValue === inputValue_II) {

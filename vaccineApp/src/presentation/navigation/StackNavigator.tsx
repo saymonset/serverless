@@ -12,6 +12,7 @@ import { SeguridadFigmaScreen } from '../screens/home/SeguridadFigmaScreen';
 import { PasswordRecoveryScreen } from '../screens/auth/PasswordRecoveryScreen';
 import { SendCodeRecoveryFigmaScreen } from '../screens/home/SendCodeRecoveryFigmaScreen';
 import { PasswordRecoveryTwiceScreen } from '../screens/auth/PasswordRecoveryTwiceScreen';
+import { MainScreen } from '../screens/home/MainScreen';
 
  
 
@@ -27,6 +28,7 @@ export type RootStackParams = {
   PasswordRecoveryScreen: undefined;
   SendCodeRecoveryFigmaScreen: undefined;
   PasswordRecoveryTwiceScreen: undefined;
+  MainScreen: undefined;
    
 }
 
@@ -36,7 +38,7 @@ export const  StackNavigator = () => {
  
   return (
     <Stack.Navigator 
-       initialRouteName="WelcomeScreen"
+       initialRouteName="MainScreen"
        screenOptions={{
         headerShown: false,
         cardStyle: {
@@ -55,6 +57,7 @@ export const  StackNavigator = () => {
                   <Stack.Screen name="PasswordRecoveryScreen" component={   PasswordRecoveryScreen } />
                   <Stack.Screen name="SendCodeRecoveryFigmaScreen" component={   SendCodeRecoveryFigmaScreen } />
                   <Stack.Screen name="PasswordRecoveryTwiceScreen" component={   PasswordRecoveryTwiceScreen } />
+                  <Stack.Screen name="MainScreen" component={   MainScreen } />
   
   
      

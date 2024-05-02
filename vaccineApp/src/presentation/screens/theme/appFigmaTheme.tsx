@@ -97,6 +97,19 @@ export const stylesFigma = StyleSheet.create({
        marginLeft:290,
        marginTop:10
       },
-      
+     containerVaccine: {
+        backgroundColor:'white',
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        padding: 2,
+    },
+    hola: {
+        fontWeight:'bold',
+        fontSize: 24,
+        color:'black'
+      },
+
+  
 
 })
