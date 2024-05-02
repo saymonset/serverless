@@ -4,6 +4,7 @@ import { HomeFigmaTab1Screen } from '../screens/tabs/HomeFigmaTab1Screen';
 import { Tab2Screen } from '../screens/tabs/Tab2Screen';
 import { Tab3Screen } from '../screens/tabs/Tab3Screen';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { PerfilesFigmaScreen } from '../screens/PerfilesFigmaScreen';
 
 
 export const BottomTabsNavigator = () => {
@@ -47,7 +48,7 @@ const TabsAndroid = () => {
       >
         {/* En HomeFigmaTab1Screen aparece la tarjeta de (Consultas, Vacunacion, Embarazo, Patologias ) . PROXIMAS CITAS, CUIDA TU SALUD */}
         <BottomTabAndroid.Screen name="HomeFigmaTab1Screen" options={{title:''}} component={HomeFigmaTab1Screen} />
-        <BottomTabAndroid.Screen name="PerfilesFigmaScreen" options={{title:''}} component={Tab2Screen} />
+        <BottomTabAndroid.Screen name="PerfilesFigmaScreen" options={{title:''}} component={PerfilesFigmaScreen} />
         <BottomTabAndroid.Screen name="HomeFigmaTab3Screen" options={{title:''}} component={Tab3Screen} />
         <BottomTabAndroid.Screen name="HomeFigmaTab4Screen" options={{title:''}} component={HomeFigmaTab1Screen} />
       </BottomTabAndroid.Navigator>
