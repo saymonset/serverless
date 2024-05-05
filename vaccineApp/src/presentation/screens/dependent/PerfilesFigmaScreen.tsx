@@ -52,13 +52,11 @@ export const PerfilesFigmaScreen = () => {
 
      
     const { isLoading, data, fetchNextPage } = useInfiniteQuery({
-      queryKey:['depndents', 'infinite'],
+      queryKey:['dependents', 'infinite'],
       staleTime: 1000 * 60 * 60, // 1 hour
       initialPageParam: 0,
       queryFn: async ( params )=>  {
-        //
         const dependents = await getDependentByPageAction(10000,params.pageParam);
-        console.log({params})
         return dependents;
       },
       getNextPageParam: ( lastPage, allPages) => allPages.length,

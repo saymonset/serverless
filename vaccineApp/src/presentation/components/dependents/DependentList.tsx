@@ -4,6 +4,7 @@ import { Dependent } from '../../../infrastructure/interfaces/dependent-interfac
 import { Layout, List, Text } from '@ui-kitten/components';
 import { DependentCard } from './DependentCard';
 import { RefreshControl } from 'react-native-gesture-handler';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface Props {
     dependents: Dependent[];
@@ -11,11 +12,13 @@ interface Props {
 }
 export const DependentList = ( {dependents, fetchNextPage }:Props) => {
 
+       const queryClient = useQueryClient();
        const [isRefreshing, setIsRefreshing] = useState(false);
 
        const onPullToRefresh = async() =>{
              setIsRefreshing(true);
-             await new Promise(resolve => setTimeout(resolve,1500));
+             await new Promise(resolve => setTimeout(resolve,200));
+             queryClient.invalidateQueries({queryKey: ['dependents', 'infinite']});
              setIsRefreshing(false)
        }
 

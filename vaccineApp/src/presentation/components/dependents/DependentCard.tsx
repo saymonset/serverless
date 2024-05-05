@@ -21,7 +21,7 @@ export const DependentCard = ( { dependent }:Props) => {
             <Text
                 numberOfLines={ 2 }
                 style ={{ textAlign:'center'}}
-            >{ dependent._id.$oid}</Text>
+            >{ dependent.name}</Text>
         </Card>
     </Layout>
   )
