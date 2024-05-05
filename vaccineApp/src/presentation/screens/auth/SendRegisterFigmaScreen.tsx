@@ -81,7 +81,6 @@ export const SendRegisterFigmaScreen = () => {
     
      const onMuncipio = (value:any) =>{
         setMunicipio(value?.capital);
-       
    }
  
 
@@ -151,7 +150,6 @@ export const SendRegisterFigmaScreen = () => {
                             <Estados onData={(value) =>{
                                 onEstado(value)  
                                 setFieldValue('state', `${value?.capital} - ${value?.estado}`)
-                                //</Layout>onEstado(value)
                             }}></Estados>
                              {/* Municipio */}
                              <Text category='h6'>
@@ -217,8 +215,6 @@ export const SendRegisterFigmaScreen = () => {
                                             items={ genders} 
                                             onPress = { (value) => {
                                                 setFieldValue('gender_id', `${value?.key}`)
-                                            //    handlerGender(value);
-
                                     }}></SelectSimpleUsageShowcase>
                             </Layout> )}
                       
@@ -293,7 +289,7 @@ export const SendRegisterFigmaScreen = () => {
                     <Layout style={{height: 150}} />
     
                 </ScrollView>   
-            </Layout>
+               </Layout>
             )
          }
         

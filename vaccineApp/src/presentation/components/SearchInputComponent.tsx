@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { useDebouncedValue } from './useDebouncedValue';
 interface Props {
     style?: StyleProp<ViewStyle>;
-    onDebounce: (value: string) => void;
+    onDebounce?: (value: string) => void;
     goPage?: string;
 }
 export const SearchInputComponent =  (  {  onDebounce, style, goPage = ""}:Props) => {
@@ -15,7 +15,7 @@ export const SearchInputComponent =  (  {  onDebounce, style, goPage = ""}:Props
     const debouncedValue = useDebouncedValue( textValue, 1500 );
 
     useEffect(() => {
-        onDebounce(  debouncedValue  );
+        onDebounce && onDebounce(  debouncedValue  );
     }, [debouncedValue])
     
     if (goPage==""){

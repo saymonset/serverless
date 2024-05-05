@@ -1,6 +1,8 @@
 import { useNavigation } from '@react-navigation/native';
 import { Divider, Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Dimensions, Platform } from 'react-native';
+import { SearchInputComponent } from '../components/SearchInputComponent';
 import { MyIcon } from '../components/ui/MyIcon';
 
 
@@ -10,15 +12,18 @@ interface Props {
 
   rightAction?: () => void;
   rightActionIcon?: string;
-
+  setTerm?:( value: string )=>void,
   children?: React.ReactNode ;
 }
+
+const screenWidth = Dimensions.get("window").width;
 
 export const MainLayout = ({
   title,
   subTitle,
   rightAction,
   rightActionIcon,
+  setTerm,
   children,
 }: Props) => {
 
@@ -32,6 +37,21 @@ export const MainLayout = ({
       onPress={ goBack }
     />
   )
+
+  const RenderSearch = ()=>  {
+    if (setTerm == undefined || setTerm === undefined) return null;
+
+    return (
+      <SearchInputComponent
+                       onDebounce={ setTerm}
+                       style={{
+                         position: 'absolute',
+                         zIndex: 999,
+                         width: screenWidth - 40,
+                         top: (Platform.OS === 'ios') ? top +30 : top + 70
+                       }}   ></SearchInputComponent>
+    );
+  }
 
   const RenderRightAction = () => {
 
@@ -48,18 +68,28 @@ export const MainLayout = ({
 
 
   return (
-    <Layout style={{ paddingTop: top }}>
+    <Layout style={{ paddingTop: top, flex:1}}>
       <TopNavigation 
         title={ title }
         subtitle={ subTitle }
         alignment="center"
         accessoryLeft={ canGoBack() ? renderBackAction : undefined }
         accessoryRight={ () => <RenderRightAction /> }
+        
       />
-      <Divider />
 
-      <Layout style={{ height: '100%' }}>
-        {children}
+      <Divider />
+      
+   
+
+      <Layout style={{ flex:1}}>
+           {setTerm && ( <Layout style={{marginVertical:10}}>
+            {  RenderSearch()}
+            </Layout>)} 
+        <Layout  style={{ flex:1 }}>
+            {children}
+        </Layout>
+        
       </Layout>
       
     </Layout>

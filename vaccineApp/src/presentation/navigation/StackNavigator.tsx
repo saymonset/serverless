@@ -13,6 +13,7 @@ import { PasswordRecoveryScreen } from '../screens/auth/PasswordRecoveryScreen';
 import { SendCodeRecoveryFigmaScreen } from '../screens/home/SendCodeRecoveryFigmaScreen';
 import { PasswordRecoveryTwiceScreen } from '../screens/auth/PasswordRecoveryTwiceScreen';
 import { MainScreen } from '../screens/home/MainScreen';
+import { DependentScreen } from '../screens/dependent/DependentScreen';
 
  
 
@@ -29,6 +30,7 @@ export type RootStackParams = {
   SendCodeRecoveryFigmaScreen: undefined;
   PasswordRecoveryTwiceScreen: undefined;
   MainScreen: undefined;
+  DependentScreen: {dependentId: string};
    
 }
 
@@ -58,6 +60,7 @@ export const  StackNavigator = () => {
                   <Stack.Screen name="SendCodeRecoveryFigmaScreen" component={   SendCodeRecoveryFigmaScreen } />
                   <Stack.Screen name="PasswordRecoveryTwiceScreen" component={   PasswordRecoveryTwiceScreen } />
                   <Stack.Screen name="MainScreen" component={   MainScreen } />
+                  <Stack.Screen name="DependentScreen" component={   DependentScreen } />
   
   
      

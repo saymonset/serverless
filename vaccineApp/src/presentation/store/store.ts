@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { counterSlice } from './slices/counter'
+import { dependentByIdSlice } from './slices/dependent'
 import { genderSlice } from './slices/gender'
 import { loginSlice } from './slices/login'
 import { registerSlice } from './slices/register'
@@ -13,6 +14,7 @@ export const store = configureStore({
     genderStore: genderSlice.reducer,
     relationShipStore: relationShipSlice.reducer,
     registerStore: registerSlice.reducer,
+    dependentByIdStore: dependentByIdSlice.reducer,
   },
 })
 

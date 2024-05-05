@@ -4,7 +4,7 @@ import { HomeFigmaTab1Screen } from '../screens/tabs/HomeFigmaTab1Screen';
 import { Tab2Screen } from '../screens/tabs/Tab2Screen';
 import { Tab3Screen } from '../screens/tabs/Tab3Screen';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { PerfilesFigmaScreen } from '../screens/PerfilesFigmaScreen';
+import { PerfilesFigmaScreen } from '../screens/dependent/PerfilesFigmaScreen';
 
 
 export const BottomTabsNavigator = () => {
@@ -89,10 +89,13 @@ export const TabsIOs = () => {
       
      
     >
-      <BottomTabIOS.Screen name="HomeFigmaTab1Screen" options={{title:''}} component={Tab1Screen} />
-      <BottomTabIOS.Screen name="PerfilesFigmaScreen" options={{title:''}} component={Tab2Screen} />
+      <BottomTabIOS.Screen name="HomeFigmaTab1Screen" options={{title:''}} component={HomeFigmaTab1Screen} />
+      <BottomTabIOS.Screen name="PerfilesFigmaScreen" options={{title:''}} component={PerfilesFigmaScreen} />
       <BottomTabIOS.Screen name="HomeFigmaTab3Screen" options={{title:''}} component={Tab3Screen} />
-      <BottomTabIOS.Screen name="HomeFigmaTab4Screen" options={{title:''}} component={Tab1Screen} />
+      <BottomTabIOS.Screen name="HomeFigmaTab4Screen" options={{title:''}} component={HomeFigmaTab1Screen} />
+
+ 
+      
     </BottomTabIOS.Navigator>
   );
 }

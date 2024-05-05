@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import { IndexPath, Layout, Select, SelectItem } from '@ui-kitten/components';
 import { selectOption } from '../../../infrastructure/interfaces/select-option';
@@ -14,7 +14,11 @@ export const SelectSimpleUsageShowcase = ({items, onPress, idSelected = ''}:Prop
 
   const [selectedIndex, setSelectedIndex] = React.useState<IndexPath | IndexPath[]>(new IndexPath(0));
 
-  const [selectionText, setSelectionText] = React.useState('')
+  const [selectionText, setSelectionText] = React.useState('');
+  const [ selectedByDefault, setSelectedByDefault] = React.useState({
+    key:'',
+    value: ''
+  });
  
 
   const handleSelect = (index: IndexPath | IndexPath[]) => {
@@ -32,16 +36,55 @@ export const SelectSimpleUsageShowcase = ({items, onPress, idSelected = ''}:Prop
     });
   };
 
+ 
+ /** Buscamos el index ya seleccionado que trae el usuario  */
+ const loadDefaultForIndex = () => {
+  let indexPath = new IndexPath(0);
+  if (items && items.length > 0) {
+    let index = items.findIndex((value) => value.key === idSelected);
+    if (index !== -1) {
+     
+      indexPath = new IndexPath(index);
+      setSelectedIndex(indexPath);
+    }
+  }
+  return indexPath;
+};
+
+  
+
+  /** Buscamos el valor ya seleccionado que trae el usuario */
+  const loadDefault = () => {
+    if (items && items.length>0){
+      let obj = items.filter((value)=>{
+      let { key } = value;
+        if ( key == idSelected){
+          return value;
+        }
+      });
+      if (obj && obj.length > 0){
+        const { key, value } = obj[0];
+        setSelectedByDefault({ key, value } );
+        setSelectionText(value);
+      }
+  }
+ }
+ useEffect(() => {
+  loadDefault();
+  loadDefaultForIndex();
+ }, [])
+ 
+
   return (
     <Layout
       style={styles.container}
       level='1'
     >
       <Select
-            selectedIndex={selectedIndex}
+           selectedIndex={ selectedIndex}
             onSelect={handleSelect}
-            label={selectionText}
-            caption=''
+           
+            caption={selectionText}
             >
               
             {items.map(option => (
