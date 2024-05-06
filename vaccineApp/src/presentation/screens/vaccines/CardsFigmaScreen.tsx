@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { stylesFigma } from '../theme/appFigmaTheme';
 import { useDispatch } from 'react-redux';
+import { useLogin } from '../../hooks/useLogin';
 
 interface CardProps {
   title: string;
@@ -12,6 +13,7 @@ interface CardProps {
   iconName: string;
 }
 export const CardsFigmaScreen = () => {
+ 
   const [alignItems, setAlignItems] = useState('Consultas');
   return (
     <PreviewLayout
@@ -42,6 +44,7 @@ const PreviewLayout = ({
 }: PreviewLayoutProps) => {
   
   const navigation = useNavigation();
+  const { logoutThunks } = useLogin();
 
   const dispatch = useDispatch();
 
@@ -77,9 +80,9 @@ const PreviewLayout = ({
         }
   }
   
-  const logout =async () => {
+  const logout = () => {
     
-  //  await dispatch(logoutThunks());
+    logoutThunks();
 }
 
   return (
@@ -193,3 +196,5 @@ const styles = StyleSheet.create({
   },
 
 });
+
+ 

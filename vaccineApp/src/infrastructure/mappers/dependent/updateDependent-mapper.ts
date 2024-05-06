@@ -1,6 +1,6 @@
 import { DependentCreateResponse, DependentUpdateCreateResponse } from "../../interfaces/dependentById-interface";
 
-export class UpdateDependent {
+export class UpdateCreateDependent {
 
     static dependentToEntity( objBD: DependentUpdateCreateResponse ):DependentUpdateCreateResponse {
       return {

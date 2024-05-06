@@ -2,9 +2,10 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '../store'
-import { authLogin } from '../../actions/auth/loginAction'
-import { addError, loginStore, logOutStore, startLoginStore } from '../store/slices/login'
+import { authCheckStatusAction, authLoginAction } from '../../actions/auth/loginAction'
+import { addError, loginStore, logOutStore, startLoginStore, tokenStore } from '../store/slices/login'
 import { enviarMensajePorStatusCode } from '../screens/messages/enviarMensajePorStatusCode'
+import { User } from '../../domain/entities/user';
 
 export const useLogin  = () => {
 
@@ -14,11 +15,16 @@ export const useLogin  = () => {
     const login = async (ci: string,  password: string) => {
         try{
             dispatch( startLoginStore())
-            const data = await authLogin(ci, password);
-           
-            const { message , resp, statusCode, usuario} = data?.user;
+           let {
+              statusCode,
+              token,
+              usuario,
+              more, 
+              resp, 
+              message
+           } = await authLoginAction(ci, password);
 
-            if (!usuario){
+           if (!usuario){
               dispatch( addError(enviarMensajePorStatusCode(statusCode+'')))
               return;
             }
@@ -27,9 +33,19 @@ export const useLogin  = () => {
               dispatch( addError(enviarMensajePorStatusCode(statusCode+'')))
               return 
           }
+
+          let user: User = {
+            statusCode,
+            token,
+            usuario,
+            more, 
+            resp, 
+            message
+          }
+
             const payload = {
-                user:data?.user,
-                token: data?.token,
+                user,
+                token,
               };
     
             dispatch( loginStore(payload) );
@@ -40,9 +56,41 @@ export const useLogin  = () => {
         }
           console.log({ci,   password});
     }
+    const authCheckStatus = async (phone: string,  lastCode: number) => {
+        try{
+           let {
+              statusCode,
+              token,
+              resp, 
+              message
+           } = await authCheckStatusAction(phone, lastCode);
+            
+          if ( !resp) {
+            dispatch( addError(enviarMensajePorStatusCode(statusCode+'')))
+            return 
+          }
+         
+          const payload = {
+              token,
+          };
+    
+          dispatch( tokenStore(payload) );
+        }catch(error){
+           console.log(error)
+           dispatch(logOutStore({}));
+
+        }
+    }
+
+   const logoutThunks = ()  => {
+          dispatch(logOutStore({}));
+    }
 
   return  {
     login,
+    authCheckStatus,
+    logoutThunks,
+    
     isLoading,
     status,
     user,

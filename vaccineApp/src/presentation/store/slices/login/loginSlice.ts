@@ -34,6 +34,9 @@ export const loginSlice = createSlice({
             state.token = payload.token;
             state.message = '';
         },
+        tokenStore: ( state, { payload } ) => {
+            state.token = payload.token;
+        },
         logOutStore: ( state, { payload } ) => {
             state.status = 'unauthenticated';
             state.isLoading = false;
@@ -55,4 +58,4 @@ export const loginSlice = createSlice({
     }
 });
 // Action creators are generated for each case reducer function
-export const { startLoginStore, loginStore,  logOutStore, addError, removeError } = loginSlice.actions;
+export const { startLoginStore, loginStore,  logOutStore, addError, removeError, tokenStore } = loginSlice.actions;

@@ -33,6 +33,16 @@ export const DependentScreen = ({route}:Props) => {
   const {  relationships } =  useRelationShip();
   const dependentIdRef = useRef(route.params.dependentId);
 
+  const { data:dependent, error } = useQuery({
+    queryKey: ['dependent', dependentIdRef.current],
+    queryFn: () => getDependentByIdAction(dependentIdRef.current)
+  });
+
+  if (!dependent) {
+    return (<MainLayout title='Cargando...'></MainLayout>);
+  }
+
+
   const mutation = useMutation({
     mutationFn: (data: DependentById) => {
       let {_id, ...rest} = data;
@@ -69,27 +79,18 @@ export const DependentScreen = ({route}:Props) => {
     setMunicipio(value?.capital);
   }
 
-
-  const { data:dependent } = useQuery({
-    queryKey: ['dependent', dependentIdRef.current],
-    queryFn: () => getDependentByIdAction(dependentIdRef.current)
-  });
-
-  if (!dependent) {
-    return (<MainLayout title='Cargando...'></MainLayout>);
-  }
-
-
+  useEffect(() => {
+    console.log(error)
+  }, [error])
   
- 
 
   // 
   const minDate = new Date(1900, 0, 1);
   const maxDate = new Date(3000, 0, 1);
   return (
     <Formik
-    initialValues={ dependent }
-     onSubmit = { values => mutation.mutate(values)}
+      initialValues={ dependent }
+      onSubmit = { values => mutation.mutate(values)}
 >
   {
     ( { handleChange, handleSubmit, values, errors, setFieldValue } ) => (

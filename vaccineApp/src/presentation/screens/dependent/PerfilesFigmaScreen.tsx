@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Alert, Dimensions, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import { LoadingScreen } from '../loading/LoadingScreen';
 import { getDependentByPageAction } from '../../../actions/dependents/get-dependents-by-pageAction.ts';
@@ -11,6 +11,8 @@ import { DependentList } from '../../components/dependents/DependentList';
 import { Layout } from '@ui-kitten/components';
 import { useGender } from '../../hooks/useGender';
 import { useRelationShip } from '../../hooks/useRelationShip';
+import { FAB } from '../../components/ui/FAB';
+import { RootStackParams } from '../../navigation/StackNavigator';
 
 
 
@@ -21,7 +23,7 @@ export const PerfilesFigmaScreen = () => {
     const { loadRelationShip } =  useRelationShip();
     const { top } = useSafeAreaInsets();
     const [ term, setTerm ] = useState('');
-    const navigation = useNavigation();
+    const navigation = useNavigation<NavigationProp<RootStackParams>>();
 
     const dispatch = useDispatch();
 
@@ -73,6 +75,7 @@ export const PerfilesFigmaScreen = () => {
 
   return (
     
+       <>
         <MainLayout
             title="Vaccines"
             subTitle="Aplicación vaccines"
@@ -88,6 +91,18 @@ export const PerfilesFigmaScreen = () => {
                       fetchNextPage = { fetchNextPage }/> }
             
         </MainLayout>
+        <FAB 
+        iconName="plus-outline"
+        onPress={() => navigation.navigate('DependentScreen',{ dependentId: 'new' })}
+        style={{
+          position: 'absolute',
+          bottom: 30,
+          right: 20,
+        }}
+      />
+       </>
+
+        
     
   )
 }

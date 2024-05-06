@@ -40,7 +40,7 @@ export const  StackNavigator = () => {
  
   return (
     <Stack.Navigator 
-       initialRouteName="MainScreen"
+       initialRouteName="WelcomeScreen"
        screenOptions={{
         headerShown: false,
         cardStyle: {
@@ -50,6 +50,7 @@ export const  StackNavigator = () => {
     >
     
                   <Stack.Screen name="WelcomeScreen" component={ WelcomeScreen } /> 
+                  {/* HomeScreen es para usuarios nuevos que quieran integrarse */}
                   <Stack.Screen name="HomeScreen" component={   HomeScreen } />
                   <Stack.Screen name="LoginScreen" component={   LoginScreen } />
                   <Stack.Screen name="SendPhoneFigmaScreen" component={   SendPhoneFigmaScreen } />

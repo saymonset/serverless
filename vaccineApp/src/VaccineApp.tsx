@@ -9,6 +9,7 @@ import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import { Provider } from 'react-redux';
 import { store } from './presentation/store';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import {AuthProvider} from './presentation/providers/AuthProvider';
  
 // Create a client
 const queryClient = new QueryClient()
@@ -27,7 +28,9 @@ export const VaccineApp = () => {
             <ApplicationProvider {...eva} theme={theme}>
              <Provider store={store}>
                 <NavigationContainer>{/* Rest of your app code */} 
-                    <StackNavigator/>
+                    <AuthProvider>
+                      <StackNavigator/>
+                    </AuthProvider>
                 </NavigationContainer>
                 </Provider>
             </ApplicationProvider>

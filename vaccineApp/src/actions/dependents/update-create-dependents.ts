@@ -1,7 +1,7 @@
 import { AxiosResponse, isAxiosError } from "axios";
 import vaccinesApi from "../../config/api/vaccinesApi";
 import { DependentById, DependentCreateResponse, DependentUpdateCreateResponse } from "../../infrastructure/interfaces/dependentById-interface";
-import { UpdateDependent } from "../../infrastructure/mappers/dependent/updateDependent-mapper";
+import { UpdateCreateDependent } from "../../infrastructure/mappers/dependent/updateDependent-mapper";
 
 export const updateCreateDependentAction = ( dependent: Partial<DependentById> )=> {
 
@@ -20,15 +20,15 @@ export const updateCreateDependentAction = ( dependent: Partial<DependentById> )
 
 
   const returnMapper = ( data: DependentUpdateCreateResponse ): DependentUpdateCreateResponse => {
-    return  UpdateDependent.dependentToEntity(data);
+    return  UpdateCreateDependent.dependentToEntity(data);
   }
 
   const returnCreaterMapper = ( data: DependentCreateResponse ): DependentUpdateCreateResponse => {
-    return  UpdateDependent.dependentCreateToEntity(data);
+    return  UpdateCreateDependent.dependentCreateToEntity(data);
   }
 
   //TODO: revisar si viene el usuario
-const updateDependent = async (dependent: Partial<DependentById>) => {
+const updateDependent = async (dependent: Partial<DependentById>):Promise<DependentUpdateCreateResponse>  => {
     try {
     
       
@@ -59,14 +59,13 @@ const updateDependent = async (dependent: Partial<DependentById>) => {
     }
   }
 
-  const createDependent = async(dependent: Partial<DependentById>) => {
+  const createDependent = async(dependent: Partial<DependentById>):Promise<DependentUpdateCreateResponse> => {
     try {
         let data0 =  {};
         let birthStr = '' ;
         const { _id, birth,  ...resto } = dependent;
         if (birth instanceof Date) {
             birthStr = birth.toISOString();
-            // Resto del código...
         } 
         let dep = Object.assign({}, resto, { birth: birthStr });
         const { data }: AxiosResponse<DependentCreateResponse> = await vaccinesApi.post<DependentCreateResponse>(`/dependent/p`, {...dep});

@@ -9,8 +9,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '../../store';
 import { increment } from '../../store/slices/counter';
 import { useLogin } from '../../hooks/useLogin';
-import { loginCiThunks } from '../../store/slices/login/loginThunks';
-import { loginSlice } from '../../store/slices/login/loginSlice';
+ 
 import { useNavigation } from '@react-navigation/native';
 import { stylesFigma } from '../theme/appFigmaTheme';
 import { LoadingScreen } from '../loading/LoadingScreen';
@@ -42,7 +41,7 @@ export const LoginScreen =  () => {
         setShowWarnings(true);
         return;
       }
-     // await dispatch(loginCiThunks( ci, password));
+     login( form.ci, form.password.trim());
     }
     
 
