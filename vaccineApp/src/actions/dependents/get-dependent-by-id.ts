@@ -35,18 +35,10 @@ const returnMapper = ( data: DependentIDResponseBD ): DependentById => {
   export const getDependentByIdAction = async (id:string):Promise<DependentById> => {
     try {
       if ( id === 'new' ) {
-          const {  user  } = useSelector((state: RootState) => state.loginStore);
-          let  { user_id, ...rest} = emptyDependent;
-          user_id = user?.usuario?._id ?? {$oid: ''};
-          return {user_id, ...rest};
+          return emptyDependent;
       }
-      
-      
       const response = await vaccinesApi.get<DependentIDResponseBD>(`/dependent/${id}`);
-
       const { data } = response;
-        //let {data} = response;
-        console.log({data})
         return returnMapper(data);
     } catch (error) {
       const message = error instanceof Error ? error.message : 'An unknown error occurred';

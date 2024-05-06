@@ -45,8 +45,6 @@ const updateDependent = async (dependent: Partial<DependentById>):Promise<Depend
         let dep = Object.assign({}, resto, { birth: birthStr });
        
         const { data }= await vaccinesApi.put(`/dependent/${$oid}`, {...dep});
-        console.log({data})
-        console.log('Fino!!!_----xz---')
   
      //  return data0;
       return returnMapper({_id, ...data});
@@ -69,7 +67,6 @@ const updateDependent = async (dependent: Partial<DependentById>):Promise<Depend
         } 
         let dep = Object.assign({}, resto, { birth: birthStr });
         const { data }: AxiosResponse<DependentCreateResponse> = await vaccinesApi.post<DependentCreateResponse>(`/dependent/p`, {...dep});
-  
       return returnCreaterMapper(data);
       
     } catch (error) {

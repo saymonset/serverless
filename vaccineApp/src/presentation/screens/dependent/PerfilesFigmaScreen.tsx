@@ -80,7 +80,7 @@ export const PerfilesFigmaScreen = () => {
             title="Vaccines"
             subTitle="Aplicación vaccines"
             setTerm={( value )=>setTerm(value)}
-            rightAction= { () => {}}
+            rightAction= { () => navigation.navigate('DependentScreen',{ dependentId: 'new' })}
             rightActionIcon="plus-outline"
             >
           
@@ -91,7 +91,7 @@ export const PerfilesFigmaScreen = () => {
                       fetchNextPage = { fetchNextPage }/> }
             
         </MainLayout>
-        <FAB 
+        {/* <FAB 
         iconName="plus-outline"
         onPress={() => navigation.navigate('DependentScreen',{ dependentId: 'new' })}
         style={{
@@ -99,7 +99,7 @@ export const PerfilesFigmaScreen = () => {
           bottom: 30,
           right: 20,
         }}
-      />
+      /> */}
        </>
 
         

@@ -19,6 +19,7 @@ import { Municipios } from '../../components/Municipios';
 import { DependentById, DependentUpdateCreateResponse } from '../../../infrastructure/interfaces/dependentById-interface';
 import { updateCreateDependentAction } from '../../../actions/dependents/update-create-dependents';
 import { enviarMensajePorStatusCode } from '../messages/enviarMensajePorStatusCode';
+import { useLogin } from '../../hooks/useLogin';
 
 interface Props extends StackScreenProps<RootStackParams,'DependentScreen'>{};
 
@@ -28,20 +29,13 @@ export const DependentScreen = ({route}:Props) => {
   const {height} = useWindowDimensions(); 
   const [idEstado, setIdEstado] = useState(0);
   const [municipio, setMunicipio] = useState('');
+  const { user } = useLogin();
   
   const {  genders } =  useGender();
   const {  relationships } =  useRelationShip();
   const dependentIdRef = useRef(route.params.dependentId);
 
-  const { data:dependent, error } = useQuery({
-    queryKey: ['dependent', dependentIdRef.current],
-    queryFn: () => getDependentByIdAction(dependentIdRef.current)
-  });
-
-  if (!dependent) {
-    return (<MainLayout title='Cargando...'></MainLayout>);
-  }
-
+ 
 
   const mutation = useMutation({
     mutationFn: (data: DependentById) => {
@@ -67,6 +61,18 @@ export const DependentScreen = ({route}:Props) => {
       // queryClient.setQueryData(['product',  data.id ], data);
     },
   });
+
+  const { data:dependent } = useQuery({
+    queryKey: ['dependent', dependentIdRef.current],
+    queryFn: () => getDependentByIdAction(dependentIdRef.current)
+  });
+
+  if (!dependent) {
+    return (<MainLayout title='Cargando...'></MainLayout>);
+  }
+
+
+
   
 
   const onEstado = (value:any) =>{
@@ -79,9 +85,9 @@ export const DependentScreen = ({route}:Props) => {
     setMunicipio(value?.capital);
   }
 
-  useEffect(() => {
-    console.log(error)
-  }, [error])
+  // useEffect(() => {
+  //   console.log(error)
+  // }, [error])
   
 
   // 
@@ -90,7 +96,12 @@ export const DependentScreen = ({route}:Props) => {
   return (
     <Formik
       initialValues={ dependent }
-      onSubmit = { values => mutation.mutate(values)}
+      onSubmit = { dependent => {
+          let { user_id, ...rest } = dependent;
+          user_id = user?.usuario?._id
+          return mutation.mutate({user_id, ...rest});
+        }
+      }
 >
   {
     ( { handleChange, handleSubmit, values, errors, setFieldValue } ) => (
@@ -103,7 +114,7 @@ export const DependentScreen = ({route}:Props) => {
               <ScrollView style={{marginHorizontal: 10}}>
               
                           <Layout>
-                            { dependentIdRef.current
+                            { dependentIdRef.current !== 'new'
                             ? (<Text style={[stylesFigma.title, {textAlign:'left', left:10}]} category="h1">Editar familiar</Text>)
                             : <Text style={[stylesFigma.title, {textAlign:'left', left:10}]} category="h1">Agregar familiar</Text>}
                               
