@@ -3,22 +3,23 @@ import { Alert, Dimensions, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
-import { LoadingScreen } from '../loading/LoadingScreen';
-import { getDependentByPageAction } from '../../../actions/dependents/get-dependents-by-pageAction.ts';
+ 
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { MainLayout } from '../../layouts/MainLayout';
-import { DependentList } from '../../components/dependents/DependentList';
-import { Layout } from '@ui-kitten/components';
-import { useGender } from '../../hooks/useGender';
-import { useRelationShip } from '../../hooks/useRelationShip';
-import { FAB } from '../../components/ui/FAB';
-import { RootStackParams } from '../../navigation/StackNavigator';
+ 
+import { useGender } from '../../../hooks/useGender';
+import { useRelationShip } from '../../../hooks/useRelationShip';
+import { RootStackParams } from '../../../navigation/StackNavigator';
+import { getDependentByPageAction } from '../../../../actions/dependents/get-dependents-by-pageAction.ts';
+import { MainLayout } from '../../../layouts/MainLayout';
+import { LoadingScreen } from '../../loading/LoadingScreen';
+import { DependentList } from '../../../components/dependents/DependentList';
+ 
 
 
 
 const screenWidth = Dimensions.get("window").width;
 
-export const PerfilesFigmaScreen = () => {
+export const ApplyVaccinesDependentsScreen = () => {
     const { loadGender } =  useGender();
     const { loadRelationShip } =  useRelationShip();
     const { top } = useSafeAreaInsets();
@@ -77,24 +78,24 @@ export const PerfilesFigmaScreen = () => {
     
        <>
         <MainLayout
-            title="Perfiles"
+            title="Aplicar Vacuna"
             subTitle=""
             setTerm={( value )=>setTerm(value)}
-            rightAction= { () => navigation.navigate('DependentScreen',{ dependentId: 'new' })}
+            rightAction= { () => navigation.navigate('ApplyVaccinesAddScreen',{ dependentId: 'new' })}
             rightActionIcon="plus-outline"
             >
           
         {  ( isLoading ) 
               ?  (<LoadingScreen />)
               : <DependentList 
-                      goPage="DependentScreen"
+                      goPage="ApplyVaccinesAddScreen"
                       dependents={ data?.pages.flat() ?? [] }
                       fetchNextPage = { fetchNextPage }/> }
             
         </MainLayout>
         {/* <FAB 
         iconName="plus-outline"
-        onPress={() => navigation.navigate('DependentScreen',{ dependentId: 'new' })}
+        onPress={() => navigation.navigate('ApplyVaccinesAddScreen',{ dependentId: 'new' })}
         style={{
           position: 'absolute',
           bottom: 30,

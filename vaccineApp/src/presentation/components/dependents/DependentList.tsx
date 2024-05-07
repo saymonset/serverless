@@ -5,12 +5,14 @@ import { Layout, List, Text } from '@ui-kitten/components';
 import { DependentCard } from './DependentCard';
 import { RefreshControl } from 'react-native-gesture-handler';
 import { useQueryClient } from '@tanstack/react-query';
+import { PagesScreenStatus } from '../../../infrastructure/interfaces/screens.status';
 
 interface Props {
+    goPage: PagesScreenStatus;
     dependents: Dependent[];
     fetchNextPage : () => void;
 }
-export const DependentList = ( {dependents, fetchNextPage }:Props) => {
+export const DependentList = ( {dependents, goPage,  fetchNextPage }:Props) => {
 
        const queryClient = useQueryClient();
        const [isRefreshing, setIsRefreshing] = useState(false);
@@ -29,7 +31,9 @@ export const DependentList = ( {dependents, fetchNextPage }:Props) => {
           numColumns = { 1 }
           keyExtractor= { (item, index) => `${item._id}-${index}` }
           renderItem= {( { item } ) => (
-              <DependentCard dependent={ item}/>
+              <DependentCard 
+                   goPage={ goPage }
+                   dependent={ item}/>
           )}
           ListFooterComponent={ () => <Layout style={{ flex:1}}/>}
           onEndReached= { fetchNextPage }

@@ -1,4 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit'
+import { applyVaccineSlice } from './slices/applyvaccines'
 import { counterSlice } from './slices/counter'
 import { dependentByIdSlice } from './slices/dependent'
 import { genderSlice } from './slices/gender'
@@ -6,6 +7,7 @@ import { loginSlice } from './slices/login'
 import { registerSlice } from './slices/register'
 import { relationShipSlice } from './slices/relationShip'
 import { sendSmsSlice } from './slices/sendSms'
+import { vaccineSlice } from './slices/vaccines'
 export const store = configureStore({
   reducer: {
     counter: counterSlice.reducer,
@@ -15,6 +17,8 @@ export const store = configureStore({
     relationShipStore: relationShipSlice.reducer,
     registerStore: registerSlice.reducer,
     dependentByIdStore: dependentByIdSlice.reducer,
+    vaccineStore: vaccineSlice.reducer,
+    applyVaccineStore: applyVaccineSlice.reducer,
   },
 })
 
