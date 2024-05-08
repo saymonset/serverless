@@ -16,12 +16,15 @@ export const VaccinesModal = ({onData}:Props) => {
     const [estado, setEstado] = useState('');
     const { vaccines, isLoading } = useVaccines();
    
-    
-
+     
     const renderItem = ({ item }: { item:Vaccine; index: number }): React.ReactElement => (
-      <ListItem
-        style={item.isAlertApply ? styles.itemTextRed : styles.itemText}
-        title={`${item.name}`}
+      <ListItem 
+        style={  styles.itemTextRed }
+        title={(evaProps) => (
+          <Text style={{ color: item.isAlertApply ? 'red' : 'black' }}>
+            {item.name}
+          </Text>
+        )}
         description={`${item.description}`}
         onPress={() => {
           setEstado(`${item.name}-${item.description}`);
@@ -38,7 +41,7 @@ export const VaccinesModal = ({onData}:Props) => {
     <Button 
         status='basic'
         onPress={() => setVisible(true)}>
-      Vacuna
+        <Text status='danger' category='h3'>Vacunacc</Text>
     </Button>
 
     <Modal
