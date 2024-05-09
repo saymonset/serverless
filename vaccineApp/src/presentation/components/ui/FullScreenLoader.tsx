@@ -1,4 +1,4 @@
-import { Layout, Spinner } from '@ui-kitten/components';
+import { Layout, Spinner, Text } from '@ui-kitten/components';
 
 
 export const FullScreenLoader = () => {
@@ -7,6 +7,7 @@ export const FullScreenLoader = () => {
       <Spinner 
         size="giant" 
       />
+       <Text>Cargando...</Text>
     </Layout>
   )
 }

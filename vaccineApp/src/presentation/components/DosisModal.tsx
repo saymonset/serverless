@@ -5,6 +5,7 @@ import { Divider, List, ListItem } from '@ui-kitten/components';
 import { useApplyVaccine } from '../hooks/useApplyVaccine';
 import { Dosi } from '../../domain/entities/apply-vaccine-interface';
 import { MyIcon } from './ui/MyIcon';
+import { enviarMensajePorStatusCode } from '../screens/messages/enviarMensajePorStatusCode';
 
  
 interface Props {
@@ -18,10 +19,7 @@ export const DosisModal = ({onData, vaccineId, dependentId}:Props) => {
     const [dosis, setDosis] = useState('');
     const { dosis:dosisList, isLoading, getDosis } = useApplyVaccine();
     
-    useEffect(() => {
-      getDosis(vaccineId, dependentId);  
-    
-    }, [vaccineId, dependentId])
+  
     
    
     // const ItemImage = (props: ImageProps): React.ReactElement => (
@@ -41,20 +39,26 @@ export const DosisModal = ({onData, vaccineId, dependentId}:Props) => {
     const renderItem = ({ item }: { item:Dosi; index: number }): React.ReactElement => (
       <ListItem
         style={!item.isApplied ? styles.itemTextRed : styles.itemText}
-        accessoryLeft={  item.isApplied ? <MyIcon name={'checkmark-outline'}/> : <MyIcon name={'shield-off-outline'}/> }
+       
         title={(evaProps) => (
-          <Text style={{ color: item.isApplied ? 'gray' : 'black' }}>
-              {item.name}
-          </Text>
+        
+           <Layout style={{ flexDirection: 'row', alignItems: 'center' }}>
+           {item.isApplied && item.isApplied ? <MyIcon name={'checkmark-outline'}/> : <MyIcon name={'shield-off-outline'}/>}
+           <Text style={{  marginLeft:10, color: item.isApplied ? 'black' : 'black' }}>
+             {item.name}
+           </Text>
+         </Layout>
         )}
         description={`${item.isApplied ? item.lote:''}`}
         onPress={() => {
+          setDosis(`${item.name} ${item.lote}`);
           if (!item.isApplied) {
-            setDosis(`${item.name} ${item.lote}`);
+            setDosis(`${item.name}`);
             setVisible(false);
             onData(item);
           }else{
-            Alert.alert("Info","L vacuna ya fue aplicda.")
+            //enviarMensajePorStatusCode(statusCode)
+            Alert.alert("Info",enviarMensajePorStatusCode("dosisAplied"))
           }
         }}
       />

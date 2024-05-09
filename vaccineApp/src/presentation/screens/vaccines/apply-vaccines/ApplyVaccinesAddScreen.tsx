@@ -23,6 +23,9 @@ import { Estados } from '../../../components/Estados';
 import { VaccinesModal } from '../../../components/VaccinesModal';
 import { Vaccine } from '../../../../domain/entities/VaccineDependent';
 import { DosisModal } from '../../../components/DosisModal';
+import { Dosi } from '../../../../domain/entities/apply-vaccine-interface';
+import { useApplyVaccine } from '../../../hooks/useApplyVaccine';
+import { FullScreenLoader } from '../../../components/ui/FullScreenLoader';
  
 
 interface Props extends StackScreenProps<RootStackParams,'ApplyVaccinesAddScreen'>{};
@@ -39,7 +42,11 @@ export const ApplyVaccinesAddScreen = ({route}:Props) => {
   const {  genders } =  useGender();
   const {  relationships } =  useRelationShip();
   const dependentIdRef = useRef(route.params.dependentId);
-
+  const { dosis:dosisList, isLoading, getDosis } = useApplyVaccine();
+  useEffect(() => {
+    getDosis(idVaccine, dependentIdRef.current);  
+  
+  }, [idVaccine, dependentIdRef.current])
   useEffect(() => {
    
   }, [])
@@ -89,9 +96,8 @@ export const ApplyVaccinesAddScreen = ({route}:Props) => {
       setDosis('');
   }
 
-  const onDosis = (value:any) =>{
-    console.log({value})
-   // setDosis(value?.capital);
+  const onDosis = (value:Dosi) =>{
+    setDosis(value._id.$oid);
   }
 
 
@@ -119,6 +125,9 @@ export const ApplyVaccinesAddScreen = ({route}:Props) => {
           >
             <Layout style={{ flex:1 }}>
               <ScrollView style={{marginHorizontal: 10}}>
+                         <Layout>
+                          { isLoading && ( <FullScreenLoader></FullScreenLoader> )} 
+                         </Layout>
               
                           <Layout>
                             { dependentIdRef.current !== 'new'
@@ -137,13 +146,13 @@ export const ApplyVaccinesAddScreen = ({route}:Props) => {
                                 setFieldValue('state', `${value?.capital} - ${value?.estado}`)
                             }}></VaccinesModal>
 
-<DosisModal 
+                        { (dosisList && dosisList.length>0) && (<DosisModal 
                                 vaccineId = {idVaccine} 
                                 dependentId ={dependentIdRef.current}
                                 onData={(value) =>{
                                 onDosis(value)  
                                 setFieldValue('state', `${value?.capital} - ${value?.estado}`)
-                            }}></DosisModal>
+                            }}></DosisModal>)}    
 
     
 

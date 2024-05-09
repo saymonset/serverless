@@ -3,6 +3,9 @@ export const enviarMensajePorStatusCode = (statusCode: string): string => {
     let mensaje: string;
   
     switch (statusCode) {
+      case "dosisAplied":
+        mensaje = "La vacuna ya fue aplicda.";
+        break;
       case "badCiExist":
         mensaje = "Error de cliente: Exista la cedula.";
         break;
