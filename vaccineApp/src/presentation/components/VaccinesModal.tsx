@@ -43,11 +43,12 @@ const placements = [
            <Pressable onPress={() => {  Alert.alert('Warnings', 'Mantén al día tu calendario de vacunación para protegerte a ti y a quienes te rodean, ¡cuidémonos juntos!')}}>
             <Layout style={{ flexDirection: 'row', alignItems: 'center' }}>
               {item.isAlertApply && <MyIcon name={'bell-outline'} />}
-              <Text style={{ color: item.isAlertApply ? 'black' : 'black', marginLeft: 10 }}>
-                {item.name}
-              </Text>
+             
             </Layout>
          </Pressable>}
+         <Text style={{ color: item.isAlertApply ? 'black' : 'black', marginLeft: 10 }}>
+                {item.name}
+              </Text>
          {/* Si no a sido aplicada */}
          {!item.isAlertApply && 
             <Layout style={styles.containerText}>
@@ -70,7 +71,7 @@ const placements = [
         description=
         {(evaProps) => (
         
-          <Layout style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Layout style={{ flexDirection: 'row',  justifyContent:'flex-end' }}>
           <Text style={{  marginLeft:10, color:  'blue'  }}>
             {item.description}
           </Text>

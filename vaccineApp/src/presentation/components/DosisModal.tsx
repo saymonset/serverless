@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { Alert, ImageProps, StyleSheet } from 'react-native';
+import { format } from 'date-fns';
 import { Avatar, Button, Card, Layout, Modal, Text } from '@ui-kitten/components';
 import { Divider, List, ListItem } from '@ui-kitten/components';
 import { useApplyVaccine } from '../hooks/useApplyVaccine';
 import { Dosi } from '../../domain/entities/apply-vaccine-interface';
 import { MyIcon } from './ui/MyIcon';
 import { enviarMensajePorStatusCode } from '../screens/messages/enviarMensajePorStatusCode';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
  
 interface Props {
@@ -43,16 +45,18 @@ export const DosisModal = ({onData, vaccineId, dependentId}:Props) => {
         title={(evaProps) => (
         
            <Layout style={{ flexDirection: 'row', alignItems: 'center' }}>
-           {item.isApplied && item.isApplied ? <MyIcon name={'checkmark-outline'}/> : <MyIcon name={'shield-off-outline'}/>}
+           {item.isApplied && item.isApplied ? <Ionicons name="eyedrop-outline" size={50} color="black" /> : <MyIcon name={'shield-off-outline'}/>}
            <Text style={{  marginLeft:10, color: item.isApplied ? 'black' : 'black' }}>
              {item.name}
+             
            </Text>
+           {item.isApplied && <Text style={{marginLeft:10}}>{format(new Date(item.vaccination_date??""), 'dd/MM/yyyy')}</Text>}
          </Layout>
         )}
         description={(evaProps) => (
         
-          <Layout style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Text style={{  marginLeft:10, color:  'blue'  }}>
+          <Layout style={{ flexDirection: 'row',  justifyContent:'flex-end' }}>
+          <Text style={{  marginLeft:10, color: item.isApplied? 'green' : 'red'  }}>
             {item.name}
           </Text>
         </Layout>

@@ -8,6 +8,7 @@ import { useVaccines } from '../../hooks/useVaccines';
 import { stylesFigma } from '../../screens/theme/appFigmaTheme';
 import { StyleSheet, View, ViewProps } from 'react-native';
 import { MyIcon } from '../ui/MyIcon';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
 interface Props {
@@ -84,7 +85,7 @@ export const DependentCard = ( { dependent, goPage = 'DependentScreen' }:Props) 
                                           <Layout style={{flex:1, flexDirection:"row", justifyContent:'space-between', alignItems:'center' }}>
                                               <Text style={{marginLeft:10}}>{ dependent.name  + ' ' + dependent.lastname}</Text>
                                               <Text style={stylesFigma.titlesecund}></Text>
-                                              <MyIcon name={'brush-outline'}/>
+                                              <Ionicons name="eyedrop-outline" size={50} color="black" />
                                           </Layout>
                                           
                                       </Card>}     
