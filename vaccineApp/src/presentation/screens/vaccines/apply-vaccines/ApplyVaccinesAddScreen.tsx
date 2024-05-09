@@ -82,7 +82,7 @@ export const ApplyVaccinesAddScreen = ({route}:Props) => {
   });
 
   if (!dependent) {
-    return (<MainLayout title='Cargando...'></MainLayout>);
+    return (<FullScreenLoader></FullScreenLoader>);
   }
 
 

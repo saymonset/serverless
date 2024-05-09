@@ -49,7 +49,14 @@ export const DosisModal = ({onData, vaccineId, dependentId}:Props) => {
            </Text>
          </Layout>
         )}
-        description={`${item.isApplied ? item.lote:''}`}
+        description={(evaProps) => (
+        
+          <Layout style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Text style={{  marginLeft:10, color:  'blue'  }}>
+            {item.name}
+          </Text>
+        </Layout>
+       )}
         onPress={() => {
           setDosis(`${item.name} ${item.lote}`);
           if (!item.isApplied) {

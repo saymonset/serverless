@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Alert, Pressable, StyleSheet, View } from 'react-native';
-import { Button, Card, Layout, Modal, Text } from '@ui-kitten/components';
+import { Button, Card, Layout, Modal, Text, Tooltip } from '@ui-kitten/components';
 import { Divider, List, ListItem } from '@ui-kitten/components';
 import { useVaccines } from '../hooks/useVaccines';
 import { Vaccine } from '../../domain/entities/VaccineDependent';
@@ -17,6 +17,22 @@ export const VaccinesModal = ({onData}:Props) => {
     const [estado, setEstado] = useState('');
     const { vaccines, isLoading } = useVaccines();
    
+
+const placements = [
+  'top',
+  'top start',
+  'top end',
+  'bottom',
+  'bottom start',
+  'bottom end',
+  'left',
+  'left start',
+  'left end',
+  'right',
+  'right start',
+  'right end',
+];
+
      
     const renderItem = ({ item }: { item:Vaccine; index: number }): React.ReactElement => (
       <ListItem 
@@ -24,18 +40,42 @@ export const VaccinesModal = ({onData}:Props) => {
         title={(evaProps) => (
           <Layout style={{ flexDirection: 'row', alignItems: 'center' }}>
             {item.isAlertApply && 
-           <Pressable onPress={() => { return Alert.alert('Info', 'Hola Mundo')}}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+           <Pressable onPress={() => {  Alert.alert('Warnings', 'Mantén al día tu calendario de vacunación para protegerte a ti y a quienes te rodean, ¡cuidémonos juntos!')}}>
+            <Layout style={{ flexDirection: 'row', alignItems: 'center' }}>
               {item.isAlertApply && <MyIcon name={'bell-outline'} />}
               <Text style={{ color: item.isAlertApply ? 'black' : 'black', marginLeft: 10 }}>
                 {item.name}
               </Text>
-            </View>
+            </Layout>
          </Pressable>}
+         {/* Si no a sido aplicada */}
+         {!item.isAlertApply && 
+            <Layout style={styles.containerText}>
+                <Text style={{ color: item.isAlertApply ? 'black' : 'black', marginLeft: 10 }}>
+                  {item.name}
+                </Text>
+            </Layout>
+        }
+         {/* <Tooltip
+          anchor={renderToggleButton}
+          visible={visible}
+          placement={placement}
+          onBackdropPress={() => setVisible(false)}
+        >
+          Welcome to UI Kitten 😻
+        </Tooltip> */}
           </Layout>
        
         )}
-        description={`${item.description}`}
+        description=
+        {(evaProps) => (
+        
+          <Layout style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Text style={{  marginLeft:10, color:  'blue'  }}>
+            {item.description}
+          </Text>
+        </Layout>
+       )}
         onPress={() => {
           setEstado(`${item.name}-${item.description}`);
           setVisible(false)
@@ -93,5 +133,11 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         fontSize: 19,
         color: 'red',
-    }
+    },
+    containerText: {
+      flex: 1,
+      justifyContent: 'flex-start',
+      alignItems: 'flex-start',
+      backgroundColor: 'color-success-default',
+    },
   });

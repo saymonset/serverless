@@ -20,6 +20,7 @@ import { DependentById, DependentUpdateCreateResponse } from '../../../infrastru
 import { updateCreateDependentAction } from '../../../actions/dependents/update-create-dependents';
 import { enviarMensajePorStatusCode } from '../messages/enviarMensajePorStatusCode';
 import { useLogin } from '../../hooks/useLogin';
+import { FullScreenLoader } from '../../components/ui/FullScreenLoader';
 
 interface Props extends StackScreenProps<RootStackParams,'DependentScreen'>{};
 
@@ -68,7 +69,7 @@ export const DependentScreen = ({route}:Props) => {
   });
 
   if (!dependent) {
-    return (<MainLayout title='Cargando...'></MainLayout>);
+    return (<FullScreenLoader></FullScreenLoader>);
   }
 
 
