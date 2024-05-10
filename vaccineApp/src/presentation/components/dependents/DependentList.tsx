@@ -31,10 +31,12 @@ export const DependentList = ( {dependents, goPage,  fetchNextPage }:Props) => {
           numColumns = { 1 }
           keyExtractor= { (item, index) => `${item._id}-${index}` }
           renderItem= {( { item } ) => (
-              <DependentCard 
+           
+            <DependentCard 
                    goPage={ goPage }
                    dependent={ item}/>
           )}
+          
           ListFooterComponent={ () => <Layout style={{ flex:1}}/>}
           onEndReached= { fetchNextPage }
           onEndReachedThreshold={ 0.8 }

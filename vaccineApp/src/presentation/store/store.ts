@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { applyVaccineSlice } from './slices/applyvaccines'
+import { consultVaccineSlice } from './slices/consultvaccines'
 import { counterSlice } from './slices/counter'
 import { dependentByIdSlice } from './slices/dependent'
 import { genderSlice } from './slices/gender'
@@ -19,6 +20,7 @@ export const store = configureStore({
     dependentByIdStore: dependentByIdSlice.reducer,
     vaccineStore: vaccineSlice.reducer,
     applyVaccineStore: applyVaccineSlice.reducer,
+    consultVaccineStore: consultVaccineSlice.reducer,
   },
 })
 

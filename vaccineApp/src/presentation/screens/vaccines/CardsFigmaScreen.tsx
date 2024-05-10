@@ -48,20 +48,14 @@ const PreviewLayout = ({
 
   const dispatch = useDispatch();
 
-  const onConsultVaccine =  ()  => {
-    const payload =  {};
-   // dispatch( onIsConsultVaccine(payload))
-  }
+  
  
-  const onAddApplyVaccine =  ()  => {
-    const payload =  {};
-   // dispatch( onIsAddApplyVaccine(payload))
-  }
+ 
   const goPage = (selectedValue: string) => {
         switch (selectedValue) {
           case 'Consultas':
             // Este metodo: Segun la bandera que se coloca en el store me condiciona este componentre: ApplyVaccinesDependentsScreen, ApplyVaccinesComponent
-            onConsultVaccine();
+            
             navigation.navigate( 'ConsultVaccinesDependentsScreen' as never)
             break;
 
@@ -70,7 +64,7 @@ const PreviewLayout = ({
             break;
           case 'Vacunación':
             // Este metodo: Segun la bandera que se coloca en el store me condiciona este componentre: ApplyVaccinesDependentsScreen, ApplyVaccinesComponent
-            onAddApplyVaccine();
+           
             navigation.navigate( 'ApplyVaccinesDependentsScreen' as never)
             break;
           case 'Embarazo':
