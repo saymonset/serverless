@@ -50,7 +50,9 @@ export const DosisModal = ({onData, vaccineId, dependentId}:Props) => {
              {item.name}
              
            </Text>
-           {item.isApplied && <Text style={{marginLeft:10}}>{format(new Date(item.vaccination_date??""), 'dd/MM/yyyy')}</Text>}
+           
+           {item.isApplied &&  <Text> { JSON.stringify(item.vaccination_date) }</Text>}
+           {/* {item.isApplied && <Text style={{marginLeft:10}}>{format(new Date(item.vaccination_date || ''), 'dd/MM/yyyy')}</Text>} */}
          </Layout>
         )}
         description={(evaProps) => (

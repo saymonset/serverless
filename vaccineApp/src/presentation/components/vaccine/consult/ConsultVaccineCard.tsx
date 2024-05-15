@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, Card, Layout, Text } from '@ui-kitten/components';
  
 import { NavigationProp, useNavigation } from '@react-navigation/native';
@@ -12,6 +12,8 @@ import { ApplyVaccine } from '../../../../domain/entities/ConsultByIndependentEn
 import { VaccineStatus } from '../../../../infrastructure/interfaces/vaccine.status';
 import { RootStackParams } from '../../../navigation/StackNavigator';
 import { stylesFigma } from '../../../screens/theme/appFigmaTheme';
+import { useVaccines } from '../../../hooks/useVaccines';
+ 
 
 
 interface Props {
@@ -56,6 +58,20 @@ const Footer = (props: ViewProps): React.ReactElement => (
 export const ConsultVaccineCard = ( { applyVaccine, goPage = 'vaccine' }:Props) => {
 
   const navigation = useNavigation<NavigationProp<RootStackParams>>();
+
+  const {   isShowDosis, getShowDosis, getOffDosis } = useVaccines();
+
+  useEffect(() => {
+    getOffDosis();
+  }, [])
+
+  const goPageChange = () => {
+  
+     getShowDosis()
+  } 
+
+
+   
  
 
 //   <View style={{ marginLeft: 0 }}>
@@ -65,40 +81,37 @@ export const ConsultVaccineCard = ( { applyVaccine, goPage = 'vaccine' }:Props) 
 
   return (
     <Layout  style={{flex:1}}>
-      {(goPage==='vaccine') && <Card 
+      {(goPage==='vaccine' && !isShowDosis) && <Card 
                                       style={{flex:1}}
-                                          onPress = { () => console.log()}
+                                          onPress = { goPageChange }
                                       >
                                           <Text
                                               numberOfLines={ 2 }
                                               style ={{ textAlign:'left'}}
                                           >Nombre: { applyVaccine.dosis.vaccine.name  }</Text>
                                            <Text style={stylesFigma.titlesecund}>
-                                            Previene:{'Perfil ' + (applyVaccine.dosis.vaccine.disease_prevents)}</Text>
+                                            Previene:{'  ' + (applyVaccine.dosis.vaccine.disease_prevents)}</Text>
                                             <Text style={stylesFigma.titlesecund}>
-                                            Previene:{'Perfil ' + (applyVaccine.dosis.vaccine.description)}</Text>
+                                            Decripción:{' ' + (applyVaccine.dosis.vaccine.description)}</Text>
                                       </Card>}
 
-      {(goPage==='dosis') && <Card 
-                                      style={{flex:1}}
-                                          onPress = { () => {
-                                            // Cargamos las vacunas de ese familiar
-                                            return null;
-                                        }}
+      {(isShowDosis) && <Card 
+                                       style={{flex:1}}
+                                       onPress = { goPageChange }
                                         header={() =>  <Text></Text>}
                                       >
-                                          <Layout style={{flex:1, flexDirection:"row", justifyContent:'space-between', alignItems:'center' }}>
+                                        
                                               <Text
                                                   numberOfLines={ 2 }
                                                   style ={{ textAlign:'left'}}
-                                              >Nombre: { applyVaccine.dosis.vaccine.name  }</Text>
+                                              >Dosis: { applyVaccine.dosis.name  }</Text>
                                               <Text style={stylesFigma.titlesecund}>
-                                                Previene:{'Perfil ' + (applyVaccine.dosis.vaccine.disease_prevents)}</Text>
+                                                Lote:{'' + (applyVaccine.lote)}</Text>
                                                 <Text style={stylesFigma.titlesecund}>
-                                                Previene:{'Perfil ' + (applyVaccine.dosis.vaccine.description)}</Text>
-                                                  <Ionicons name="eyedrop-outline" size={20} color="black" />
-                                          </Layout>
-                                          
+                                                Fecha:{'' + (applyVaccine.vaccination_date)}</Text>
+                                                <Text style={stylesFigma.titlesecund}>
+                                                Frecuencia:{'' + (applyVaccine.dosis.age_frequency)}</Text>
+ 
                                       </Card>}     
       
                                       

@@ -84,7 +84,6 @@ export const ApplyVaccinesDependentsScreen = () => {
             rightAction= { () => navigation.navigate('ApplyVaccinesAddScreen',{ dependentId: 'new' })}
             rightActionIcon="plus-outline"
             >
-          
         {  ( isLoading ) 
               ?  (<LoadingScreen />)
               : <DependentList 

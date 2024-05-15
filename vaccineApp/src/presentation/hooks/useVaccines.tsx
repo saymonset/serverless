@@ -4,8 +4,8 @@ import { vaccinneAction } from "../../actions/vaccine/vaccinneAction";
 import { ApplyVaccineEntity } from "../../domain/entities/apply-vaccine-interface";
 import { VaccineDependentPage } from "../../domain/entities/VaccineDependent";
 import { RootState } from "../store";
-import { loadDosisFilterbyVaccineId, stopApplyVaccines } from "../store/slices/applyvaccines";
-import { loadVaccinesResponse, startVaccines, stopVaccines } from "../store/slices/vaccines";
+import { loadDosisFilterbyVaccineId, startApplyVaccines, stopApplyVaccines } from "../store/slices/applyvaccines";
+import { loadVaccinesResponse, offDosis, showDosis, startVaccines, stopVaccines } from "../store/slices/vaccines";
 
  
 
@@ -19,18 +19,19 @@ interface Pais {
  
 export const useVaccines = () => {
   
-      const {  vaccines, isLoading } = useSelector((state: RootState) => state.vaccineStore);
+      const {  vaccines, isLoading, isShowDosis, dependentId } = useSelector((state: RootState) => state.vaccineStore);
       const dispatch = useDispatch();
 
 
 
-      const getVaccines = async(idDependent: string) =>{
-        const   data:VaccineDependentPage   = await vaccinneAction(idDependent);
+      const getVaccines = async(dependentId: string) =>{
+        const   data:VaccineDependentPage   = await vaccinneAction(dependentId);
         const {   desde,
                   limite,
                   total,
                   vaccines} = data;
         const payload = {
+                          dependentId,
                           desde,
                           limite,
                           total,
@@ -60,17 +61,29 @@ export const useVaccines = () => {
           dispatch(loadDosisFilterbyVaccineId( payload ))
           dispatch(stopApplyVaccines());
         }
-       
-
-
             return {};
+      }
+      const getShowDosis = () =>{
+        let payload = {
+          isShowDosis
+        }
+        dispatch(showDosis(payload));
+      }
+
+      const getOffDosis = () =>{
+       
+        dispatch(offDosis());
       }
    
 
   return  {
     getVaccines,
     getDosis,
+    getShowDosis,
+    getOffDosis,
+    dependentId,
     vaccines,
-    isLoading
+    isLoading,
+    isShowDosis,
   }
 }

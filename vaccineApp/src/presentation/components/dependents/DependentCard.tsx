@@ -78,7 +78,8 @@ export const DependentCard = ( { dependent, goPage = 'DependentScreen' }:Props) 
                                           onPress = { () => {
                                             // Cargamos las vacunas de ese familiar
                                            getVaccines(dependent._id.$oid);
-                                            return navigation.navigate('ApplyVaccinesAddScreen',{ dependentId: dependent._id.$oid})
+                                        
+                                           return navigation.navigate('ApplyVaccinesAddScreen',{ dependentId: dependent._id.$oid})
                                         }}
                                         header={() =>  <Text></Text>}
                                       >

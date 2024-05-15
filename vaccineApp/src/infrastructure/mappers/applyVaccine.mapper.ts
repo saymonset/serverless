@@ -1,6 +1,6 @@
 import { ApplyVaccineEntity } from "../../domain/entities/apply-vaccine-interface";
 import { ConsultByIndependentEntity } from "../../domain/entities/ConsultByIndependentEntity";
-import { ApplyVaccineResponse } from "../interfaces/apply-vaccine-response";
+import { ApplyVaccineCreateResponse, ApplyVaccineResponse } from "../interfaces/apply-vaccine-response";
 import { ConsultByIndependentResponse } from "../interfaces/consult-vaccine-response";
 
 export class ApplyVaccineMapper {
@@ -20,6 +20,19 @@ export class ApplyVaccineMapper {
         resp:           response.resp,
         statusCode:     response.statusCode,
         total:          response.total
+ 
+      }
+    }
+    static createVaccineToEntity( response:  ApplyVaccineCreateResponse):ApplyVaccineCreateResponse {
+      return {
+        dosis_id:         response.dosis_id,
+        dependent_id:     response.dependent_id,
+        lote:             response.lote,
+        image:            response.image,
+        vaccination_date: response.vaccination_date,
+        status:           response.status,
+        statusCode:       response.statusCode,
+        resp:             response.resp
  
       }
     }

@@ -23,9 +23,10 @@ import { Estados } from '../../../components/Estados';
 import { VaccinesModal } from '../../../components/VaccinesModal';
 import { Vaccine } from '../../../../domain/entities/VaccineDependent';
 import { DosisModal } from '../../../components/DosisModal';
-import { Dosi } from '../../../../domain/entities/apply-vaccine-interface';
 import { useApplyVaccine } from '../../../hooks/useApplyVaccine';
 import { FullScreenLoader } from '../../../components/ui/FullScreenLoader';
+import { getApplyVaccineAction, updateCreateApplyVaccinneAction } from '../../../../actions/vaccine/applyVaccineAction';
+import { ApplyVaccineCreateResponse, Dosi } from '../../../../infrastructure/interfaces/apply-vaccine-response';
  
 
 interface Props extends StackScreenProps<RootStackParams,'ApplyVaccinesAddScreen'>{};
@@ -52,16 +53,15 @@ export const ApplyVaccinesAddScreen = ({route}:Props) => {
   }, [])
 
   const mutation = useMutation({
-    mutationFn: (data: DependentById) => {
-      let {_id, ...rest} = data;
-       _id = {
-           $oid: dependentIdRef.current
-       }
-     return updateCreateDependentAction({...rest, _id});
+    mutationFn: (data: ApplyVaccineCreateResponse) => {
+      let {dependent_id, ...rest} = data;
+
+      $dependent_id: dependentIdRef.current
+     return updateCreateApplyVaccinneAction({...rest, dependent_id});
     }
    ,
-    onSuccess(data: DependentUpdateCreateResponse) {
-      dependentIdRef.current = data._id?.$oid ?? ''; // creación
+    onSuccess(data: ApplyVaccineCreateResponse) {
+      dependentIdRef.current = data.dependent_id || 'new'; // creación
 
       const { statusCode, resp } = data;
       if (statusCode == 401 || !resp) {
@@ -70,18 +70,18 @@ export const ApplyVaccinesAddScreen = ({route}:Props) => {
       }else if (resp){
         Alert.alert('Info', enviarMensajePorStatusCode('200'));   
       }
-      queryClient.invalidateQueries({queryKey: ['dependents', 'infinite']});
-      queryClient.invalidateQueries({queryKey: ['dependent', dependentIdRef.current]});
+      queryClient.invalidateQueries({queryKey: ['applyVaccines', 'infinite']});
+      queryClient.invalidateQueries({queryKey: ['vaccineApply', dependentIdRef.current]});
       // queryClient.setQueryData(['product',  data.id ], data);
     },
   });
 
-  const { data:dependent } = useQuery({
-    queryKey: ['dependent', dependentIdRef.current],
-    queryFn: () => getDependentByIdAction(dependentIdRef.current)
+  const { data:vaccineApply } = useQuery({
+    queryKey: ['vaccineApply', dependentIdRef.current],
+    queryFn: () => getApplyVaccineAction(dependentIdRef.current)
   });
 
-  if (!dependent) {
+  if (!vaccineApply) {
     return (<FullScreenLoader></FullScreenLoader>);
   }
 
@@ -108,11 +108,14 @@ export const ApplyVaccinesAddScreen = ({route}:Props) => {
   const maxDate = new Date(3000, 0, 1);
   return (
     <Formik
-      initialValues={ dependent }
-      onSubmit = { dependent => {
-          let { user_id, ...rest } = dependent;
-          user_id = user?.usuario?._id
-          return mutation.mutate({user_id, ...rest});
+      initialValues={ vaccineApply }
+      
+      onSubmit = { vaccineApply => {
+          let { dependent_id, ...rest } = vaccineApply;
+          dependent_id = dependentIdRef.current;
+         
+        
+          return mutation.mutate({dependent_id, ...rest});
         }
       }
 >
@@ -120,8 +123,8 @@ export const ApplyVaccinesAddScreen = ({route}:Props) => {
     ( { handleChange, handleSubmit, values, errors, setFieldValue } ) => (
 
       <MainLayout
-              title={ values.name ?? ''}
-              subTitle={ values.lastname}
+              title={  'Aplicar Vacuna'}
+              subTitle={ ''}
           >
             <Layout style={{ flex:1 }}>
               <ScrollView style={{marginHorizontal: 10}}>
@@ -129,12 +132,7 @@ export const ApplyVaccinesAddScreen = ({route}:Props) => {
                           { isLoading && ( <FullScreenLoader></FullScreenLoader> )} 
                          </Layout>
               
-                          <Layout>
-                            { dependentIdRef.current !== 'new'
-                            ? (<Text style={[stylesFigma.title, {textAlign:'left', left:10}]} category="h1">Editar familiar</Text>)
-                            : <Text style={[stylesFigma.title, {textAlign:'left', left:10}]} category="h1">Agregar familiar</Text>}
-                              
-                          </Layout>
+                          
                           
                           {/* Inputs */}
                           <Layout style={{marginTop: 20}}>
@@ -143,7 +141,7 @@ export const ApplyVaccinesAddScreen = ({route}:Props) => {
                             <VaccinesModal 
                                 onData={(value) =>{
                                 onVaccine(value)  
-                                setFieldValue('state', `${value?.capital} - ${value?.estado}`)
+                                setFieldValue('vaccine_id', `${value._id.$oid}`)
                             }}></VaccinesModal>
 
                         { (dosisList && dosisList.length>0) && (<DosisModal 
@@ -151,20 +149,20 @@ export const ApplyVaccinesAddScreen = ({route}:Props) => {
                                 dependentId ={dependentIdRef.current}
                                 onData={(value) =>{
                                 onDosis(value)  
-                                setFieldValue('state', `${value?.capital} - ${value?.estado}`)
+                                setFieldValue('dosis_id', `${value._id.$oid}`)
                             }}></DosisModal>)}    
 
     
 
                            
 
-                            {/* NOMBRE */}
+                            {/* LOTE */}
                             <Layout style = {{ marginVertical:20}}>
-                                 <Text style={ stylesFigma.label }>Nombre:<Text style={{ color: 'skyblue' }}> *</Text></Text>
+                                 <Text style={ stylesFigma.label }>Lote:<Text style={{ color: 'skyblue' }}> *</Text></Text>
                                   <Input
-                                      // placeholder="Nombre completo"
+                                      // placeholder="lote completo"
                                       accessoryLeft={ <MyIcon name="person-outline" />}
-                                      placeholder="Enter your name:"
+                                      placeholder="Enter lote:"
                                       placeholderTextColor="rgba(0,0,0,0.4)"
                                       underlineColorAndroid="rgba(0,0,0,0)"
                                       style={[ 
@@ -173,8 +171,8 @@ export const ApplyVaccinesAddScreen = ({route}:Props) => {
                                       ]}
                                       selectionColor="white"
   
-                                      onChangeText={ handleChange('name') }
-                                      value={ values.name }
+                                      onChangeText={ handleChange('lote') }
+                                      value={ values.lote }
                                       
                                   //  onSubmitEditing={ onRegister }
   
@@ -182,9 +180,9 @@ export const ApplyVaccinesAddScreen = ({route}:Props) => {
                                       autoCorrect={ false }
                                   />
                           </Layout>    
-                          {/* APELLIDO */}
+                          {/* IMAGE */}
                           <Layout style = {{ marginVertical:20}}>
-                              <Text style={ stylesFigma.label }>Apellido:<Text style={{ color: 'skyblue' }}> *</Text></Text>
+                              <Text style={ stylesFigma.label }>Imagen:<Text style={{ color: 'skyblue' }}> *</Text></Text>
                               <Input 
                                   placeholder="Enter your lastname:"
                                   placeholderTextColor="rgba(0,0,0,0.4)"
@@ -195,69 +193,28 @@ export const ApplyVaccinesAddScreen = ({route}:Props) => {
                                   ]}
                                   selectionColor="white"
   
-                                  onChangeText={ handleChange('lastname') }
-                                  value={ values.lastname }
+                                  onChangeText={ handleChange('image') }
+                                  value={ values.image }
                                   // onSubmitEditing={ onRegister }
   
                                   autoCapitalize="words"
                                   autoCorrect={ false }
                               />
                           </Layout>   
-
-                           {/* SEXO */}
-                        {genders &&(<Layout style = {{ marginVertical:20}}>
-                                  <Text style={ stylesFigma.label }>Sexo:<Text style={{ color: 'skyblue' }}>*</Text></Text>
-                                  <SelectSimpleUsageShowcase 
-                                          idSelected={ values.gender_id  }
-                                          items={ genders} 
-                                          onPress = { (value) => {
-                                            setFieldValue('gender_id', `${value?.key}`)
-                                }}></SelectSimpleUsageShowcase>
-                          </Layout> )}
-                           {/* PARENTESCO */}
-                        {relationships &&(<Layout style = {{ marginVertical:20}}>
-                                  <Text style={ stylesFigma.label }>Parentesco:<Text style={{ color: 'skyblue' }}> *</Text></Text>
-                                  <SelectSimpleUsageShowcase 
-                                          idSelected={ values.relationship_id || ''  }
-                                          items={ relationships} 
-                                          onPress = { (value) => {
-                                            setFieldValue('relationship_id', `${value?.key}`)
-                                }}></SelectSimpleUsageShowcase>
-                          </Layout> )}
-
-                           {/* EMAIL */}
-                           <Layout style = {{ marginVertical:20}}>
-                                  <Text style={ stylesFigma.label }>Dirección de correo electrónico:<Text style={{ color: 'skyblue' }}> *</Text></Text>
-                                  <Input 
-                                      placeholder="Enter your email:"
-                                      placeholderTextColor="rgba(0,0,0,0.4)"
-                                      keyboardType="email-address"
-                                      underlineColorAndroid="rgba(0,0,0,0)"
-                                      style={[ 
-                                          stylesFigma.inputField,
-                                          ( Platform.OS === 'ios' ) && stylesFigma.inputFieldIOS
-                                      ]}
-                                      selectionColor="white"
-                                      accessoryLeft={ <MyIcon name="email-outline" />}
-                                      onChangeText={ handleChange('email') }
-                                      value={ values.email }
-                                      autoCapitalize="none"
-                                      autoCorrect={ false }
-                                  />
-                          </Layout>
+  
 
                           <Layout style = {{ marginVertical:20}}>
                               <Text category='h6'>
-                                  {`Fecha de nacimiento`}
+                                  {`Fecha de vacunacion`}
                               </Text>
                               <Datepicker
                                   onFocus  ={() => console.log()}
                                   onBlur ={() => console.log()}
                                   min={minDate}
                                   max={maxDate}
-                                  date={new Date(moment(values.birth ?? new Date()).format('YYYY-MM-DD'))}
-                                  onSelect={nextDate => setFieldValue('birth', nextDate || new Date())}
-                                  placeholder='Selecciona una fecha'
+                                  date={new Date(moment( new Date()).format('YYYY-MM-DD'))}
+                                  onSelect={nextDate => setFieldValue('vaccination_date', nextDate || new Date())}
+                                  placeholder='Selecciona de vacunación'
                               />
                           </Layout>
                           

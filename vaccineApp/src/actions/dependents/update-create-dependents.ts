@@ -30,23 +30,23 @@ export const updateCreateDependentAction = ( dependent: Partial<DependentById> )
   //TODO: revisar si viene el usuario
 const updateDependent = async (dependent: Partial<DependentById>):Promise<DependentUpdateCreateResponse>  => {
     try {
-    
-      
        // let data0;
         let birthStr = '' ;
-        const { _id, birth,  ...resto } = dependent;
+        // Algunos de estos campos no van ( token, phone)  y otros los tratamos ( birth)
+        console.log({dependent})
+        const { _id, birth, token, phone,   ...resto } = dependent;
+        if (!birth){
+          birthStr =  new Date().toISOString();
+        }
         const { $oid } = _id ?? { $oid : ''};
         if (birth instanceof Date) {
             birthStr = birth.toISOString();
             // Resto del código...
-        } 
-        //const { $oid:id} = _id;
-      // console.log( $oid);
+        } else{
+          birthStr = new Date(birth!).toISOString() || new Date().toISOString();  // Modify this line
+        }
         let dep = Object.assign({}, resto, { birth: birthStr });
-       
         const { data }= await vaccinesApi.put(`/dependent/${$oid}`, {...dep});
-  
-     //  return data0;
       return returnMapper({_id, ...data});
       
     } catch (error) {
@@ -68,14 +68,10 @@ const updateDependent = async (dependent: Partial<DependentById>):Promise<Depend
         let dep = Object.assign({}, resto, { birth: birthStr });
         const { data }: AxiosResponse<DependentCreateResponse> = await vaccinesApi.post<DependentCreateResponse>(`/dependent/p`, {...dep});
       return returnCreaterMapper(data);
-      
     } catch (error) {
-  
       if ( isAxiosError(error) ) {
         console.log(error.response?.data);
       }
-      
       throw new Error('Error al actualizar el producto');
-  
     }
   }

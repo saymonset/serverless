@@ -43,6 +43,7 @@ export const applyVaccineSlice = createSlice({
             state.dosis = payload.dosis;
             state.vaccine = payload.vaccine;
             state.dependent = payload.dependent;
+            state.dependent_id = payload.dependent_id;
         },
         clearApplyVaccine: ( state ) => {
             state.dosis =   [];

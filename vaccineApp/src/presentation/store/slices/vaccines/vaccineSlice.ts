@@ -1,8 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
+    dependentId:'',
     isLoading: false,
     resp:false,
+    isShowDosis:false,
     message: '',
     desde:0,
     limite:100,
@@ -21,6 +23,7 @@ export const vaccineSlice = createSlice({
             state.vaccines = [];
         },
         loadVaccinesResponse: (state, { payload } ) => {
+            state.dependentId = payload.dependentId;
             state.desde = payload.desde;
             state.limite = payload.limite;
             state.total = payload.total;
@@ -31,6 +34,12 @@ export const vaccineSlice = createSlice({
         },
         startVaccines: (state, /* action */ ) => {
             state.isLoading = true;
+        },
+        showDosis: (state, { payload } ) => {
+            state.isShowDosis = !payload.isShowDosis;
+        },
+        offDosis: (state ) => {
+            state.isShowDosis = false;
         }
     }
 });
@@ -38,5 +47,7 @@ export const vaccineSlice = createSlice({
 export const {   initVaccinesResponse,
                  loadVaccinesResponse,
                  stopVaccines,
-                 startVaccines
+                 startVaccines,
+                 showDosis,
+                 offDosis,
             } = vaccineSlice.actions;

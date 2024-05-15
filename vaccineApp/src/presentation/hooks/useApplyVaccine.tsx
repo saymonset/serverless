@@ -16,11 +16,11 @@ export const useApplyVaccine = () => {
 
  
 
-
-      const getDosis = async(vaccineId:string, dependentId:string) =>{
+ 
+      const getDosis = async(vaccineId:string, dependent_id:string) =>{
         dispatch(startApplyVaccines());
         dispatch(clearApplyVaccine( ))
-        const   data:ApplyVaccineEntity   = await applyVaccinneAction(vaccineId, dependentId );
+        const   data:ApplyVaccineEntity   = await applyVaccinneAction(vaccineId, dependent_id );
         const { vacc_apply_vaccines } = data;
         if (vacc_apply_vaccines && vacc_apply_vaccines.length > 0){
           const { dependent } = vacc_apply_vaccines[0];
@@ -28,6 +28,7 @@ export const useApplyVaccine = () => {
           const { dosis } = vacc_apply_vaccines[2];
    
           const payload = {
+            dependent_id,
             dependent,
             vaccine,
             dosis
