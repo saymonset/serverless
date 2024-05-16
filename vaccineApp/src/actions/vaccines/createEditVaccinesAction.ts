@@ -90,8 +90,9 @@ const updateVaccine = async (vaccine: Partial<Vaccine>):Promise<VaccinePutPostRe
 const createVaccine = async(vaccine: Partial<Vaccine>):Promise<VaccinePutPostResponseEntity> => {
   try {
    
-      const { _id,  ...resto } = vaccine;
-      const { data } = await vaccinesApi.post<VaccinePostResponse>(`/vaccine`, {...resto});
+      let { _id,status,  ...resto } = vaccine;
+      status = true;
+      const { data } = await vaccinesApi.post<VaccinePostResponse>(`/vaccine`, {status, ...resto});
     return returnCreaterMapper(data);
   } catch (error) {
     const message = error instanceof Error ? error.message : 'An unknown error occurred';

@@ -1,6 +1,7 @@
-import { Button, Datepicker, Input, Layout, Text, useTheme } from '@ui-kitten/components'
+import { Button, CheckBox, Datepicker, Input, Layout, Text, useTheme } from '@ui-kitten/components'
 import React, { useEffect, useRef, useState } from 'react'
 import { Alert, Platform, ScrollView, useWindowDimensions } from 'react-native'
+import * as Yup  from 'yup'
 
 import moment from 'moment';
 import { Register, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -26,6 +27,11 @@ import { getVaccineByIdAction, updateCreateVaccineAction } from '../../../../act
 
 interface Props extends StackScreenProps<RootStackParams,'VaccineEditCreateScreen'>{};
 
+const validationSchema = Yup.object().shape({
+  name: Yup.string().required(),
+});
+
+
 export const VaccineEditCreateScreen = ({route}:Props) => {
   const theme = useTheme();
   const queryClient = useQueryClient();
@@ -37,6 +43,7 @@ export const VaccineEditCreateScreen = ({route}:Props) => {
   const {  genders } =  useGender();
   const {  relationships } =  useRelationShip();
   const vaccineIdRef = useRef(route.params.vaccineId);
+  const [checkedChild, setCheckedChild] = React.useState(false);
 
  
 
@@ -99,10 +106,14 @@ export const VaccineEditCreateScreen = ({route}:Props) => {
   return (
     <Formik
       initialValues={ vaccine }
+      validationSchema={validationSchema}
       onSubmit = { vaccine => {
-          let { user_id, ...rest } = vaccine;
-          user_id = user?.usuario?._id
-          return mutation.mutate({user_id, ...rest});
+          let { _id, ...rest } = vaccine;
+
+        
+         
+           
+          return mutation.mutate({_id, ...rest});
         }
       }
 >
@@ -111,7 +122,7 @@ export const VaccineEditCreateScreen = ({route}:Props) => {
 
       <MainLayout
               title={ values.name ?? ''}
-              subTitle={ values.lastname}
+              subTitle={ ''}
           >
             <Layout style={{ flex:1 }}>
               <ScrollView style={{marginHorizontal: 10}}>
@@ -131,7 +142,7 @@ export const VaccineEditCreateScreen = ({route}:Props) => {
                                  <Text style={ stylesFigma.label }>Nombre:<Text style={{ color: 'skyblue' }}> *</Text></Text>
                                   <Input
                                       // placeholder="Nombre completo"
-                                      accessoryLeft={ <MyIcon name="person-outline" />}
+                                      accessoryLeft={<></>}
                                       placeholder="Enter your name:"
                                       placeholderTextColor="rgba(0,0,0,0.4)"
                                       underlineColorAndroid="rgba(0,0,0,0)"
@@ -150,6 +161,93 @@ export const VaccineEditCreateScreen = ({route}:Props) => {
                                       autoCorrect={ false }
                                   />
                           </Layout>    
+                            {/* DESCRIPCION */}
+                            <Layout style = {{ marginVertical:20}}>
+                                 <Text style={ stylesFigma.label }>Descripción:<Text style={{ color: 'skyblue' }}> *</Text></Text>
+                                  <Input
+                                      // placeholder="Nombre completo"
+                                      accessoryLeft={ <></>}
+                                      placeholder="Enter your description:"
+                                      placeholderTextColor="rgba(0,0,0,0.4)"
+                                      underlineColorAndroid="rgba(0,0,0,0)"
+                                      multiline={true}
+                                      style={[ 
+                                          stylesFigma.inputField,
+                                          ( Platform.OS === 'ios' ) && stylesFigma.inputFieldIOS
+                                      ]}
+                                      selectionColor="white"
+  
+                                      onChangeText={ handleChange('description') }
+                                      value={ values.description }
+                                      
+                                  //  onSubmitEditing={ onRegister }
+  
+                                      autoCapitalize="words"
+                                      autoCorrect={ false }
+                                  />
+                            </Layout>    
+
+                            {/* DISEASE PREVENTS */}
+                            <Layout style = {{ marginVertical:20}}>
+                                 <Text style={ stylesFigma.label }>Enfermedades que previene:<Text style={{ color: 'skyblue' }}> *</Text></Text>
+                                  <Input
+                                      // placeholder="Nombre completo"
+                                      accessoryLeft={ <></>}
+                                      placeholder="Enter your description:"
+                                      placeholderTextColor="rgba(0,0,0,0.4)"
+                                      underlineColorAndroid="rgba(0,0,0,0)"
+                                      style={[ 
+                                          stylesFigma.inputField,
+                                          ( Platform.OS === 'ios' ) && stylesFigma.inputFieldIOS
+                                      ]}
+                                      selectionColor="white"
+  
+                                      onChangeText={ handleChange('disease_prevents') }
+                                      value={ values.disease_prevents }
+                                      
+                                  //  onSubmitEditing={ onRegister }
+  
+                                      autoCapitalize="words"
+                                      autoCorrect={ false }
+                                  />
+                            </Layout>    
+                            {/* application_age*/}
+                            <Layout style = {{ marginVertical:20}}>
+                                 <Text style={ stylesFigma.label }>Edad recomendada para la aplicación de la vacuna:<Text style={{ color: 'skyblue' }}> *</Text></Text>
+                                  <Input
+                                      accessoryLeft={ <></>}
+                                      placeholder="Enter your description:"
+                                      placeholderTextColor="rgba(0,0,0,0.4)"
+                                      underlineColorAndroid="rgba(0,0,0,0)"
+                                      style={[ 
+                                          stylesFigma.inputField,
+                                          ( Platform.OS === 'ios' ) && stylesFigma.inputFieldIOS
+                                      ]}
+                                      selectionColor="white"
+  
+                                      onChangeText={ handleChange('application_age') }
+                                      value={ values.application_age }
+                                      
+                                  //  onSubmitEditing={ onRegister }
+  
+                                      autoCapitalize="words"
+                                      autoCorrect={ false }
+                                  />
+                            </Layout>    
+                            {/* isChildren */}
+                            <Layout style = {{ marginVertical:20}}>
+                                 
+                                 <CheckBox
+                                    checked={ values.isChildren}
+                                    onChange={nextChecked => {
+                                      setCheckedChild(nextChecked);
+                                      setFieldValue('isChildren',nextChecked)
+                                    } }
+                                  >
+                                   <Text style={ stylesFigma.label }>Es Nińo ?</Text>
+                                  </CheckBox>
+                            
+                            </Layout>    
                          
 
                           
@@ -173,10 +271,11 @@ export const VaccineEditCreateScreen = ({route}:Props) => {
                                               onPress={() => handleSubmit()}
                                               style={ {...stylesFigma.button} }
                                           >
-                                          <Text style={ [stylesFigma.buttonText ] }>Guardar </Text>
+                                          <Text style={ [stylesFigma.buttonText ] }>Guardar</Text>
+                                          
                                   </Button>
                                 
-                            
+                               
                           </Layout>
                   
                    
