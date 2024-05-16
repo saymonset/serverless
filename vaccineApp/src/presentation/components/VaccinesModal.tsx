@@ -14,7 +14,7 @@ interface Props {
 export const VaccinesModal = ({onData}:Props) => {
     const [visible, setVisible] = React.useState(false);
      
-    const [estado, setEstado] = useState('');
+   
     const { vaccines, isLoading } = useVaccines();
    
 
@@ -57,20 +57,11 @@ const placements = [
                 </Text>
             </Layout>
         }
-         {/* <Tooltip
-          anchor={renderToggleButton}
-          visible={visible}
-          placement={placement}
-          onBackdropPress={() => setVisible(false)}
-        >
-          Welcome to UI Kitten 😻
-        </Tooltip> */}
           </Layout>
        
         )}
         description=
         {(evaProps) => (
-        
           <Layout style={{ flexDirection: 'row',  justifyContent:'flex-end' }}>
           <Text style={{  marginLeft:10, color:  'blue'  }}>
             {item.description}
@@ -78,7 +69,7 @@ const placements = [
         </Layout>
        )}
         onPress={() => {
-          setEstado(`${item.name}-${item.description}`);
+          
           setVisible(false)
           onData(item);
         }}
@@ -86,9 +77,7 @@ const placements = [
     );
   return (
     <View style={styles.container}>
-    <Text category='h6'>
-          { estado && ` ${estado}`}
-    </Text>
+  
     <Button 
         status='basic'
         onPress={() => setVisible(true)}>

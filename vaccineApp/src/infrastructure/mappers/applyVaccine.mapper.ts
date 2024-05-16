@@ -1,7 +1,9 @@
 import { ApplyVaccineEntity } from "../../domain/entities/apply-vaccine-interface";
 import { ConsultByIndependentEntity } from "../../domain/entities/ConsultByIndependentEntity";
+import { VaccineEditCreateEntiy } from "../../domain/entities/VaccineEditCreateEntity";
 import { ApplyVaccineCreateResponse, ApplyVaccineResponse } from "../interfaces/apply-vaccine-response";
 import { ConsultByIndependentResponse } from "../interfaces/consult-vaccine-response";
+import { VaccineEditCreateResponse } from "../interfaces/create-edit-vaccines-response";
 
 export class ApplyVaccineMapper {
     static applyVaccineToEntity( response:  ApplyVaccineResponse):ApplyVaccineEntity {
@@ -23,6 +25,8 @@ export class ApplyVaccineMapper {
  
       }
     }
+ 
+  
     static createVaccineToEntity( response:  ApplyVaccineCreateResponse):ApplyVaccineCreateResponse {
       return {
         dosis_id:         response.dosis_id,

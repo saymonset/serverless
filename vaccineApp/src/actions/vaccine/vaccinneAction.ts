@@ -1,8 +1,6 @@
-import React from 'react'
 import vaccinesApi from '../../config/api/vaccinesApi';
 import { VaccineDependentPage } from '../../domain/entities/VaccineDependent';
 import { VaccineDependentResponse } from '../../infrastructure/interfaces/vaccine-dependent-interface';
-import { CheckCodeMapper } from '../../infrastructure/mappers/checkCode.mapper';
 import { VaccineMapper } from '../../infrastructure/mappers/vaccine.mapper';
 
 

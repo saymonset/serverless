@@ -7,22 +7,22 @@ import { ConfigFigmaScreen } from '../vaccines/ConfigFigmaScreen';
 import { NextAppointmentsScreen } from '../vaccines/NextAppointmentsScreen';
 import WatchYourHealthScreen from '../vaccines/WatchYourHealthScreen';
 
-export const HomeFigmaTab1Screen = () => {
+export const ConfigFigmaTab4Screen = () => {
  
   
   return (
     <Layout style={stylesFigma.container}>
       <Layout style={[stylesFigma.card, { marginTop: 10, marginBottom: (Platform.OS==='ios') ? 40 : 0 }]}>
         {/* ` En CardsFigmaScreen aparece la tarjeta de (Consultas, Vacunacion, Embarazo, Patologias ) .` */}
-        <CardsFigmaScreen/>
+        <ConfigFigmaScreen/>
       </Layout>
       <Layout style={[stylesFigma.card, { marginTop: 0, marginBottom: 0 }]}>
          {/* ` En NextAppointmentsScreen aparece PROXIMAS CITAS */}
-           <NextAppointmentsScreen/>
+           {/* <NextAppointmentsScreen/> */}
       </Layout>
       <Layout style={[stylesFigma.card, { marginTop: 10, marginBottom: 5 }]} >
         {/* ` En NextAppointmentsScreen aparece CUIDA TU SALUD */}
-            <WatchYourHealthScreen/>
+            {/* <WatchYourHealthScreen/> */}
       </Layout>
     </Layout>
   )

@@ -19,6 +19,8 @@ import { ApplyVaccinesDependentsScreen } from '../screens/vaccines/apply-vaccine
  
 import { ConsultVaccinesDependentsScreen } from '../screens/vaccines/consult-vaccines/ConsultVaccinesDependentsScreen';
 import { ConsultVaccinesScreen } from '../screens/vaccines/consult-vaccines/ConsultVaccinesScreen';
+import { VaccineFigmaScreen } from '../screens/vaccines/create-vaccines/vaccineFigmaScreen';
+import { VaccineEditCreateScreen } from '../screens/vaccines/create-vaccines/VaccineEditCreateScreen';
  
 
  
@@ -40,8 +42,10 @@ export type RootStackParams = {
   ApplyVaccinesDependentsScreen:  undefined;
   ApplyVaccinesAddScreen: {dependentId: string};
   ConsultVaccinesDependentsScreen:  undefined;
+  VaccineFigmaScreen:  undefined;
   ConsultVaccinesScreen: {dependentId: string};
-   
+  VaccineEditCreateScreen: {vaccineId: string};
+  
 }
 
 const Stack = createStackNavigator<RootStackParams>();
@@ -76,6 +80,8 @@ export const  StackNavigator = () => {
                   <Stack.Screen name="ApplyVaccinesAddScreen" component={   ApplyVaccinesAddScreen } />
                   <Stack.Screen name="ConsultVaccinesDependentsScreen" component={   ConsultVaccinesDependentsScreen } />
                   <Stack.Screen name="ConsultVaccinesScreen" component={   ConsultVaccinesScreen } />
+                  <Stack.Screen name="VaccineFigmaScreen" component={   VaccineFigmaScreen } />
+                  <Stack.Screen name="VaccineEditCreateScreen" component={   VaccineEditCreateScreen } />
   
   
      

@@ -22,7 +22,7 @@ const returnMapper = ( data: DependentBDResponse ): DependentResponse => {
       const { data } = response;
       
         //let {data} = response;
-        console.log(data.dependents[0])
+        
         return returnMapper(data).dependents;
     } catch (error) {
       const message = error instanceof Error ? error.message : 'An unknown error occurred';

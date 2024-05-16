@@ -5,6 +5,7 @@ import { Tab2Screen } from '../screens/tabs/Tab2Screen';
 import { Tab3Screen } from '../screens/tabs/Tab3Screen';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { PerfilesFigmaScreen } from '../screens/dependent/PerfilesFigmaScreen';
+import { ConfigFigmaTab4Screen } from '../screens/tabs/ConfigFigmaTab4Screen';
 
 
 export const BottomTabsNavigator = () => {
@@ -34,7 +35,7 @@ const TabsAndroid = () => {
                  case 'HomeFigmaTab3Screen':
                     iconName='calendar-outline'
                     break;
-                 case 'HomeFigmaTab4Screen':
+                 case 'ConfigFigmaTab4Screen':
                     iconName='settings-outline'
                        break;
   
@@ -50,7 +51,7 @@ const TabsAndroid = () => {
         <BottomTabAndroid.Screen name="HomeFigmaTab1Screen" options={{title:''}} component={HomeFigmaTab1Screen} />
         <BottomTabAndroid.Screen name="PerfilesFigmaScreen" options={{title:''}} component={PerfilesFigmaScreen} />
         <BottomTabAndroid.Screen name="HomeFigmaTab3Screen" options={{title:''}} component={Tab3Screen} />
-        <BottomTabAndroid.Screen name="HomeFigmaTab4Screen" options={{title:''}} component={HomeFigmaTab1Screen} />
+        <BottomTabAndroid.Screen name="ConfigFigmaTab4Screen" options={{title:''}} component={ConfigFigmaTab4Screen} />
       </BottomTabAndroid.Navigator>
     );
   }
@@ -92,7 +93,7 @@ export const TabsIOs = () => {
       <BottomTabIOS.Screen name="HomeFigmaTab1Screen" options={{title:''}} component={HomeFigmaTab1Screen} />
       <BottomTabIOS.Screen name="PerfilesFigmaScreen" options={{title:''}} component={PerfilesFigmaScreen} />
       <BottomTabIOS.Screen name="HomeFigmaTab3Screen" options={{title:''}} component={Tab3Screen} />
-      <BottomTabIOS.Screen name="HomeFigmaTab4Screen" options={{title:''}} component={HomeFigmaTab1Screen} />
+      <BottomTabIOS.Screen name="ConfigFigmaTab4Screen" options={{title:''}} component={ConfigFigmaTab4Screen} />
 
  
       

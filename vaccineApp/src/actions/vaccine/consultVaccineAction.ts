@@ -1,8 +1,6 @@
 import React from 'react'
 import vaccinesApi from '../../config/api/vaccinesApi';
 import { ConsultByIndependentEntity } from '../../domain/entities/ConsultByIndependentEntity';
- 
-import { ApplyVaccineResponse } from '../../infrastructure/interfaces/apply-vaccine-response';
 import { ConsultByIndependentResponse } from '../../infrastructure/interfaces/consult-vaccine-response';
 import { ApplyVaccineMapper } from '../../infrastructure/mappers/applyVaccine.mapper';
 
@@ -12,7 +10,7 @@ import { ApplyVaccineMapper } from '../../infrastructure/mappers/applyVaccine.ma
 const returnMapper = ( data: ConsultByIndependentResponse ): ConsultByIndependentEntity => {
     return  ApplyVaccineMapper.consultVaccineToEntity(data);
   }
-  
+
 
   export const consultVaccineAction = async ( limite:number = 1000, desde:number=0, dependentId: string):Promise<ConsultByIndependentEntity >  => {
     try {
@@ -31,3 +29,4 @@ const returnMapper = ( data: ConsultByIndependentResponse ): ConsultByIndependen
       return data;
     }
   };
+
