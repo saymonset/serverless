@@ -23,10 +23,7 @@ const returnMapper = ( data: ConsultByIndependentResponse ): ConsultByIndependen
     } catch (error) {
       const message = error instanceof Error ? error.message : 'An unknown error occurred';
       console.log(error);
-      const data ={}
-    //   data['message'] =   message;
-    //   data['resp'] =   false;
-      return data;
+      return Promise.reject(message);
     }
   };
 

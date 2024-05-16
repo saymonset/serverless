@@ -63,7 +63,6 @@ const returnMapper = ( data: ApplyVaccineResponse ): ApplyVaccineEntity => {
 
   const create = async(applyVaccine: Partial<ApplyVaccineCreateResponse>):Promise<ApplyVaccineCreateResponse> => {
     try {
-      console.log('--------------1-4-------kkkk------')
         let vaccination_dateStr = '' ;
         console.log({...applyVaccine })
         const {  vaccination_date,  ...resto } = applyVaccine;
@@ -74,21 +73,14 @@ const returnMapper = ( data: ApplyVaccineResponse ): ApplyVaccineEntity => {
         }
      
         let applyVaccine0 = Object.assign({}, resto, { vaccination_date: vaccination_dateStr });
-        console.log('--------------1-4--------------')
        
         const  { data }  = await vaccinesApi.post(`/applyVaccines/`, { ...applyVaccine });
-        console.log('-----------------2------------')
        
-      console.log({data})
-      console.log('------------2-----------------')
-        // const { data }: AxiosResponse<DependentCreateResponse> = await vaccinesApi.post<DependentCreateResponse>(`/dependent/p`, {...dep});
-        // return returnCreaterMapper(data);
       return returnCreaterMapper( data);
     } catch (error) {
-      if ( isAxiosError(error) ) {
-        console.log(error.response?.data);
-      }
-      throw new Error('Error al actualizar el producto');
+      const message = error instanceof Error ? error.message : 'An unknown error occurred';
+      console.log(error);
+      return Promise.reject(message);
     }
   }
 
@@ -103,9 +95,6 @@ const returnMapper = ( data: ApplyVaccineResponse ): ApplyVaccineEntity => {
     } catch (error) {
       const message = error instanceof Error ? error.message : 'An unknown error occurred';
       console.log(error);
-      const data ={}
-    //   data['message'] =   message;
-    //   data['resp'] =   false;
-      return data;
+      return Promise.reject(message);
     }
   };

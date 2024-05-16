@@ -25,7 +25,7 @@ import { Vaccine } from '../../../../domain/entities/VaccineDependent';
 import { DosisModal } from '../../../components/DosisModal';
 import { useApplyVaccine } from '../../../hooks/useApplyVaccine';
 import { FullScreenLoader } from '../../../components/ui/FullScreenLoader';
-import { getApplyVaccineAction, updateCreateApplyVaccinneAction } from '../../../../actions/vaccine/applyVaccineAction';
+import { getApplyVaccineAction, updateCreateApplyVaccinneAction } from '../../../../actions/apply-vaccine/applyVaccineAction';
 import { ApplyVaccineCreateResponse, Dosi } from '../../../../infrastructure/interfaces/apply-vaccine-response';
  
 

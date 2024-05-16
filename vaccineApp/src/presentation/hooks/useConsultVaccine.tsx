@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { consultVaccineAction } from "../../actions/vaccine/consultVaccineAction";
+import { consultVaccineAction } from "../../actions/apply-vaccine/consultVaccineAction";
 import { ApplyVaccine, ConsultByIndependentEntity } from "../../domain/entities/ConsultByIndependentEntity";
 import { RootState } from "../store";
 import { clearConsultVaccine, loadDataConsultVaccine, startConsultVaccines, stopConsultVaccines } from "../store/slices/consultvaccines";

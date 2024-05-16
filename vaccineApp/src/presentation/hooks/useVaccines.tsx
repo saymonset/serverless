@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
-import { applyVaccinneAction } from "../../actions/vaccine/applyVaccineAction";
-import { vaccinneAction } from "../../actions/vaccine/vaccinneAction";
+import { applyVaccinneAction } from "../../actions/apply-vaccine/applyVaccineAction";
+import { vaccinneAction } from "../../actions/apply-vaccine/vaccinneAction";
 import { ApplyVaccineEntity } from "../../domain/entities/apply-vaccine-interface";
 import { VaccineDependentPage } from "../../domain/entities/VaccineDependent";
 import { RootState } from "../store";
