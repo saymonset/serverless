@@ -29,7 +29,7 @@ export const DependentList = ( {dependents, goPage,  fetchNextPage }:Props) => {
       <List
           data= { dependents }
           numColumns = { 1 }
-          keyExtractor= { (item, index) => `${item._id}-${index}` }
+          keyExtractor= { (item, index) => `${item._id ?? ''}-${index}` }
           renderItem= {( { item } ) => (
            
             <DependentCard 

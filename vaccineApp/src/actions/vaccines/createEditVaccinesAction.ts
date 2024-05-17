@@ -1,5 +1,5 @@
 import vaccinesApi from "../../config/api/vaccinesApi";
-import { Vaccine, VaccineByIDEntity, VaccineEditCreateEntiy, VaccinePostEntity, VaccinePutEntity, VaccinePutPostResponseEntity } from "../../domain/entities/VaccineEditCreateEntity";
+import { DosisEntity, Vaccine, VaccineByIDEntity, VaccineEditCreateEntiy, VaccinePostEntity, VaccinePutEntity, VaccinePutPostResponseEntity } from "../../domain/entities/VaccineEditCreateEntity";
 import { VaccineByIDResponse, VaccineEditCreateResponse, VaccinePostResponse, VaccinePutResponse } from "../../infrastructure/interfaces/create-edit-vaccines-response";
 import { VaccinesMapper } from "../../infrastructure/mappers/vaccines-mapper";
 
@@ -32,7 +32,30 @@ import { VaccinesMapper } from "../../infrastructure/mappers/vaccines-mapper";
       }
       const response = await vaccinesApi.get<VaccineByIDResponse>(`/vaccine/${id}`);
       const { data } = response;
+     
         return returnVaccineByIDMapper(data);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'An unknown error occurred';
+      console.log(error);
+     
+      throw new Error(`Error getting by id: ${ id }`);
+      
+    }
+  };
+
+  // const returnDosisByVaccineByIDMapper = ( data: VaccineByIDResponse ): DosisEntity[] => {
+  //   return  VaccinesMapper.dosisByvaccineByIDToEntity(data);
+  // }
+
+  export const getDosisByVaccineByIdAction = async (id:string):Promise<DosisEntity[]> => {
+    try {
+     
+      const response = await vaccinesApi.get<VaccineByIDResponse>(`/vaccine/${id}`);
+      const { data } = response;
+      // console.log('---------------7----------------');
+      // console.log(data.dosis_ids);
+      // console.log('---------------7.1----------------');
+        return returnDosisByVaccineByIDMapper(data);
     } catch (error) {
       const message = error instanceof Error ? error.message : 'An unknown error occurred';
       console.log(error);
@@ -115,4 +138,7 @@ const returnCreaterMapper = ( data: VaccinePostResponse ): VaccinePutPostRespons
 
 const returnVaccineByIDMapper = ( data: VaccineByIDResponse ): VaccineByIDEntity => {
   return  VaccinesMapper.vaccineByIDToEntity(data);
+}
+const returnDosisByVaccineByIDMapper = ( data: VaccineByIDResponse ): DosisEntity[] => {
+  return  VaccinesMapper.dosisByvaccineByIDToEntity(data);
 }

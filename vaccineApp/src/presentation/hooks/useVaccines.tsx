@@ -1,11 +1,12 @@
 import { useDispatch, useSelector } from "react-redux";
 import { applyVaccinneAction } from "../../actions/apply-vaccine/applyVaccineAction";
 import { vaccinneAction } from "../../actions/apply-vaccine/vaccinneAction";
-import { ApplyVaccineEntity } from "../../domain/entities/apply-vaccine-interface";
+import { getVaccinesAction } from "../../actions/vaccines/createEditVaccinesAction";
+import { ApplyVaccineEntity, Vaccine } from "../../domain/entities/apply-vaccine-interface";
 import { VaccineDependentPage } from "../../domain/entities/VaccineDependent";
 import { RootState } from "../store";
 import { loadDosisFilterbyVaccineId, startApplyVaccines, stopApplyVaccines } from "../store/slices/applyvaccines";
-import { loadVaccinesResponse, offDosis, showDosis, startVaccines, stopVaccines } from "../store/slices/vaccines";
+import { loadVaccinesOnly, loadVaccinesResponse, offDosis, setNameVaccineSelect, showDosis, startVaccines, stopVaccines } from "../store/slices/vaccines";
 
  
 
@@ -19,12 +20,13 @@ interface Pais {
  
 export const useVaccines = () => {
   
-      const {  vaccines, isLoading, isShowDosis, dependentId } = useSelector((state: RootState) => state.vaccineStore);
+      const {  vaccines, isLoading, isShowDosis, dependentId, nameVaccine } = useSelector((state: RootState) => state.vaccineStore);
       const dispatch = useDispatch();
 
 
 
       const getVaccines = async(dependentId: string) =>{
+        dispatch(startVaccines());
         const   data:VaccineDependentPage   = await vaccinneAction(dependentId);
         const {   desde,
                   limite,
@@ -37,9 +39,21 @@ export const useVaccines = () => {
                           total,
                           vaccines
                         };
-        dispatch(startVaccines());
+       
         dispatch(loadVaccinesResponse(payload));
         dispatch(stopVaccines());       
+        return payload;
+      }
+
+      const getVaccinesAll = async(term:string) =>{
+        dispatch(startVaccines());
+        let page = 0;
+        const vaccines:Vaccine[]  = await getVaccinesAction(10000,page, term);
+        const payload = {
+                          vaccines
+                        };
+        dispatch(loadVaccinesOnly(payload));
+        dispatch(stopVaccines());     
         return payload;
       }
 
@@ -71,9 +85,18 @@ export const useVaccines = () => {
       }
 
       const getOffDosis = () =>{
-       
         dispatch(offDosis());
       }
+
+      const putNameVaccineSelect = (nameVaccine:string) =>{
+      
+        let payload = {
+          nameVaccine
+        }
+        dispatch(setNameVaccineSelect(payload));
+      }
+
+ 
    
 
   return  {
@@ -81,6 +104,9 @@ export const useVaccines = () => {
     getDosis,
     getShowDosis,
     getOffDosis,
+    getVaccinesAll,
+    putNameVaccineSelect,
+    nameVaccine,
     dependentId,
     vaccines,
     isLoading,

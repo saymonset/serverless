@@ -1,6 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import { consultVaccineAction } from "../../actions/apply-vaccine/consultVaccineAction";
+import { getVaccinesAction } from "../../actions/vaccines/createEditVaccinesAction";
 import { ApplyVaccine, ConsultByIndependentEntity } from "../../domain/entities/ConsultByIndependentEntity";
+import { Vaccine } from "../../domain/entities/VaccineEditCreateEntity";
 import { RootState } from "../store";
 import { clearConsultVaccine, loadDataConsultVaccine, startConsultVaccines, stopConsultVaccines } from "../store/slices/consultvaccines";
 
@@ -60,6 +62,14 @@ export const useConsultVaccine = () => {
         
         dispatch(stopConsultVaccines());
             return {};
+      }
+
+      const getAllVaccines = async() =>{
+        dispatch(startConsultVaccines());
+        dispatch(clearConsultVaccine( ));
+        let page=0;
+        const vaccines: Vaccine[] = await getVaccinesAction(10000, page);
+        
       }
    
 

@@ -27,6 +27,7 @@ import { useApplyVaccine } from '../../../hooks/useApplyVaccine';
 import { FullScreenLoader } from '../../../components/ui/FullScreenLoader';
 import { getApplyVaccineAction, updateCreateApplyVaccinneAction } from '../../../../actions/apply-vaccine/applyVaccineAction';
 import { ApplyVaccineCreateResponse, Dosi } from '../../../../infrastructure/interfaces/apply-vaccine-response';
+import { useVaccines } from '../../../hooks/useVaccines';
  
 
 interface Props extends StackScreenProps<RootStackParams,'ApplyVaccinesAddScreen'>{};
@@ -38,6 +39,7 @@ export const ApplyVaccinesAddScreen = ({route}:Props) => {
   const [idVaccine, setIdVaccine] = useState('');
   const [IdDosis, setDosis] = useState('');
   const { user } = useLogin();
+  const {   getVaccines } = useVaccines();
   
 
   const {  genders } =  useGender();
@@ -49,8 +51,9 @@ export const ApplyVaccinesAddScreen = ({route}:Props) => {
   
   }, [idVaccine, dependentIdRef.current])
   useEffect(() => {
-   
-  }, [])
+     // Cargamos las vacunas de ese familiar
+     getVaccines(dependentIdRef.current);
+  }, [dependentIdRef.current])
 
   const mutation = useMutation({
     mutationFn: (data: ApplyVaccineCreateResponse) => {
@@ -90,8 +93,6 @@ export const ApplyVaccinesAddScreen = ({route}:Props) => {
   
 
   const onVaccine = (value:Vaccine) =>{
-      // setEstado(`${value?.capital}-${value?.estado}`);
-      console.log(value._id.$oid)
       setIdVaccine(value._id.$oid);
       setDosis('');
   }

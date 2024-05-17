@@ -8,6 +8,10 @@ const initialState = {
     image:            '',
     lote:             '',
     vaccination_date: '',
+
+ 
+     
+    
     
 
     status:true,

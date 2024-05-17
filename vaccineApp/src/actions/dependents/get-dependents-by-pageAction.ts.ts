@@ -16,14 +16,13 @@ const returnMapper = ( data: DependentBDResponse ): DependentResponse => {
       
       let offset = page * 10;
       let desde = offset;
-      //{{url}}/dependent/30/0/''
+       console.log(`/dependent/${limite}/${desde}/${term}`)
       const response = await vaccinesApi.get<DependentBDResponse>(`/dependent/${limite}/${desde}/${term}`);
 
       const { data } = response;
-      
         //let {data} = response;
         
-        return returnMapper(data).dependents;
+        return returnMapper(data).dependents ?? [];
     } catch (error) {
       const message = error instanceof Error ? error.message : 'An unknown error occurred';
       console.log(error);

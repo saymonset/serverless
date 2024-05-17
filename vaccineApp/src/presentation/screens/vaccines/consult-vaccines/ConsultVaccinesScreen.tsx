@@ -27,6 +27,7 @@ import { useApplyVaccine } from '../../../hooks/useApplyVaccine';
 import { FullScreenLoader } from '../../../components/ui/FullScreenLoader';
 import { useConsultVaccine } from '../../../hooks/useConsultVaccine';
 import { ConsultVaccineDetailScreen } from './ConsultVaccineDetailScreen';
+import { useVaccines } from '../../../hooks/useVaccines';
  
 
 interface Props extends StackScreenProps<RootStackParams,'ConsultVaccinesScreen'>{};
@@ -38,6 +39,7 @@ export const ConsultVaccinesScreen = ({route}:Props) => {
   const [idVaccine, setIdVaccine] = useState('');
   const [IdDosis, setDosis] = useState('');
   const { user } = useLogin();
+  const { getVaccines, isLoading:isLoadingVaccine } = useVaccines();
   
 
   const {  genders } =  useGender();
@@ -50,6 +52,7 @@ export const ConsultVaccinesScreen = ({route}:Props) => {
   useEffect(() => {
 
     loadVaccineAppliedByDependent( dependentIdRef.current );
+    getVaccines(dependentIdRef.current);
 
   }, [ dependentIdRef.current])
   

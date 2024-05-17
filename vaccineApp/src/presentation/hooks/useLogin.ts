@@ -6,6 +6,7 @@ import { authCheckStatusAction, authLoginAction } from '../../actions/auth/login
 import { addError, loginStore, logOutStore, startLoginStore, tokenStore } from '../store/slices/login'
 import { enviarMensajePorStatusCode } from '../screens/messages/enviarMensajePorStatusCode'
 import { User } from '../../domain/entities/user';
+import { StorageAdapter } from '../../config/adapters/storage-adapter'
 
 export const useLogin  = () => {
 
@@ -48,6 +49,10 @@ export const useLogin  = () => {
                 token,
               };
     
+              if (token){
+                StorageAdapter.setItem('token', token);
+              }
+              
             dispatch( loginStore(payload) );
         }catch(error){
            console.log(error)
@@ -83,6 +88,7 @@ export const useLogin  = () => {
     }
 
    const logoutThunks = ()  => {
+          StorageAdapter.removeItem('token');
           dispatch(logOutStore({}));
     }
 

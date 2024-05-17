@@ -21,6 +21,9 @@ import { ConsultVaccinesDependentsScreen } from '../screens/vaccines/consult-vac
 import { ConsultVaccinesScreen } from '../screens/vaccines/consult-vaccines/ConsultVaccinesScreen';
 import { VaccineFigmaScreen } from '../screens/vaccines/create-vaccines/vaccineFigmaScreen';
 import { VaccineEditCreateScreen } from '../screens/vaccines/create-vaccines/VaccineEditCreateScreen';
+import { DosisFigmaScreen } from '../screens/vaccines/dosis-vaccines/DosisFigmaScreen';
+import { DosisEditCreateScreen } from '../screens/vaccines/dosis-vaccines/DosisEditCreateScreen';
+ 
  
 
  
@@ -45,6 +48,8 @@ export type RootStackParams = {
   VaccineFigmaScreen:  undefined;
   ConsultVaccinesScreen: {dependentId: string};
   VaccineEditCreateScreen: {vaccineId: string};
+  DosisFigmaScreen:  {vaccineId: string};
+  DosisEditCreateScreen: {dosisId: string};
   
 }
 
@@ -62,7 +67,7 @@ export const  StackNavigator = () => {
         }
        }}
     >
-    
+                  <Stack.Screen name="MainScreen" component={   MainScreen } />
                   <Stack.Screen name="WelcomeScreen" component={ WelcomeScreen } /> 
                   {/* HomeScreen es para usuarios nuevos que quieran integrarse */}
                   <Stack.Screen name="HomeScreen" component={   HomeScreen } />
@@ -74,7 +79,6 @@ export const  StackNavigator = () => {
                   <Stack.Screen name="PasswordRecoveryScreen" component={   PasswordRecoveryScreen } />
                   <Stack.Screen name="SendCodeRecoveryFigmaScreen" component={   SendCodeRecoveryFigmaScreen } />
                   <Stack.Screen name="PasswordRecoveryTwiceScreen" component={   PasswordRecoveryTwiceScreen } />
-                  <Stack.Screen name="MainScreen" component={   MainScreen } />
                   <Stack.Screen name="DependentScreen" component={   DependentScreen } />
                   <Stack.Screen name="ApplyVaccinesDependentsScreen" component={   ApplyVaccinesDependentsScreen } />
                   <Stack.Screen name="ApplyVaccinesAddScreen" component={   ApplyVaccinesAddScreen } />
@@ -82,6 +86,8 @@ export const  StackNavigator = () => {
                   <Stack.Screen name="ConsultVaccinesScreen" component={   ConsultVaccinesScreen } />
                   <Stack.Screen name="VaccineFigmaScreen" component={   VaccineFigmaScreen } />
                   <Stack.Screen name="VaccineEditCreateScreen" component={   VaccineEditCreateScreen } />
+                  <Stack.Screen name="DosisFigmaScreen" component={   DosisFigmaScreen } />
+                  <Stack.Screen name="DosisEditCreateScreen" component={   DosisEditCreateScreen } />
   
   
      

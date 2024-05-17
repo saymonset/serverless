@@ -17,8 +17,20 @@ export interface VaccineByIDResponse {
     application_age:  string;
     isChildren:       boolean;
     status:           boolean;
-    dosis_ids:        any[];
+    dosis_ids:        DosisResponse[];
 }
+
+export interface DosisResponse {
+    _id:             ID;
+    vacinne_id:      string;
+    name:            string;
+    age_frequency:   string;
+    status:          boolean;
+    columReporte:    string;
+    rowReporte:      string;
+    expires_in_days: number;
+}
+
 
 export interface ID {
     $oid: string;

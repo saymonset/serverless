@@ -1,4 +1,4 @@
-import { VaccineByIDEntity, VaccineEditCreateEntiy, VaccinePostEntity, VaccinePutEntity, VaccinePutPostResponseEntity } from '../../domain/entities/VaccineEditCreateEntity';
+import { DosisEntity, VaccineByIDEntity, VaccineEditCreateEntiy, VaccinePostEntity, VaccinePutEntity, VaccinePutPostResponseEntity } from '../../domain/entities/VaccineEditCreateEntity';
 import { ApplyVaccineCreateResponse } from "../interfaces/apply-vaccine-response"
 import { VaccineByIDResponse, VaccineEditCreateResponse, VaccinePostResponse, VaccinePutResponse } from "../interfaces/create-edit-vaccines-response"
 
@@ -54,5 +54,39 @@ export class VaccinesMapper {
         dosis_ids:       response.dosis_ids
       }
     }
-
+     
+    static dosisByvaccineByIDToEntity(response: VaccineByIDResponse): DosisEntity[] {
+      // Verificar si response.dosis_ids está definido y no es un array vacío
+      if (response.dosis_ids && response.dosis_ids.length > 0) {
+          // Mapear los datos de VaccineByIDResponse a DosisEntity
+          return response.dosis_ids.map(dosis => {
+              return {
+                //DATOS DE LA VACUNA
+                  vaccineID:               response._id,
+                  vaccineName:             response.name,
+                  vaccineDescription:      response.description,
+                  vaccineDisease_prevents: response.disease_prevents,
+                  vaccineApplication_age:  response.application_age,
+                  vaccineIsChildren:       response.isChildren,
+                  vaccineStatus:          response.status,
+                //DATOS DE LA DOSIS
+                  _id: dosis._id,
+                  vacinne_id:response._id.$oid, // Asignar el id de la vacuna de la respuesta original
+                  name: dosis.name,
+                  age_frequency: dosis.age_frequency,
+                  status: dosis.status,
+                  columReporte: dosis.columReporte,
+                  rowReporte: dosis.rowReporte,
+                  expires_in_days: dosis.expires_in_days
+              };
+          });
+      } else {
+          // Devolver un array vacío si response.dosis_ids no está definido o es un array vacío
+          return [];
+      }
   }
+  
+
+}
+
+ 

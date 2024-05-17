@@ -53,7 +53,7 @@ const Footer = (props: ViewProps): React.ReactElement => (
 export const DependentCard = ( { dependent, goPage = 'DependentScreen' }:Props) => {
 
   const navigation = useNavigation<NavigationProp<RootStackParams>>();
-  const {   getVaccines } = useVaccines();
+ 
 
 //   <View style={{ marginLeft: 0 }}>
 //   <Text style={styles.strong}>{ obj.name + ' ' + obj.lastname}</Text>
@@ -76,8 +76,7 @@ export const DependentCard = ( { dependent, goPage = 'DependentScreen' }:Props) 
       {(goPage==='ApplyVaccinesAddScreen') && <Card 
                                       style={{flex:1}}
                                           onPress = { () => {
-                                            // Cargamos las vacunas de ese familiar
-                                           getVaccines(dependent._id.$oid);
+                                          
                                         
                                            return navigation.navigate('ApplyVaccinesAddScreen',{ dependentId: dependent._id.$oid})
                                         }}
@@ -94,7 +93,7 @@ export const DependentCard = ( { dependent, goPage = 'DependentScreen' }:Props) 
                                       style={{flex:1}}
                                           onPress = { () => {
                                             // Cargamos las vacunas de ese familiar
-                                           getVaccines(dependent._id.$oid);
+                                          
                                             return navigation.navigate('ConsultVaccinesScreen',{ dependentId: dependent._id.$oid})
                                         }}
                                         header={() =>  <Text></Text>}

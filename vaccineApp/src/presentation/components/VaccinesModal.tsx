@@ -9,10 +9,14 @@ import { MyIcon } from './ui/MyIcon';
  
 interface Props {
   onData: (item:any) => void;
+  onClose ? : ( value: boolean ) => void;
+  isVisible?: boolean;
+  title?: string;
 }
  
-export const VaccinesModal = ({onData}:Props) => {
-    const [visible, setVisible] = React.useState(false);
+export const VaccinesModal = ({ isVisible = false, title = '', onData, onClose}:Props) => {
+    const [visible, setVisible] = React.useState(isVisible);
+    const [vaccine, setVaccine] = useState('');
      
    
     const { vaccines, isLoading } = useVaccines();
@@ -69,7 +73,7 @@ const placements = [
         </Layout>
        )}
         onPress={() => {
-          
+          setVaccine(item.name);
           setVisible(false)
           onData(item);
         }}
@@ -77,6 +81,10 @@ const placements = [
     );
   return (
     <View style={styles.container}>
+  
+  <Text category='h6'>
+          { vaccine && ` ${vaccine}`}
+    </Text>
   
     <Button 
         status='basic'
@@ -89,14 +97,22 @@ const placements = [
       backdropStyle={styles.backdrop}
       onBackdropPress={() => setVisible(false)}
     >
-      <Card disabled={true} style={{width:330, height:300}}>
+      <Card 
+             header={<Text >{title}</Text>}
+           disabled={true} 
+           style={{  width:330, height:300}}>
       <List
           style={styles.container}
           data={vaccines ?? []}
           ItemSeparatorComponent={Divider}
           renderItem={renderItem}
         />
-        <Button onPress={() => setVisible(false)}>
+        <Button onPress={() => {
+            setVisible(false);
+            //Si existe el metodo, lanzamos verdadero
+            onClose && onClose(true);
+
+        }}>
           Cerrar
         </Button>
       </Card>

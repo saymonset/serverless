@@ -24,16 +24,7 @@ const vaccinesApi = axios.create({
       'Content-Type': 'application/json',
     }
   })
-
-const logout =async () => {
-    //Si el token ya no existe, lo sacamos
-    console.log('Token vencido....');
-    // const dispatch = useDispatch();
-    // await dispatch(logoutThunks());
-    const navigation = useNavigation();
-    navigation.navigate( 'WelcomeScreen' as never)
-}
-
+ 
 
 vaccinesApi.interceptors.request.use(
     async (config) => {
@@ -42,9 +33,7 @@ vaccinesApi.interceptors.request.use(
         if (token) {
               config.headers['X-Token'] = `Bearer ${token}`;
               config.headers['Authorization'] = `Bearer ${token}`;
-        }else{
-           //+58 logout();
-        }
+        } 
         return config;
     },
     (error) => {
