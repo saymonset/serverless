@@ -10,20 +10,14 @@ import { RootStackParams } from '../../../navigation/StackNavigator';
 import { useLogin } from '../../../hooks/useLogin';
 import { useGender } from '../../../hooks/useGender';
 import { useRelationShip } from '../../../hooks/useRelationShip';
-import { DependentById, DependentUpdateCreateResponse } from '../../../../infrastructure/interfaces/dependentById-interface';
-import { updateCreateDependentAction } from '../../../../actions/dependents/update-create-dependents';
 import { enviarMensajePorStatusCode } from '../../messages/enviarMensajePorStatusCode';
-import { getDependentByIdAction } from '../../../../actions/dependents/get-dependent-by-id';
 import { FullScreenLoader } from '../../../components/ui/FullScreenLoader';
 import { Formik } from 'formik';
 import { MainLayout } from '../../../layouts/MainLayout';
 import { stylesFigma } from '../../theme/appFigmaTheme';
-import { MyIcon } from '../../../components/ui/MyIcon';
-import { SelectSimpleUsageShowcase } from '../../../components/ui/SelectSimpleUsageShowcase';
-import { Municipios } from '../../../components/Municipios';
-import { Estados } from '../../../components/Estados';
-import { Vaccine, VaccinePutPostResponseEntity } from '../../../../domain/entities/VaccineEditCreateEntity';
-import { getVaccineByIdAction, updateCreateVaccineAction } from '../../../../actions/vaccines/createEditVaccinesAction';
+import { getDosisByIdAction, updateCreateDosisAction } from '../../../../actions/dosis/createEditDosisAction';
+import { DosisByIdEntity } from '../../../../domain/entities/DosisEditCreateEntity';
+import { useVaccines } from '../../../hooks/useVaccines';
 
 interface Props extends StackScreenProps<RootStackParams,'DosisEditCreateScreen'>{};
 
@@ -44,40 +38,41 @@ export const DosisEditCreateScreen = ({route}:Props) => {
   const {  relationships } =  useRelationShip();
   const dosisIdRef = useRef(route.params.dosisId);
   const [checkedChild, setCheckedChild] = React.useState(false);
+  const { vaccineId } = useVaccines();
 
  
 
   const mutation = useMutation({
-    mutationFn: (data: Vaccine) => {
+    mutationFn: (data: DosisByIdEntity) => {
       let {_id, ...rest} = data;
        _id = {
            $oid: dosisIdRef.current
        }
-     return updateCreateVaccineAction({...rest, _id});
+     return updateCreateDosisAction({...rest, _id});
     }
    ,
-    onSuccess(data: VaccinePutPostResponseEntity) {
+    onSuccess(data: DosisByIdEntity) {
       dosisIdRef.current = data._id?.$oid ?? ''; // creación
 
       const { statusCode, resp } = data;
-      if (statusCode == 401 || !resp) {
+      if (!resp) {
         Alert.alert('Info', enviarMensajePorStatusCode(statusCode+''));
         return 
       }else if (resp){
         Alert.alert('Info', enviarMensajePorStatusCode('200'));   
       }
-      queryClient.invalidateQueries({queryKey: ['vaccines', 'infinite']});
-      queryClient.invalidateQueries({queryKey: ['vaccine', dosisIdRef.current]});
+      queryClient.invalidateQueries({queryKey: ['dosis', 'infinite']});
+      queryClient.invalidateQueries({queryKey: ['dosi', dosisIdRef.current]});
       // queryClient.setQueryData(['product',  data.id ], data);
     },
   });
 
-  const { data:vaccine } = useQuery({
-    queryKey: ['vaccine', dosisIdRef.current],
-    queryFn: () => getVaccineByIdAction(dosisIdRef.current)
+  const { data:dosi } = useQuery({
+    queryKey: ['dosi', dosisIdRef.current],
+    queryFn: () => getDosisByIdAction(dosisIdRef.current)
   });
 
-  if (!vaccine) {
+  if (!dosi) {
     return (<FullScreenLoader></FullScreenLoader>);
   }
 
@@ -105,15 +100,16 @@ export const DosisEditCreateScreen = ({route}:Props) => {
   const maxDate = new Date(3000, 0, 1);
   return (
     <Formik
-      initialValues={ vaccine }
+      initialValues={ dosi }
       validationSchema={validationSchema}
-      onSubmit = { vaccine => {
-          let { _id, ...rest } = vaccine;
+      onSubmit = { dosi => {
+          let { _id,vacinne_id, ...rest } = dosi;
+          vacinne_id = vaccineId;
 
         
          
            
-          return mutation.mutate({_id, ...rest});
+          return mutation.mutate({_id, vacinne_id, ...rest});
         }
       }
 >
@@ -129,8 +125,8 @@ export const DosisEditCreateScreen = ({route}:Props) => {
               
                           <Layout>
                             { dosisIdRef.current !== 'new'
-                            ? (<Text style={[stylesFigma.title, {textAlign:'left', left:10}]} category="h1">Editar Vacuna</Text>)
-                            : <Text style={[stylesFigma.title, {textAlign:'left', left:10}]} category="h1">Agregar Vacuna</Text>}
+                            ? (<Text style={[stylesFigma.title, {textAlign:'left', left:10}]} category="h1">Editar Dosis</Text>)
+                            : <Text style={[stylesFigma.title, {textAlign:'left', left:10}]} category="h1">Agregar Dosis</Text>}
                               
                           </Layout>
                           
@@ -143,7 +139,7 @@ export const DosisEditCreateScreen = ({route}:Props) => {
                                   <Input
                                       // placeholder="Nombre completo"
                                       accessoryLeft={<></>}
-                                      placeholder="Enter your name:"
+                                      placeholder="Enter  name:"
                                       placeholderTextColor="rgba(0,0,0,0.4)"
                                       underlineColorAndroid="rgba(0,0,0,0)"
                                       style={[ 
@@ -163,11 +159,11 @@ export const DosisEditCreateScreen = ({route}:Props) => {
                           </Layout>    
                             {/* DESCRIPCION */}
                             <Layout style = {{ marginVertical:20}}>
-                                 <Text style={ stylesFigma.label }>Descripción:<Text style={{ color: 'skyblue' }}> *</Text></Text>
+                                 <Text style={ stylesFigma.label }>Edad para la aplicacion de la vacuna:<Text style={{ color: 'skyblue' }}> *</Text></Text>
                                   <Input
                                       // placeholder="Nombre completo"
                                       accessoryLeft={ <></>}
-                                      placeholder="Enter your description:"
+                                      placeholder="Edad aplicar vacuna"
                                       placeholderTextColor="rgba(0,0,0,0.4)"
                                       underlineColorAndroid="rgba(0,0,0,0)"
                                       multiline={true}
@@ -177,8 +173,8 @@ export const DosisEditCreateScreen = ({route}:Props) => {
                                       ]}
                                       selectionColor="white"
   
-                                      onChangeText={ handleChange('description') }
-                                      value={ values.description }
+                                      onChangeText={ handleChange('age_frequency') }
+                                      value={ values.age_frequency }
                                       
                                   //  onSubmitEditing={ onRegister }
   
@@ -189,11 +185,11 @@ export const DosisEditCreateScreen = ({route}:Props) => {
 
                             {/* DISEASE PREVENTS */}
                             <Layout style = {{ marginVertical:20}}>
-                                 <Text style={ stylesFigma.label }>Enfermedades que previene:<Text style={{ color: 'skyblue' }}> *</Text></Text>
+                                 <Text style={ stylesFigma.label }>Número de columna en el reporte:<Text style={{ color: 'skyblue' }}> *</Text></Text>
                                   <Input
                                       // placeholder="Nombre completo"
                                       accessoryLeft={ <></>}
-                                      placeholder="Enter your description:"
+                                      placeholder="Enter column:"
                                       placeholderTextColor="rgba(0,0,0,0.4)"
                                       underlineColorAndroid="rgba(0,0,0,0)"
                                       style={[ 
@@ -202,21 +198,22 @@ export const DosisEditCreateScreen = ({route}:Props) => {
                                       ]}
                                       selectionColor="white"
   
-                                      onChangeText={ handleChange('disease_prevents') }
-                                      value={ values.disease_prevents }
+                                      onChangeText={ handleChange('columReporte') }
+                                      value={ values.columReporte }
                                       
                                   //  onSubmitEditing={ onRegister }
   
                                       autoCapitalize="words"
                                       autoCorrect={ false }
+                                      keyboardType="numeric"
                                   />
                             </Layout>    
                             {/* application_age*/}
                             <Layout style = {{ marginVertical:20}}>
-                                 <Text style={ stylesFigma.label }>Edad recomendada para la aplicación de la vacuna:<Text style={{ color: 'skyblue' }}> *</Text></Text>
+                                 <Text style={ stylesFigma.label }>Número de fila en el reporte:<Text style={{ color: 'skyblue' }}> *</Text></Text>
                                   <Input
                                       accessoryLeft={ <></>}
-                                      placeholder="Enter your description:"
+                                      placeholder="Enter row:"
                                       placeholderTextColor="rgba(0,0,0,0.4)"
                                       underlineColorAndroid="rgba(0,0,0,0)"
                                       style={[ 
@@ -225,29 +222,37 @@ export const DosisEditCreateScreen = ({route}:Props) => {
                                       ]}
                                       selectionColor="white"
   
-                                      onChangeText={ handleChange('application_age') }
-                                      value={ values.application_age }
+                                      onChangeText={ handleChange('rowReporte') }
+                                      value={ values.rowReporte }
                                       
                                   //  onSubmitEditing={ onRegister }
   
                                       autoCapitalize="words"
                                       autoCorrect={ false }
+                                      keyboardType="numeric"
                                   />
                             </Layout>    
-                            {/* isChildren */}
                             <Layout style = {{ marginVertical:20}}>
-                                 
-                                 <CheckBox
-                                    checked={ values.isChildren}
-                                    onChange={nextChecked => {
-                                      setCheckedChild(nextChecked);
-                                      setFieldValue('isChildren',nextChecked)
-                                    } }
-                                  >
-                                   <Text style={ stylesFigma.label }>Es Nińo ?</Text>
-                                  </CheckBox>
-                            
+                                 <Text style={ stylesFigma.label }> Número de dias para aplicar al familiar:<Text style={{ color: 'skyblue' }}> *</Text></Text>
+                                  <Input
+                                      accessoryLeft={ <></>}
+                                      placeholder="Enter days:"
+                                      placeholderTextColor="rgba(0,0,0,0.4)"
+                                      underlineColorAndroid="rgba(0,0,0,0)"
+                                      style={[ 
+                                          stylesFigma.inputField,
+                                          ( Platform.OS === 'ios' ) && stylesFigma.inputFieldIOS
+                                      ]}
+                                      selectionColor="white"
+  
+                                      onChangeText={ handleChange('expires_in_days') }
+                                      value={ values.expires_in_days +''}
+                                    
+                                      autoCorrect={ false }
+                                      keyboardType="numeric"
+                                  />
                             </Layout>    
+                            
                          
 
                           

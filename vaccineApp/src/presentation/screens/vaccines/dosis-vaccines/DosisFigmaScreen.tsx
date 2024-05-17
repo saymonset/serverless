@@ -32,9 +32,7 @@ export const DosisFigmaScreen = ({route}:Props) => {
     const navigation = useNavigation<NavigationProp<RootStackParams>>();
     const { nameVaccine,  isLoading:isLoadingVaccine } = useVaccines();
  
-    const addFamily = async ()=> {
-        navigation.navigate( 'PerfilFigmaAddScreen' as never)
-    }
+ 
     const deleteRow = ( id: string)=>{
         Alert.alert(
           'Confirmar eliminación',

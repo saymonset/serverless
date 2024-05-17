@@ -73,6 +73,7 @@ const PreviewLayout = ({
   const [chooseVaccine, setChooseVaccine] = useState(false);
   const [idVaccine, setIdVaccine] = useState('');
 
+  //Vamos a cargar dosis por el tipo de vacuna
   useEffect(() => {
     if (idVaccine!=''){
      navigation.navigate( 'DosisFigmaScreen' ,{ vaccineId: idVaccine})
@@ -126,16 +127,7 @@ const PreviewLayout = ({
           <Layout style={{padding: 5, flex: 1, backgroundColor:'white'}}>
               <Layout style={{flexDirection:'column'}}>
 
-                      <Pressable
-                              
-                                onPress={() =>logout()}
-                              >
-                                <Layout style={{alignItems:'flex-end'}}>
-                                        <Layout>
-                                          <Icon name='arrow-back-circle-outline' size = { 20 } color = { "black" }/>
-                                        </Layout>
-                                </Layout>
-                      </Pressable>
+                     
                     
                       <Layout  style={{flexDirection:'row', 
                                     alignItems:'center',

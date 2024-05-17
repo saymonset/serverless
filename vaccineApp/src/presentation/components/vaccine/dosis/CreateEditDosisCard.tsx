@@ -24,8 +24,7 @@ export const CreateEditDosisCard = ( { dosis, goPage = 'DosisEditCreateScreen' }
 
     //Este nombre se coloca apenas selecciones un dosis de la vacuna 
     useEffect(() => {
-    
-      putNameVaccineSelect(dosis.vaccineName ?? '');
+      putNameVaccineSelect(dosis);
  }, [dosis.vaccineName])
 
   return (
@@ -38,13 +37,25 @@ export const CreateEditDosisCard = ( { dosis, goPage = 'DosisEditCreateScreen' }
                                           //  console.log( vaccine._id.$oid );
                                           }}
                                       >
-                                           <Text category='h6'>
-                                                 {dosis.vaccineName ?? ''}
-                                            </Text>
-                                            <Text category='s1'>
-                                                { dosis.age_frequency  }
-                                            </Text>
-                                           
+                                            
+
+                                            <Text category='h6'
+                                                  numberOfLines={ 2 }
+                                                  style ={{ textAlign:'left'}}
+                                              >Dosis: { dosis.name  }</Text>
+                                              
+                                             
+                                                <Text category='s1' style={stylesFigma.titlesecund}>
+                                                Edad para la aplicacion de la vacuna : <Text>{'' + (dosis.age_frequency)}</Text></Text>
+                                             
+                                                <Text category='s1' style={stylesFigma.titlesecund}>
+                                                Número de dias para aplicar al familiar:{'' + (dosis.expires_in_days)}</Text>
+
+                                                <Text  category='s2' style={stylesFigma.titlesecund}>
+                                               Número de columna en el reporte:{'' + (dosis.columReporte)}</Text>
+
+                                                <Text category='s1' style={stylesFigma.titlesecund}>
+                                                Número de fila en el reporte:{'' + (dosis.rowReporte)}</Text>
                                           
                                       </Card>
                                       

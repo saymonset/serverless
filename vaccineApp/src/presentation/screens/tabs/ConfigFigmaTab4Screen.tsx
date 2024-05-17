@@ -9,11 +9,11 @@ import { NextAppointmentsScreen } from '../vaccines/NextAppointmentsScreen';
 import WatchYourHealthScreen from '../vaccines/WatchYourHealthScreen';
 
 export const ConfigFigmaTab4Screen = () => {
-  const { putNameVaccineSelect} = useVaccines();
+  const { clearNameVaccineSelect} = useVaccines();
  
   //Este nombre se coloca apenas selecciones un dosis de la vacuna 
   useEffect(() => {
-       putNameVaccineSelect('');
+    clearNameVaccineSelect();
   }, [])
   
   return (

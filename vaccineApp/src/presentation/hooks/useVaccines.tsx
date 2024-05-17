@@ -4,9 +4,10 @@ import { vaccinneAction } from "../../actions/apply-vaccine/vaccinneAction";
 import { getVaccinesAction } from "../../actions/vaccines/createEditVaccinesAction";
 import { ApplyVaccineEntity, Vaccine } from "../../domain/entities/apply-vaccine-interface";
 import { VaccineDependentPage } from "../../domain/entities/VaccineDependent";
+import { DosisEntity } from "../../domain/entities/VaccineEditCreateEntity";
 import { RootState } from "../store";
 import { loadDosisFilterbyVaccineId, startApplyVaccines, stopApplyVaccines } from "../store/slices/applyvaccines";
-import { loadVaccinesOnly, loadVaccinesResponse, offDosis, setNameVaccineSelect, showDosis, startVaccines, stopVaccines } from "../store/slices/vaccines";
+import { loadVaccinesOnly, loadVaccinesResponse, offDosis, setNameVaccineSelect, setNameVaccineSelectClear, showDosis, startVaccines, stopVaccines } from "../store/slices/vaccines";
 
  
 
@@ -20,7 +21,7 @@ interface Pais {
  
 export const useVaccines = () => {
   
-      const {  vaccines, isLoading, isShowDosis, dependentId, nameVaccine } = useSelector((state: RootState) => state.vaccineStore);
+      const {  vaccines, isLoading, isShowDosis, dependentId, nameVaccine, vaccineId } = useSelector((state: RootState) => state.vaccineStore);
       const dispatch = useDispatch();
 
 
@@ -88,15 +89,20 @@ export const useVaccines = () => {
         dispatch(offDosis());
       }
 
-      const putNameVaccineSelect = (nameVaccine:string) =>{
-      
+      const putNameVaccineSelect = (dosis:DosisEntity) =>{
         let payload = {
-          nameVaccine
+          nameVaccine:dosis.vaccineName,
+          vaccineId: dosis.vaccineID?.$oid,
+
         }
         dispatch(setNameVaccineSelect(payload));
       }
+       
+      const clearNameVaccineSelect = () =>{
+        dispatch(setNameVaccineSelectClear());
+      }
 
- 
+      
    
 
   return  {
@@ -106,8 +112,10 @@ export const useVaccines = () => {
     getOffDosis,
     getVaccinesAll,
     putNameVaccineSelect,
+    clearNameVaccineSelect,
     nameVaccine,
     dependentId,
+    vaccineId,
     vaccines,
     isLoading,
     isShowDosis,

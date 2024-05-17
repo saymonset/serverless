@@ -80,6 +80,8 @@ export interface DosisEntity {
     columReporte:    string;
     rowReporte:      string;
     expires_in_days: number;
+
+
 }
 
 export interface ID {
