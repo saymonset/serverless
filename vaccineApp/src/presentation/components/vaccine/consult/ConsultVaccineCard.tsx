@@ -85,6 +85,7 @@ export const ConsultVaccineCard = ( { applyVaccine, goPage = 'vaccine' }:Props) 
                                       style={{flex:1}}
                                           onPress = { goPageChange }
                                       >
+                                           
                                           <Text
                                               numberOfLines={ 2 }
                                               style ={{ textAlign:'left'}}

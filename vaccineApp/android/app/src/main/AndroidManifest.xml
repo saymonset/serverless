@@ -1,6 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
++   <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
++   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
++   <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
       android:name=".MainApplication"
@@ -22,4 +27,11 @@
         </intent-filter>
       </activity>
     </application>
+      <queries>
+        <intent>
+        <action android:name="android.intent.action.VIEW" />
+        <!-- el mimeType"*/*" es para indicar si el archivo que se desea abrir se desconoce el tipo. -->
+              <data android:mimeType="*/*" />
+              </intent>
+      </queries>
 </manifest>

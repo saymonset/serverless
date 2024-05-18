@@ -50,7 +50,7 @@ export const ConsultVaccinesScreen = ({route}:Props) => {
 
 
   useEffect(() => {
-
+    //CARGA TODAS LAS VACUNAS DEL FAMILIAR
     loadVaccineAppliedByDependent( dependentIdRef.current );
     getVaccines(dependentIdRef.current);
 
@@ -115,7 +115,9 @@ export const ConsultVaccinesScreen = ({route}:Props) => {
   const maxDate = new Date(3000, 0, 1);
   return (
  
-    <ConsultVaccineDetailScreen></ConsultVaccineDetailScreen>
+    <ConsultVaccineDetailScreen
+      dependent_id={ dependentIdRef.current }
+    ></ConsultVaccineDetailScreen>
      
   )
 }
