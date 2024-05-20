@@ -1,6 +1,6 @@
 import { Button, Datepicker, Input, Layout, Text, useTheme } from '@ui-kitten/components'
 import React, { useEffect, useRef, useState } from 'react'
-import { Alert, Platform, ScrollView, useWindowDimensions } from 'react-native'
+import { Alert, Platform, Pressable, ScrollView, useWindowDimensions } from 'react-native'
  
 import moment from 'moment';
 import {   useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -28,6 +28,8 @@ import { FullScreenLoader } from '../../../components/ui/FullScreenLoader';
 import { getApplyVaccineAction, updateCreateApplyVaccinneAction } from '../../../../actions/apply-vaccine/applyVaccineAction';
 import { ApplyVaccineCreateResponse, Dosi } from '../../../../infrastructure/interfaces/apply-vaccine-response';
 import { useVaccines } from '../../../hooks/useVaccines';
+import { CameraAdapter } from '../../../../config/adapters/camera-adapter';
+import { VaccineDosisImages } from '../../../components/images/VaccineDosisImages';
  
 
 interface Props extends StackScreenProps<RootStackParams,'ApplyVaccinesAddScreen'>{};
@@ -40,6 +42,7 @@ export const ApplyVaccinesAddScreen = ({route}:Props) => {
   const [IdDosis, setDosis] = useState('');
   const { user } = useLogin();
   const {   getVaccines } = useVaccines();
+  const [images, setImages] = useState([]);
   
 
   const {  genders } =  useGender();
@@ -184,8 +187,16 @@ export const ApplyVaccinesAddScreen = ({route}:Props) => {
                           {/* IMAGE */}
                           <Layout style = {{ marginVertical:20}}>
                               <Text style={ stylesFigma.label }>Imagen:<Text style={{ color: 'skyblue' }}> *</Text></Text>
+                              <Layout
+                                    style={{
+                                      marginVertical: 10,
+                                      justifyContent: 'center',
+                                      alignItems: 'center',
+                                    }}>
+                                    <VaccineDosisImages images={images} />
+                                </Layout>
                               <Input 
-                                  placeholder="Enter your lastname:"
+                                  placeholder="Enter your image:"
                                   placeholderTextColor="rgba(0,0,0,0.4)"
                                   underlineColorAndroid="rgba(0,0,0,0)"
                                   style={[ 
@@ -201,6 +212,17 @@ export const ApplyVaccinesAddScreen = ({route}:Props) => {
                                   autoCapitalize="words"
                                   autoCorrect={ false }
                               />
+                              <Pressable onPress={ async () => {
+                                const photos = await CameraAdapter.takePicture();
+                                const fileImages = photos.filter( image => image.includes('file://'));
+                                setImages(fileImages)
+                                let imgVaccine = fileImages[0].split('/').pop();
+                                console.log({imgVaccine, fileImages});
+                                setFieldValue('image', imgVaccine);
+                                
+                              }}>
+                                   <MyIcon name={"camera-outline"} /> 
+                              </Pressable>
                           </Layout>   
   
 
