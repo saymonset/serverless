@@ -15,7 +15,7 @@ import { updateCreateDependentAction } from '../../../../actions/dependents/upda
 import { enviarMensajePorStatusCode } from '../../messages/enviarMensajePorStatusCode';
 import { getDependentByIdAction } from '../../../../actions/dependents/get-dependent-by-id';
 import { FullScreenLoader } from '../../../components/ui/FullScreenLoader';
-import { Formik } from 'formik';
+import { ErrorMessage, Formik } from 'formik';
 import { MainLayout } from '../../../layouts/MainLayout';
 import { stylesFigma } from '../../theme/appFigmaTheme';
 import { MyIcon } from '../../../components/ui/MyIcon';
@@ -27,9 +27,7 @@ import { getVaccineByIdAction, updateCreateVaccineAction } from '../../../../act
 
 interface Props extends StackScreenProps<RootStackParams,'VaccineEditCreateScreen'>{};
 
-const validationSchema = Yup.object().shape({
-  name: Yup.string().required(),
-});
+
 
 
 export const VaccineEditCreateScreen = ({route}:Props) => {
@@ -46,6 +44,12 @@ export const VaccineEditCreateScreen = ({route}:Props) => {
   const [checkedChild, setCheckedChild] = React.useState(false);
 
  
+
+  const validationSchema = Yup.object().shape({
+    name: Yup.string().required('Requerido')
+    .max(15, 'Debe de tener 15 caracteres o menos')
+  ,
+  });
 
   const mutation = useMutation({
     mutationFn: (data: Vaccine) => {
@@ -85,19 +89,8 @@ export const VaccineEditCreateScreen = ({route}:Props) => {
 
   
 
-  const onEstado = (value:any) =>{
-      // setEstado(`${value?.capital}-${value?.estado}`);
-      setIdEstado(value?.id_estado);
-      setMunicipio('');
-  }
-
-  const onMuncipio = (value:any) =>{
-    setMunicipio(value?.capital);
-  }
-
-  // useEffect(() => {
-  //   console.log(error)
-  // }, [error])
+  
+ 
   
 
   // 
@@ -108,17 +101,17 @@ export const VaccineEditCreateScreen = ({route}:Props) => {
       initialValues={ vaccine }
       validationSchema={validationSchema}
       onSubmit = { vaccine => {
-          let { _id, ...rest } = vaccine;
-
         
-         
-           
-          return mutation.mutate({_id, ...rest});
+          let { _id, ...rest } = vaccine;
+          console.log({vaccine});
+         return mutation.mutate({_id, ...rest});
         }
       }
+      
+
 >
   {
-    ( { handleChange, handleSubmit, values, errors, setFieldValue } ) => (
+    ( { handleChange, handleSubmit, values, errors, setFieldValue, getFieldProps,  } ) => (
 
       <MainLayout
               title={ values.name ?? ''}
@@ -160,6 +153,9 @@ export const VaccineEditCreateScreen = ({route}:Props) => {
                                       autoCapitalize="words"
                                       autoCorrect={ false }
                                   />
+                                   {errors.name && <Text style={{ color: 'red' }}>{errors.name}</Text> }
+                                   <Text style={ stylesFigma.label }> <ErrorMessage name="name"/></Text>
+                                   
                           </Layout>    
                             {/* DESCRIPCION */}
                             <Layout style = {{ marginVertical:20}}>
