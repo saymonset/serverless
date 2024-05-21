@@ -10,6 +10,12 @@ import { Provider } from 'react-redux';
 import { store } from './presentation/store';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {AuthProvider} from './presentation/providers/AuthProvider';
+import { I18nextProvider } from 'react-i18next';
+import i18next from 'i18next';
+
+// i18next.init({
+//   interpolation: { escapeValue: false}
+// })
  
 // Create a client
 const queryClient = new QueryClient()
@@ -29,7 +35,9 @@ export const VaccineApp = () => {
              <Provider store={store}>
                 <NavigationContainer>{/* Rest of your app code */} 
                     <AuthProvider>
-                      <StackNavigator/>
+                      {/* <I18nextProvider i18n={i18next}> */}
+                         <StackNavigator/>
+                      {/* </I18nextProvider> */}
                     </AuthProvider>
                 </NavigationContainer>
                 </Provider>

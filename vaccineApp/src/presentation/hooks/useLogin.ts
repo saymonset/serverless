@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '../store'
 import { authCheckStatusAction, authLoginAction } from '../../actions/auth/loginAction'
-import { addError, loginStore, logOutStore, startLoginStore, tokenStore } from '../store/slices/login'
+import { addError, loginStore, logOutStore, removeError, startLoginStore, tokenStore } from '../store/slices/login'
 import { enviarMensajePorStatusCode } from '../screens/messages/enviarMensajePorStatusCode'
 import { User } from '../../domain/entities/user';
 import { StorageAdapter } from '../../config/adapters/storage-adapter'
@@ -14,6 +14,7 @@ export const useLogin  = () => {
     const dispatch = useDispatch();
 
     const login = async (ci: string,  password: string) => {
+    
         try{
             dispatch( startLoginStore())
            let {
@@ -69,21 +70,19 @@ export const useLogin  = () => {
               resp, 
               message
            } = await authCheckStatusAction(phone, lastCode);
-            
+         
           if ( !resp) {
-            dispatch( addError(enviarMensajePorStatusCode(statusCode+'')))
+           //dispatch( addError(enviarMensajePorStatusCode(statusCode+'')))
+          //  Rmovemos error sin mensaje
+          dispatch(removeError({}))
             return 
           }
-         
           const payload = {
               token,
           };
-    
           dispatch( tokenStore(payload) );
         }catch(error){
-           console.log(error)
            dispatch(logOutStore({}));
-
         }
     }
 
@@ -91,11 +90,15 @@ export const useLogin  = () => {
           StorageAdapter.removeItem('token');
           dispatch(logOutStore({}));
     }
+   const removeMessage = ()  => {
+    dispatch(removeError({}));
+    }
 
   return  {
     login,
     authCheckStatus,
     logoutThunks,
+    removeMessage,
     
     isLoading,
     status,

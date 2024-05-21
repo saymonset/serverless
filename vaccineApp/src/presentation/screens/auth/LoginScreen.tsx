@@ -24,7 +24,7 @@ export const LoginScreen =  () => {
    
     const navigation = useNavigation();
     const {height} = useWindowDimensions();
-    const { login, token, message, isLoading } =  useLogin();
+    const { token, message, isLoading, removeMessage, login } =  useLogin();
     const { clearSendSmsStatus, sendSmsPhone } =  useSendSms();
 
     const { value } = useSelector((state: RootState) => state.counter)
@@ -80,8 +80,10 @@ export const LoginScreen =  () => {
 
        {/* Solo para sacar mensajes de error por pantalla */}
        useEffect(() => {
+       
         if( message?.length === 0 ) return;
         Alert.alert('Info', message);
+        removeMessage();
        }, [ message ])
 
     return (
@@ -162,6 +164,7 @@ export const LoginScreen =  () => {
             flexDirection: 'row',
             justifyContent: 'center', }}>
           <Button 
+             disabled={ isLoading }
              activeOpacity={ 0.8 }
              style={  [{...stylesFigma.button} ]}
              onPress= { onLogin }>

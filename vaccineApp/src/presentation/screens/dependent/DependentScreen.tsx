@@ -2,7 +2,7 @@ import { Button, Datepicker, Input, Layout, Text, useTheme } from '@ui-kitten/co
 import React, { useEffect, useRef, useState } from 'react'
 import { Alert, Platform, ScrollView, useWindowDimensions } from 'react-native'
 import { MainLayout } from '../../layouts/MainLayout'
-
+import * as Yup  from 'yup'
 import moment from 'moment';
 import { Register, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
@@ -10,7 +10,7 @@ import { RootStackParams } from '../../navigation/StackNavigator';
 import { getDependentByIdAction } from '../../../actions/dependents/get-dependent-by-id';
 import { stylesFigma } from '../theme/appFigmaTheme';
 import { MyIcon } from '../../components/ui/MyIcon';
-import { Formik } from 'formik';
+import { ErrorMessage, Formik } from 'formik';
 import { useGender } from '../../hooks/useGender';
 import { useRelationShip } from '../../hooks/useRelationShip';
 import { SelectSimpleUsageShowcase } from '../../components/ui/SelectSimpleUsageShowcase';
@@ -27,6 +27,7 @@ interface Props extends StackScreenProps<RootStackParams,'DependentScreen'>{};
 export const DependentScreen = ({route}:Props) => {
   const theme = useTheme();
   const queryClient = useQueryClient();
+  
   const {height} = useWindowDimensions(); 
   const [idEstado, setIdEstado] = useState(0);
   const [municipio, setMunicipio] = useState('');
@@ -37,6 +38,10 @@ export const DependentScreen = ({route}:Props) => {
   const dependentIdRef = useRef(route.params.dependentId);
 
  
+  const validationSchema = Yup.object().shape({
+    gender_id: Yup.string().required('Debe seleccionar el genero')
+  ,
+  });
 
   const mutation = useMutation({
     mutationFn: (data: DependentById) => {
@@ -86,17 +91,13 @@ export const DependentScreen = ({route}:Props) => {
     setMunicipio(value?.capital);
   }
 
-  // useEffect(() => {
-  //   console.log(error)
-  // }, [error])
-  
 
-  // 
   const minDate = new Date(1900, 0, 1);
   const maxDate = new Date(3000, 0, 1);
   return (
     <Formik
       initialValues={ dependent }
+      validationSchema={validationSchema}
       onSubmit = { dependent => {
           let { user_id, ...rest } = dependent;
           user_id = user?.usuario?._id
@@ -179,6 +180,7 @@ export const DependentScreen = ({route}:Props) => {
                                           onPress = { (value) => {
                                             setFieldValue('gender_id', `${value?.key}`)
                                 }}></SelectSimpleUsageShowcase>
+                                  <Text style={{ color: 'red' }}> <ErrorMessage name="gender_id" /></Text>
                           </Layout> )}
                            {/* PARENTESCO */}
                         {relationships &&(<Layout style = {{ marginVertical:20}}>

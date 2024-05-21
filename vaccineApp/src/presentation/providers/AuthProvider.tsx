@@ -28,10 +28,14 @@ export const AuthProvider = ( { children }: PropsWithChildren) => {
               routes: [{ name: 'MainScreen' }],
             })
           } else {
-            navigation.reset({
-              index: 0,
-              routes: [{ name: 'WelcomeScreen' }],
-            })
+            if( message?.length === 0 ){
+                navigation.reset({
+                  index: 0,
+                  routes: [{ name: 'WelcomeScreen' }],
+                })
+            }else{
+                 navigation.navigate('LoginScreen');
+            }
           }
         }
       

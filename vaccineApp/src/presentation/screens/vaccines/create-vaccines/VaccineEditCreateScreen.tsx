@@ -111,7 +111,7 @@ export const VaccineEditCreateScreen = ({route}:Props) => {
 
 >
   {
-    ( { handleChange, handleSubmit, values, errors, setFieldValue, getFieldProps,  } ) => (
+    ( { handleChange, handleSubmit, values, errors, setFieldValue,  } ) => (
 
       <MainLayout
               title={ values.name ?? ''}
@@ -153,8 +153,7 @@ export const VaccineEditCreateScreen = ({route}:Props) => {
                                       autoCapitalize="words"
                                       autoCorrect={ false }
                                   />
-                                   {errors.name && <Text style={{ color: 'red' }}>{errors.name}</Text> }
-                                   <Text style={ stylesFigma.label }> <ErrorMessage name="name"/></Text>
+                                   <Text style={{ color: 'red' }}> <ErrorMessage name="name"/></Text>
                                    
                           </Layout>    
                             {/* DESCRIPCION */}
