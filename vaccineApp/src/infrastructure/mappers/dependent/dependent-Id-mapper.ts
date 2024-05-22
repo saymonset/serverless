@@ -25,6 +25,7 @@ export class DependentIdMapper {
         isChildren: objBD.result.isChildren,
         age:        objBD.result.age,
         days_birth: objBD.result.days_birth,
+        state: objBD.result.state,
     
       }
 

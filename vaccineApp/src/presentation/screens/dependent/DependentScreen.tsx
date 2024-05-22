@@ -39,10 +39,7 @@ export const DependentScreen = ({route}:Props) => {
   const dependentIdRef = useRef(route.params.dependentId);
   const { dependentIdDeleted } = useDependent();
 
-  useEffect(() => {
-    console.log('-----pasando-----')
-     console.log({dependentIdDeleted})
-  }, [dependentIdDeleted])
+ 
   
 
  
@@ -90,7 +87,7 @@ export const DependentScreen = ({route}:Props) => {
   
 
   const onEstado = (value:any) =>{
-      // setEstado(`${value?.capital}-${value?.estado}`);
+      //setEstado(`${value?.capital}-${value?.estado}`);
       setIdEstado(value?.id_estado);
       setMunicipio('');
   }
@@ -107,8 +104,11 @@ export const DependentScreen = ({route}:Props) => {
       initialValues={ dependent }
       validationSchema={validationSchema}
       onSubmit = { dependent => {
-          let { ...rest } = dependent;
-          return mutation.mutate({ ...rest});
+          let { state, ...rest } = dependent;
+         // console.log({state})
+         state = state ? state.concat( '  ' + municipio?', '+municipio:'') :'';
+        // console.log({state})
+        return mutation.mutate({ state, ...rest});
         }
       }
 >
@@ -238,6 +238,8 @@ export const DependentScreen = ({route}:Props) => {
                           
   
                           <Layout style={{height:10}}></Layout>
+
+                          { !idEstado && ( <Text category='h6'>{values.state? values.state:''}</Text> )}
 
                            {/* Estados */}
                            <Estados onData={(value) =>{

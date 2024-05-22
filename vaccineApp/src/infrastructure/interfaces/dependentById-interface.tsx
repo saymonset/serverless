@@ -20,6 +20,7 @@ export interface DependentById {
     isChildren?: boolean;
     age?:        number;
     days_birth?: number;
+    state? : string;
 }
 
 export interface IDBD {

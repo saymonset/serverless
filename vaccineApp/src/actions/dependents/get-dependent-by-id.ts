@@ -24,7 +24,7 @@ const returnMapper = ( data: DependentIDResponseBD ): DependentById => {
     status:     true,
     phone:      '',
     isUser:     false,
-    user_id:     {$oid: ''},
+    user_id:     '',
     isChildren: false,
     age:        0,
     days_birth: 0
