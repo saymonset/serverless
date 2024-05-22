@@ -3,6 +3,7 @@ import { DependentById } from '../../../../infrastructure/interfaces/dependentBy
 
 export interface DependentI {
     dependentById:      DependentById;
+    dependentIdDeleted: string;
     isLoading: boolean;
     resp?:boolean;
     message?: string;
@@ -10,6 +11,7 @@ export interface DependentI {
 
   const initialState: DependentI= {
     dependentById: {},
+    dependentIdDeleted:'',
     isLoading: false,
     resp:false,
     message: '',
@@ -41,10 +43,17 @@ export const dependentByIdSlice = createSlice({
             state.isLoading = false;
             state.resp = false;
             state.isLoading = false;
+        }, 
+       putDependentIdDeleted: ( state, { payload }) => {
+            state.dependentIdDeleted = payload.dependentIdDeleted;
+        }, 
+        clearDependentIdDeleted: ( state) => {
+            state.dependentIdDeleted = '';
         } 
     }
 });
 // Action creators are generated for each case reducer function
 export const { startLoadingStore,  stopLoadingStore,
     dependentByIdStore, addErrorStore, removeErrorStore,
+    putDependentIdDeleted, clearDependentIdDeleted
      } = dependentByIdSlice.actions;

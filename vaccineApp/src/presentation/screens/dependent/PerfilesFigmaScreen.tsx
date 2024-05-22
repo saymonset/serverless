@@ -5,7 +5,7 @@ import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import { LoadingScreen } from '../loading/LoadingScreen';
 import { getDependentByPageAction } from '../../../actions/dependents/get-dependents-by-pageAction.ts';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 import { MainLayout } from '../../layouts/MainLayout';
 import { DependentList } from '../../components/dependents/DependentList';
 import { Layout } from '@ui-kitten/components';
@@ -13,6 +13,8 @@ import { useGender } from '../../hooks/useGender';
 import { useRelationShip } from '../../hooks/useRelationShip';
 import { FAB } from '../../components/ui/FAB';
 import { RootStackParams } from '../../navigation/StackNavigator';
+import { useDependent } from '../../hooks/useDependent';
+import { Dependent } from '../../../infrastructure/interfaces/dependent-interface';
 
 
 
@@ -24,36 +26,54 @@ export const PerfilesFigmaScreen = () => {
     const { top } = useSafeAreaInsets();
     const [ term, setTerm ] = useState('');
     const navigation = useNavigation<NavigationProp<RootStackParams>>();
+    const {  dependentDelete} =  useDependent();
+    const queryClient = useQueryClient();
+ 
+    
 
-    const dispatch = useDispatch();
+     
+     // Lógica para eliminar un elemento
+     const handleDelete = async (id: string, dependents:Dependent[]) => {
+            // Lógica para eliminar el elemento con el ID proporcionado
+            // Por ejemplo, realizar una solicitud al servidor para eliminar el elemento en la base de datos
+            const updatedDependents = dependents.filter((depend) => depend._id.$oid !== id);
+            // Utiliza el operador spread (...) para actualizar la referencia de dependents
+            dependents.splice(0, dependents.length, ...updatedDependents);
+            // Después de la eliminación exitosa, refrescar los datos utilizando fetchNextPage
+            fetchNextPage();
+            return dependents;
+     };
 
-    const addFamily = async ()=> {
-        navigation.navigate( 'PerfilFigmaAddScreen' as never)
-    }
-    const deleteRow = ( id: string)=>{
-        Alert.alert(
-          'Confirmar eliminación',
-          '¿Estás seguro que deseas eliminar este elemento?',
-          [
-            {
-              text: 'Cancelar',
-              style: 'cancel',
-            },
-            {
-              text: 'Eliminar',
-              style: 'destructive',
-              onPress: () => {
-               
-              },
-            },
-          ],
-          { cancelable: false }
-        );
-    }
+          const deleteRow = ( id: string, dependents:Dependent[])=>{
+                
+            Alert.alert(
+              'Confirmar eliminación',
+              //'¿Estás seguro que deseas eliminar a ' +  dependent.name + ' ' + dependent.lastname,
+              '¿Estás seguro que deseas eliminarlo ? '  ,
+              [
+                {
+                  text: 'Cancelar',
+                  style: 'cancel',
+                },
+                {
+                  text: 'Eliminar',
+                  style: 'destructive',
+                  onPress: () => {
+                    // Lógica para eliminar el elemento
+                    dependentDelete(id);
+                    queryClient.invalidateQueries({queryKey: ['dependents', 'infinite']});
+                    handleDelete(id, dependents);
+                    
+                  },
+                },
+              ],
+              { cancelable: false }
+            );
+      }
 
 
      
-    const { isLoading, data, fetchNextPage } = useInfiniteQuery({
+    const { isLoading, data, fetchNextPage, fetchPreviousPage } = useInfiniteQuery({
       queryKey:['dependents', 'infinite'],
       staleTime: 1000 * 60 * 60, // 1 hour
       initialPageParam: 0,
@@ -64,10 +84,7 @@ export const PerfilesFigmaScreen = () => {
       getNextPageParam: ( lastPage, allPages) => allPages.length,
     })
 
-    // useEffect(() => {
-    
-
-    // }, [])
+  
     useEffect(() => {
       loadGender();
       loadRelationShip();
@@ -87,11 +104,13 @@ export const PerfilesFigmaScreen = () => {
         {  ( isLoading ) 
               ?  (<LoadingScreen />)
               : <DependentList 
+                      onDeleteRow  = { (idRowDelete) => deleteRow(idRowDelete, data?.pages.flat() ?? []) }
                       goPage="DependentScreen"
-                      dependents={ data?.pages.flat() ?? [] }
+                      dependents={  data?.pages.flat() ?? [] }
                       fetchNextPage = { fetchNextPage }/> }
             
         </MainLayout>
+        
         {/* <FAB 
         iconName="plus-outline"
         onPress={() => navigation.navigate('DependentScreen',{ dependentId: 'new' })}

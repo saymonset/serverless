@@ -12,11 +12,11 @@ export interface DependentById {
     birth?:       Date | null;
     gender_id?:  string;
     relationship_id?: string | null;
-    status?:     boolean;
+    status?:     boolean | string;
     token?:      string;
     phone?:      string;
     isUser?:     boolean;
-    user_id?:    ID;
+    user_id?:    string;
     isChildren?: boolean;
     age?:        number;
     days_birth?: number;

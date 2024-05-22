@@ -21,6 +21,7 @@ import { updateCreateDependentAction } from '../../../actions/dependents/update-
 import { enviarMensajePorStatusCode } from '../messages/enviarMensajePorStatusCode';
 import { useLogin } from '../../hooks/useLogin';
 import { FullScreenLoader } from '../../components/ui/FullScreenLoader';
+import { useDependent } from '../../hooks/useDependent'
 
 interface Props extends StackScreenProps<RootStackParams,'DependentScreen'>{};
 
@@ -36,6 +37,13 @@ export const DependentScreen = ({route}:Props) => {
   const {  genders } =  useGender();
   const {  relationships } =  useRelationShip();
   const dependentIdRef = useRef(route.params.dependentId);
+  const { dependentIdDeleted } = useDependent();
+
+  useEffect(() => {
+    console.log('-----pasando-----')
+     console.log({dependentIdDeleted})
+  }, [dependentIdDeleted])
+  
 
  
   const validationSchema = Yup.object().shape({
@@ -99,9 +107,8 @@ export const DependentScreen = ({route}:Props) => {
       initialValues={ dependent }
       validationSchema={validationSchema}
       onSubmit = { dependent => {
-          let { user_id, ...rest } = dependent;
-          user_id = user?.usuario?._id
-          return mutation.mutate({user_id, ...rest});
+          let { ...rest } = dependent;
+          return mutation.mutate({ ...rest});
         }
       }
 >
@@ -262,7 +269,7 @@ export const DependentScreen = ({route}:Props) => {
                                               onPress={() => handleSubmit()}
                                               style={ {...stylesFigma.button} }
                                           >
-                                          <Text style={ [stylesFigma.buttonText ] }>Guardar </Text>
+                                          <Text style={ [stylesFigma.buttonText ] }>{dependentIdDeleted} ' '{dependentIdDeleted!='' ? 'Delete': 'Guardar'} </Text>
                                   </Button>
                                 
                             

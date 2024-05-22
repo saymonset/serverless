@@ -19,7 +19,7 @@ export interface Dependent {
     phone:      string;
     status:     boolean;
     token:      string;
-    user_id:    ID;
+    user_id:    string;
 }
 
 export interface ID {

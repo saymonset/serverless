@@ -1,6 +1,6 @@
 import vaccinesApi from "../../config/api/vaccinesApi";
 import { DependentBDResponse } from "../../infrastructure/interfaces/dependent-bd-interface";
-import { DependentResponse } from "../../infrastructure/interfaces/dependent-interface";
+import { Dependent, DependentResponse } from "../../infrastructure/interfaces/dependent-interface";
 import { SendSMSResponse } from "../../infrastructure/interfaces/sendSms.response";
 import { DependentMapper } from "../../infrastructure/mappers/dependent/dependent-mapper";
 
@@ -9,7 +9,7 @@ const returnMapper = ( data: DependentBDResponse ): DependentResponse => {
 }
 
 
-  export const getDependentByPageAction = async (limite:number =1000, page:number, term:string = "''") => {
+  export const getDependentByPageAction = async (limite:number =1000, page:number, term:string = "''"):Promise<Dependent[]> => {
     try {
 
       
@@ -20,9 +20,27 @@ const returnMapper = ( data: DependentBDResponse ): DependentResponse => {
       const response = await vaccinesApi.get<DependentBDResponse>(`/dependent/${limite}/${desde}/${term}`);
 
       const { data } = response;
-        //let {data} = response;
         
-        return returnMapper(data).dependents ?? [];
+      return returnMapper(data).dependents ?? [];
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'An unknown error occurred';
+      console.log(error);
+     
+      return [];
+    }
+  };
+
+  export const dependentDeleteAction = async (id:string) => {
+    try {
+
+      //  const {data} = await vaccinesApi.delete(`/dependent/${ id }`);
+      
+       
+      const response = await vaccinesApi.delete<DependentBDResponse>(`/dependent/${id}`);
+
+      const { data } = response;
+        
+      return returnMapper(data).dependents ?? [];
     } catch (error) {
       const message = error instanceof Error ? error.message : 'An unknown error occurred';
       console.log(error);

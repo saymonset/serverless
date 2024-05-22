@@ -4,18 +4,11 @@ import { DependentById, DependentCreateResponse, DependentUpdateCreateResponse }
 import { UpdateCreateDependent } from "../../infrastructure/mappers/dependent/updateDependent-mapper";
 
 export const updateCreateDependentAction = ( dependent: Partial<DependentById> )=> {
-
-    // product.stock = isNaN( Number(product.stock)) ? 0 : Number(product.stock);
-    // product.price = isNaN( Number(product.price)) ? 0 : Number(product.price);
-  
-  
+ 
     if ( dependent._id && dependent._id.$oid !== 'new') {
       return updateDependent(dependent);
     }
-  
-  
     return createDependent( dependent );
-  
   }
 
 
@@ -33,8 +26,7 @@ const updateDependent = async (dependent: Partial<DependentById>):Promise<Depend
        // let data0;
         let birthStr = '' ;
         // Algunos de estos campos no van ( token, phone)  y otros los tratamos ( birth)
-        console.log({dependent})
-        const { _id, birth, token, phone,   ...resto } = dependent;
+        let { _id, birth, token, phone, user_id,   ...resto } = dependent;
         if (!birth){
           birthStr =  new Date().toISOString();
         }
@@ -46,6 +38,7 @@ const updateDependent = async (dependent: Partial<DependentById>):Promise<Depend
           birthStr = new Date(birth!).toISOString() || new Date().toISOString();  // Modify this line
         }
         let dep = Object.assign({}, resto, { birth: birthStr });
+       
         const { data }= await vaccinesApi.put(`/dependent/${$oid}`, {...dep});
       return returnMapper({_id, ...data});
       
@@ -61,12 +54,14 @@ const updateDependent = async (dependent: Partial<DependentById>):Promise<Depend
     try {
         let data0 =  {};
         let birthStr = '' ;
-        const { _id, birth,  ...resto } = dependent;
+        let { _id, birth, status,  ...resto } = dependent;
         if (birth instanceof Date) {
             birthStr = birth.toISOString();
         } 
-        let dep = Object.assign({}, resto, { birth: birthStr });
-        const { data }: AxiosResponse<DependentCreateResponse> = await vaccinesApi.post<DependentCreateResponse>(`/dependent/p`, {...dep});
+        status = 'True'
+        let dep = Object.assign({}, resto, { birth: birthStr});
+       
+        const { data }: AxiosResponse<DependentCreateResponse> = await vaccinesApi.post<DependentCreateResponse>(`/dependent/p`, {...dep, status});
       return returnCreaterMapper(data);
     } catch (error) {
       if ( isAxiosError(error) ) {
@@ -74,4 +69,9 @@ const updateDependent = async (dependent: Partial<DependentById>):Promise<Depend
       }
       throw new Error('Error al actualizar el producto');
     }
+  }
+
+  export const deleteDependentAction =  async (id:String) => {
+    const { data }  = await vaccinesApi.delete(`/dependent/${ id }`);
+    return data;
   }

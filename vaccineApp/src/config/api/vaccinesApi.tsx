@@ -29,7 +29,6 @@ const vaccinesApi = axios.create({
 vaccinesApi.interceptors.request.use(
     async (config) => {
         const token = await StorageAdapter.getItem('token');
-        //console.log({token})
         if (token) {
               config.headers['X-Token'] = `Bearer ${token}`;
               config.headers['Authorization'] = `Bearer ${token}`;

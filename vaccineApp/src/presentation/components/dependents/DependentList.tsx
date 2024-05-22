@@ -11,8 +11,9 @@ interface Props {
     goPage: PagesScreenStatus;
     dependents: Dependent[];
     fetchNextPage : () => void;
+    onDeleteRow? : (idRow: string)=> void;
 }
-export const DependentList = ( {dependents, goPage,  fetchNextPage }:Props) => {
+export const DependentList = ( {dependents, goPage,  fetchNextPage , onDeleteRow}:Props) => {
 
        const queryClient = useQueryClient();
        const [isRefreshing, setIsRefreshing] = useState(false);
@@ -33,6 +34,7 @@ export const DependentList = ( {dependents, goPage,  fetchNextPage }:Props) => {
           renderItem= {( { item } ) => (
            
             <DependentCard 
+                   onDeleteRow = { onDeleteRow }
                    goPage={ goPage }
                    dependent={ item}/>
           )}

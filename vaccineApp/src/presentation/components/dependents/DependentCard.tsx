@@ -9,48 +9,21 @@ import { stylesFigma } from '../../screens/theme/appFigmaTheme';
 import { StyleSheet, View, ViewProps } from 'react-native';
 import { MyIcon } from '../ui/MyIcon';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { DependentConsultDeleteCard } from './DependentConsultDeleteCard';
 
 
 interface Props {
     goPage: PagesScreenStatus;
     dependent: Dependent;
+    onDeleteRow? : (idRow: string)=> void;
 }
 
 
-const Header = (props: ViewProps): React.ReactElement => (
-  <View {...props}>
-    <Text category='h6'>
-      Maldives
-    </Text>
-    <Text category='s1'>
-      By Wikipedia
-    </Text>
-  </View>
-);
+ 
 
-const Footer = (props: ViewProps): React.ReactElement => (
-  <View
-    {...props}
-    // eslint-disable-next-line react/prop-types
-    style={[props.style, styles.footerContainer]}
-  >
-    <Button
-      style={styles.footerControl}
-      size='small'
-      status='basic'
-    >
-      CANCEL
-    </Button>
-    <Button
-      style={styles.footerControl}
-      size='small'
-    >
-      ACCEPT
-    </Button>
-  </View>
-);
+ 
 
-export const DependentCard = ( { dependent, goPage = 'DependentScreen' }:Props) => {
+export const DependentCard = ( { dependent, goPage = 'DependentScreen', onDeleteRow}:Props) => {
 
   const navigation = useNavigation<NavigationProp<RootStackParams>>();
  
@@ -62,16 +35,22 @@ export const DependentCard = ( { dependent, goPage = 'DependentScreen' }:Props) 
 
   return (
     <Layout  style={{flex:1}}>
-      {(goPage==='DependentScreen') && <Card 
+      {/* {(goPage==='DependentScreen') && <Card 
                                       style={{flex:1}}
                                           onPress = { () => navigation.navigate('DependentScreen',{ dependentId: dependent._id.$oid})}
                                       >
+                                        <Text>{'depndents users ' + (dependent.isUser)}</Text>
                                           <Text
                                               numberOfLines={ 2 }
                                               style ={{ textAlign:'left'}}
                                           >{ dependent.name  + ' ' + dependent.lastname}</Text>
                                            <Text style={stylesFigma.titlesecund}>{'Perfil ' + (dependent.isUser?'Primario':'Secundario')}</Text>
-                                      </Card>}
+                                      </Card>} */}
+      {(goPage==='DependentScreen') && <DependentConsultDeleteCard 
+                                          onDeleteRow = { onDeleteRow }
+                                          dependent ={ dependent }
+                                      />
+                                    }
 
       {(goPage==='ApplyVaccinesAddScreen') && <Card 
                                       style={{flex:1}}
