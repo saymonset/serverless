@@ -41,8 +41,8 @@ export const DependentConsultDeleteCard = ({ dependent , onDeleteRow}:Props) => 
                       </Layout>
                   </Layout>
             </Pressable>
-       <Layout style={{ flex: 1, marginHorizontal:90}}></Layout>
-            <Layout style={{  marginRight:(Platform.OS==='ios')?1:20}}>
+       <Layout style={{ flex: 1, marginHorizontal:0}}></Layout>
+            <Layout style={{  marginRight:(Platform.OS==='ios')?20:20}}>
                 <Pressable onPress={
                               () => {
                                 onDeleteRow && onDeleteRow(dependent._id.$oid) ;
