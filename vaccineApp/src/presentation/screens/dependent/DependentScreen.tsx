@@ -37,15 +37,23 @@ export const DependentScreen = ({route}:Props) => {
   const {  genders } =  useGender();
   const {  relationships } =  useRelationShip();
   const dependentIdRef = useRef(route.params.dependentId);
-  const { dependentIdDeleted } = useDependent();
 
  
   
 
  
   const validationSchema = Yup.object().shape({
-    gender_id: Yup.string().required('Debe seleccionar el genero')
-  ,
+    name: Yup.string().required('Requerido')
+    .max(15, 'Debe de tener 15 caracteres o menos')
+    .min(3,'Debe de tener 3 caracteres o mas'),
+    lastname: Yup.string().required('Requerido')
+    .max(15, 'Debe de tener 15 caracteres o menos')
+    .min(3,'Debe de tener 3 caracteres o mas'),
+    gender_id: Yup.string().required('Debe seleccionar el genero'),
+    relationship_id: Yup.string().required('Debe seleccionar el parentesco'),
+    email: Yup.string().required('Debe agregar el correo'),
+    birth: Yup.date().max(new Date(), 'La fecha de nacimiento no puede estar en el futuro')
+    .required('La fecha de nacimiento es obligatoria'),
   });
 
   const mutation = useMutation({
@@ -104,11 +112,9 @@ export const DependentScreen = ({route}:Props) => {
       initialValues={ dependent }
       validationSchema={validationSchema}
       onSubmit = { dependent => {
-          let { state, ...rest } = dependent;
-         // console.log({state})
-         state = state ? state.concat( '  ' + municipio?', '+municipio:'') :'';
-        // console.log({state})
-        return mutation.mutate({ state, ...rest});
+          let {  ...rest } = dependent;
+      
+        return mutation.mutate({ ...rest});
         }
       }
 >
@@ -155,6 +161,7 @@ export const DependentScreen = ({route}:Props) => {
                                       autoCapitalize="words"
                                       autoCorrect={ false }
                                   />
+                                   <Text style={{ color: 'red' }}> <ErrorMessage name="name" /></Text>
                           </Layout>    
                           {/* APELLIDO */}
                           <Layout style = {{ marginVertical:20}}>
@@ -176,6 +183,7 @@ export const DependentScreen = ({route}:Props) => {
                                   autoCapitalize="words"
                                   autoCorrect={ false }
                               />
+                               <Text style={{ color: 'red' }}> <ErrorMessage name="lastname" /></Text>
                           </Layout>   
 
                            {/* SEXO */}
@@ -198,6 +206,7 @@ export const DependentScreen = ({route}:Props) => {
                                           onPress = { (value) => {
                                             setFieldValue('relationship_id', `${value?.key}`)
                                 }}></SelectSimpleUsageShowcase>
+                                 <Text style={{ color: 'red' }}> <ErrorMessage name="relationship_id" /></Text>
                           </Layout> )}
 
                            {/* EMAIL */}
@@ -219,6 +228,7 @@ export const DependentScreen = ({route}:Props) => {
                                       autoCapitalize="none"
                                       autoCorrect={ false }
                                   />
+                                   <Text style={{ color: 'red' }}> <ErrorMessage name="email" /></Text>
                           </Layout>
 
                           <Layout style = {{ marginVertical:20}}>
@@ -234,12 +244,13 @@ export const DependentScreen = ({route}:Props) => {
                                   onSelect={nextDate => setFieldValue('birth', nextDate || new Date())}
                                   placeholder='Selecciona una fecha'
                               />
+                               <Text style={{ color: 'red' }}> <ErrorMessage name="birth" /></Text>
                           </Layout>
                           
   
-                          <Layout style={{height:10}}></Layout>
+                         
 
-                          { !idEstado && ( <Text category='h6'>{values.state? values.state:''}</Text> )}
+                          { values.state && ( <Text category='h6'>{values.state? values.state:''}</Text> )}
 
                            {/* Estados */}
                            <Estados onData={(value) =>{
@@ -247,9 +258,11 @@ export const DependentScreen = ({route}:Props) => {
                                 setFieldValue('state', `${value?.capital} - ${value?.estado}`)
                             }}></Estados>
                              {/* Municipio */}
-                             <Text category='h6'>
-                                {`${municipio}`}
-                            </Text>
+                            
+                             { values.city && ( <Text category='h6'>{values.city? values.city:''}</Text> )}
+
+                             <Layout style={{marginVertical:10}}></Layout>
+
                               <Municipios 
                                     onData={(value) =>{
                                       onMuncipio(value)  
@@ -271,7 +284,7 @@ export const DependentScreen = ({route}:Props) => {
                                               onPress={() => handleSubmit()}
                                               style={ {...stylesFigma.button} }
                                           >
-                                          <Text style={ [stylesFigma.buttonText ] }>{dependentIdDeleted} ' '{dependentIdDeleted!='' ? 'Delete': 'Guardar'} </Text>
+                                          <Text style={ [stylesFigma.buttonText ] }> Guardar </Text>
                                   </Button>
                                 
                             

@@ -36,9 +36,9 @@ export const Estados = ({onData}:Props) => {
     );
   return (
     <View style={styles.container}>
-    <Text category='h6'>
+    {/* <Text category='h6'>
           { estado && ` ${estado}`}
-    </Text>
+    </Text> */}
     <Button 
         status='basic'
         onPress={() => setVisible(true)}>

@@ -27,7 +27,9 @@ const returnMapper = ( data: DependentIDResponseBD ): DependentById => {
     user_id:     '',
     isChildren: false,
     age:        0,
-    days_birth: 0
+    days_birth: 0,
+    state:'',
+    city:''
  
   }
 

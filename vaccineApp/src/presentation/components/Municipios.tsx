@@ -36,16 +36,21 @@ export const Municipios = ({onData, idEstado = 0}:Props) => {
       />
     );
 
-    if (idEstado === 0) {
-      return null; // Return null when idEstado is 0 to render an empty jsx
-    }
+    
   return (
   
     <Layout style={styles.container}>
        
         <Button 
          status='basic'
-         onPress={() => setVisible(true)}>
+         onPress={() => {
+
+          if (idEstado === 0) {
+            return null; // Return null when idEstado is 0 to render an empty jsx
+          }
+          //Hacemos visible el modal
+          setVisible(true);
+         }}>
           Municipio
         </Button>
 

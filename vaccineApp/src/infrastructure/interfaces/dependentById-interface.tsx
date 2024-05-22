@@ -21,6 +21,7 @@ export interface DependentById {
     age?:        number;
     days_birth?: number;
     state? : string;
+    city? : string;
 }
 
 export interface IDBD {

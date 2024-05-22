@@ -16,8 +16,12 @@ const returnMapper = ( data: DependentBDResponse ): DependentResponse => {
       
       let offset = page * 10;
       let desde = offset;
-       console.log(`/dependent/${limite}/${desde}/${term}`)
+       console.log(`/dependent/${limite}/${desde}/${term}`);
+         console.log('---------1.8------x--X3-----')
+     
       const response = await vaccinesApi.get<DependentBDResponse>(`/dependent/${limite}/${desde}/${term}`);
+      console.log({response})
+      console.log('---------1.9----x----X1-----')
 
       const { data } = response;
         

@@ -40,7 +40,9 @@ export const PerfilesFigmaScreen = () => {
             // Utiliza el operador spread (...) para actualizar la referencia de dependents
             dependents.splice(0, dependents.length, ...updatedDependents);
             // Después de la eliminación exitosa, refrescar los datos utilizando fetchNextPage
-            fetchNextPage();
+           
+            refetch();
+           
             return dependents;
      };
 
@@ -62,6 +64,7 @@ export const PerfilesFigmaScreen = () => {
                     // Lógica para eliminar el elemento
                     dependentDelete(id);
                     queryClient.invalidateQueries({queryKey: ['dependents', 'infinite']});
+                 
                     handleDelete(id, dependents);
                     
                   },
@@ -73,15 +76,17 @@ export const PerfilesFigmaScreen = () => {
 
 
      
-    const { isLoading, data, fetchNextPage, fetchPreviousPage } = useInfiniteQuery({
+    const { isLoading, data, fetchNextPage, refetch } = useInfiniteQuery({
       queryKey:['dependents', 'infinite'],
       staleTime: 1000 * 60 * 60, // 1 hour
       initialPageParam: 0,
       queryFn: async ( params )=>  {
         const dependents = await getDependentByPageAction(10000,params.pageParam);
+       
         return dependents;
       },
       getNextPageParam: ( lastPage, allPages) => allPages.length,
+      //refetchInterval:1000
     })
 
   
