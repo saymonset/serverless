@@ -57,8 +57,8 @@ export const DosisFigmaScreen = ({route}:Props) => {
 
     const {isLoading, data: dosis = []} = useQuery({
       queryKey: ['dosis_ids', 'infinite'],
-     // staleTime: 1000 * 60 * 60, // 1 hour
-      staleTime: 0, // no cache
+      staleTime: 1000 * 60 * 60, // 1 hour
+      //staleTime: 0, // no cache
      
       queryFn: async() => await getDosisByVaccineByIdAction(vaccineIdRef.current),
     });

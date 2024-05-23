@@ -7,7 +7,7 @@ import { VaccineDependentPage } from "../../domain/entities/VaccineDependent";
 import { DosisEntity } from "../../domain/entities/VaccineEditCreateEntity";
 import { RootState } from "../store";
 import { loadDosisFilterbyVaccineId, startApplyVaccines, stopApplyVaccines } from "../store/slices/applyvaccines";
-import { loadVaccinesOnly, loadVaccinesResponse, offDosis, setNameVaccineSelect, setNameVaccineSelectClear, showDosis, startVaccines, stopVaccines } from "../store/slices/vaccines";
+import { initVaccinesResponse, loadVaccinesOnly, loadVaccinesResponse, offDosis, setNameVaccineSelect, setNameVaccineSelectClear, showDosis, startVaccines, stopVaccines } from "../store/slices/vaccines";
 
  
 
@@ -44,6 +44,24 @@ export const useVaccines = () => {
         dispatch(loadVaccinesResponse(payload));
         dispatch(stopVaccines());       
         return payload;
+      }
+
+      // async (limite:number =1000, page:number, term:string = "''")
+      const getVaccinesAllBD = async(limite:number =1000, page:number, term:string = "''")=>{
+        dispatch(startVaccines());
+        dispatch(initVaccinesResponse({}));
+         
+        console.log(`limite=  ${limite}, page= ${page}, term=${term} `);
+        page = 0;
+        const vaccines:Vaccine[]  = await getVaccinesAction(limite,page, term);
+        const payload = {
+          vaccines
+        };
+        console.log('vaccines = '+vaccines.length);
+        dispatch(loadVaccinesOnly(payload));
+        dispatch(stopVaccines());     
+       
+        return vaccines;
       }
 
       const getVaccinesAll = async(term:string) =>{
@@ -113,6 +131,7 @@ export const useVaccines = () => {
     getVaccinesAll,
     putNameVaccineSelect,
     clearNameVaccineSelect,
+    getVaccinesAllBD,
     nameVaccine,
     dependentId,
     vaccineId,

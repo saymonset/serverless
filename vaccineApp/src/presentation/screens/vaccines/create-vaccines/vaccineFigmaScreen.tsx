@@ -11,6 +11,7 @@ import { MainLayout } from '../../../layouts/MainLayout';
 import { LoadingScreen } from '../../loading/LoadingScreen';
 import { CreateEditVaccineList } from '../../../components/vaccine/consult/CreateEditVaccineList';
 import { getVaccinesAction } from '../../../../actions/vaccines/createEditVaccinesAction';
+import { useVaccines } from '../../../hooks/useVaccines';
  
 
 
@@ -18,17 +19,13 @@ import { getVaccinesAction } from '../../../../actions/vaccines/createEditVaccin
 const screenWidth = Dimensions.get("window").width;
 
 export const VaccineFigmaScreen = () => {
-    const { loadGender } =  useGender();
-    const { loadRelationShip } =  useRelationShip();
+   
     const { top } = useSafeAreaInsets();
     const [ term, setTerm ] = useState('');
     const navigation = useNavigation<NavigationProp<RootStackParams>>();
+    const { vaccines, isLoading:isLoadingVaccine, getVaccinesAllBD} = useVaccines();
 
-    const dispatch = useDispatch();
-
-    const addFamily = async ()=> {
-        navigation.navigate( 'PerfilFigmaAddScreen' as never)
-    }
+   
     const deleteRow = ( id: string)=>{
         Alert.alert(
           'Confirmar eliminación',
@@ -51,26 +48,23 @@ export const VaccineFigmaScreen = () => {
     }
 
 
-     
-    const { isLoading, data, fetchNextPage } = useInfiniteQuery({
+    const { isLoading, data, fetchNextPage, refetch } = useInfiniteQuery({
       queryKey:['vaccines', 'infinite'],
       staleTime: 1000 * 60 * 60, // 1 hour
       initialPageParam: 0,
       queryFn: async ( params )=>  {
-        const vaccines = await getVaccinesAction(10000,params.pageParam);
+        const vaccines = await getVaccinesAllBD(10000,params.pageParam);
+        console.log('----a-------------');
+       console.log({vaccines});
+        console.log('----b-------------');
+       
         return vaccines;
       },
       getNextPageParam: ( lastPage, allPages) => allPages.length,
+      //refetchInterval:1000
     })
-
-    // useEffect(() => {
-    
-
-    // }, [])
-    useEffect(() => {
-      loadGender();
-      loadRelationShip();
-     }, []);
+   
+ 
 
   return (
     

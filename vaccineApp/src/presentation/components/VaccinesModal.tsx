@@ -22,20 +22,7 @@ export const VaccinesModal = ({ isVisible = false, title = '', onData, onClose}:
     const { vaccines, isLoading } = useVaccines();
    
 
-const placements = [
-  'top',
-  'top start',
-  'top end',
-  'bottom',
-  'bottom start',
-  'bottom end',
-  'left',
-  'left start',
-  'left end',
-  'right',
-  'right start',
-  'right end',
-];
+ 
 
      
     const renderItem = ({ item }: { item:Vaccine; index: number }): React.ReactElement => (

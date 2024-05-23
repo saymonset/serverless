@@ -20,8 +20,7 @@ export const CreateEditVaccineList = ( {vaccines, goPage,  fetchNextPage }:Props
 
        const onPullToRefresh = async() =>{
              setIsRefreshing(true);
-             await new Promise(resolve => setTimeout(resolve,200));
-             queryClient.invalidateQueries({queryKey: ['vaccines', 'infinite']});
+             queryClient.invalidateQueries({queryKey:['vaccines', 'infinite']});
              setIsRefreshing(false)
        }
 
@@ -39,7 +38,7 @@ export const CreateEditVaccineList = ( {vaccines, goPage,  fetchNextPage }:Props
           )}
           
           ListFooterComponent={ () => <Layout style={{ flex:1}}/>}
-          onEndReached= { fetchNextPage }
+         // onEndReached= { fetchNextPage }
           onEndReachedThreshold={ 0.8 }
           refreshControl = {
             <RefreshControl 

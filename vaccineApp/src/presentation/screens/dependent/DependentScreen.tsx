@@ -51,7 +51,7 @@ export const DependentScreen = ({route}:Props) => {
     .min(3,'Debe de tener 3 caracteres o mas'),
     gender_id: Yup.string().required('Debe seleccionar el genero'),
     relationship_id: Yup.string().required('Debe seleccionar el parentesco'),
-    email: Yup.string().required('Debe agregar el correo'),
+    email: Yup.string().required('Debe agregar el correo').email('Formato de email no válido'),
     birth: Yup.date().max(new Date(), 'La fecha de nacimiento no puede estar en el futuro')
     .required('La fecha de nacimiento es obligatoria'),
   });

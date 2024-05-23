@@ -12,6 +12,7 @@ import { RootStackParams } from '../../navigation/StackNavigator';
 import { useVaccines } from '../../hooks/useVaccines';
 import { LoadingScreen } from '../loading/LoadingScreen';
 //import { Vaccine } from '../../../../domain/entities/VaccineDependent';
+import { useInfiniteQuery } from '@tanstack/react-query';
  
 
 interface CardProps {
@@ -35,8 +36,9 @@ export const ConfigFigmaScreen = () => {
       if (!vaccines || vaccines.length==0){
         loadVaccines();
       }
-    }, [])
-    
+    }, []);
+
+ 
 
   return (
     <>
@@ -76,7 +78,7 @@ const PreviewLayout = ({
   //Vamos a cargar dosis por el tipo de vacuna
   useEffect(() => {
     if (idVaccine!=''){
-     navigation.navigate( 'DosisFigmaScreen' ,{ vaccineId: idVaccine})
+       navigation.navigate( 'DosisFigmaScreen' ,{ vaccineId: idVaccine})
     }
     setIdVaccine('')
   }, [idVaccine])
@@ -103,11 +105,11 @@ const PreviewLayout = ({
   const goPage = (selectedValue: string) => {
         switch (selectedValue) {
           case 'Vacunas':
-            // Este metodo: Segun la bandera que se coloca en el store me condiciona este componentre: ApplyVaccinesDependentsScreen, ApplyVaccinesComponent
+            // Este metodo: Segun la bandera que se coloca en el store me condiciona este componentre: ApplyVaccinesvaccinesScreen, ApplyVaccinesComponent
             navigation.navigate( 'VaccineFigmaScreen' as never)
             break;
           case 'Dosis':
-            // Este metodo: Segun la bandera que se coloca en el store me condiciona este componentre: ApplyVaccinesDependentsScreen, ApplyVaccinesComponent
+            // Este metodo: Segun la bandera que se coloca en el store me condiciona este componentre: ApplyVaccinesvaccinesScreen, ApplyVaccinesComponent
             setChooseVaccine(true)
              //
             break;

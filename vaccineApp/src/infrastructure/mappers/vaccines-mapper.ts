@@ -6,11 +6,21 @@ export class VaccinesMapper {
   
  
     static getVaccinesToEntity( response:  VaccineEditCreateResponse):VaccineEditCreateEntiy {
+       // Ordenar el array de vacunas por el nombre
+       response.vaccines.sort((a, b) => a.name.localeCompare(b.name));
+
+        // Filtrar las vacunas únicas por _id
+  const uniqueVaccinesById = response.vaccines.filter((vaccine, index, self) =>
+            index === self.findIndex((v) => (
+              v._id.$oid === vaccine._id.$oid
+            ))
+          );
+
       return {
         desde:    response.desde,
         limite:   response.limite,
         total:    response.total,
-        vaccines: response.vaccines
+        vaccines: uniqueVaccinesById
       }
     }
 

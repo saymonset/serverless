@@ -20,7 +20,7 @@ export const vaccineSlice = createSlice({
     reducers: {
         initVaccinesResponse: (state, { payload } ) => {
             state.desde = 0;
-            state.limite = 100;
+            state.limite = 1000;
             state.total = 0;
             state.vaccines = [];
         },
