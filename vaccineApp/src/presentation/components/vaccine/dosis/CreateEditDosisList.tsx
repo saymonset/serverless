@@ -16,9 +16,10 @@ import { useVaccines } from '../../../hooks/useVaccines';
 interface Props {
     goPage: PagesVaccineScreenStatus;
     dosis: DosisEntity[];
+    onDelete: (idDelete:string) => void;
     fetchNextPage ?: () => void;
 }
-export const CreateEditDosisList = ( {dosis, goPage,  fetchNextPage }:Props) => {
+export const CreateEditDosisList = ( {dosis, goPage,  fetchNextPage, onDelete }:Props) => {
 
        const queryClient = useQueryClient();
        const [isRefreshing, setIsRefreshing] = useState(false);
@@ -28,7 +29,7 @@ export const CreateEditDosisList = ( {dosis, goPage,  fetchNextPage }:Props) => 
        const onPullToRefresh = async() =>{
              setIsRefreshing(true);
              await new Promise(resolve => setTimeout(resolve,200));
-             queryClient.invalidateQueries({queryKey: ['dosis_ids', 'infinite']});
+             queryClient.invalidateQueries({queryKey: ['dosis', 'infinite']});
              setIsRefreshing(false)
        }
 
@@ -41,12 +42,13 @@ export const CreateEditDosisList = ( {dosis, goPage,  fetchNextPage }:Props) => 
           renderItem= {( { item } ) => (
            
             <CreateEditDosisCard 
+                   onDelete= { onDelete }
                    goPage={ goPage }
                    dosis={ item}/>
           )}
           
           ListFooterComponent={ () => <Layout style={{ flex:1}}/>}
-          onEndReached= { fetchNextPage  }
+         // onEndReached= { fetchNextPage  }
           onEndReachedThreshold={ 0.8 }
           refreshControl = {
             <RefreshControl 

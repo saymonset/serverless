@@ -52,9 +52,6 @@ import { VaccinesMapper } from "../../infrastructure/mappers/vaccines-mapper";
      
       const response = await vaccinesApi.get<VaccineByIDResponse>(`/vaccine/${id}`);
       const { data } = response;
-      // console.log('---------------7----------------');
-      // console.log(data.dosis_ids);
-      // console.log('---------------7.1----------------');
         return returnDosisByVaccineByIDMapper(data);
     } catch (error) {
       const message = error instanceof Error ? error.message : 'An unknown error occurred';
@@ -64,6 +61,12 @@ import { VaccinesMapper } from "../../infrastructure/mappers/vaccines-mapper";
       
     }
   };
+
+
+  export const deleteDosisAction =  async (id:String) => {
+    const { data }  = await vaccinesApi.delete(`/dosis/${ id }`);
+    return data;
+  }
 
 
 

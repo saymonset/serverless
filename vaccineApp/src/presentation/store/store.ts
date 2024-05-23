@@ -3,6 +3,7 @@ import { applyVaccineSlice } from './slices/applyvaccines'
 import { consultVaccineSlice } from './slices/consultvaccines'
 import { counterSlice } from './slices/counter'
 import { dependentByIdSlice } from './slices/dependent'
+import { dosisSlice } from './slices/dosis'
 import { genderSlice } from './slices/gender'
 import { loginSlice } from './slices/login'
 import { registerSlice } from './slices/register'
@@ -21,6 +22,7 @@ export const store = configureStore({
     vaccineStore: vaccineSlice.reducer,
     applyVaccineStore: applyVaccineSlice.reducer,
     consultVaccineStore: consultVaccineSlice.reducer,
+    dosisStore: dosisSlice.reducer,
   },
 })
 

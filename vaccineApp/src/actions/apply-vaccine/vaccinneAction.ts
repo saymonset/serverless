@@ -23,4 +23,7 @@ const returnMapper = ( data: VaccineDependentResponse ): VaccineDependentPage =>
     }
   };
 
- 
+  export const deleteVaccinneAction =  async (id:String) => {
+    const { data }  = await vaccinesApi.delete(`/vaccine/${ id }`);
+    return data;
+  }

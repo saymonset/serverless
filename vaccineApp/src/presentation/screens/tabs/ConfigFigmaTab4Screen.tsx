@@ -1,20 +1,14 @@
-import { Layout, Text } from '@ui-kitten/components'
-import React, { useEffect, useState } from 'react'
-import { Platform, StyleSheet } from 'react-native';
+import { Layout } from '@ui-kitten/components'
+import React, { useEffect } from 'react'
+import { Platform } from 'react-native';
 import { useVaccines } from '../../hooks/useVaccines';
 import { stylesFigma } from '../theme/appFigmaTheme';
-import { CardsFigmaScreen } from '../vaccines/CardsFigmaScreen';
 import { ConfigFigmaScreen } from '../vaccines/ConfigFigmaScreen';
-import { NextAppointmentsScreen } from '../vaccines/NextAppointmentsScreen';
-import WatchYourHealthScreen from '../vaccines/WatchYourHealthScreen';
 
 export const ConfigFigmaTab4Screen = () => {
-  const { clearNameVaccineSelect} = useVaccines();
  
-  //Este nombre se coloca apenas selecciones un dosis de la vacuna 
-  useEffect(() => {
-    clearNameVaccineSelect();
-  }, [])
+ 
+ 
   
   return (
     <Layout style={stylesFigma.container}>

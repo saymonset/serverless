@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Button, Card, Layout, Text } from '@ui-kitten/components';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { StyleSheet, View, ViewProps } from 'react-native';
+import { Pressable, StyleSheet, View, ViewProps } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { PagesScreenStatus, PagesVaccineScreenStatus } from '../../../../infrastructure/interfaces/screens.status';
 import { Dependent } from '../../../../infrastructure/interfaces/dependent-interface';
@@ -14,17 +14,18 @@ import { DosisEntity, Vaccine } from '../../../../domain/entities/VaccineEditCre
 interface Props {
     goPage: PagesVaccineScreenStatus;
     dosis: DosisEntity;
+    onDelete: (idDelete:string)=> void
 }
 
 
-export const CreateEditDosisCard = ( { dosis, goPage = 'DosisEditCreateScreen' }:Props) => {
+export const CreateEditDosisCard = ( { dosis, goPage = 'DosisEditCreateScreen', onDelete }:Props) => {
 
   const navigation = useNavigation<NavigationProp<RootStackParams>>();
-  const {   putNameVaccineSelect } = useVaccines();
+  //const {   setNameVaccineSelect } = useVaccines();
 
     //Este nombre se coloca apenas selecciones un dosis de la vacuna 
     useEffect(() => {
-      putNameVaccineSelect(dosis);
+   //   putNameVaccineSelect(dosis);
  }, [dosis.vaccineName])
 
   return (
@@ -56,6 +57,10 @@ export const CreateEditDosisCard = ( { dosis, goPage = 'DosisEditCreateScreen' }
 
                                                 <Text category='s1' style={stylesFigma.titlesecund}>
                                                 Número de fila en el reporte:{'' + (dosis.rowReporte)}</Text>
+
+                                                <Pressable onPress={ () => onDelete (dosis._id.$oid)}>
+                                                       <Text>Eliminando</Text>
+                                                </Pressable>
                                           
                                       </Card>
                                       

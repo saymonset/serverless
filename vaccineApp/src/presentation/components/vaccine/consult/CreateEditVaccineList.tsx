@@ -1,5 +1,5 @@
  
-import React, { useState } from 'react'
+import React, { FC, useState } from 'react'
 import { Layout, List, Text } from '@ui-kitten/components';
 import { RefreshControl } from 'react-native-gesture-handler';
 import { useQueryClient } from '@tanstack/react-query';
@@ -12,8 +12,9 @@ interface Props {
     goPage: PagesVaccineScreenStatus;
     vaccines: Vaccine[];
     fetchNextPage : () => void;
+    onDelete: (id:string) => void;
 }
-export const CreateEditVaccineList = ( {vaccines, goPage,  fetchNextPage }:Props) => {
+export const CreateEditVaccineList :FC<Props> = ( {vaccines, goPage, onDelete,  fetchNextPage }:Props) => {
 
        const queryClient = useQueryClient();
        const [isRefreshing, setIsRefreshing] = useState(false);
@@ -33,6 +34,7 @@ export const CreateEditVaccineList = ( {vaccines, goPage,  fetchNextPage }:Props
           renderItem= {( { item } ) => (
            
             <CreateEditVaccineCard 
+                   onDelete ={ onDelete }
                    goPage={ goPage }
                    vaccine={ item}/>
           )}

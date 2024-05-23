@@ -72,7 +72,7 @@ export const PerfilesFigmaScreen = () => {
               ],
               { cancelable: false }
             );
-      }
+          }
 
 
      

@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { useGender } from '../../../hooks/useGender';
 import { useRelationShip } from '../../../hooks/useRelationShip';
 import { RootStackParams } from '../../../navigation/StackNavigator';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 import { MainLayout } from '../../../layouts/MainLayout';
 import { LoadingScreen } from '../../loading/LoadingScreen';
 import { CreateEditVaccineList } from '../../../components/vaccine/consult/CreateEditVaccineList';
@@ -23,28 +23,33 @@ export const VaccineFigmaScreen = () => {
     const { top } = useSafeAreaInsets();
     const [ term, setTerm ] = useState('');
     const navigation = useNavigation<NavigationProp<RootStackParams>>();
-    const { vaccines, isLoading:isLoadingVaccine, getVaccinesAllBD} = useVaccines();
+    const {  vaccineDelete, getVaccinesAllBD} = useVaccines();
+    const queryClient = useQueryClient();
 
    
     const deleteRow = ( id: string)=>{
-        Alert.alert(
-          'Confirmar eliminación',
-          '¿Estás seguro que deseas eliminar este elemento?',
-          [
-            {
-              text: 'Cancelar',
-              style: 'cancel',
+      Alert.alert(
+        'Confirmar eliminación',
+        //'¿Estás seguro que deseas eliminar a ' +  dependent.name + ' ' + dependent.lastname,
+        '¿Estás seguro que deseas eliminarlo? '  ,
+        [
+          {
+            text: 'Cancelar',
+            style: 'cancel',
+          },
+          {
+            text: 'Eliminar',
+            style: 'destructive',
+            onPress: () => {
+              // Lógica para eliminar el elemento
+              vaccineDelete(id);
+              queryClient.invalidateQueries({queryKey: ['vaccines', 'infinite']});
+              refetch();
             },
-            {
-              text: 'Eliminar',
-              style: 'destructive',
-              onPress: () => {
-               
-              },
-            },
-          ],
-          { cancelable: false }
-        );
+          },
+        ],
+        { cancelable: false }
+      );
     }
 
 
@@ -54,10 +59,6 @@ export const VaccineFigmaScreen = () => {
       initialPageParam: 0,
       queryFn: async ( params )=>  {
         const vaccines = await getVaccinesAllBD(10000,params.pageParam);
-        console.log('----a-------------');
-       console.log({vaccines});
-        console.log('----b-------------');
-       
         return vaccines;
       },
       getNextPageParam: ( lastPage, allPages) => allPages.length,
@@ -80,6 +81,7 @@ export const VaccineFigmaScreen = () => {
         {  ( isLoading ) 
               ?  (<LoadingScreen />)
               : <CreateEditVaccineList 
+                      onDelete = {(id) => deleteRow(id) }
                       goPage="VaccineEditCreateScreen"
                       vaccines={ data?.pages.flat() ?? [] }
                       fetchNextPage = { fetchNextPage }/> }

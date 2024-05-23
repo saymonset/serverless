@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Button, Card, Layout, Text } from '@ui-kitten/components';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { StyleSheet, View, ViewProps } from 'react-native';
@@ -9,48 +9,18 @@ import { useVaccines } from '../../../hooks/useVaccines';
 import { RootStackParams } from '../../../navigation/StackNavigator';
 import { stylesFigma } from '../../../screens/theme/appFigmaTheme';
 import { Vaccine } from '../../../../domain/entities/VaccineEditCreateEntity';
+import { VaccineConsultDeleteCard } from './VaccineConsultDeleteCard';
 
 
 interface Props {
     goPage: PagesVaccineScreenStatus;
     vaccine: Vaccine;
+    onDelete: (id:string) => void;
 }
 
+ 
 
-const Header = (props: ViewProps): React.ReactElement => (
-  <View {...props}>
-    <Text category='h6'>
-      Maldives
-    </Text>
-    <Text category='s1'>
-      By Wikipedia
-    </Text>
-  </View>
-);
-
-const Footer = (props: ViewProps): React.ReactElement => (
-  <View
-    {...props}
-    // eslint-disable-next-line react/prop-types
-    style={[props.style, styles.footerContainer]}
-  >
-    <Button
-      style={styles.footerControl}
-      size='small'
-      status='basic'
-    >
-      CANCEL
-    </Button>
-    <Button
-      style={styles.footerControl}
-      size='small'
-    >
-      ACCEPT
-    </Button>
-  </View>
-);
-
-export const CreateEditVaccineCard = ( { vaccine, goPage = 'VaccineEditCreateScreen' }:Props) => {
+export const CreateEditVaccineCard:FC<Props> = ( { vaccine, goPage = 'VaccineEditCreateScreen', onDelete }:Props) => {
 
   const navigation = useNavigation<NavigationProp<RootStackParams>>();
   const {   getVaccines } = useVaccines();
@@ -58,19 +28,11 @@ export const CreateEditVaccineCard = ( { vaccine, goPage = 'VaccineEditCreateScr
 
   return (
     <Layout  style={{flex:1}}>
-      {(goPage==='VaccineEditCreateScreen') && <Card 
-                                      style={{flex:1}}
-                                          onPress = { () => {
-                                            navigation.navigate('VaccineEditCreateScreen',{ vaccineId:  vaccine._id.$oid});
-                                          //  console.log( vaccine._id.$oid );
-                                          }}
-                                      >
-                                          <Text
-                                              numberOfLines={ 2 }
-                                              style ={{ textAlign:'left'}}
-                                          >{ vaccine.name  }</Text>
-                                           <Text style={stylesFigma.titlesecund}>{vaccine.description}</Text>
-                                      </Card>}
+
+      {(goPage==='VaccineEditCreateScreen') && <VaccineConsultDeleteCard
+                                                  onDelete = { onDelete}
+                                                  vaccine = { vaccine }
+                                                 />}
     </Layout>
   )
 }

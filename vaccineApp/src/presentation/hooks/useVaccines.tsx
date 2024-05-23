@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { applyVaccinneAction } from "../../actions/apply-vaccine/applyVaccineAction";
-import { vaccinneAction } from "../../actions/apply-vaccine/vaccinneAction";
+import { deleteVaccinneAction, vaccinneAction } from "../../actions/apply-vaccine/vaccinneAction";
 import { getVaccinesAction } from "../../actions/vaccines/createEditVaccinesAction";
 import { ApplyVaccineEntity, Vaccine } from "../../domain/entities/apply-vaccine-interface";
 import { VaccineDependentPage } from "../../domain/entities/VaccineDependent";
@@ -51,13 +51,12 @@ export const useVaccines = () => {
         dispatch(startVaccines());
         dispatch(initVaccinesResponse({}));
          
-        console.log(`limite=  ${limite}, page= ${page}, term=${term} `);
+       // console.log(`limite=  ${limite}, page= ${page}, term=${term} `);
         page = 0;
         const vaccines:Vaccine[]  = await getVaccinesAction(limite,page, term);
         const payload = {
           vaccines
         };
-        console.log('vaccines = '+vaccines.length);
         dispatch(loadVaccinesOnly(payload));
         dispatch(stopVaccines());     
        
@@ -107,19 +106,17 @@ export const useVaccines = () => {
         dispatch(offDosis());
       }
 
-      const putNameVaccineSelect = (dosis:DosisEntity) =>{
-        let payload = {
-          nameVaccine:dosis.vaccineName,
-          vaccineId: dosis.vaccineID?.$oid,
-
+      const vaccineDelete = async ( vaccineIdDeleted:String)=> {
+        try {
+              dispatch( startVaccines());
+              const data = await deleteVaccinneAction(vaccineIdDeleted);
+           
+              dispatch( stopVaccines());
+        } catch (error) {
+             console.log('Eliminando');
+             console.log({error});
         }
-        dispatch(setNameVaccineSelect(payload));
-      }
-       
-      const clearNameVaccineSelect = () =>{
-        dispatch(setNameVaccineSelectClear());
-      }
-
+      } 
       
    
 
@@ -129,8 +126,8 @@ export const useVaccines = () => {
     getShowDosis,
     getOffDosis,
     getVaccinesAll,
-    putNameVaccineSelect,
-    clearNameVaccineSelect,
+    vaccineDelete,
+    
     getVaccinesAllBD,
     nameVaccine,
     dependentId,

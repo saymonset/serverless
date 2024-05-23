@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { useGender } from '../../../hooks/useGender';
 import { useRelationShip } from '../../../hooks/useRelationShip';
 import { RootStackParams } from '../../../navigation/StackNavigator';
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery, useQueryClient } from '@tanstack/react-query';
 import { MainLayout } from '../../../layouts/MainLayout';
 import { LoadingScreen } from '../../loading/LoadingScreen';
 import { CreateEditVaccineList } from '../../../components/vaccine/consult/CreateEditVaccineList';
@@ -16,6 +16,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { VaccineByIDEntity } from '../../../../domain/entities/VaccineEditCreateEntity';
 import { Text } from '@ui-kitten/components';
 import { useVaccines } from '../../../hooks/useVaccines';
+import { useDosis } from '../../../hooks/useDosis';
  
 
 
@@ -30,52 +31,56 @@ export const DosisFigmaScreen = ({route}:Props) => {
     const [ term, setTerm ] = useState('');
     const vaccineIdRef = useRef(route.params.vaccineId);
     const navigation = useNavigation<NavigationProp<RootStackParams>>();
-    const { nameVaccine,  isLoading:isLoadingVaccine } = useVaccines();
+    const { isLoading:isLoadingDosis, dosisDelete, getDosisByVaccine } = useDosis();
  
- 
+    const queryClient = useQueryClient();
+    
     const deleteRow = ( id: string)=>{
-        Alert.alert(
-          'Confirmar eliminación',
-          '¿Estás seguro que deseas eliminar este elemento?',
-          [
-            {
-              text: 'Cancelar',
-              style: 'cancel',
+      Alert.alert(
+        'Confirmar eliminación',
+        //'¿Estás seguro que deseas eliminar a ' +  dependent.name + ' ' + dependent.lastname,
+        '¿Estás seguro que deseas eliminarlo? '  ,
+        [
+          {
+            text: 'Cancelar',
+            style: 'cancel',
+          },
+          {
+            text: 'Eliminar',
+            style: 'destructive',
+            onPress: () => {
+              // Lógica para eliminar el elemento
+             // dosisDelete(id);
+             console.log(id);
+              queryClient.invalidateQueries({queryKey: ['dosis', 'infinite']});
+              refetch();
             },
-            {
-              text: 'Eliminar',
-              style: 'destructive',
-              onPress: () => {
-               
-              },
-            },
-          ],
-          { cancelable: false }
-        );
+          },
+        ],
+        { cancelable: false }
+      );
     }
 
-
-    const {isLoading, data: dosis = []} = useQuery({
-      queryKey: ['dosis_ids', 'infinite'],
+    // const {isLoading, data: dosis = []} = useQuery({
+    //   queryKey: ['dosis_ids', 'infinite'],
+    //   staleTime: 1000 * 60 * 60, // 1 hour
+    //   //staleTime: 0, // no cache
+     
+    //   queryFn: async() => await getDosisByVaccineByIdAction(vaccineIdRef.current),
+    // });
+     
+ 
+    const { isLoading, data, fetchNextPage, refetch } = useInfiniteQuery({
+      queryKey:['dosis', 'infinite'],
       staleTime: 1000 * 60 * 60, // 1 hour
-      //staleTime: 0, // no cache
-     
-      queryFn: async() => await getDosisByVaccineByIdAction(vaccineIdRef.current),
-    });
-     
-    // const { isLoading, data:dosis , fetchNextPage } = useInfiniteQuery({
-    //   queryKey:['dosis_ids', 'infinite'],
-    //  // staleTime: 1000 * 60 * 60, // 1 hour
-    //   staleTime: 1000 , // 1 seg
-    //   initialPageParam: 0,
-    //   queryFn: async ( params )=>  {
-    //     //
-    //     console.log('--------------JAAX------A')
-    //     const dosis = await getDosisByVaccineByIdAction(vaccineIdRef.current);
-    //     return dosis ?? [];
-    //   },
-    //   getNextPageParam: ( lastPage, allPages) => allPages.length,
-    // })
+      initialPageParam: 0,
+      queryFn: async ( params )=>  {
+        const dosis = await getDosisByVaccine(vaccineIdRef.current);
+        return dosis ?? [];
+      },
+      getNextPageParam: ( lastPage, allPages) => allPages.length,
+      //refetchInterval:1000
+    })
 
    
 
@@ -84,7 +89,8 @@ export const DosisFigmaScreen = ({route}:Props) => {
        <>
         <MainLayout
           //Este nombre se coloca apenas selecciones un dosis de la vacuna 
-            title={"Dosis de cada Vacuna " + (nameVaccine? nameVaccine :  '')}
+          //  title={"Dosis de cada Vacuna " + (nameVaccine? nameVaccine :  '')}
+            title={"Dosis de cada Vacuna " }
             subTitle=""
             setTerm={( value )=>setTerm(value)}
             rightAction= { () => navigation.navigate('DosisEditCreateScreen',{ dosisId: 'new' })}
@@ -93,8 +99,9 @@ export const DosisFigmaScreen = ({route}:Props) => {
         {  ( isLoading ) 
               ?  (<LoadingScreen />)
               : <CreateEditDosisList 
+                      onDelete={ (idDelete)=> deleteRow(idDelete)}
                       goPage="DosisEditCreateScreen"
-                      dosis={   dosis?? [] }
+                      dosis={   data?.pages.flat() ?? [] }
                       /> }
             
         </MainLayout>
@@ -139,4 +146,6 @@ export const styles = StyleSheet.create({
       marginHorizontal:10
     }
   });
+
+ 
   

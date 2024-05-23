@@ -48,7 +48,18 @@ export const VaccineEditCreateScreen = ({route}:Props) => {
   const validationSchema = Yup.object().shape({
     name: Yup.string().required('Requerido')
     .max(15, 'Debe de tener 15 caracteres o menos')
-  ,
+    .min(3,'Debe de tener 3 caracteres o mas'),
+    description: Yup.string().required('Requerido')
+    .max(10, 'Debe de tener 100 caracteres o menos')
+    .min(3,'Debe de tener 3 caracteres o mas'),
+    disease_prevents: Yup.string().required('Requerido')
+    .max(15, 'Debe de tener 15 caracteres o menos')
+    .min(3,'Debe de tener 3 caracteres o mas'),
+    application_age: Yup.string().required('Requerido')
+    .max(15, 'Debe de tener 15 caracteres o menos')
+    .min(1,'Debe de tener 3 caracteres o mas'),
+   
+
   });
 
   const mutation = useMutation({
@@ -84,16 +95,7 @@ export const VaccineEditCreateScreen = ({route}:Props) => {
   if (!vaccine) {
     return (<FullScreenLoader></FullScreenLoader>);
   }
-
-
-
-  
-
-  
  
-  
-
-  // 
   const minDate = new Date(1900, 0, 1);
   const maxDate = new Date(3000, 0, 1);
   return (
@@ -103,7 +105,6 @@ export const VaccineEditCreateScreen = ({route}:Props) => {
       onSubmit = { vaccine => {
         
           let { _id, ...rest } = vaccine;
-          console.log({vaccine});
          return mutation.mutate({_id, ...rest});
         }
       }
@@ -158,6 +159,7 @@ export const VaccineEditCreateScreen = ({route}:Props) => {
                           </Layout>    
                             {/* DESCRIPCION */}
                             <Layout style = {{ marginVertical:20}}>
+                           
                                  <Text style={ stylesFigma.label }>Descripción:<Text style={{ color: 'skyblue' }}> *</Text></Text>
                                   <Input
                                       // placeholder="Nombre completo"
@@ -180,6 +182,7 @@ export const VaccineEditCreateScreen = ({route}:Props) => {
                                       autoCapitalize="words"
                                       autoCorrect={ false }
                                   />
+                                   <Text style={{ color: 'red' }}> <ErrorMessage name="description"/></Text>
                             </Layout>    
 
                             {/* DISEASE PREVENTS */}
@@ -205,6 +208,7 @@ export const VaccineEditCreateScreen = ({route}:Props) => {
                                       autoCapitalize="words"
                                       autoCorrect={ false }
                                   />
+                                  <Text style={{ color: 'red' }}> <ErrorMessage name="disease_prevents"/></Text>
                             </Layout>    
                             {/* application_age*/}
                             <Layout style = {{ marginVertical:20}}>
@@ -228,6 +232,7 @@ export const VaccineEditCreateScreen = ({route}:Props) => {
                                       autoCapitalize="words"
                                       autoCorrect={ false }
                                   />
+                                  <Text style={{ color: 'red' }}> <ErrorMessage name="application_age"/></Text>
                             </Layout>    
                             {/* isChildren */}
                             <Layout style = {{ marginVertical:20}}>
