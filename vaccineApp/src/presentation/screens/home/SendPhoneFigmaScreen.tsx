@@ -26,7 +26,7 @@ export const SendPhoneFigmaScreen = () => {
     
 
     const onSubmit = async( ) => {
-        console.log('pasa');
+        
         if( codValue.trim().length <= 1) return;
         if( inputValue.trim().length <= 1) return;
         let phone = codValue.trim()+inputValue.trim();

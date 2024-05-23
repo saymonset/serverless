@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Button, Card, Layout, Text } from '@ui-kitten/components';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { Pressable, StyleSheet, View, ViewProps } from 'react-native';
+import { Alert, Pressable, StyleSheet, View, ViewProps } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { PagesScreenStatus, PagesVaccineScreenStatus } from '../../../../infrastructure/interfaces/screens.status';
 import { Dependent } from '../../../../infrastructure/interfaces/dependent-interface';
@@ -68,7 +68,10 @@ export const CreateEditDosisCard = ( { dosis, goPage = 'DosisEditCreateScreen', 
 
                                                 
                                                 <Layout style={{ marginLeft: 280 }}> 
-                                                    <Pressable onPress={ () => onDelete (dosis._id.$oid)}>
+                                                    <Pressable onPress={ () => 
+                                                    Alert.alert("Por implementar")
+                                                      //onDelete (dosis._id.$oid)
+                                                    }>
                                                             <Ionicons name="trash" size={20} color="red" />
                                                     </Pressable>
                                                 </Layout>

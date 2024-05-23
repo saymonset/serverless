@@ -60,7 +60,7 @@ export const useLogin  = () => {
            dispatch(logOutStore({}));
 
         }
-          console.log({ci,   password});
+       
     }
     const authCheckStatus = async (phone: string,  lastCode: number) => {
         try{

@@ -64,9 +64,7 @@ export const ApplyVaccinesAddScreen = ({route}:Props) => {
       let {dependent_id, ...rest} = data;
 
       $dependent_id: dependentIdRef.current;
-      console.log('---------1------------')
-      console.log( {...rest, dependent_id});
-      console.log('---------2------------')
+     
       return updateCreateApplyVaccinneAction({...rest, dependent_id});
     }
    ,

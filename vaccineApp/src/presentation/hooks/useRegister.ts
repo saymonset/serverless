@@ -20,13 +20,11 @@ export const useRegister = () => {
 
       try {
              dispatch( startLoadingStore());
-            //  console.log('---------------1------------------------')
-            //  console.log({register})
+     
              const {birth, ...rest} = register;
            
             const data = await registerAction(register);
-            // console.log('---------------2.0------------------------')
-            // console.log( { data })
+           
           
             const { statusCode, resp, message:msg} = data;
       
