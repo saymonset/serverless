@@ -1,20 +1,20 @@
 import { useDispatch, useSelector } from "react-redux";
 import { applyVaccinneAction } from "../../actions/apply-vaccine/applyVaccineAction";
 import { deleteVaccinneAction, vaccinneAction } from "../../actions/apply-vaccine/vaccinneAction";
-import { deleteDosisAction, getDosisByVaccineByIdAction, getVaccinesAction } from "../../actions/vaccines/createEditVaccinesAction";
+import { deleteDosisAction, getDosisByIdAction, getDosisByVaccineByIdAction, getVaccinesAction } from "../../actions/vaccines/createEditVaccinesAction";
 import { ApplyVaccineEntity, Vaccine } from "../../domain/entities/apply-vaccine-interface";
 import { VaccineDependentPage } from "../../domain/entities/VaccineDependent";
 import { DosisEntity } from "../../domain/entities/VaccineEditCreateEntity";
 import { RootState } from "../store";
 import { loadDosisFilterbyVaccineId, startApplyVaccines, stopApplyVaccines } from "../store/slices/applyvaccines";
-import { initDosis,loadDosis,stopDosis,startDosis } from "../store/slices/dosis";
+import { initDosis,loadDosis,stopDosis,startDosis, loadDosiDetalle } from "../store/slices/dosis";
 
  
  
  
 export const useDosis = () => {
   
-      const {  dosis, isLoading } = useSelector((state: RootState) => state.dosisStore);
+      const {  dosis, isLoading , dosiDetalle} = useSelector((state: RootState) => state.dosisStore);
       const dispatch = useDispatch();
 
 
@@ -33,12 +33,23 @@ export const useDosis = () => {
        
         return dosis ?? [];
       }
+      const getDosisById = async(dosisId:string):Promise<DosisEntity>=>{
+        dispatch(startDosis());
+         
+        const dosiDetalle: DosisEntity = await getDosisByIdAction(dosisId);
+        const payload = {
+          dosiDetalle
+        };
+        dispatch(loadDosiDetalle({payload}))
+        dispatch(stopDosis());       
+       
+        return dosiDetalle ?? {};
+      }
 
       const dosisDelete = async ( dosisIdDeleted:String)=> {
         try {
               dispatch( startDosis());
               const data = await deleteDosisAction(dosisIdDeleted);
-           
               dispatch( stopDosis());
         } catch (error) {
              console.log('Eliminando');
@@ -56,7 +67,9 @@ export const useDosis = () => {
   return  {
      getDosisByVaccine,
      dosisDelete,
+     getDosisById,
     dosis,
-    isLoading
+    isLoading,
+    dosiDetalle
   }
 }

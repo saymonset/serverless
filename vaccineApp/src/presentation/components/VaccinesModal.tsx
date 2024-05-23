@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Alert, Pressable, StyleSheet, View } from 'react-native';
 import { Button, Card, Layout, Modal, Text, Tooltip } from '@ui-kitten/components';
 import { Divider, List, ListItem } from '@ui-kitten/components';
 import { useVaccines } from '../hooks/useVaccines';
 import { Vaccine } from '../../domain/entities/VaccineDependent';
 import { MyIcon } from './ui/MyIcon';
+import { LoadingScreen } from '../screens/loading/LoadingScreen';
 
  
 interface Props {
@@ -19,14 +20,25 @@ export const VaccinesModal = ({ isVisible = false, title = '', onData, onClose}:
     const [vaccine, setVaccine] = useState('');
      
    
-    const { vaccines, isLoading } = useVaccines();
+    const { vaccines, isLoading, getVaccinesAll } = useVaccines();
    
 
+    const loadVaccines = async ()=>{
+      let term:string = "''";
+         await   getVaccinesAll(term);
+    }
+    useEffect(() => {
+      if (!vaccines || vaccines.length==0){
+        loadVaccines();
+      }
+    }, []);
  
 
      
     const renderItem = ({ item }: { item:Vaccine; index: number }): React.ReactElement => (
-      <ListItem 
+      <>
+         {  isLoading && (  <LoadingScreen />  )}
+         <ListItem 
         style={  styles.itemTextRed }
         title={(evaProps) => (
           <Layout style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -37,17 +49,17 @@ export const VaccinesModal = ({ isVisible = false, title = '', onData, onClose}:
              
             </Layout>
          </Pressable>}
-         <Text style={{ color: item.isAlertApply ? 'black' : 'black', marginLeft: 10 }}>
+         <Text style={{ color: item.isAlertApply ? 'red' : 'black', marginLeft: 10 }}>
                 {item.name}
               </Text>
          {/* Si no a sido aplicada */}
-         {!item.isAlertApply && 
+         {/* {!item.isAlertApply && 
             <Layout style={styles.containerText}>
-                <Text style={{ color: item.isAlertApply ? 'black' : 'black', marginLeft: 10 }}>
-                  {item.name}
+                <Text style={{ color: item.isAlertApply ? 'red' : 'black', marginLeft: 10 }}>
+                  {item.name+"CCCC"}
                 </Text>
             </Layout>
-        }
+        } */}
           </Layout>
        
         )}
@@ -65,6 +77,8 @@ export const VaccinesModal = ({ isVisible = false, title = '', onData, onClose}:
           onData(item);
         }}
       />
+      </>
+      
     );
   return (
     <View style={styles.container}>

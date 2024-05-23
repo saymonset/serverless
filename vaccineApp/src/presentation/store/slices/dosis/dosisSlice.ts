@@ -8,6 +8,7 @@ const initialState = {
     limite:100,
     total:0,
     dosis:[],
+    dosiDetalle:{}
   };
  
 export const dosisSlice = createSlice({
@@ -24,6 +25,9 @@ export const dosisSlice = createSlice({
         loadDosis: (state, { payload } ) => {
             state.dosis = payload.dosis;
         },
+        loadDosiDetalle: (state, { payload } ) => {
+            state.dosiDetalle = payload.dosiDetalle;
+        },
         stopDosis: (state, /* action */ ) => {
             state.isLoading = false;
         },
@@ -35,6 +39,7 @@ export const dosisSlice = createSlice({
 // Action creators are generated for each case reducer function
 export const {   initDosis,
                  loadDosis,
+                 loadDosiDetalle,
                  stopDosis,
                  startDosis
             } = dosisSlice.actions;

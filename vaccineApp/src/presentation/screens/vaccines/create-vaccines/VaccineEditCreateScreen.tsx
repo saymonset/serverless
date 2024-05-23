@@ -58,8 +58,6 @@ export const VaccineEditCreateScreen = ({route}:Props) => {
     application_age: Yup.string().required('Requerido')
     .max(15, 'Debe de tener 15 caracteres o menos')
     .min(1,'Debe de tener 3 caracteres o mas'),
-   
-
   });
 
   const mutation = useMutation({

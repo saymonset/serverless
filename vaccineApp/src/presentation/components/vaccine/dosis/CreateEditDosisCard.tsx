@@ -40,6 +40,11 @@ export const CreateEditDosisCard = ( { dosis, goPage = 'DosisEditCreateScreen', 
                                       >
                                             
 
+                                            <Text category='h3'
+                                                  numberOfLines={ 2 }
+                                                  style ={{ textAlign:'left'}}
+                                              >Vacuna: { dosis.vaccineName ?? ''  }</Text>
+
                                             <Text category='h6'
                                                   numberOfLines={ 2 }
                                                   style ={{ textAlign:'left'}}

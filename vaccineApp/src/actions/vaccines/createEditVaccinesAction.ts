@@ -1,5 +1,6 @@
 import vaccinesApi from "../../config/api/vaccinesApi";
 import { DosisEntity, Vaccine, VaccineByIDEntity, VaccineEditCreateEntiy, VaccinePostEntity, VaccinePutEntity, VaccinePutPostResponseEntity } from "../../domain/entities/VaccineEditCreateEntity";
+import { DosisByIDResponse } from "../../infrastructure/interfaces/create-edit-dosis-response";
 import { VaccineByIDResponse, VaccineEditCreateResponse, VaccinePostResponse, VaccinePutResponse } from "../../infrastructure/interfaces/create-edit-vaccines-response";
 import { VaccinesMapper } from "../../infrastructure/mappers/vaccines-mapper";
 
@@ -62,6 +63,21 @@ import { VaccinesMapper } from "../../infrastructure/mappers/vaccines-mapper";
     }
   };
 
+
+  export const getDosisByIdAction = async (id:string):Promise<DosisEntity> => {
+    try {
+     
+      const response = await vaccinesApi.get<DosisByIDResponse>(`/dosis/${id}`);
+      const { data } = response;
+        return returnDosisByIDMapper(data);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'An unknown error occurred';
+      console.log(error);
+     
+      throw new Error(`Error getting by id: ${ id }`);
+      
+    }
+  };
 
   export const deleteDosisAction =  async (id:String) => {
     const { data }  = await vaccinesApi.delete(`/dosis/${ id }`);
@@ -144,4 +160,7 @@ const returnVaccineByIDMapper = ( data: VaccineByIDResponse ): VaccineByIDEntity
 }
 const returnDosisByVaccineByIDMapper = ( data: VaccineByIDResponse ): DosisEntity[] => {
   return  VaccinesMapper.dosisByvaccineByIDToEntity(data);
+}
+const returnDosisByIDMapper = ( data: DosisByIDResponse ): DosisEntity => {
+  return  VaccinesMapper.dosisByIDToEntity(data);
 }

@@ -12,26 +12,33 @@ import { useGender } from '../../../hooks/useGender';
 import { useRelationShip } from '../../../hooks/useRelationShip';
 import { enviarMensajePorStatusCode } from '../../messages/enviarMensajePorStatusCode';
 import { FullScreenLoader } from '../../../components/ui/FullScreenLoader';
-import { Formik } from 'formik';
+import { ErrorMessage, Formik } from 'formik';
 import { MainLayout } from '../../../layouts/MainLayout';
 import { stylesFigma } from '../../theme/appFigmaTheme';
 import { getDosisByIdAction, updateCreateDosisAction } from '../../../../actions/dosis/createEditDosisAction';
 import { DosisByIdEntity } from '../../../../domain/entities/DosisEditCreateEntity';
 import { useVaccines } from '../../../hooks/useVaccines';
+import { useDosis } from '../../../hooks/useDosis';
 
 interface Props extends StackScreenProps<RootStackParams,'DosisEditCreateScreen'>{};
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string().required(),
+  name: Yup.string().required('Requerido')
+  .max(15, 'Debe de tener 15 caracteres o menos'),
+  age_frequency: Yup.string().required('Requerido')
+  .max(15, 'Debe de tener 15 caracteres o menos'),
+  columReporte: Yup.number().required('Requerido').positive('El número debe ser positivo'),
+  rowReporte: Yup.number().required('Requerido').positive('El número debe ser positivo'),
+  expires_in_days: Yup.number().required('Requerido'),
 });
+
+ 
 
 
 export const DosisEditCreateScreen = ({route}:Props) => {
   const theme = useTheme();
   const queryClient = useQueryClient();
   const {height} = useWindowDimensions(); 
-  const [idEstado, setIdEstado] = useState(0);
-  const [municipio, setMunicipio] = useState('');
   const { user } = useLogin();
   
   const {  genders } =  useGender();
@@ -39,6 +46,7 @@ export const DosisEditCreateScreen = ({route}:Props) => {
   const dosisIdRef = useRef(route.params.dosisId);
   const [checkedChild, setCheckedChild] = React.useState(false);
   const { vaccineId } = useVaccines();
+  
 
  
 
@@ -72,28 +80,14 @@ export const DosisEditCreateScreen = ({route}:Props) => {
     queryFn: () => getDosisByIdAction(dosisIdRef.current)
   });
 
-  if (!dosi) {
+  if (!dosi ) {
     return (<FullScreenLoader></FullScreenLoader>);
   }
 
 
 
   
-
-  const onEstado = (value:any) =>{
-      // setEstado(`${value?.capital}-${value?.estado}`);
-      setIdEstado(value?.id_estado);
-      setMunicipio('');
-  }
-
-  const onMuncipio = (value:any) =>{
-    setMunicipio(value?.capital);
-  }
-
-  // useEffect(() => {
-  //   console.log(error)
-  // }, [error])
-  
+ 
 
   // 
   const minDate = new Date(1900, 0, 1);
@@ -156,6 +150,7 @@ export const DosisEditCreateScreen = ({route}:Props) => {
                                       autoCapitalize="words"
                                       autoCorrect={ false }
                                   />
+                                   <Text style={{ color: 'red' }}> <ErrorMessage name="name"/></Text>
                           </Layout>    
                             {/* DESCRIPCION */}
                             <Layout style = {{ marginVertical:20}}>
@@ -181,6 +176,7 @@ export const DosisEditCreateScreen = ({route}:Props) => {
                                       autoCapitalize="words"
                                       autoCorrect={ false }
                                   />
+                                   <Text style={{ color: 'red' }}> <ErrorMessage name="age_frequency"/></Text>
                             </Layout>    
 
                             {/* DISEASE PREVENTS */}
@@ -207,6 +203,7 @@ export const DosisEditCreateScreen = ({route}:Props) => {
                                       autoCorrect={ false }
                                       keyboardType="numeric"
                                   />
+                                   <Text style={{ color: 'red' }}> <ErrorMessage name="columReporte"/></Text>
                             </Layout>    
                             {/* application_age*/}
                             <Layout style = {{ marginVertical:20}}>
@@ -231,6 +228,7 @@ export const DosisEditCreateScreen = ({route}:Props) => {
                                       autoCorrect={ false }
                                       keyboardType="numeric"
                                   />
+                                  <Text style={{ color: 'red' }}> <ErrorMessage name="rowReporte"/></Text>
                             </Layout>    
                             <Layout style = {{ marginVertical:20}}>
                                  <Text style={ stylesFigma.label }> Número de dias para aplicar al familiar:<Text style={{ color: 'skyblue' }}> *</Text></Text>
@@ -251,6 +249,7 @@ export const DosisEditCreateScreen = ({route}:Props) => {
                                       autoCorrect={ false }
                                       keyboardType="numeric"
                                   />
+                                   <Text style={{ color: 'red' }}> <ErrorMessage name="expires_in_days"/></Text>
                             </Layout>    
                             
                          

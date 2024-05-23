@@ -1,5 +1,6 @@
 import { DosisEntity, VaccineByIDEntity, VaccineEditCreateEntiy, VaccinePostEntity, VaccinePutEntity, VaccinePutPostResponseEntity } from '../../domain/entities/VaccineEditCreateEntity';
 import { ApplyVaccineCreateResponse } from "../interfaces/apply-vaccine-response"
+import { DosisByIDResponse } from '../interfaces/create-edit-dosis-response';
 import { VaccineByIDResponse, VaccineEditCreateResponse, VaccinePostResponse, VaccinePutResponse } from "../interfaces/create-edit-vaccines-response"
 
 export class VaccinesMapper {
@@ -94,6 +95,34 @@ export class VaccinesMapper {
           // Devolver un array vacío si response.dosis_ids no está definido o es un array vacío
           return [];
       }
+  }
+  
+    static dosisByIDToEntity(response: DosisByIDResponse): DosisEntity {
+      // Verificar si response.dosis_ids está definido y no es un array vacío
+      
+          // Mapear los datos de VaccineByIDResponse a DosisEntity
+          
+              return {
+               
+                vaccineID: response.vaccine._id,  // Corregido para usar vaccine._id
+                vaccineName: response.vaccine.name ?? '',
+                vaccineDescription: response.vaccine.description ?? '',
+                vaccineDisease_prevents: response.vaccine.disease_prevents,
+                vaccineApplication_age: response.vaccine.application_age ?? '',
+                vaccineIsChildren: response.vaccine.isChildren,
+                vaccineStatus: response.vaccine.status,
+                // DATOS DE LA DOSIS
+                _id: response._id,
+                vacinne_id: response.vaccine._id.$oid,  // Corregido para usar vaccine._id
+                name: response.name,
+                age_frequency: response.age_frequency,
+                status: response.status,
+                columReporte: response.columReporte,
+                rowReporte: response.rowReporte,
+                expires_in_days: response.expires_in_days
+              };
+          
+       
   }
   
 

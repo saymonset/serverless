@@ -65,6 +65,7 @@ export const useVaccines = () => {
 
       const getVaccinesAll = async(term:string) =>{
         dispatch(startVaccines());
+        dispatch(initVaccinesResponse({}));
         let page = 0;
         const vaccines:Vaccine[]  = await getVaccinesAction(10000,page, term);
         const payload = {
@@ -117,6 +118,10 @@ export const useVaccines = () => {
              console.log({error});
         }
       } 
+
+      const setVaccineForDosis = () => {
+        
+      }
       
    
 

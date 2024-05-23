@@ -105,11 +105,9 @@ const PreviewLayout = ({
   const goPage = (selectedValue: string) => {
         switch (selectedValue) {
           case 'Vacunas':
-            // Este metodo: Segun la bandera que se coloca en el store me condiciona este componentre: ApplyVaccinesvaccinesScreen, ApplyVaccinesComponent
             navigation.navigate( 'VaccineFigmaScreen' as never)
             break;
           case 'Dosis':
-            // Este metodo: Segun la bandera que se coloca en el store me condiciona este componentre: ApplyVaccinesvaccinesScreen, ApplyVaccinesComponent
             setChooseVaccine(true)
              //
             break;
@@ -118,11 +116,7 @@ const PreviewLayout = ({
         }
   }
   
-  const logout = () => {
-    
-    logoutThunks();
-}
-
+ 
   return (
     <>
        
