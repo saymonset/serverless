@@ -52,9 +52,10 @@ export const WelcomeScreen = ({ navigation }:Props) => {
            
             onPress={sendSms}>Comienza ahora</Button>
         </Layout>
+        
           {/* Text */}
           <Layout style={{backgroundColor: '#80BFFF', flex:1, justifyContent:'center', alignItems:'center',
-                  marginTop:(Platform.OS === 'ios') ? 0: 0 , marginHorizontal:0}}>
+                  marginTop:(Platform.OS === 'ios') ? 130: 130 , marginHorizontal:0, marginVertical:0}}>
              <Text 
              status="primary" 
              category="s1"

@@ -26,8 +26,8 @@ export const ConsultVaccineDetailScreen = ({ dependent_id }:Props) => {
                 title="Concultar Vacunas"
                 subTitle=""
                 setTerm={( value )=>setTerm(value)}
-                rightAction= { () => navigation.navigate('ConsultVaccinesScreen',{ dependentId: 'new' })}
-                rightActionIcon="plus-outline"
+                // rightAction= { () => navigation.navigate('ConsultVaccinesScreen',{ dependentId: 'new' })}
+                // rightActionIcon="plus-outline"
                 >
               
             {  ( isLoading ) 
@@ -40,7 +40,7 @@ export const ConsultVaccineDetailScreen = ({ dependent_id }:Props) => {
       </MainLayout>
     
      <FAB 
-        iconName="plus-outline"
+        iconName="attach-2-outline"
         onPress={() => exportVaccineAppliedByDependent ( dependent_id)}
         style={{
           position: 'absolute',

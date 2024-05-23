@@ -81,8 +81,8 @@ export const ConsultVaccinesDependentsScreen = () => {
             title="Concultar Vacunas"
             subTitle=""
             setTerm={( value )=>setTerm(value)}
-            rightAction= { () => navigation.navigate('ConsultVaccinesScreen',{ dependentId: 'new' })}
-            rightActionIcon="plus-outline"
+            // rightAction= { () => navigation.navigate('ConsultVaccinesScreen',{ dependentId: 'new' })}
+            // rightActionIcon="plus-outline"
             >
           
         {  ( isLoading ) 

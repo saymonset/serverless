@@ -8,8 +8,11 @@ import FileViewer from 'react-native-file-viewer';
 import { useLogin } from './useLogin';
 import { API_URL } from '../../config/api/vaccinesApi';
 import { StorageAdapter } from '../../config/adapters/storage-adapter';
+import { useState } from 'react';
 
 export const useExportar = () => {
+
+  const [dependentId, setDependentId] = useState('');
 
     
 
@@ -18,6 +21,7 @@ export const useExportar = () => {
     try {
 
       console.log('excel file open simons, dependent_id = ' + dependent_id);
+      setDependentId(dependent_id);
       getPermission();
     //  const { data } = await vaccinesApi.get(`/reporte`);
      // console.log(data);
@@ -35,7 +39,6 @@ export const useExportar = () => {
       try {
         const granted = await hasAndroidPermission();
        console.log({granted});
-       console.log('-------------');
         if (granted) {
          await actualDownload_android();
         } else {
@@ -71,8 +74,9 @@ export const useExportar = () => {
       android: configfb,
     });
    //  const response = await vaccinesApi.get<DependentIDResponseBD>(`/dependent/${id}`);
+   
     RNFetchBlob.config(configOptions || {})
-      .fetch('GET', `${API_URL}/reporte`, {'Cache-Control': 'no-store' })
+      .fetch('GET', `${API_URL}/reporte/${dependentId}`, {'Cache-Control': 'no-store' })
       .then(res => {
  
         if (Platform.OS === 'ios') {
@@ -91,7 +95,9 @@ export const useExportar = () => {
 
 
   const actualDownload_android = async () => {
-    const url = `${API_URL}/reporte`; // Reemplaza con la URL del archivo Excel que deseas descargar
+    console.log(`${API_URL}/reporte/${dependentId}`);
+   console.log(`Reporte por idedependent= ${dependentId} `);
+    const url = `${API_URL}/reporte/${dependentId}`; // Reemplaza con la URL del archivo Excel que deseas descargar
     console.log('bajando desde android----------:'+url);
     const { dirs } = RNFetchBlob.fs;
     const dirToSave = dirs.DownloadDir; // Directorio de descarga en Android
