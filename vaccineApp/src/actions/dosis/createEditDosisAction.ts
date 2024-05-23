@@ -85,9 +85,7 @@ const createDosis = async(dosis: Partial<DosisByIdEntity>):Promise<DosisByIdEnti
       let { _id,status, expires_in_days:expires_in_daysStr,  ...resto } = dosis;
       let expires_in_days = isNaN( Number(expires_in_daysStr)) ? 0 : Number(expires_in_daysStr);
       status = true;
-      console.log('------------4-------X----------');
-      console.log({status, expires_in_days, ...resto})
-      console.log('-------------5------X---------------')
+    
       const { data } = await vaccinesApi.post<DosisCreateResponse>(`/dosis`, {status, expires_in_days, ...resto});
     return returnCreaterMapper(data);
   } catch (error) {

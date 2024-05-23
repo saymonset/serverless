@@ -50,6 +50,9 @@ export const vaccineSlice = createSlice({
             state.nameVaccine = payload.nameVaccine;
             state.vaccineId = payload.vaccineId;
         },
+        setVaccineId: (state, { payload } ) => {
+            state.vaccineId = payload.vaccineId;
+        },
         setNameVaccineSelectClear: (state) => {
             state.nameVaccine = '';
             state.vaccineId = '';
@@ -66,4 +69,5 @@ export const {   initVaccinesResponse,
                  loadVaccinesOnly,
                  setNameVaccineSelect,
                  setNameVaccineSelectClear,
+                 setVaccineId,
             } = vaccineSlice.actions;

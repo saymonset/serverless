@@ -32,6 +32,17 @@ export const DosisFigmaScreen = ({route}:Props) => {
     const vaccineIdRef = useRef(route.params.vaccineId);
     const navigation = useNavigation<NavigationProp<RootStackParams>>();
     const { isLoading:isLoadingDosis, dosisDelete, getDosisByVaccine } = useDosis();
+    const { clearNameVaccineSelect, putVaccineID} = useVaccines();
+       
+    
+    useEffect(() => {
+      //Limpiamos id y nombre de la vacuna
+      clearNameVaccineSelect();
+      //Este Id de la vacuna se etablece al colocar dosis
+      putVaccineID(vaccineIdRef.current);
+      //Refrescamos cache
+      refetch();
+    }, [])
  
     const queryClient = useQueryClient();
     
@@ -50,7 +61,7 @@ export const DosisFigmaScreen = ({route}:Props) => {
             style: 'destructive',
             onPress: () => {
               // Lógica para eliminar el elemento
-             // dosisDelete(id);
+              dosisDelete(id);
              console.log(id);
               queryClient.invalidateQueries({queryKey: ['dosis', 'infinite']});
               refetch();
@@ -61,13 +72,7 @@ export const DosisFigmaScreen = ({route}:Props) => {
       );
     }
 
-    // const {isLoading, data: dosis = []} = useQuery({
-    //   queryKey: ['dosis_ids', 'infinite'],
-    //   staleTime: 1000 * 60 * 60, // 1 hour
-    //   //staleTime: 0, // no cache
-     
-    //   queryFn: async() => await getDosisByVaccineByIdAction(vaccineIdRef.current),
-    // });
+   
      
  
     const { isLoading, data, fetchNextPage, refetch } = useInfiniteQuery({

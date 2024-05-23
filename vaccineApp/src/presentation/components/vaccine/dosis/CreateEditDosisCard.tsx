@@ -21,12 +21,15 @@ interface Props {
 export const CreateEditDosisCard = ( { dosis, goPage = 'DosisEditCreateScreen', onDelete }:Props) => {
 
   const navigation = useNavigation<NavigationProp<RootStackParams>>();
-  //const {   setNameVaccineSelect } = useVaccines();
-
-    //Este nombre se coloca apenas selecciones un dosis de la vacuna 
+ //Este nombre se coloca apenas selecciones un dosis de la vacuna 
+  const { putNameVaccineSelect } = useVaccines();
+  
     useEffect(() => {
-   //   putNameVaccineSelect(dosis);
- }, [dosis.vaccineName])
+       //Este nombre se coloca apenas selecciones un dosis de la vacuna 
+        putNameVaccineSelect(dosis);
+    }, [dosis.vaccineName])
+  
+ 
 
   return (
     <Layout  style={{flex:1}}>
@@ -63,9 +66,12 @@ export const CreateEditDosisCard = ( { dosis, goPage = 'DosisEditCreateScreen', 
                                                 <Text category='s1' style={stylesFigma.titlesecund}>
                                                 Número de fila en el reporte:{'' + (dosis.rowReporte)}</Text>
 
-                                                <Pressable onPress={ () => onDelete (dosis._id.$oid)}>
-                                                       <Text>Eliminando</Text>
-                                                </Pressable>
+                                                
+                                                <Layout style={{ marginLeft: 280 }}> 
+                                                    <Pressable onPress={ () => onDelete (dosis._id.$oid)}>
+                                                            <Ionicons name="trash" size={20} color="red" />
+                                                    </Pressable>
+                                                </Layout>
                                           
                                       </Card>
                                       

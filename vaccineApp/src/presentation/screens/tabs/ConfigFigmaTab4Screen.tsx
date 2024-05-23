@@ -6,10 +6,7 @@ import { stylesFigma } from '../theme/appFigmaTheme';
 import { ConfigFigmaScreen } from '../vaccines/ConfigFigmaScreen';
 
 export const ConfigFigmaTab4Screen = () => {
- 
- 
- 
-  
+
   return (
     <Layout style={stylesFigma.container}>
       <Layout style={[stylesFigma.card, { marginTop: 10, marginBottom: (Platform.OS==='ios') ? 40 : 0 }]}>

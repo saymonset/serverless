@@ -7,7 +7,7 @@ import { VaccineDependentPage } from "../../domain/entities/VaccineDependent";
 import { DosisEntity } from "../../domain/entities/VaccineEditCreateEntity";
 import { RootState } from "../store";
 import { loadDosisFilterbyVaccineId, startApplyVaccines, stopApplyVaccines } from "../store/slices/applyvaccines";
-import { initVaccinesResponse, loadVaccinesOnly, loadVaccinesResponse, offDosis, setNameVaccineSelect, setNameVaccineSelectClear, showDosis, startVaccines, stopVaccines } from "../store/slices/vaccines";
+import { initVaccinesResponse, loadVaccinesOnly, loadVaccinesResponse, offDosis, setNameVaccineSelect, setNameVaccineSelectClear, setVaccineId, showDosis, startVaccines, stopVaccines } from "../store/slices/vaccines";
 
  
 
@@ -119,8 +119,23 @@ export const useVaccines = () => {
         }
       } 
 
-      const setVaccineForDosis = () => {
-        
+      const putNameVaccineSelect = (dosis:DosisEntity) =>{
+        let payload = {
+          nameVaccine:dosis.vaccineName,
+          vaccineId: dosis.vaccineID?.$oid,
+
+        }
+        dispatch(setNameVaccineSelect(payload));
+      }
+      const putVaccineID = (vaccineId:string) =>{
+        let payload = {
+          vaccineId 
+        }
+        dispatch(setVaccineId(payload));
+      }
+
+      const clearNameVaccineSelect = () =>{
+        dispatch(setNameVaccineSelectClear());
       }
       
    
@@ -132,6 +147,9 @@ export const useVaccines = () => {
     getOffDosis,
     getVaccinesAll,
     vaccineDelete,
+    putNameVaccineSelect,
+    clearNameVaccineSelect,
+    putVaccineID,
     
     getVaccinesAllBD,
     nameVaccine,

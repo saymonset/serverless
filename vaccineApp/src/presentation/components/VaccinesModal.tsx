@@ -6,6 +6,7 @@ import { useVaccines } from '../hooks/useVaccines';
 import { Vaccine } from '../../domain/entities/VaccineDependent';
 import { MyIcon } from './ui/MyIcon';
 import { LoadingScreen } from '../screens/loading/LoadingScreen';
+import { QueryClient } from '@tanstack/react-query';
 
  
 interface Props {
@@ -18,6 +19,10 @@ interface Props {
 export const VaccinesModal = ({ isVisible = false, title = '', onData, onClose}:Props) => {
     const [visible, setVisible] = React.useState(isVisible);
     const [vaccine, setVaccine] = useState('');
+    // Create a client
+    const queryClient = new QueryClient()
+   // Quitamos el cache de las dosis alseleccionar nueva vacuna
+    queryClient.invalidateQueries({queryKey: ['dosis', 'infinite']});
      
    
     const { vaccines, isLoading, getVaccinesAll } = useVaccines();

@@ -23,7 +23,7 @@ export const CreateEditDosisList = ( {dosis, goPage,  fetchNextPage, onDelete }:
 
        const queryClient = useQueryClient();
        const [isRefreshing, setIsRefreshing] = useState(false);
-    
+      
        
       
        const onPullToRefresh = async() =>{

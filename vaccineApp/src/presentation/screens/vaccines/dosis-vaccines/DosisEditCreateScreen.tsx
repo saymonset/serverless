@@ -19,6 +19,7 @@ import { getDosisByIdAction, updateCreateDosisAction } from '../../../../actions
 import { DosisByIdEntity } from '../../../../domain/entities/DosisEditCreateEntity';
 import { useVaccines } from '../../../hooks/useVaccines';
 import { useDosis } from '../../../hooks/useDosis';
+import { LoadingScreen } from '../../loading/LoadingScreen';
 
 interface Props extends StackScreenProps<RootStackParams,'DosisEditCreateScreen'>{};
 
@@ -102,7 +103,7 @@ export const DosisEditCreateScreen = ({route}:Props) => {
 
         
          
-           
+         //  console.log({_id, vacinne_id, ...rest});
           return mutation.mutate({_id, vacinne_id, ...rest});
         }
       }
@@ -270,6 +271,7 @@ export const DosisEditCreateScreen = ({route}:Props) => {
                           <Layout style={{...stylesFigma.buttonContainer,  alignItems:'center', marginTop:10, marginBottom:50}  }>
                               
                               {/* Crear una nueva cuenta */}
+                             { ( mutation.isPending  ) &&  (<LoadingScreen />) }
                                   <Button 
                                               disabled={ mutation.isPending }
                                               onPress={() => handleSubmit()}
