@@ -112,6 +112,8 @@ export const ConsultVaccineCard = ( { applyVaccine, goPage = 'vaccine' }:Props) 
                                                 Fecha:{'' + (applyVaccine.vaccination_date)}</Text>
                                                 <Text style={stylesFigma.titlesecund}>
                                                 Frecuencia:{'' + (applyVaccine.dosis.age_frequency)}</Text>
+                                                <Text style={stylesFigma.titlesecund}>
+                                                Imagen:{'' + (applyVaccine.image)}</Text>
  
                                       </Card>}     
       

@@ -23,7 +23,7 @@ const returnMapper = ( data: ApplyVaccineResponse ): ApplyVaccineEntity => {
     dosis_id:       '',
     dependent_id:       '',
     lote:              '',
-    vaccination_date:   '',
+    vaccination_date:    new Date(),
     image:            '',
     status:           true,
   }

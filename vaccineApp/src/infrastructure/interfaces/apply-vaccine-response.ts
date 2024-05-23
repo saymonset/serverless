@@ -67,7 +67,7 @@ export interface ApplyVaccineCreateResponse {
     dependent_id?:     string;
     lote?:             string;
     image?:            string;
-    vaccination_date?: string;
+    vaccination_date?:    Date | null; 
     status?:           boolean;
     statusCode?:       number;
     resp?:             boolean;

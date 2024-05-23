@@ -13,7 +13,7 @@ export const VaccineDosisImages = ({images}: Props) => {
     {images.length === 0 ? (
       <Image
         source={require('../../../assets/no-product-image.png')}
-        style={{width: 300, height: 300}}
+        style={{width: 100, height: 100}}
       />
     ) : (
       <FlatList
@@ -24,7 +24,7 @@ export const VaccineDosisImages = ({images}: Props) => {
         renderItem={({item}) => (
           <FadeInImage
             uri={item}
-            style={{width: 300, height: 300, marginHorizontal: 7}}
+            style={{width: 100, height: 100, marginHorizontal: 7}}
           />
         )}
       />

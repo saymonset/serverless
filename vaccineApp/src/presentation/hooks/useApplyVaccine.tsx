@@ -18,25 +18,39 @@ export const useApplyVaccine = () => {
 
  
       const getDosis = async(vaccineId:string, dependent_id:string) =>{
-        dispatch(startApplyVaccines());
-        dispatch(clearApplyVaccine( ))
-        const   data:ApplyVaccineEntity   = await applyVaccinneAction(vaccineId, dependent_id );
-        const { vacc_apply_vaccines } = data;
-        if (vacc_apply_vaccines && vacc_apply_vaccines.length > 0){
-          const { dependent } = vacc_apply_vaccines[0];
-          const { vaccine } = vacc_apply_vaccines[1];
-          const { dosis } = vacc_apply_vaccines[2];
-   
-          const payload = {
-            dependent_id,
-            dependent,
-            vaccine,
-            dosis
+        try {
+
+          if (vaccineId && dependent_id){
+            dispatch(startApplyVaccines());
+            dispatch(clearApplyVaccine( ));
+            
+            const   data:ApplyVaccineEntity   = await applyVaccinneAction(vaccineId, dependent_id );
+           
+           
+            const { vacc_apply_vaccines } = data;
+            if (vacc_apply_vaccines && vacc_apply_vaccines.length > 0){
+              const { dependent } = vacc_apply_vaccines[0];
+              const { vaccine } = vacc_apply_vaccines[1];
+              const { dosis } = vacc_apply_vaccines[2];
+      
+              const payload = {
+                dependent_id,
+                dependent,
+                vaccine,
+                dosis
+              }
+              dispatch(loadDosisFilterbyVaccineId( payload ));
+              dispatch(stopApplyVaccines());
           }
-          dispatch(loadDosisFilterbyVaccineId( payload ))
         } 
+          
+        } catch (error) {
+          console.log(error)
+          dispatch(stopApplyVaccines());
+        }
         
-        dispatch(stopApplyVaccines());
+        
+       
             return {};
       }
    

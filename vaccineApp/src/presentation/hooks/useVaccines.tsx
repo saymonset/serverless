@@ -92,8 +92,9 @@ export const useVaccines = () => {
             dosis
           }
           dispatch(loadDosisFilterbyVaccineId( payload ))
-          dispatch(stopApplyVaccines());
+         
         }
+        dispatch(stopApplyVaccines());
             return {};
       }
       const getShowDosis = () =>{

@@ -5,8 +5,9 @@ import { Alert, Platform, Pressable, ScrollView, useWindowDimensions } from 'rea
 import moment from 'moment';
 import {   useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {  StackScreenProps } from '@react-navigation/stack';
+import * as Yup  from 'yup'
  
-import { Formik } from 'formik';
+import { ErrorMessage, Formik } from 'formik';
 import { RootStackParams } from '../../../navigation/StackNavigator';
 import { useLogin } from '../../../hooks/useLogin';
 import { useGender } from '../../../hooks/useGender';
@@ -62,8 +63,11 @@ export const ApplyVaccinesAddScreen = ({route}:Props) => {
     mutationFn: (data: ApplyVaccineCreateResponse) => {
       let {dependent_id, ...rest} = data;
 
-      $dependent_id: dependentIdRef.current
-     return updateCreateApplyVaccinneAction({...rest, dependent_id});
+      $dependent_id: dependentIdRef.current;
+      console.log('---------1------------')
+      console.log( {...rest, dependent_id});
+      console.log('---------2------------')
+      return updateCreateApplyVaccinneAction({...rest, dependent_id});
     }
    ,
     onSuccess(data: ApplyVaccineCreateResponse) {
@@ -78,7 +82,6 @@ export const ApplyVaccinesAddScreen = ({route}:Props) => {
       }
       queryClient.invalidateQueries({queryKey: ['applyVaccines', 'infinite']});
       queryClient.invalidateQueries({queryKey: ['vaccineApply', dependentIdRef.current]});
-      // queryClient.setQueryData(['product',  data.id ], data);
     },
   });
 
@@ -92,7 +95,18 @@ export const ApplyVaccinesAddScreen = ({route}:Props) => {
   }
 
 
-
+  const validationSchema = Yup.object().shape({
+    lote: Yup.string().required('Requerido')
+    .max(30, 'Debe de tener 30 caracteres o menos')
+    .min(1,'Debe de tener 3 caracteres o mas'),
+    vaccine_id: Yup.string().required('Requerido')
+   ,
+    dosis_id: Yup.string().required('Requerido')
+   ,
+   image: Yup.string().required('Debe tomar una foto'),
+    
+  });
+  
   
 
   const onVaccine = (value:Vaccine) =>{
@@ -113,7 +127,7 @@ export const ApplyVaccinesAddScreen = ({route}:Props) => {
   return (
     <Formik
       initialValues={ vaccineApply }
-      
+      validationSchema={validationSchema}
       onSubmit = { vaccineApply => {
           let { dependent_id, ...rest } = vaccineApply;
           dependent_id = dependentIdRef.current;
@@ -140,13 +154,14 @@ export const ApplyVaccinesAddScreen = ({route}:Props) => {
                           
                           {/* Inputs */}
                           <Layout style={{marginTop: 20}}>
-
+                         
                             {/* Vaccines */}
                             <VaccinesModal 
                                 onData={(value) =>{
                                 onVaccine(value)  
                                 setFieldValue('vaccine_id', `${value._id.$oid}`)
                             }}></VaccinesModal>
+                             <Text style={{ color: 'red' }}> <ErrorMessage name="vaccine_id" /></Text>
 
                         { (dosisList && dosisList.length>0) && (<DosisModal 
                                 vaccineId = {idVaccine} 
@@ -155,6 +170,7 @@ export const ApplyVaccinesAddScreen = ({route}:Props) => {
                                 onDosis(value)  
                                 setFieldValue('dosis_id', `${value._id.$oid}`)
                             }}></DosisModal>)}    
+                             <Text style={{ color: 'red' }}> <ErrorMessage name="dosis_id" /></Text>
 
     
 
@@ -183,19 +199,22 @@ export const ApplyVaccinesAddScreen = ({route}:Props) => {
                                       autoCapitalize="words"
                                       autoCorrect={ false }
                                   />
+                                  <Text style={{ color: 'red' }}> <ErrorMessage name="lote" /></Text>
                           </Layout>    
                           {/* IMAGE */}
                           <Layout style = {{ marginVertical:20}}>
                               <Text style={ stylesFigma.label }>Imagen:<Text style={{ color: 'skyblue' }}> *</Text></Text>
-                              <Layout
+                              {images && images.length>0 && (<Layout
                                     style={{
                                       marginVertical: 10,
-                                      justifyContent: 'center',
-                                      alignItems: 'center',
+                                      justifyContent: 'flex-start',
+                                      alignItems: 'flex-start',
                                     }}>
                                     <VaccineDosisImages images={images} />
-                                </Layout>
+                                </Layout>)}
+                              
                               <Input 
+                                  disabled
                                   placeholder="Enter your image:"
                                   placeholderTextColor="rgba(0,0,0,0.4)"
                                   underlineColorAndroid="rgba(0,0,0,0)"
@@ -212,6 +231,7 @@ export const ApplyVaccinesAddScreen = ({route}:Props) => {
                                   autoCapitalize="words"
                                   autoCorrect={ false }
                               />
+                              <Text style={{ color: 'red' }}> <ErrorMessage name="image" /></Text>
                               <Pressable onPress={ async () => {
                                 const photos = await CameraAdapter.takePicture();
                                 const fileImages = photos.filter( image => image.includes('file://'));
@@ -228,17 +248,20 @@ export const ApplyVaccinesAddScreen = ({route}:Props) => {
 
                           <Layout style = {{ marginVertical:20}}>
                               <Text category='h6'>
-                                  {`Fecha de vacunacion`}
+                                  {`Fecha de vacunacion`} 
                               </Text>
                               <Datepicker
                                   onFocus  ={() => console.log()}
                                   onBlur ={() => console.log()}
                                   min={minDate}
                                   max={maxDate}
-                                  date={new Date(moment( new Date()).format('YYYY-MM-DD'))}
+                                  date={new Date(moment(values.vaccination_date ?? new Date()).format('YYYY-MM-DD'))}
                                   onSelect={nextDate => setFieldValue('vaccination_date', nextDate || new Date())}
                                   placeholder='Selecciona de vacunación'
                               />
+
+ 
+                                <Text style={{ color: 'red' }}> <ErrorMessage name="vaccination_date" /></Text>
                           </Layout>
                           
   
