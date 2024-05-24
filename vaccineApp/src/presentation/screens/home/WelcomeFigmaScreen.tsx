@@ -37,12 +37,13 @@ export const WelcomeScreen = ({ navigation }:Props) => {
     <Layout style={{flex:1, backgroundColor: '#80BFFF'}}>
         <Layout style={{ flex:1 , paddingTop: height * 0.05, backgroundColor: '#80BFFF',}}>
                {/* Background */} 
-          <Text style={[stylesFigma.title, {textAlign:'left', left:10}]} category="h1">Bienvenido  {t('green')}</Text>
+          <Text style={[stylesFigma.title, {textAlign:'left', left:10}]} category="h1">Bienvenido </Text>
+          {/* <Text style={[stylesFigma.title, {textAlign:'left', left:10}]} category="h1">Bienvenido  {t('green')}</Text> */}
 
-          <Button 
+          {/* <Button 
            
            
-            onPress={changeLanguage}>Cambioar lenguaje</Button>
+            onPress={changeLanguage}>Cambioar lenguaje</Button> */}
           
           {/* Space */}
           <Layout style={{height: 10, backgroundColor: '#80BFFF'}} />
