@@ -2,16 +2,26 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import { Button, Layout , Text} from '@ui-kitten/components';
 import React from 'react'
-import {  Image, Platform, useWindowDimensions } from 'react-native';
+import { Image, Platform, useWindowDimensions, Pressable } from 'react-native';
 import { RootStackParams } from '../../navigation/StackNavigator';
 import { useSendSms } from '../../hooks/useSendSms';
 import { stylesFigma } from '../theme/appFigmaTheme';
+import { useTranslation } from 'react-i18next';
  
 interface Props extends StackScreenProps<RootStackParams, 'WelcomeScreen'> {}
 
 export const WelcomeScreen = ({ navigation }:Props) => {
       {/*  Cargamos data en el contexto */}
       const {height} = useWindowDimensions();
+
+      const { t , i18n} = useTranslation();
+
+      const changeLanguage = () => {
+          i18n.language === 'en' 
+          ?  i18n.changeLanguage('es')
+          :  i18n.changeLanguage('en')
+           
+      }
 
 
   const { sendSmsPhone  } =  useSendSms();
@@ -27,7 +37,13 @@ export const WelcomeScreen = ({ navigation }:Props) => {
     <Layout style={{flex:1, backgroundColor: '#80BFFF'}}>
         <Layout style={{ flex:1 , paddingTop: height * 0.05, backgroundColor: '#80BFFF',}}>
                {/* Background */} 
-          <Text style={[stylesFigma.title, {textAlign:'left', left:10}]} category="h1">Bienvenido</Text>
+          <Text style={[stylesFigma.title, {textAlign:'left', left:10}]} category="h1">Bienvenido  {t('green')}</Text>
+
+          <Button 
+           
+           
+            onPress={changeLanguage}>Cambioar lenguaje</Button>
+          
           {/* Space */}
           <Layout style={{height: 10, backgroundColor: '#80BFFF'}} />
             <Text category="p2" style= {[stylesFigma.titlesecund,{left:10}]}

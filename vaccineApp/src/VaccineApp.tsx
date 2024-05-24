@@ -35,9 +35,9 @@ export const VaccineApp = () => {
              <Provider store={store}>
                 <NavigationContainer>{/* Rest of your app code */} 
                     <AuthProvider>
-                      {/* <I18nextProvider i18n={i18next}> */}
+                      <I18nextProvider i18n={i18next}> 
                          <StackNavigator/>
-                      {/* </I18nextProvider> */}
+                       </I18nextProvider>
                     </AuthProvider>
                 </NavigationContainer>
                 </Provider>
