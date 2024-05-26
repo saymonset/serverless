@@ -138,6 +138,23 @@ export const useVaccines = () => {
       const clearNameVaccineSelect = () =>{
         dispatch(setNameVaccineSelectClear());
       }
+
+      const onVaccineCheckedChange = (checked:boolean, name:string, vaccs:[]): void => {
+        vaccs.map((vac:Vaccine) =>{
+          if (vac.name === name){
+            console.log({name, checked})
+            return {...vac, isChecked: !checked}
+          }
+          return {...vac};
+        });
+
+        const payload = {
+          vaccines:vaccs
+        };
+       // console.log(JSON.stringfy(payload))
+          dispatch(loadVaccinesOnly(payload));
+      };
+  
       
    
 
@@ -151,6 +168,7 @@ export const useVaccines = () => {
     putNameVaccineSelect,
     clearNameVaccineSelect,
     putVaccineID,
+    onVaccineCheckedChange,
     
     getVaccinesAllBD,
     nameVaccine,

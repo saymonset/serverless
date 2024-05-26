@@ -13,6 +13,7 @@ export interface Vaccine {
     isAlertApply:     boolean;
     isChildren:       boolean;
     name:             string;
+    isChecked?:          boolean;
     status:           boolean;
 }
 

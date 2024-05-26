@@ -11,11 +11,16 @@ export class VaccinesMapper {
        response.vaccines.sort((a, b) => a.name.localeCompare(b.name));
 
         // Filtrar las vacunas únicas por _id
-  const uniqueVaccinesById = response.vaccines.filter((vaccine, index, self) =>
-            index === self.findIndex((v) => (
-              v._id.$oid === vaccine._id.$oid
-            ))
-          );
+        const uniqueVaccinesById = response.vaccines
+              .map(vaccine => ({ ...vaccine, isChecked: false })) // Update the isChecked property to false for each vaccine
+              .filter((vaccine, index, self) =>
+                index === self.findIndex(v => v._id.$oid === vaccine._id.$oid)
+              );
+  // const uniqueVaccinesById = response.vaccines.filter((vaccine, index, self) =>
+  //           index === self.findIndex((v) => (
+  //             v._id.$oid === vaccine._id.$oid
+  //           ))
+  //         );
 
       return {
         desde:    response.desde,

@@ -12,6 +12,7 @@ export interface Vaccine {
     disease_prevents: string;
     isChildren:       boolean;
     name:             string;
+    isChecked?:          boolean;
     status:           boolean;
 }
 

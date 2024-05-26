@@ -22,6 +22,9 @@ import { enviarMensajePorStatusCode } from '../messages/enviarMensajePorStatusCo
 import { useLogin } from '../../hooks/useLogin';
 import { FullScreenLoader } from '../../components/ui/FullScreenLoader';
 import { useDependent } from '../../hooks/useDependent'
+import { VaccinesModal } from '../../components/VaccinesModal'
+import { Vaccine } from '../../../domain/entities/VaccineDependent'
+import { PlanVaccinesDependentModal } from '../../components/PlanVaccinesDependentModal'
 
 interface Props extends StackScreenProps<RootStackParams,'DependentScreen'>{};
 
@@ -92,6 +95,9 @@ export const DependentScreen = ({route}:Props) => {
 
 
 
+  const onVaccine = (value:Vaccine) =>{
+   
+  }
   
 
   const onEstado = (value:any) =>{
@@ -185,6 +191,13 @@ export const DependentScreen = ({route}:Props) => {
                               />
                                <Text style={{ color: 'red' }}> <ErrorMessage name="lastname" /></Text>
                           </Layout>   
+
+                            {/* Vaccines */}
+                            <PlanVaccinesDependentModal 
+                                onData={(value) =>{
+                                onVaccine(value)  
+                                setFieldValue('vaccine_id', `${value._id.$oid}`)
+                            }}></PlanVaccinesDependentModal>
 
                            {/* SEXO */}
                         {genders &&(<Layout style = {{ marginVertical:20}}>
