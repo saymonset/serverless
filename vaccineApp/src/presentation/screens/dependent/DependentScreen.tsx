@@ -1,4 +1,4 @@
-import { Button, Datepicker, Input, Layout, Text, useTheme } from '@ui-kitten/components'
+import { Button, Datepicker, DatepickerProps, Input, Layout, Text, useTheme } from '@ui-kitten/components'
 import React, { useEffect, useRef, useState } from 'react'
 import { Alert, Platform, ScrollView, useWindowDimensions } from 'react-native'
 import { MainLayout } from '../../layouts/MainLayout'
@@ -28,6 +28,8 @@ import { PlanVaccinesDependentModal } from '../../components/PlanVaccinesDepende
 
 interface Props extends StackScreenProps<RootStackParams,'DependentScreen'>{};
 
+
+
 export const DependentScreen = ({route}:Props) => {
   const theme = useTheme();
   const queryClient = useQueryClient();
@@ -40,6 +42,13 @@ export const DependentScreen = ({route}:Props) => {
   const {  genders } =  useGender();
   const {  relationships } =  useRelationShip();
   const dependentIdRef = useRef(route.params.dependentId);
+
+  // const useDatepickerState = (initialDate = null): DatepickerProps => {
+  //   const [date, setDate] = React.useState(initialDate);
+  //   return { date, onSelect };
+  // };
+
+  //const smallDatepickerState = useDatepickerState();
 
  
   
@@ -54,7 +63,6 @@ export const DependentScreen = ({route}:Props) => {
     .min(3,'Debe de tener 3 caracteres o mas'),
     gender_id: Yup.string().required('Debe seleccionar el genero'),
     relationship_id: Yup.string().required('Debe seleccionar el parentesco'),
-    email: Yup.string().required('Debe agregar el correo').email('Formato de email no válido'),
     birth: Yup.date().max(new Date(), 'La fecha de nacimiento no puede estar en el futuro')
     .required('La fecha de nacimiento es obligatoria'),
   });
@@ -119,8 +127,11 @@ export const DependentScreen = ({route}:Props) => {
       validationSchema={validationSchema}
       onSubmit = { dependent => {
           let {  ...rest } = dependent;
+
+       
+          console.log({...rest});
       
-        return mutation.mutate({ ...rest});
+          return mutation.mutate({ ...rest});
         }
       }
 >
@@ -241,7 +252,6 @@ export const DependentScreen = ({route}:Props) => {
                                       autoCapitalize="none"
                                       autoCorrect={ false }
                                   />
-                                   <Text style={{ color: 'red' }}> <ErrorMessage name="email" /></Text>
                           </Layout>
 
                           <Layout style = {{ marginVertical:20}}>
@@ -249,6 +259,33 @@ export const DependentScreen = ({route}:Props) => {
                                   {`Fecha de nacimiento`}
                               </Text>
                               <Datepicker
+                                  style={stylesFigma.datepicker}
+                                  min={minDate}
+                                  max={maxDate}
+                               
+                                  placeholder='Selecciona una fecha'
+                                  size='small'
+                                  //date={new Date(moment(values.birth ?? new Date()).format('YYYY-MM-DD'))}
+                                  date={moment(values.birth ?? new Date()).add(0, 'day').toDate()}
+                              //    {...smallDatepickerState}
+                                  onSelect={nextDate => {
+                                    console.log({nextDate})
+                                  
+                                    setFieldValue('birth', nextDate || new Date())
+                                  }}
+      />
+
+{/* 
+<Datepicker
+                                onFocus  ={() =>setFieldValue('birth', values.birth)}
+                                onBlur ={() =>setFieldValue('birth', values.birth)}
+                                min={minDate}
+                                max={maxDate}
+                                date={values.birth}
+                                onSelect={nextDate => setFieldValue('birth', nextDate)}
+                                placeholder='Selecciona una fecha'
+                            /> */}
+                              {/* <Datepicker
                                   onFocus  ={() => console.log()}
                                   onBlur ={() => console.log()}
                                   min={minDate}
@@ -256,7 +293,7 @@ export const DependentScreen = ({route}:Props) => {
                                   date={new Date(moment(values.birth ?? new Date()).format('YYYY-MM-DD'))}
                                   onSelect={nextDate => setFieldValue('birth', nextDate || new Date())}
                                   placeholder='Selecciona una fecha'
-                              />
+                              /> */}
                                <Text style={{ color: 'red' }}> <ErrorMessage name="birth" /></Text>
                           </Layout>
                           

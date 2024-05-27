@@ -109,6 +109,9 @@ export const stylesFigma = StyleSheet.create({
         fontSize: 24,
         color:'black'
       },
+      datepicker: {
+        marginVertical: 2,
+      },
 
   
 
