@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { Alert, Pressable, StyleSheet, View } from 'react-native';
-import { Button, Card, CheckBox, Layout, Modal, Text, Tooltip } from '@ui-kitten/components';
+import { Button, Card, CheckBox, Icon, Layout, Modal, Text, Tooltip } from '@ui-kitten/components';
 import { Divider, List, ListItem } from '@ui-kitten/components';
 import { useVaccines } from '../hooks/useVaccines';
 import { Vaccine } from '../../domain/entities/VaccineDependent';
 import { MyIcon } from './ui/MyIcon';
 import { LoadingScreen } from '../screens/loading/LoadingScreen';
 import { QueryClient } from '@tanstack/react-query';
+import { usePlanVaccines } from '../hooks/usePlanVaccines';
 
  
 interface Props {
@@ -14,12 +15,12 @@ interface Props {
   onClose ? : ( value: boolean ) => void;
   isVisible?: boolean;
   title?: string;
+  dependentId: string;
 }
  
-export const PlanVaccinesDependentModal = ({ isVisible = false, title = '', onData, onClose}:Props) => {
+export const PlanVaccinesDependentModal = ({ isVisible = false, title = '', onData, onClose, dependentId}:Props) => {
     const [visible, setVisible] = React.useState(isVisible);
     let [vaccine, setVaccine] = useState('');
-     const [vaccineTmp, setVaccineTmp] = useState<Vaccine[]>([]);
  
 
     // Create a client
@@ -28,20 +29,24 @@ export const PlanVaccinesDependentModal = ({ isVisible = false, title = '', onDa
     queryClient.invalidateQueries({queryKey: ['dosis', 'infinite']});
      
    
-    const { vaccines:vaccsStates, isLoading, getVaccinesAll } = useVaccines();
+    // const { vaccines:vaccsStates, isLoading, getVaccinesAll, getPlanVaccinesAll, 
+    //    updatePlanVaccinesByDependent } = useVaccines();
+
+    const { vaccines:vaccsStates, isLoading,  getPlanVaccinesAll, 
+       updatePlanVaccinesByDependent } = usePlanVaccines();
+
     const [ vaccinesAux, setVaccinesAux ] = useState<Vaccine[]>([]);
     const [check, setCheck] = useState(false)
    
 
     const loadVaccines = async ()=>{
-      let term:string = "''";
-         await   getVaccinesAll(term);
+         await   getPlanVaccinesAll(dependentId);
     }
     useEffect(() => {
-      if (!vaccsStates || vaccsStates.length==0){
+     // if (!vaccsStates || vaccsStates.length==0){
         loadVaccines();
-        setVaccinesAux(vaccsStates);
-      }
+       // setVaccinesAux(vaccsStates);
+     // }
     }, []);
 
     useEffect(() => {
@@ -62,15 +67,21 @@ const onVaccineCheckedChange = (name: string): void => {
   
 // Updated onVaccineCheckedChange function
 const onVaccineChecked = (): void => {
-  const planVaccines = vaccinesAux.filter((vac: Vaccine) => vac.isChecked);
-    console.log(JSON.stringify(planVaccines))  
+  
+  const planVaccinesByDependent = vaccinesAux.filter((vac: Vaccine) => vac.isChecked)
+  .map((vac)=>vac._id.$oid);
+
+      updatePlanVaccinesByDependent( dependentId , planVaccinesByDependent);
+
 };
+
+
  
 
      
     const renderItem = ({ item }: { item:Vaccine; index: number }): React.ReactElement => (
       <>
-         {  isLoading && (  <LoadingScreen />  )}
+       {  isLoading && (  <LoadingScreen />  )}
          <ListItem 
         style={  styles.itemTextRed }
         title={(evaProps) => (
@@ -83,10 +94,19 @@ const onVaccineChecked = (): void => {
                     setCheck(!check);
                   }}
                 >
-                  
-                   {item.name}
+                  <>
+                
+                  <MyIcon name={'brush-outline'} />
+                
+                  <Layout style={{ flexDirection: 'row',  justifyContent:'flex-end' }}>
+                
+                    <Text style={{  marginLeft:10, color:  'blue'  }}>
+                        { item.name}
+                    </Text>
+                  </Layout>
+                  </>
                 </CheckBox>
-                <MyIcon name={'bell-outline'} />
+              
                 
         
           </Layout>
@@ -111,6 +131,7 @@ const onVaccineChecked = (): void => {
     );
   return (
     <View style={styles.container}>
+       
   
   <Text category='h6'>
           { vaccine && ` ${vaccine}`}
@@ -138,15 +159,25 @@ const onVaccineChecked = (): void => {
           renderItem={renderItem}
         />
         
-        <Button onPress={() => {
-            onVaccineChecked();
-            setVisible(false);
-            //Si existe el metodo, lanzamos verdadero
-            onClose && onClose(true);
+        <Layout style={{flexDirection:'row', alignItems:'center'}}>
 
+        <Button 
+            status='success'
+            style={{marginHorizontal:20}} onPress={() => {
+            onVaccineChecked();
+        }}>
+          Aplicar
+        </Button>
+      
+        <Button onPress={() => {
+              setVisible(false);
+              //Si existe el metodo, lanzamos verdadero
+              onClose && onClose(true);
         }}>
           Cerrar
         </Button>
+        </Layout>
+       
       </Card>
     </Modal>
 

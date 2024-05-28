@@ -1,8 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
 import { applyVaccinneAction } from "../../actions/apply-vaccine/applyVaccineAction";
 import { deleteVaccinneAction, vaccinneAction } from "../../actions/apply-vaccine/vaccinneAction";
+import { getPlanVaccineByDependentIdAction, updatePlanVaccineByDependentIdAction } from "../../actions/plan-vaccines/planVaccinesAction";
 import { getVaccinesAction } from "../../actions/vaccines/createEditVaccinesAction";
 import { ApplyVaccineEntity, Vaccine } from "../../domain/entities/apply-vaccine-interface";
+import { PlanVaccineByDependentEntity } from "../../domain/entities/PlanVaccineByDependentEntity";
 import { VaccineDependentPage } from "../../domain/entities/VaccineDependent";
 import { DosisEntity } from "../../domain/entities/VaccineEditCreateEntity";
 import { RootState } from "../store";
@@ -75,6 +77,11 @@ export const useVaccines = () => {
         dispatch(stopVaccines());     
         return payload;
       }
+ 
+
+  
+
+ 
 
 
       const getDosis = async(vaccineId:string, dependentId:string) =>{
@@ -164,11 +171,13 @@ export const useVaccines = () => {
     getShowDosis,
     getOffDosis,
     getVaccinesAll,
+ 
     vaccineDelete,
     putNameVaccineSelect,
     clearNameVaccineSelect,
     putVaccineID,
     onVaccineCheckedChange,
+   
     
     getVaccinesAllBD,
     nameVaccine,

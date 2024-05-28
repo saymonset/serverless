@@ -155,6 +155,7 @@ export const ApplyVaccinesAddScreen = ({route}:Props) => {
                          
                             {/* Vaccines */}
                             <VaccinesModal 
+                                dependentId = { dependentIdRef.current }
                                 onData={(value) =>{
                                 onVaccine(value)  
                                 setFieldValue('vaccine_id', `${value._id.$oid}`)

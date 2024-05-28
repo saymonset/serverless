@@ -14,9 +14,10 @@ interface Props {
   onClose ? : ( value: boolean ) => void;
   isVisible?: boolean;
   title?: string;
+  dependentId?: string;
 }
  
-export const VaccinesModal = ({ isVisible = false, title = '', onData, onClose}:Props) => {
+export const VaccinesModal = ({ isVisible = false, title = '', dependentId, onData, onClose}:Props) => {
     const [visible, setVisible] = React.useState(isVisible);
     const [vaccine, setVaccine] = useState('');
     // Create a client
@@ -25,18 +26,32 @@ export const VaccinesModal = ({ isVisible = false, title = '', onData, onClose}:
     queryClient.invalidateQueries({queryKey: ['dosis', 'infinite']});
      
    
-    const { vaccines, isLoading, getVaccinesAll } = useVaccines();
+    const { vaccines, isLoading, getVaccinesAll, getPlanVaccinesByDependent } = useVaccines();
    
 
     const loadVaccines = async ()=>{
       let term:string = "''";
-         await   getVaccinesAll(term);
-    }
-    useEffect(() => {
-      if (!vaccines || vaccines.length==0){
-        loadVaccines();
+    
+      console.log('-------------------------------------');
+      if (dependentId){
+        console.log({dependentId})
+        await   getPlanVaccinesByDependent(dependentId);
+      }else{
+        await   getVaccinesAll(term)
       }
-    }, []);
+         
+    }
+    // useEffect(() => {
+    //   if (!vaccines || vaccines.length==0){
+    //     loadVaccines();
+    //   }
+    // }, []);
+
+    useEffect(() => {
+     
+        loadVaccines();
+       
+    }, [ dependentId ]);
  
 
      

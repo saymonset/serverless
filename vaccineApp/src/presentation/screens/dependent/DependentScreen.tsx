@@ -129,7 +129,7 @@ export const DependentScreen = ({route}:Props) => {
           let {  ...rest } = dependent;
 
        
-          console.log({...rest});
+         
       
           return mutation.mutate({ ...rest});
         }
@@ -205,9 +205,11 @@ export const DependentScreen = ({route}:Props) => {
 
                             {/* Vaccines */}
                             <PlanVaccinesDependentModal 
+                                dependentId={ dependentIdRef.current}
                                 onData={(value) =>{
                                 onVaccine(value)  
                                 setFieldValue('vaccine_id', `${value._id.$oid}`)
+                               
                             }}></PlanVaccinesDependentModal>
 
                            {/* SEXO */}
@@ -223,7 +225,7 @@ export const DependentScreen = ({route}:Props) => {
                           </Layout> )}
                            {/* PARENTESCO */}
                         {relationships &&(<Layout style = {{ marginVertical:20}}>
-                                  <Text style={ stylesFigma.label }>Parentesco:<Text style={{ color: 'skyblue' }}> *</Text></Text>
+                                  <Text style={ stylesFigma.label }>Parentesco:<Text style={{ color: 'skyblue' }}>*</Text></Text>
                                   <SelectSimpleUsageShowcase 
                                           idSelected={ values.relationship_id || ''  }
                                           items={ relationships} 
@@ -235,7 +237,7 @@ export const DependentScreen = ({route}:Props) => {
 
                            {/* EMAIL */}
                            <Layout style = {{ marginVertical:20}}>
-                                  <Text style={ stylesFigma.label }>Dirección de correo electrónico:<Text style={{ color: 'skyblue' }}> *</Text></Text>
+                                  <Text style={ stylesFigma.label }>Dirección de correo electrónico:<Text style={{ color: 'skyblue' }}></Text></Text>
                                   <Input 
                                       placeholder="Enter your email:"
                                       placeholderTextColor="rgba(0,0,0,0.4)"
