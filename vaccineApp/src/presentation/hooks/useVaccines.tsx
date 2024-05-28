@@ -29,12 +29,28 @@ export const useVaccines = () => {
 
 
       const getVaccines = async(dependentId: string) =>{
+
         dispatch(startVaccines());
+       
         const   data:VaccineDependentPage   = await vaccinneAction(dependentId);
-        const {   desde,
+
+          const vaccinesPromise  =  vaccinneAction(dependentId);
+      const planVaccinesPromise  =  getPlanVaccineByDependentIdAction(dependentId);
+      let [ vaccinesData, planVaccines ] = await Promise.all([ vaccinesPromise, planVaccinesPromise]);
+
+        let {   desde,
                   limite,
                   total,
-                  vaccines} = data;
+                  vaccines} = vaccinesData;
+
+         vaccines = vaccines.map(( vaccine)=>{
+               if (planVaccines.includes(vaccine._id.$oid)){
+                return {...vaccine, isChecked:true}
+               }
+               return vaccine;
+       }).filter( vac => vac.isChecked)          
+
+
         const payload = {
                           dependentId,
                           desde,
@@ -42,11 +58,36 @@ export const useVaccines = () => {
                           total,
                           vaccines
                         };
-       
+ 
         dispatch(loadVaccinesResponse(payload));
         dispatch(stopVaccines());       
         return payload;
       }
+
+
+
+
+
+
+      // dispatch(startVaccines());
+      // dispatch(initVaccinesResponse({}));
+      // let page = 0;
+      // let term = '""';
+     
+    
+
+      
+
+     
+      // const payload = {
+      //                   vaccines
+      //                 };
+      // dispatch(loadVaccinesOnly(payload));
+      // dispatch(stopVaccines());     
+      // return vaccines;
+
+
+
 
       // async (limite:number =1000, page:number, term:string = "''")
       const getVaccinesAllBD = async(limite:number =1000, page:number, term:string = "''")=>{
@@ -65,7 +106,7 @@ export const useVaccines = () => {
         return vaccines;
       }
 
-      const getVaccinesAll = async(term:string) =>{
+      const getVaccinesAll = async(term:string):Promise<Vaccine[]> =>{
         dispatch(startVaccines());
         dispatch(initVaccinesResponse({}));
         let page = 0;
@@ -73,9 +114,12 @@ export const useVaccines = () => {
         const payload = {
                           vaccines
                         };
+                        console.log('----------------------C---------------');
+                        console.log({vaccines})
+                        console.log('----------------------D----------------');
         dispatch(loadVaccinesOnly(payload));
         dispatch(stopVaccines());     
-        return payload;
+        return vaccines;
       }
  
 

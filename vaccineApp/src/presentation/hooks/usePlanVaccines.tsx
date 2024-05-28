@@ -31,23 +31,18 @@ export const usePlanVaccines = () => {
   
 
       const getPlanVaccinesAll = async(dependentId:string) =>{
-        console.log('---------------0---------------');
+      
         dispatch(startVaccines());
         dispatch(initVaccinesResponse({}));
-        console.log('--------------1----------------');
+     
         let page = 0;
         let term = '""';
         const vaccinesPromise  =  getVaccinesAction(10000,page, term);
-        console.log({dependentId});
-        console.log('----------2--------------------');
+       
         const planVaccinesPromise  =  getPlanVaccineByDependentIdAction(dependentId);
-        console.log('----------2.1--------------------');
+       
         let [ vaccines, planVaccines ] = await Promise.all([ vaccinesPromise, planVaccinesPromise]);
-        console.log('----------3--------------------');
       
-      
-        console.log({vaccines})
-        console.log('------------------------------');
 
          vaccines = vaccines.map(( vaccine)=>{
                  if (planVaccines.includes(vaccine._id.$oid)){
@@ -65,7 +60,7 @@ export const usePlanVaccines = () => {
       }
 
       
-      const getPlanVaccinesByDependent = async(dependentId:string) =>{
+      const getPlanVaccinesByDependent = async(dependentId:string):Promise<Vaccine[]> =>{
         dispatch(startVaccines());
         dispatch(initVaccinesResponse({}));
         let page = 0;
@@ -82,16 +77,13 @@ export const usePlanVaccines = () => {
                  return vaccine;
          }).filter( vac => vac.isChecked)
 
-         console.log('--------1-----------------')
-         console.log({vaccines})
-         console.log('--------2-----------------')
-        
+       
         const payload = {
                           vaccines
                         };
         dispatch(loadVaccinesOnly(payload));
         dispatch(stopVaccines());     
-        return payload;
+        return vaccines;
       }
 
       const updatePlanVaccinesByDependent = async(dependentId:string, vacc:string[]) =>{

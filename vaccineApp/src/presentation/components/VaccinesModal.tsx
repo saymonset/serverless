@@ -7,6 +7,7 @@ import { Vaccine } from '../../domain/entities/VaccineDependent';
 import { MyIcon } from './ui/MyIcon';
 import { LoadingScreen } from '../screens/loading/LoadingScreen';
 import { QueryClient } from '@tanstack/react-query';
+import { usePlanVaccines } from '../hooks/usePlanVaccines';
 
  
 interface Props {
@@ -20,38 +21,17 @@ interface Props {
 export const VaccinesModal = ({ isVisible = false, title = '', dependentId, onData, onClose}:Props) => {
     const [visible, setVisible] = React.useState(isVisible);
     const [vaccine, setVaccine] = useState('');
+ 
     // Create a client
     const queryClient = new QueryClient()
    // Quitamos el cache de las dosis alseleccionar nueva vacuna
     queryClient.invalidateQueries({queryKey: ['dosis', 'infinite']});
      
    
-    const { vaccines, isLoading, getVaccinesAll, getPlanVaccinesByDependent } = useVaccines();
+    const { vaccines, isLoading } = usePlanVaccines();
+ 
+ 
    
-
-    const loadVaccines = async ()=>{
-      let term:string = "''";
-    
-      console.log('-------------------------------------');
-      if (dependentId){
-        console.log({dependentId})
-        await   getPlanVaccinesByDependent(dependentId);
-      }else{
-        await   getVaccinesAll(term)
-      }
-         
-    }
-    // useEffect(() => {
-    //   if (!vaccines || vaccines.length==0){
-    //     loadVaccines();
-    //   }
-    // }, []);
-
-    useEffect(() => {
-     
-        loadVaccines();
-       
-    }, [ dependentId ]);
  
 
      

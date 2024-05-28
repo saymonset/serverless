@@ -203,14 +203,19 @@ export const DependentScreen = ({route}:Props) => {
                                <Text style={{ color: 'red' }}> <ErrorMessage name="lastname" /></Text>
                           </Layout>   
 
-                            {/* Vaccines */}
-                            <PlanVaccinesDependentModal 
-                                dependentId={ dependentIdRef.current}
-                                onData={(value) =>{
-                                onVaccine(value)  
-                                setFieldValue('vaccine_id', `${value._id.$oid}`)
-                               
-                            }}></PlanVaccinesDependentModal>
+                          <Layout>
+                            { dependentIdRef.current !== 'new' && <PlanVaccinesDependentModal 
+                                                                    dependentId={ dependentIdRef.current}
+                                                                    onData={(value) =>{
+                                                                    onVaccine(value)  
+                                                                    setFieldValue('vaccine_id', `${value._id.$oid}`)
+                                                                  
+                                                                }}></PlanVaccinesDependentModal>}
+                         
+                              
+                          </Layout>
+
+                           
 
                            {/* SEXO */}
                         {genders &&(<Layout style = {{ marginVertical:20}}>

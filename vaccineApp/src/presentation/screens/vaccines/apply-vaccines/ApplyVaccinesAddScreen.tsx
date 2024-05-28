@@ -31,6 +31,7 @@ import { ApplyVaccineCreateResponse, Dosi } from '../../../../infrastructure/int
 import { useVaccines } from '../../../hooks/useVaccines';
 import { CameraAdapter } from '../../../../config/adapters/camera-adapter';
 import { VaccineDosisImages } from '../../../components/images/VaccineDosisImages';
+import { usePlanVaccines } from '../../../hooks/usePlanVaccines';
  
 
 interface Props extends StackScreenProps<RootStackParams,'ApplyVaccinesAddScreen'>{};
@@ -50,6 +51,8 @@ export const ApplyVaccinesAddScreen = ({route}:Props) => {
   const {  relationships } =  useRelationShip();
   const dependentIdRef = useRef(route.params.dependentId);
   const { dosis:dosisList, isLoading, getDosis } = useApplyVaccine();
+  const { getVaccinesAll  } = useVaccines();
+  const {   getPlanVaccinesByDependent } = usePlanVaccines();
   useEffect(() => {
     getDosis(idVaccine, dependentIdRef.current);  
   
@@ -57,7 +60,24 @@ export const ApplyVaccinesAddScreen = ({route}:Props) => {
   useEffect(() => {
      // Cargamos las vacunas de ese familiar
      getVaccines(dependentIdRef.current);
-  }, [dependentIdRef.current])
+  }, [dependentIdRef.current]);
+
+  // const loadVaccines = async ()=>{
+  //   let term:string = "''";
+   
+  //   if (dependentIdRef.current){
+  //     await getPlanVaccinesByDependent(dependentIdRef.current);
+  //   }else{
+  //      await getVaccinesAll(term); // Suponiendo que esta función devuelve un arreglo de vacunas
+  //   }
+  // }
+  
+
+  // useEffect(() => {
+   
+  //     loadVaccines();
+     
+  // }, [ dependentIdRef.current ]);
 
   const mutation = useMutation({
     mutationFn: (data: ApplyVaccineCreateResponse) => {
@@ -162,7 +182,7 @@ export const ApplyVaccinesAddScreen = ({route}:Props) => {
                             }}></VaccinesModal>
                              <Text style={{ color: 'red' }}> <ErrorMessage name="vaccine_id" /></Text>
 
-                        { (dosisList && dosisList.length>0) && (<DosisModal 
+                        { (idVaccine) && (<DosisModal 
                                 vaccineId = {idVaccine} 
                                 dependentId ={dependentIdRef.current}
                                 onData={(value) =>{
