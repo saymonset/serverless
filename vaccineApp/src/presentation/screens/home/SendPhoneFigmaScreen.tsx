@@ -73,14 +73,16 @@ export const SendPhoneFigmaScreen = () => {
 
              {/* Inputs */}
             <Layout style={{flex:1, flexDirection:'row', justifyContent:'space-between',marginTop: 10}}>
-                <Layout  style={{flex:1,  flexWrap:'wrap', left:30, marginRight:20}}>
+                <Layout  style={{flex:1,  flexWrap:'wrap', left:20, marginRight:20}}>
                         <Input
                         placeholder="+58"
                         placeholderTextColor="rgba(0,0,0,0.4)"
                         underlineColorAndroid="rgba(0,0,0,0)"
                         style={[ 
                             stylesFigma.inputField,
-                            ( Platform.OS === 'ios' ) && stylesFigma.inputFieldIOS
+                            ( Platform.OS === 'ios' ) && stylesFigma.inputFieldIOS,
+                            {  marginRight:70,
+                                textAlign: 'center'}
                         ]}
                         onChangeText={ (value) => onCodInputChange(value) }
                         value={ codValue }

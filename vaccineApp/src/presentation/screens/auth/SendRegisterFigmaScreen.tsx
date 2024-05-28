@@ -6,12 +6,13 @@ import { RootStackParams } from '../../navigation/StackNavigator'
 import { stylesFigma } from '../theme/appFigmaTheme'
 import { MyIcon } from '../../components/ui/MyIcon'
 import { Estados } from '../../components/Estados'
+import * as Yup  from 'yup'
 import { Municipios } from '../../components/Municipios'
 import { SelectSimpleUsageShowcase } from '../../components/ui/SelectSimpleUsageShowcase'
 import { useGender } from '../../hooks/useGender'
 import { selectOption } from '../../../infrastructure/interfaces/select-option'
 import { useRelationShip } from '../../hooks/useRelationShip'
-import { Formik } from 'formik'
+import { ErrorMessage, Formik } from 'formik'
 import * as yup from 'yup';
 import { Register } from '../../../infrastructure/interfaces/register-interface'
 import { useRegister } from '../../hooks/useRegister'
@@ -63,8 +64,9 @@ export const SendRegisterFigmaScreen = () => {
 
     const onSubmit = async(register:Register) => {
         //   const {birth, ...register} = register;
+        console.log('fire-----')
            let registerBd = {...register, password}
-           
+           console.log({registerBd})
          registerData( registerBd);
         }
  
@@ -110,11 +112,22 @@ export const SendRegisterFigmaScreen = () => {
 
             const minDate = new Date(1900, 0, 1);
             const maxDate = new Date(3000, 0, 1);
-            const validationSchema = yup.object().shape({
-                birth: yup.date().required('La fecha de nacimiento es requerida'),
+            const validationSchema = Yup.object().shape({
+                name: Yup.string().required('Requerido')
+                .max(15, 'Debe de tener 15 caracteres o menos')
+                .min(3,'Debe de tener 3 caracteres o mas'),
+                lastname: Yup.string().required('Requerido')
+                .max(15, 'Debe de tener 15 caracteres o menos')
+                .min(3,'Debe de tener 3 caracteres o mas'),
+                gender_id: Yup.string().required('Debe seleccionar el genero'),
+                birth: Yup.date().max(new Date(), 'La fecha de nacimiento no puede estar en el futuro')
+                .required('La fecha de nacimiento es obligatoria'),
+                ci: Yup.string().required('Requerido'),
+                email: Yup.string().email('Formato de email inválido').required('Email es obligatorio'), // Agregar validación de email
               });
   return (
     <Formik
+    validationSchema={validationSchema}
     initialValues={ register }
      onSubmit = { onSubmit}
     >
@@ -143,6 +156,7 @@ export const SendRegisterFigmaScreen = () => {
                                 onSelect={nextDate => setFieldValue('birth', nextDate)}
                                 placeholder='Selecciona una fecha'
                             />
+                              <Text style={{ color: 'red' }}> <ErrorMessage name="birth" /></Text>
     
                             <Layout style={{height:10}}></Layout>
     
@@ -185,6 +199,7 @@ export const SendRegisterFigmaScreen = () => {
                                         autoCapitalize="words"
                                         autoCorrect={ false }
                                     />
+                                     <Text style={{ color: 'red' }}> <ErrorMessage name="name" /></Text>
                             </Layout>    
                             {/* APELLIDO */}
                             <Layout style = {{ marginVertical:20}}>
@@ -206,6 +221,7 @@ export const SendRegisterFigmaScreen = () => {
                                     autoCapitalize="words"
                                     autoCorrect={ false }
                                 />
+                                 <Text style={{ color: 'red' }}> <ErrorMessage name="lastname" /></Text>
                             </Layout>   
     
                             {/* SEXO */}
@@ -216,6 +232,7 @@ export const SendRegisterFigmaScreen = () => {
                                             onPress = { (value) => {
                                                 setFieldValue('gender_id', `${value?.key}`)
                                     }}></SelectSimpleUsageShowcase>
+                                      <Text style={{ color: 'red' }}> <ErrorMessage name="gender_id" /></Text>
                             </Layout> )}
                       
                                {/* CEDULA */}
@@ -238,6 +255,7 @@ export const SendRegisterFigmaScreen = () => {
                                             autoCapitalize="words"
                                             autoCorrect={ false }
                                         />
+                                         <Text style={{ color: 'red' }}> <ErrorMessage name="ci" /></Text>
                             </Layout>  
                             {/* EMAIL */}
                             <Layout style = {{ marginVertical:20}}>
@@ -261,6 +279,7 @@ export const SendRegisterFigmaScreen = () => {
                                         autoCapitalize="none"
                                         autoCorrect={ false }
                                     />
+                                    <Text style={{ color: 'red' }}> <ErrorMessage name="email" /></Text>
                             </Layout>
       
                             </Layout>

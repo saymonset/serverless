@@ -68,6 +68,7 @@ export const stylesFigma = StyleSheet.create({
     inputField: {
         color:'black',
         fontSize: 20,
+      
     },
     label: {
         color: 'black',
