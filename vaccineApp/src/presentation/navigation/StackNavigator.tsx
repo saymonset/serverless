@@ -23,6 +23,7 @@ import { VaccineFigmaScreen } from '../screens/vaccines/create-vaccines/vaccineF
 import { VaccineEditCreateScreen } from '../screens/vaccines/create-vaccines/VaccineEditCreateScreen';
 import { DosisFigmaScreen } from '../screens/vaccines/dosis-vaccines/DosisFigmaScreen';
 import { DosisEditCreateScreen } from '../screens/vaccines/dosis-vaccines/DosisEditCreateScreen';
+import { ConsultDosisDetailScreen } from '../screens/vaccines/consult-vaccines/ConsultDosisDetailScreen';
  
  
 
@@ -50,6 +51,8 @@ export type RootStackParams = {
   VaccineEditCreateScreen: {vaccineId: string};
   DosisFigmaScreen:  {vaccineId: string};
   DosisEditCreateScreen: {dosisId: string};
+  ConsultDosisDetailScreen: {vaccineId: string};
+  
   
 }
 
@@ -88,6 +91,7 @@ export const  StackNavigator = () => {
                   <Stack.Screen name="VaccineEditCreateScreen" component={   VaccineEditCreateScreen } />
                   <Stack.Screen name="DosisFigmaScreen" component={   DosisFigmaScreen } />
                   <Stack.Screen name="DosisEditCreateScreen" component={   DosisEditCreateScreen } />
+                  <Stack.Screen name="ConsultDosisDetailScreen" component={   ConsultDosisDetailScreen } />
   
   
      

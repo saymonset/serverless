@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { ApplyVaccine, Dosis } from '../../../../domain/entities/ConsultByIndependentEntity';
 import { LIMITE_PAGE } from '../../../../infrastructure/interfaces/constantes';
 
 const initialState = {
@@ -8,19 +9,15 @@ const initialState = {
     image:            '',
     lote:             '',
     vaccination_date: '',
-
- 
-     
-    
-    
-
     status:true,
     isLoading: false,
     message: '',
     resp: false,
     statusCode:'',
     tableData: [],
-    vaccineuniqueFromTableData: [],
+    byDependentApplyVaccines: [] as ApplyVaccine[],
+    applyVaccinesUniqByIds: [] as ApplyVaccine[],
+    byDependentAppliedDosis: [] as Dosis[],
     dosis: [],
     vaccine: {},
     desde:      0,
@@ -45,7 +42,12 @@ export const consultVaccineSlice = createSlice({
         },
         loadDataConsultVaccine: ( state, { payload } ) => {
             state.tableData = payload.tableData;
-            state.vaccineuniqueFromTableData = payload.vaccineuniqueFromTableData
+            //Todas las vacunas aplicadas y vienen repetidas por la dosis
+            state.byDependentApplyVaccines = payload.byDependentApplyVaccines;
+            //Todas las vacunas aplicadas y siin repetirla
+            state.applyVaccinesUniqByIds = payload.applyVaccinesUniqByIds;
+            //Todas las dosis aplicadas
+            state.byDependentAppliedDosis = payload.byDependentAppliedDosis;
             state.dosis = [];
             state.vaccine = {};
             state.isConsultVaccineForDosis = false;
@@ -60,7 +62,9 @@ export const consultVaccineSlice = createSlice({
             state.vaccine = {};
             state.dependent = {};
             state.tableData = [];
-            state.vaccineuniqueFromTableData = []
+            state.byDependentApplyVaccines = [];
+            state.applyVaccinesUniqByIds = [];
+            state.byDependentAppliedDosis = [];
             state.dosis = [];
             state.vaccine = {};
             state.isConsultVaccineForDosis = false;
@@ -76,6 +80,6 @@ export const consultVaccineSlice = createSlice({
 export const {   stopConsultVaccines,
                  startConsultVaccines,
                  loadDataConsultVaccine,
-                 clearConsultVaccine
+                 clearConsultVaccine,
 
             } = consultVaccineSlice.actions;

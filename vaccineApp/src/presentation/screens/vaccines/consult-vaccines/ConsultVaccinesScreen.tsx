@@ -39,23 +39,12 @@ export const ConsultVaccinesScreen = ({route}:Props) => {
   const [idVaccine, setIdVaccine] = useState('');
   const [IdDosis, setDosis] = useState('');
   const { user } = useLogin();
-  const { getVaccines, isLoading:isLoadingVaccine } = useVaccines();
+  
   
 
   const {  genders } =  useGender();
   const {  relationships } =  useRelationShip();
   const dependentIdRef = useRef(route.params.dependentId);
-  const { isLoading, isConsultVaccineForDosis, loadVaccineAppliedByDependent } = useConsultVaccine();
-
-
-
-  useEffect(() => {
-    //CARGA TODAS LAS VACUNAS DEL FAMILIAR
-    loadVaccineAppliedByDependent( dependentIdRef.current );
-    getVaccines(dependentIdRef.current);
-
-  }, [ dependentIdRef.current])
-  
   
 
   const mutation = useMutation({

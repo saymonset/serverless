@@ -31,27 +31,7 @@ export const ConsultVaccinesDependentsScreen = () => {
     const addFamily = async ()=> {
         navigation.navigate( 'PerfilFigmaAddScreen' as never)
     }
-    const deleteRow = ( id: string)=>{
-        Alert.alert(
-          'Confirmar eliminación',
-          '¿Estás seguro que deseas eliminar este elemento?',
-          [
-            {
-              text: 'Cancelar',
-              style: 'cancel',
-            },
-            {
-              text: 'Eliminar',
-              style: 'destructive',
-              onPress: () => {
-               
-              },
-            },
-          ],
-          { cancelable: false }
-        );
-    }
-
+     
 
      
     const { isLoading, data, fetchNextPage } = useInfiniteQuery({
@@ -69,10 +49,10 @@ export const ConsultVaccinesDependentsScreen = () => {
     
 
     // }, [])
-    useEffect(() => {
-      loadGender();
-      loadRelationShip();
-     }, []);
+    // useEffect(() => {
+    //   loadGender();
+    //   loadRelationShip();
+    //  }, []);
 
   return (
     

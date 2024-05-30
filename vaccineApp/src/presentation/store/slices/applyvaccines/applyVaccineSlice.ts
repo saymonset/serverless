@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { LIMITE_PAGE } from '../../../../infrastructure/interfaces/constantes';
+import { ApplyVaccine } from '../../../../infrastructure/interfaces/consult-vaccine-response';
 
 const initialState = {
     _id:'',
@@ -16,7 +17,7 @@ const initialState = {
     resp: false,
     statusCode:'',
     tableData: [],
-    vaccineuniqueFromTableData: [],
+    byDependentApplyVaccines: [] as ApplyVaccine[],
     dosis: [],
     vaccine: {},
     desde:      0,

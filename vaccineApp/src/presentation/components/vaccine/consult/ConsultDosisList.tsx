@@ -5,45 +5,33 @@ import { RefreshControl } from 'react-native-gesture-handler'
 import { ApplyVaccine } from '../../../../domain/entities/ConsultByIndependentEntity';
 import { VaccineStatus } from '../../../../infrastructure/interfaces/vaccine.status';
 import { useConsultVaccine } from '../../../hooks/useConsultVaccine';
+import { ConsultDosisCard } from './ConsultDosisCard';
 import { ConsultVaccineCard } from './ConsultVaccineCard';
 
 interface Props {
-    goPage: VaccineStatus;
+    applyvaccines: ApplyVaccine[];
 }
 
-export const ConsultVaccineList = () => {
+export const ConsultDosisList = ( { applyvaccines } : Props) => {
 
-    const queryClient = useQueryClient();
-    const [isRefreshing, setIsRefreshing] = useState(false);
-    const { applyVaccinesUniqByIds } = useConsultVaccine();
+ 
     
-
-    const onPullToRefresh = async() =>{
-          setIsRefreshing(true);
-          await new Promise(resolve => setTimeout(resolve,200));
-          queryClient.invalidateQueries({queryKey: ['dependents', 'infinite']});
-          setIsRefreshing(false)
-    }
+ 
   return (
     <Layout style={{flex:1}}>
     { ( <List
-          data= { applyVaccinesUniqByIds ?? [] }
+          data= { applyvaccines ?? [] }
           numColumns = { 1 }
           keyExtractor= { (item, index) => `${item._id}-${index}` }
           renderItem= {( { item } ) => (
            
-            <ConsultVaccineCard 
+            <ConsultDosisCard 
                    applyVaccine={ item}/>
           )}
           
           ListFooterComponent={ () => <Layout style={{ flex:1}}/>}
           onEndReachedThreshold={ 0.8 }
-          refreshControl = {
-            <RefreshControl 
-                refreshing = { isRefreshing }
-                onRefresh = { onPullToRefresh }
-            />
-          }
+         
       /> )}  
     </Layout>
   )

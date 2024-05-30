@@ -22,7 +22,7 @@ interface Props {
 
 
  
-export const ConsultVaccineCard = ( { applyVaccine }:Props) => {
+export const ConsultDosisCard = ( { applyVaccine }:Props) => {
 
   const navigation = useNavigation<NavigationProp<RootStackParams>>();
 
@@ -32,31 +32,18 @@ export const ConsultVaccineCard = ( { applyVaccine }:Props) => {
     getOffDosis();
   }, [])
 
+  const goPageChange = () => {
   
+     getShowDosis()
+  } 
 
   return (
     <Layout  style={{flex:1}}>
-      <Card 
-                                      style={{flex:1}}
-                                          onPress = { () => navigation.navigate('ConsultDosisDetailScreen',{ vaccineId: applyVaccine.dosis.vaccine._id.$oid})}
-                                      >
-                                           
-                                          <Text
-                                              numberOfLines={ 2 }
-                                              style ={{ textAlign:'left'}}
-                                          >Nombre: { applyVaccine.dosis.vaccine.name  }</Text>
-                                           <Text style={stylesFigma.titlesecund}>
-                                            Previene:{'  ' + (applyVaccine.dosis.vaccine.disease_prevents)}</Text>
-                                            <Text style={stylesFigma.titlesecund}>
-                                            Decripción:{' ' + (applyVaccine.dosis.vaccine.description)}</Text>
-                                      </Card>
-
-      {/* {(isShowDosis) && <Card 
+                                     <Card 
                                        style={{flex:1}}
                                        onPress = { goPageChange }
                                         header={() =>  <Text></Text>}
                                       >
-                                        
                                               <Text
                                                   numberOfLines={ 2 }
                                                   style ={{ textAlign:'left'}}
@@ -70,12 +57,7 @@ export const ConsultVaccineCard = ( { applyVaccine }:Props) => {
                                                 <Text style={stylesFigma.titlesecund}>
                                                 Imagen:{'' + (applyVaccine.image)}</Text>
  
-                                      </Card>}     
-      
-                                       */}
-
-                                 
-      
+                                      </Card> 
     </Layout>
   )
 }

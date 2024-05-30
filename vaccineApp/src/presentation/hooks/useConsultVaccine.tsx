@@ -4,7 +4,7 @@ import { getVaccinesAction } from "../../actions/vaccines/createEditVaccinesActi
 import { ApplyVaccine, ConsultByIndependentEntity } from "../../domain/entities/ConsultByIndependentEntity";
 import { Vaccine } from "../../domain/entities/VaccineEditCreateEntity";
 import { RootState } from "../store";
-import { clearConsultVaccine, loadDataConsultVaccine, startConsultVaccines, stopConsultVaccines } from "../store/slices/consultvaccines";
+import {  clearConsultVaccine, loadDataConsultVaccine, startConsultVaccines, stopConsultVaccines } from "../store/slices/consultvaccines";
 
  
 
@@ -12,7 +12,8 @@ import { clearConsultVaccine, loadDataConsultVaccine, startConsultVaccines, stop
  
 export const useConsultVaccine = () => {
   
-      const { vaccineuniqueFromTableData, isConsultVaccineForDosis, isLoading } = useSelector((state: RootState) => state.consultVaccineStore);
+      const { byDependentApplyVaccines, isConsultVaccineForDosis, isLoading ,
+        applyVaccinesUniqByIds, byDependentAppliedDosis} = useSelector((state: RootState) => state.consultVaccineStore);
       const dispatch = useDispatch();
 
 
@@ -44,12 +45,21 @@ export const useConsultVaccine = () => {
        let desde = 0;
         const   data:ConsultByIndependentEntity   = await consultVaccineAction( limite, desde, dependentId );
         const { apply_vaccines, total } = data;
-        if (true){
-           
-   
+
+        //Obtenemos solo las  dosis
+        // Verificar si apply_vaccines no está vacío antes de mapear las dosis
+       const byDependentAppliedDosis = apply_vaccines.length > 0 ? apply_vaccines.map((av) => av.dosis) : [];
+
+
+        
           let payload = {
             tableData: apply_vaccines,
-            vaccineuniqueFromTableData: vaccineUnique(apply_vaccines),
+            //Todas las vacunas aplicadas y vienen repetidas por la dosis
+            byDependentApplyVaccines: apply_vaccines,
+            //Todas las vacunas aplicadas y siin repetirla
+            applyVaccinesUniqByIds: vaccineUnique(apply_vaccines),
+            //Todas las dosis aplicadas
+            byDependentAppliedDosis,
             dosis: [],
             vaccine:{},
             desde,
@@ -58,11 +68,13 @@ export const useConsultVaccine = () => {
             total
           };
           dispatch(loadDataConsultVaccine( payload ))
-        } 
         
         dispatch(stopConsultVaccines());
             return {};
       }
+     
+      
+
 
       const getAllVaccines = async() =>{
         dispatch(startConsultVaccines());
@@ -74,10 +86,11 @@ export const useConsultVaccine = () => {
    
 
   return  {
-    
     loadVaccineAppliedByDependent,
     isLoading,
+    byDependentApplyVaccines,
+    applyVaccinesUniqByIds,
     isConsultVaccineForDosis,
-    vaccineuniqueFromTableData
+    byDependentAppliedDosis
   }
 }
