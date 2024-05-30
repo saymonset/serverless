@@ -5,17 +5,15 @@ import { RefreshControl } from 'react-native-gesture-handler'
 import { ApplyVaccine } from '../../../../domain/entities/ConsultByIndependentEntity';
 import { VaccineStatus } from '../../../../infrastructure/interfaces/vaccine.status';
 import { useConsultVaccine } from '../../../hooks/useConsultVaccine';
+import { LoadingScreen } from '../../../screens/loading/LoadingScreen';
 import { ConsultVaccineCard } from './ConsultVaccineCard';
 
-interface Props {
-    goPage: VaccineStatus;
-}
 
 export const ConsultVaccineList = () => {
 
     const queryClient = useQueryClient();
     const [isRefreshing, setIsRefreshing] = useState(false);
-    const { applyVaccinesUniqByIds } = useConsultVaccine();
+    const { isLoading, applyVaccinesUniqByIds } = useConsultVaccine();
     
 
     const onPullToRefresh = async() =>{
@@ -25,26 +23,31 @@ export const ConsultVaccineList = () => {
           setIsRefreshing(false)
     }
   return (
-    <Layout style={{flex:1}}>
-    { ( <List
-          data= { applyVaccinesUniqByIds ?? [] }
-          numColumns = { 1 }
-          keyExtractor= { (item, index) => `${item._id}-${index}` }
-          renderItem= {( { item } ) => (
-           
-            <ConsultVaccineCard 
-                   applyVaccine={ item}/>
-          )}
-          
-          ListFooterComponent={ () => <Layout style={{ flex:1}}/>}
-          onEndReachedThreshold={ 0.8 }
-          refreshControl = {
-            <RefreshControl 
-                refreshing = { isRefreshing }
-                onRefresh = { onPullToRefresh }
-            />
-          }
-      /> )}  
-    </Layout>
+    <>
+     {  ( isLoading ) 
+                  ?  (<LoadingScreen />)
+                  : <Layout style={{flex:1}}>
+                  { ( <List
+                        data= { applyVaccinesUniqByIds ?? [] }
+                        numColumns = { 1 }
+                        keyExtractor= { (item, index) => `${item._id}-${index}` }
+                        renderItem= {( { item } ) => (
+                         
+                          <ConsultVaccineCard 
+                                 applyVaccine={ item}/>
+                        )}
+                        
+                        ListFooterComponent={ () => <Layout style={{ flex:1}}/>}
+                        onEndReachedThreshold={ 0.8 }
+                        refreshControl = {
+                          <RefreshControl 
+                              refreshing = { isRefreshing }
+                              onRefresh = { onPullToRefresh }
+                          />
+                        }
+                    /> )}  
+                  </Layout> }
+    </>
+    
   )
 }

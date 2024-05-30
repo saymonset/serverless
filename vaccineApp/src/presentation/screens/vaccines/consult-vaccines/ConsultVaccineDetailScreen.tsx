@@ -36,6 +36,7 @@ export const ConsultVaccineDetailScreen = ({ dependent_id }:Props) => {
      const navigation = useNavigation<NavigationProp<RootStackParams>>();
   return (
     <>
+      
       <MainLayout
                 title="Consultar Vacunas"
                 subTitle=""

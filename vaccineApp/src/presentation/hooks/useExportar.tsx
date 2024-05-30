@@ -20,9 +20,11 @@ export const useExportar = () => {
   const exportVaccineAppliedByDependent = async (dependent_id:string) => {
     try {
 
-      console.log('excel file open simons, dependent_id = ' + dependent_id);
-      setDependentId(dependent_id);
-      getPermission();
+      if (dependent_id){
+        console.log('excel file open simons, dependent_id = ' + dependent_id);
+        setDependentId(dependent_id);
+        getPermission(dependent_id);
+      }
     //  const { data } = await vaccinesApi.get(`/reporte`);
      // console.log(data);
    
@@ -32,15 +34,15 @@ export const useExportar = () => {
     }
   }
 
-  const getPermission = async () => {
+  const getPermission = async (dependent_id:string) => {
     if (Platform.OS === 'ios') {
-              actualDownload();
+              actualDownload(dependent_id);
     } else {
       try {
         const granted = await hasAndroidPermission();
        console.log({granted});
         if (granted) {
-         await actualDownload_android();
+         await actualDownload_android(dependent_id);
         } else {
           console.log("please grant permission");
         }
@@ -50,12 +52,12 @@ export const useExportar = () => {
   };
 
 
-  const actualDownload = () => {
+  const actualDownload = (dependent_id:string) => {
     const { dirs } = RNFetchBlob.fs;
     const dirToSave =
       Platform.OS === 'ios' ? dirs.DocumentDir : dirs.DownloadDir;
     const configfb = {
-      fileCache: true,
+      fileCache: false,
       addAndroidDownloads: {
         useDownloadManager: true,
         notification: true,
@@ -94,13 +96,25 @@ export const useExportar = () => {
 
 
 
-  const actualDownload_android = async () => {
-    console.log(`${API_URL}/reporte/${dependentId}`);
-   console.log(`Reporte por idedependent= ${dependentId} `);
-    const url = `${API_URL}/reporte/${dependentId}`; // Reemplaza con la URL del archivo Excel que deseas descargar
+  const actualDownload_android = async (dependent_id:string) => {
+    console.log(`${API_URL}/reporte/${dependent_id}`);
+   console.log(`Reporte por idedependent= ${dependent_id} `);
+    const url = `${API_URL}/reporte/${dependent_id}`; // Reemplaza con la URL del archivo Excel que deseas descargar
     console.log('bajando desde android----------:'+url);
     const { dirs } = RNFetchBlob.fs;
+    
     const dirToSave = dirs.DownloadDir; // Directorio de descarga en Android
+    const filePath = `${dirToSave}/archivo_excel.xlsx`;
+    // Verificar si el archivo existe antes de eliminarlo
+    const fileExists = await RNFetchBlob.fs.exists(filePath);
+    if (fileExists) {
+      // Eliminar el archivo
+      await RNFetchBlob.fs.unlink(filePath);
+      console.log('Archivo existente eliminado');
+    }
+
+
+  
     const token = await StorageAdapter.getItem('token');
     console.log({token})
   
@@ -111,7 +125,7 @@ export const useExportar = () => {
     console.log('-------2---');
     try {
       const response = await RNFetchBlob.config({
-        fileCache: true,
+        fileCache: false,
         path: `${dirToSave}/archivo_excel.xlsx`, // Ruta de destino del archivo Excel descargado
       }).fetch('GET', url, headers);
       console.log('-------3--');
