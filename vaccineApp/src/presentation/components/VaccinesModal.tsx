@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Alert, Pressable, StyleSheet, View } from 'react-native';
+import { Alert, Dimensions, Platform, Pressable, StyleSheet, View } from 'react-native';
 import { Button, Card, Layout, Modal, Text, Tooltip } from '@ui-kitten/components';
 import { Divider, List, ListItem } from '@ui-kitten/components';
 import { useVaccines } from '../hooks/useVaccines';
@@ -8,6 +8,9 @@ import { MyIcon } from './ui/MyIcon';
 import { LoadingScreen } from '../screens/loading/LoadingScreen';
 import { QueryClient } from '@tanstack/react-query';
 import { usePlanVaccines } from '../hooks/usePlanVaccines';
+import { MainLayout } from '../layouts/MainLayout';
+import { SearchInputComponent } from './SearchInputComponent';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
  
 interface Props {
@@ -17,10 +20,51 @@ interface Props {
   title?: string;
   dependentId?: string;
 }
- 
+
+
+const screenWidth = Dimensions.get("window").width;
+
 export const VaccinesModal = ({ isVisible = false, title = '', dependentId, onData, onClose}:Props) => {
     const [visible, setVisible] = React.useState(isVisible);
     const [vaccine, setVaccine] = useState('');
+    const { top } = useSafeAreaInsets();
+    const [ term, setTerm ] = useState('');
+    const { vaccines, isLoading, vaccineFilter } = usePlanVaccines();
+    const [vaccinesFilter, setVaccinesFilter] = useState<Vaccine[]>([]);
+
+      useEffect(() => {
+        termUpdate(term);
+      // refetch();
+    }, [term])  ;
+
+    const vaccinesFiletrPromise = async () => {
+         const vaccs = await  vaccineFilter(term,{...vaccines});
+     
+         setVaccinesFilter(vaccs); // Envolver vaccs en un arreglo
+    }
+
+    useEffect(() => {
+      vaccinesFiletrPromise();
+  }, [])  
+      
+      const termUpdate = async(termino:string = "''") => {
+          if (termino){
+              if (termino.length === 0 ) {
+                setTerm("''");
+              }else{
+                setTerm(termino);
+              }
+          } 
+          
+           const vaccs = await  vaccineFilter(term, vaccines);
+           setVaccinesFilter(vaccs); 
+         
+        
+      }
+
+  
+
+
  
     // Create a client
     const queryClient = new QueryClient()
@@ -28,7 +72,7 @@ export const VaccinesModal = ({ isVisible = false, title = '', dependentId, onDa
     queryClient.invalidateQueries({queryKey: ['dosis', 'infinite']});
      
    
-    const { vaccines, isLoading } = usePlanVaccines();
+
  
  
    
@@ -37,7 +81,8 @@ export const VaccinesModal = ({ isVisible = false, title = '', dependentId, onDa
      
     const renderItem = ({ item }: { item:Vaccine; index: number }): React.ReactElement => (
       <>
-         {  isLoading && (  <LoadingScreen />  )}
+         {  (isLoading  ) && (  <LoadingScreen />  )}
+
          <ListItem 
         style={  styles.itemTextRed }
         title={(evaProps) => (
@@ -81,45 +126,62 @@ export const VaccinesModal = ({ isVisible = false, title = '', dependentId, onDa
       
     );
   return (
-    <View style={styles.container}>
+
+
+        <View style={styles.container}>
+                  
   
-  <Text category='h6'>
-          { vaccine && ` ${vaccine}`}
-    </Text>
+                      <Text category='h6'>
+                            { vaccine && ` ${vaccine}`}
+                      </Text>
+
+                      <Button 
+                          status='basic'
+                          onPress={() => setVisible(true)}>
+                          <Text status='danger' category='h3'>Vacuna</Text>
+                      </Button>
+
+                      <Modal
+                        visible={visible}
+                        backdropStyle={styles.backdrop}
+                        onBackdropPress={() => setVisible(false)}
+                      >
+                        <Card 
+                              header={<Text >{title}</Text>}
+                            disabled={true} 
+                            style={{  width:330, height:600}}>
+                              
+                          <SearchInputComponent
+                            onDebounce={ setTerm}
+                            style={{
+                              position: 'absolute',
+
+                              zIndex: 999,
+                              width: screenWidth - 40,
+                              top: (Platform.OS === 'ios') ? top +0 : top + 0
+                            }}   ></SearchInputComponent> 
+                         <Layout style={{height:30}}></Layout>
+                        <List
+                            style={styles.container}
+                            data={vaccinesFilter ?? []}
+                            ItemSeparatorComponent={Divider}
+                            renderItem={renderItem}
+                          />
+                          <Button onPress={() => {
+                              setVisible(false);
+                              //Si existe el metodo, lanzamos verdadero
+                              onClose && onClose(true);
+
+                          }}>
+                            Cerrar
+                          </Button>
+                        </Card>
+                      </Modal>
+
+             
+        </View>
+     
   
-    <Button 
-        status='basic'
-        onPress={() => setVisible(true)}>
-        <Text status='danger' category='h3'>Vacuna</Text>
-    </Button>
-
-    <Modal
-      visible={visible}
-      backdropStyle={styles.backdrop}
-      onBackdropPress={() => setVisible(false)}
-    >
-      <Card 
-             header={<Text >{title}</Text>}
-           disabled={true} 
-           style={{  width:330, height:300}}>
-      <List
-          style={styles.container}
-          data={vaccines ?? []}
-          ItemSeparatorComponent={Divider}
-          renderItem={renderItem}
-        />
-        <Button onPress={() => {
-            setVisible(false);
-            //Si existe el metodo, lanzamos verdadero
-            onClose && onClose(true);
-
-        }}>
-          Cerrar
-        </Button>
-      </Card>
-    </Modal>
-
-  </View>
   )
 }
 

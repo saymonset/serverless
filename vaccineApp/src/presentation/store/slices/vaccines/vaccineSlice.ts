@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { Vaccine } from '../../../../domain/entities/apply-vaccine-interface';
 
 const initialState = {
     nameVaccine:'',
@@ -11,7 +12,7 @@ const initialState = {
     desde:0,
     limite:100,
     total:0,
-    vaccines:[],
+    vaccines:[] ,
   };
  
 export const vaccineSlice = createSlice({

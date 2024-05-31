@@ -1,6 +1,6 @@
 import React, { PropsWithChildren, useEffect, useState } from 'react'
 import { Layout, Text } from '@ui-kitten/components';
-import { Image, Pressable, StyleSheet } from 'react-native';
+import { Dimensions, Image, Platform, Pressable, StyleSheet } from 'react-native';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { stylesFigma } from '../theme/appFigmaTheme';
@@ -13,6 +13,8 @@ import { useVaccines } from '../../hooks/useVaccines';
 import { LoadingScreen } from '../loading/LoadingScreen';
 //import { Vaccine } from '../../../../domain/entities/VaccineDependent';
 import { useInfiniteQuery } from '@tanstack/react-query';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SearchInputComponent } from '../../components/SearchInputComponent';
  
 
 interface CardProps {
@@ -20,10 +22,14 @@ interface CardProps {
   color: string;
   iconName: string;
 }
+
+
+
 export const ConfigFigmaScreen = () => {
    
   const [alignItems, setAlignItems] = useState('Consultas');
   const { vaccines, isLoading, getVaccinesAll} = useVaccines();
+
 
  
     
@@ -74,14 +80,16 @@ const PreviewLayout = ({
   const { logoutThunks } = useLogin();
   const [chooseVaccine, setChooseVaccine] = useState(false);
   const [idVaccine, setIdVaccine] = useState('');
-
+ 
   //Vamos a cargar dosis por el tipo de vacuna
   useEffect(() => {
     if (idVaccine!=''){
        navigation.navigate( 'DosisFigmaScreen' ,{ vaccineId: idVaccine})
     }
     setIdVaccine('')
-  }, [idVaccine])
+  }, [idVaccine]);
+
+
 
  
 
@@ -177,14 +185,17 @@ const PreviewLayout = ({
           </Layout>
 
           {/* Vaccines */}
-          { chooseVaccine && <VaccinesModal 
+          { chooseVaccine && <>
+            
+                       <VaccinesModal 
                                   isVisible
                                   title='Seleccione la vacuna'
                                   onClose = { ( value ) => handleClose( value )}
                                   onData={(value) =>{
                                     
                                     onVaccine(value);
-                              }}></VaccinesModal> }
+                              }}></VaccinesModal>
+          </> }
     </>
  
 ) };

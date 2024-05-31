@@ -94,9 +94,14 @@ export const useVaccines = () => {
         dispatch(startVaccines());
         dispatch(initVaccinesResponse({}));
          
-       // console.log(`limite=  ${limite}, page= ${page}, term=${term} `);
+      
         page = 0;
-        const vaccines:Vaccine[]  = await getVaccinesAction(limite,page, term);
+        let offset = page * 10;
+        let desde = offset;
+        if (term.length==0){
+            term = "''";
+        }
+        const vaccines:Vaccine[]  = await getVaccinesAction(limite,desde, term);
         const payload = {
           vaccines
         };
@@ -114,9 +119,7 @@ export const useVaccines = () => {
         const payload = {
                           vaccines
                         };
-                        console.log('----------------------C---------------');
-                        console.log({vaccines})
-                        console.log('----------------------D----------------');
+                    
         dispatch(loadVaccinesOnly(payload));
         dispatch(stopVaccines());     
         return vaccines;

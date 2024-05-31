@@ -3,9 +3,9 @@ import { applyVaccinneAction } from "../../actions/apply-vaccine/applyVaccineAct
 import { deleteVaccinneAction, vaccinneAction } from "../../actions/apply-vaccine/vaccinneAction";
 import { getPlanVaccineByDependentIdAction, updatePlanVaccineByDependentIdAction } from "../../actions/plan-vaccines/planVaccinesAction";
 import { getVaccinesAction } from "../../actions/vaccines/createEditVaccinesAction";
-import { ApplyVaccineEntity, Vaccine } from "../../domain/entities/apply-vaccine-interface";
+import { ApplyVaccineEntity } from "../../domain/entities/apply-vaccine-interface";
 import { PlanVaccineByDependentEntity } from "../../domain/entities/PlanVaccineByDependentEntity";
-import { VaccineDependentPage } from "../../domain/entities/VaccineDependent";
+import { Vaccine, VaccineDependentPage } from "../../domain/entities/VaccineDependent";
 import { DosisEntity } from "../../domain/entities/VaccineEditCreateEntity";
 import { RootState } from "../store";
 import { loadDosisFilterbyVaccineId, startApplyVaccines, stopApplyVaccines } from "../store/slices/applyvaccines";
@@ -29,6 +29,21 @@ export const usePlanVaccines = () => {
 
 
   
+      const vaccineFilter = async(term : string = '', vaccines: Vaccine[]): Promise<Vaccine[]> => {
+
+       
+        // Convertir el término de búsqueda a minúsculas para una comparación insensible a mayúsculas y minúsculas
+        const searchTerm = term.toLowerCase();
+        if (term == '' || term.length == 0){
+          
+           return [...vaccines];
+        }
+        // Filtrar las vacunas basadas en el término de búsqueda en el nombre o descripción
+        const filteredVaccines = vaccines.filter(vaccine =>
+          vaccine.name.toLowerCase().includes(searchTerm) || vaccine.description.toLowerCase().includes(searchTerm)
+        );
+        return [...filteredVaccines];
+      }
 
       const getPlanVaccinesAll = async(dependentId:string) =>{
       
@@ -115,6 +130,7 @@ export const usePlanVaccines = () => {
     dependentId,
     vaccineId,
     vaccines,
+    vaccineFilter,
     isLoading,
     isShowDosis,
   }

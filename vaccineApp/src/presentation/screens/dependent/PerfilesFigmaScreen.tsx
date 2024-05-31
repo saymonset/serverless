@@ -28,6 +28,25 @@ export const PerfilesFigmaScreen = () => {
     const navigation = useNavigation<NavigationProp<RootStackParams>>();
     const {  dependentDelete} =  useDependent();
     const queryClient = useQueryClient();
+
+
+    useEffect(() => {
+        termUpdate(term);
+        queryClient.invalidateQueries({queryKey: ['dependents', 'infinite']});
+        refetch();
+    }, [term])  
+
+    const termUpdate = (termino:string = "''"):string => {
+         if (termino){
+            if (termino.length === 0 ) {
+              setTerm("''");
+            }else{
+              setTerm(termino);
+            }
+         } 
+        
+          return term;
+    }
  
     
 
@@ -45,6 +64,7 @@ export const PerfilesFigmaScreen = () => {
            
             return dependents;
      };
+     
 
           const deleteRow = ( id: string, dependents:Dependent[])=>{
                 
@@ -81,8 +101,7 @@ export const PerfilesFigmaScreen = () => {
       staleTime: 1000 * 60 * 60, // 1 hour
       initialPageParam: 0,
       queryFn: async ( params )=>  {
-        const dependents = await getDependentByPageAction(10000,params.pageParam);
-       
+        const dependents = await getDependentByPageAction(10000,params.pageParam, termUpdate());
         return dependents;
       },
       getNextPageParam: ( lastPage, allPages) => allPages.length,
@@ -101,7 +120,7 @@ export const PerfilesFigmaScreen = () => {
         <MainLayout
             title="Perfiles"
             subTitle=""
-            setTerm={( value )=>setTerm(value)}
+            setTerm={( value )=> setTerm(value)}
             rightAction= { () => navigation.navigate('DependentScreen',{ dependentId: 'new' })}
             rightActionIcon="plus-outline"
             >

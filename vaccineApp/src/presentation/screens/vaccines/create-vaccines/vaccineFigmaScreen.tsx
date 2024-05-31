@@ -26,6 +26,24 @@ export const VaccineFigmaScreen = () => {
     const {  vaccineDelete, getVaccinesAllBD} = useVaccines();
     const queryClient = useQueryClient();
 
+    useEffect(() => {
+      termUpdate(term);
+      queryClient.invalidateQueries({queryKey: ['dependents', 'infinite']});
+      refetch();
+  }, [term])  
+
+  const termUpdate = (termino:string = "''"):string => {
+       if (termino){
+          if (termino.length === 0 ) {
+            setTerm("''");
+          }else{
+            setTerm(termino);
+          }
+       } 
+      
+        return term;
+  }
+
    
     const deleteRow = ( id: string)=>{
       Alert.alert(
@@ -58,7 +76,7 @@ export const VaccineFigmaScreen = () => {
       staleTime: 1000 * 60 * 60, // 1 hour
       initialPageParam: 0,
       queryFn: async ( params )=>  {
-        const vaccines = await getVaccinesAllBD(10000,params.pageParam);
+        const vaccines = await getVaccinesAllBD(10000,params.pageParam, termUpdate());
         return vaccines;
       },
       getNextPageParam: ( lastPage, allPages) => allPages.length,

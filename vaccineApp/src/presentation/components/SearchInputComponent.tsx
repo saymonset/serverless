@@ -27,7 +27,6 @@ export const SearchInputComponent =  (  {  onDebounce, style, goPage = ""}:Props
         ...styles.container,
         ...style as any
         }}>
-            
         <View style={styles.textBackground}>
             <Input
                 placeholder='Buscar'

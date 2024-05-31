@@ -88,6 +88,7 @@ import { VaccinesMapper } from "../../infrastructure/mappers/vaccines-mapper";
 
 export const getVaccinesAction = async  (limite:number =1000, page:number, term:string = "''"):Promise<Vaccine[] >  => {
     try {
+      // console.log(`/vaccine/${limite}/${page}/${term}`);
         const { data } = await vaccinesApi.get<VaccineEditCreateResponse>(`/vaccine/${limite}/${page}/${term}`);
       return returnGetsVaccinesMapper(data).vaccines;
     } catch (error) {

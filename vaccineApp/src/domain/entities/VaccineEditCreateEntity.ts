@@ -1,3 +1,5 @@
+import { Vaccine } from "./VaccineDependent";
+
 export interface VaccineEditCreateEntiy {
     desde:    number;
     limite:   number;
@@ -5,16 +7,16 @@ export interface VaccineEditCreateEntiy {
     vaccines: Vaccine[];
 }
 
-export interface Vaccine {
-    _id:              ID;
-    application_age:  string;
-    description:      string;
-    disease_prevents: string;
-    isChildren:       boolean;
-    name:             string;
-    isChecked?:          boolean;
-    status:           boolean;
-}
+// export interface Vaccine {
+//     _id:              ID;
+//     application_age:  string;
+//     description:      string;
+//     disease_prevents: string;
+//     isChildren:       boolean;
+//     name:             string;
+//     isChecked?:          boolean;
+//     status:           boolean;
+// }
 
 export interface ID {
     $oid: string;

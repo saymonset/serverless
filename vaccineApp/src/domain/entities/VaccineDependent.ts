@@ -17,6 +17,10 @@ export interface Vaccine {
     status:           boolean;
 }
 
+
+
+ 
+
 export interface ID {
     $oid: string;
 }

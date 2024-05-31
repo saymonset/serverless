@@ -40,7 +40,6 @@ export const MainLayout = ({
 
   const RenderSearch = ()=>  {
     if (setTerm == undefined || setTerm === undefined) return null;
-
     return (
       <SearchInputComponent
                        onDebounce={ setTerm}
@@ -48,7 +47,7 @@ export const MainLayout = ({
                          position: 'absolute',
                          zIndex: 999,
                          width: screenWidth - 40,
-                         top: (Platform.OS === 'ios') ? top +30 : top + 70
+                         top: (Platform.OS === 'ios') ? top +0 : top + 0
                        }}   ></SearchInputComponent>
     );
   }
@@ -83,10 +82,10 @@ export const MainLayout = ({
    
 
       <Layout style={{ flex:1}}>
-           {setTerm && ( <Layout style={{marginVertical:10}}>
+           {setTerm && ( <Layout style={{marginTop:10, marginHorizontal:20}}>
             {  RenderSearch()}
             </Layout>)} 
-        <Layout  style={{ flex:1 }}>
+        <Layout  style={{ flex:1, marginTop:60 }}>
             {children}
         </Layout>
         

@@ -22,7 +22,7 @@ export const DependentList = ( {dependents, goPage,  fetchNextPage , onDeleteRow
              setIsRefreshing(true);
              await new Promise(resolve => setTimeout(resolve,200));
              queryClient.invalidateQueries({queryKey: ['dependents', 'infinite']});
-             setIsRefreshing(false)
+             setIsRefreshing(true)
        }
 
   return (
@@ -40,7 +40,7 @@ export const DependentList = ( {dependents, goPage,  fetchNextPage , onDeleteRow
           )}
           
           ListFooterComponent={ () => <Layout style={{ flex:1}}/>}
-          onEndReached= { fetchNextPage }
+          //onEndReached= { fetchNextPage }
           onEndReachedThreshold={ 0.8 }
           refreshControl = {
             <RefreshControl 
