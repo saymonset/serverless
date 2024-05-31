@@ -4,7 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
  
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
  
 import { useGender } from '../../../hooks/useGender';
 import { useRelationShip } from '../../../hooks/useRelationShip';
@@ -24,9 +24,27 @@ export const ApplyVaccinesDependentsScreen = () => {
     const { loadRelationShip } =  useRelationShip();
     const { top } = useSafeAreaInsets();
     const [ term, setTerm ] = useState('');
-    const navigation = useNavigation<NavigationProp<RootStackParams>>();
+    const queryClient = useQueryClient();
 
-    const dispatch = useDispatch();
+    const navigation = useNavigation<NavigationProp<RootStackParams>>();
+    useEffect(() => {
+      termUpdate(term);
+      queryClient.invalidateQueries({queryKey: ['applyvaccinedependents', 'infinite']});
+      refetch();
+  }, [term])  
+
+  const termUpdate = (termino:string = "''"):string => {
+       if (termino){
+          if (termino.length === 0 ) {
+            setTerm("''");
+          }else{
+            setTerm(termino);
+          }
+       } 
+        return term;
+  }
+
+
 
     const addFamily = async ()=> {
         navigation.navigate( 'PerfilFigmaAddScreen' as never)
@@ -54,12 +72,12 @@ export const ApplyVaccinesDependentsScreen = () => {
 
 
      
-    const { isLoading, data, fetchNextPage } = useInfiniteQuery({
-      queryKey:['dependents', 'infinite'],
+    const { isLoading, data, fetchNextPage, refetch } = useInfiniteQuery({
+      queryKey:['applyvaccinedependents', 'infinite'],
       staleTime: 1000 * 60 * 60, // 1 hour
       initialPageParam: 0,
       queryFn: async ( params )=>  {
-        const dependents = await getDependentByPageAction(10000,params.pageParam);
+        const dependents = await getDependentByPageAction(10000,params.pageParam, termUpdate());
         return dependents;
       },
       getNextPageParam: ( lastPage, allPages) => allPages.length,

@@ -35,17 +35,7 @@ export const DependentCard = ( { dependent, goPage = 'DependentScreen', onDelete
 
   return (
     <Layout  style={{flex:1}}>
-      {/* {(goPage==='DependentScreen') && <Card 
-                                      style={{flex:1}}
-                                          onPress = { () => navigation.navigate('DependentScreen',{ dependentId: dependent._id.$oid})}
-                                      >
-                                        <Text>{'depndents users ' + (dependent.isUser)}</Text>
-                                          <Text
-                                              numberOfLines={ 2 }
-                                              style ={{ textAlign:'left'}}
-                                          >{ dependent.name  + ' ' + dependent.lastname}</Text>
-                                           <Text style={stylesFigma.titlesecund}>{'Perfil ' + (dependent.isUser?'Primario':'Secundario')}</Text>
-                                      </Card>} */}
+    
       {(goPage==='DependentScreen') && <DependentConsultDeleteCard 
                                           onDeleteRow = { onDeleteRow }
                                           dependent ={ dependent }

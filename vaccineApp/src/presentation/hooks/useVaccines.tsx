@@ -111,7 +111,7 @@ export const useVaccines = () => {
         return vaccines;
       }
 
-      const getVaccinesAll = async(term:string):Promise<Vaccine[]> =>{
+      const getVaccinesAll = async(term:string = "''"):Promise<Vaccine[]> =>{
         dispatch(startVaccines());
         dispatch(initVaccinesResponse({}));
         let page = 0;

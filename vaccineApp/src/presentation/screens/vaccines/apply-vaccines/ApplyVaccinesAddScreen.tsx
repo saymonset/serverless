@@ -53,31 +53,22 @@ export const ApplyVaccinesAddScreen = ({route}:Props) => {
   const { dosis:dosisList, isLoading, getDosis } = useApplyVaccine();
   const { getVaccinesAll  } = useVaccines();
   const {   getPlanVaccinesByDependent } = usePlanVaccines();
+
+  
   useEffect(() => {
     getDosis(idVaccine, dependentIdRef.current);  
   
-  }, [idVaccine, dependentIdRef.current])
+  }, [idVaccine, dependentIdRef.current]);
+
+
   useEffect(() => {
      // Cargamos las vacunas de ese familiar
      getVaccines(dependentIdRef.current);
   }, [dependentIdRef.current]);
 
-  // const loadVaccines = async ()=>{
-  //   let term:string = "''";
-   
-  //   if (dependentIdRef.current){
-  //     await getPlanVaccinesByDependent(dependentIdRef.current);
-  //   }else{
-  //      await getVaccinesAll(term); // Suponiendo que esta función devuelve un arreglo de vacunas
-  //   }
-  // }
-  
 
-  // useEffect(() => {
-   
-  //     loadVaccines();
-     
-  // }, [ dependentIdRef.current ]);
+
+ 
 
   const mutation = useMutation({
     mutationFn: (data: ApplyVaccineCreateResponse) => {

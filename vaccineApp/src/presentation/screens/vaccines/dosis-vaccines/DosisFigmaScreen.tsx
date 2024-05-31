@@ -32,7 +32,7 @@ export const DosisFigmaScreen = ({route}:Props) => {
     const vaccineIdRef = useRef(route.params.vaccineId);
     const navigation = useNavigation<NavigationProp<RootStackParams>>();
     const { isLoading:isLoadingDosis, dosisDelete, getDosisByVaccine } = useDosis();
-    const { clearNameVaccineSelect, putVaccineID} = useVaccines();
+    const { clearNameVaccineSelect, putVaccineID, getVaccinesAll} = useVaccines();
        
     
     useEffect(() => {
@@ -42,7 +42,20 @@ export const DosisFigmaScreen = ({route}:Props) => {
       putVaccineID(vaccineIdRef.current);
       //Refrescamos cache
       refetch();
-    }, [])
+    }, []);
+
+    useEffect(() => {
+      termUpdate(term);
+      queryClient.invalidateQueries({queryKey: ['dosis', 'infinite']});
+      refetch();
+  }, [term])  ;
+
+  useEffect(() => {
+    // Cargamos las vacunas de ese familiar
+    getVaccinesAll();
+ }, []);
+
+ 
  
     const queryClient = useQueryClient();
     
@@ -72,7 +85,17 @@ export const DosisFigmaScreen = ({route}:Props) => {
       );
     }
 
-   
+    const termUpdate = (termino:string = "''"):string => {
+      if (termino){
+         if (termino.length === 0 ) {
+           setTerm("''");
+         }else{
+           setTerm(termino);
+         }
+      } 
+     
+       return term;
+ }
      
  
     const { isLoading, data, fetchNextPage, refetch } = useInfiniteQuery({
@@ -80,7 +103,7 @@ export const DosisFigmaScreen = ({route}:Props) => {
       staleTime: 1000 * 60 * 60, // 1 hour
       initialPageParam: 0,
       queryFn: async ( params )=>  {
-        const dosis = await getDosisByVaccine(vaccineIdRef.current);
+        const dosis = await getDosisByVaccine(vaccineIdRef.current, termUpdate());
         return dosis ?? [];
       },
       getNextPageParam: ( lastPage, allPages) => allPages.length,
@@ -97,7 +120,7 @@ export const DosisFigmaScreen = ({route}:Props) => {
           //  title={"Dosis de cada Vacuna " + (nameVaccine? nameVaccine :  '')}
             title={"Dosis de cada Vacuna " }
             subTitle=""
-            setTerm={( value )=>setTerm(value)}
+            //setTerm={( value )=>setTerm(value)}
             rightAction= { () => navigation.navigate('DosisEditCreateScreen',{ dosisId: 'new' })}
             rightActionIcon="plus-outline"
             >

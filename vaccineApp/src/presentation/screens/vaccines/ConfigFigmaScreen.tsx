@@ -28,7 +28,7 @@ interface CardProps {
 export const ConfigFigmaScreen = () => {
    
   const [alignItems, setAlignItems] = useState('Consultas');
-  const { vaccines, isLoading, getVaccinesAll} = useVaccines();
+  const {  isLoading, getVaccinesAll} = useVaccines();
 
 
  
@@ -39,9 +39,9 @@ export const ConfigFigmaScreen = () => {
     }
 
     useEffect(() => {
-      if (!vaccines || vaccines.length==0){
+   //   if (!vaccines || vaccines.length==0){
         loadVaccines();
-      }
+  //    }
     }, []);
 
  
@@ -80,6 +80,18 @@ const PreviewLayout = ({
   const { logoutThunks } = useLogin();
   const [chooseVaccine, setChooseVaccine] = useState(false);
   const [idVaccine, setIdVaccine] = useState('');
+
+  const {  isLoading, getVaccinesAll} = useVaccines();
+
+
+ 
+    
+  const loadVaccines = async ()=>{
+    let term:string = "''";
+       await   getVaccinesAll(term);
+  }
+ 
+
  
   //Vamos a cargar dosis por el tipo de vacuna
   useEffect(() => {
@@ -90,7 +102,13 @@ const PreviewLayout = ({
   }, [idVaccine]);
 
 
-
+  //Vamos a cargar dosis por el tipo de vacuna
+  useEffect(() => {
+    if (chooseVaccine){
+      loadVaccines();
+    }
+  
+  }, [chooseVaccine]);
  
 
     const onVaccine = (value:Vaccine) =>{
@@ -127,6 +145,19 @@ const PreviewLayout = ({
  
   return (
     <>
+
+    {/* POPUP DE VACUNAS PARA ESCOJER  */}
+              {/* Vaccines */}
+              { (!isLoading && chooseVaccine) && <>
+                      <VaccinesModal 
+                                isVisible
+                                title='Seleccione la vacuna'
+                                onClose = { ( value ) => handleClose( value )}
+                                onData={(value) =>{
+                                  
+                                  onVaccine(value);
+                            }}></VaccinesModal>
+              </> }
        
           <Layout style={{padding: 5, flex: 1, backgroundColor:'white'}}>
               <Layout style={{flexDirection:'column'}}>
@@ -184,18 +215,7 @@ const PreviewLayout = ({
               </Layout>
           </Layout>
 
-          {/* Vaccines */}
-          { chooseVaccine && <>
-            
-                       <VaccinesModal 
-                                  isVisible
-                                  title='Seleccione la vacuna'
-                                  onClose = { ( value ) => handleClose( value )}
-                                  onData={(value) =>{
-                                    
-                                    onVaccine(value);
-                              }}></VaccinesModal>
-          </> }
+
     </>
  
 ) };

@@ -30,37 +30,36 @@ export const VaccinesModal = ({ isVisible = false, title = '', dependentId, onDa
     const { top } = useSafeAreaInsets();
     const [ term, setTerm ] = useState('');
     const { vaccines, isLoading, vaccineFilter } = usePlanVaccines();
-    const [vaccinesFilter, setVaccinesFilter] = useState<Vaccine[]>([]);
+    //const [vaccinesFilter, setVaccinesFilter] = useState<Vaccine[]>([]);
 
+    //El term es la palabra cl;ave para hacer busquedas o filtros
       useEffect(() => {
-        termUpdate(term);
+     //   termUpdate(term);
       // refetch();
     }, [term])  ;
 
-    const vaccinesFiletrPromise = async () => {
+    //actualizamos las vacunas con su filtro 
+    const vaccinesFiletrPromise = async ():Promise<Vaccine[]> => {
          const vaccs = await  vaccineFilter(term,{...vaccines});
-     
-         setVaccinesFilter(vaccs); // Envolver vaccs en un arreglo
+        return {...vaccs}
     }
+       
 
-    useEffect(() => {
-      vaccinesFiletrPromise();
-  }, [])  
+ 
+
+   
+ 
       
-      const termUpdate = async(termino:string = "''") => {
-          if (termino){
-              if (termino.length === 0 ) {
-                setTerm("''");
-              }else{
-                setTerm(termino);
-              }
-          } 
-          
-           const vaccs = await  vaccineFilter(term, vaccines);
-           setVaccinesFilter(vaccs); 
-         
-        
-      }
+      // const termUpdate = async(termino:string = "''") => {
+      //     if (termino){
+      //         if (termino.length === 0 ) {
+      //           setTerm("''");
+      //         }else{
+      //           setTerm(termino);
+      //         }
+      //     } 
+      //     // const vaccs = await  vaccineFilter(term, vaccines);
+      // }
 
   
 
@@ -97,14 +96,6 @@ export const VaccinesModal = ({ isVisible = false, title = '', dependentId, onDa
          <Text style={{ color: item.isAlertApply ? 'red' : 'black', marginLeft: 10 }}>
                 {item.name}
               </Text>
-         {/* Si no a sido aplicada */}
-         {/* {!item.isAlertApply && 
-            <Layout style={styles.containerText}>
-                <Text style={{ color: item.isAlertApply ? 'red' : 'black', marginLeft: 10 }}>
-                  {item.name+"CCCC"}
-                </Text>
-            </Layout>
-        } */}
           </Layout>
        
         )}
@@ -151,7 +142,7 @@ export const VaccinesModal = ({ isVisible = false, title = '', dependentId, onDa
                             disabled={true} 
                             style={{  width:330, height:600}}>
                               
-                          <SearchInputComponent
+                          {/* <SearchInputComponent
                             onDebounce={ setTerm}
                             style={{
                               position: 'absolute',
@@ -159,14 +150,23 @@ export const VaccinesModal = ({ isVisible = false, title = '', dependentId, onDa
                               zIndex: 999,
                               width: screenWidth - 40,
                               top: (Platform.OS === 'ios') ? top +0 : top + 0
-                            }}   ></SearchInputComponent> 
+                            }}   ></SearchInputComponent>  */}
+
+
                          <Layout style={{height:30}}></Layout>
-                        <List
-                            style={styles.container}
-                            data={vaccinesFilter ?? []}
-                            ItemSeparatorComponent={Divider}
-                            renderItem={renderItem}
-                          />
+
+                         {  (isLoading  ) && (  <LoadingScreen />  )}
+                         {  (!isLoading  ) && (  <List
+                                                    style={styles.container}
+                                                    data={ vaccines || [] }
+                                                    ItemSeparatorComponent={Divider}
+                                                    renderItem={renderItem}
+                                                  /> )}
+                        
+
+
+
+
                           <Button onPress={() => {
                               setVisible(false);
                               //Si existe el metodo, lanzamos verdadero

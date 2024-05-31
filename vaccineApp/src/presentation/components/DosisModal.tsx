@@ -22,21 +22,7 @@ export const DosisModal = ({onData, vaccineId, dependentId}:Props) => {
     const { dosis:dosisList, isLoading, getDosis } = useApplyVaccine();
     
   
-    
-   
-    // const ItemImage = (props: ImageProps): React.ReactElement => (
-    //   <Avatar
-    //     {...props}
-    //     style={[props.style]}
-    //     source={require('../../assets/icon.png')}
-    //   />
-    // );
-
-  //   <Text style={{ color: item.isAlertApply ? 'red' : 'black' }}>
-  //   {item.name}
-  // </Text>
-  
- 
+     
   
     const renderItem = ({ item }: { item:Dosi; index: number }): React.ReactElement => (
       <ListItem

@@ -21,7 +21,7 @@ export const useDosis = () => {
 
     
 
-      const getDosisByVaccine = async(vaccineId:string):Promise<DosisEntity[]>=>{
+      const getDosisByVaccine = async(vaccineId:string, term:string = "''"):Promise<DosisEntity[]>=>{
         dispatch(startDosis());
          
         const dosis: DosisEntity[] = await getDosisByVaccineByIdAction(vaccineId);

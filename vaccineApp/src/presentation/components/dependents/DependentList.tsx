@@ -22,7 +22,9 @@ export const DependentList = ( {dependents, goPage,  fetchNextPage , onDeleteRow
              setIsRefreshing(true);
              await new Promise(resolve => setTimeout(resolve,200));
              queryClient.invalidateQueries({queryKey: ['dependents', 'infinite']});
-             setIsRefreshing(true)
+             queryClient.invalidateQueries({queryKey: ['applyvaccinedependents', 'infinite']});
+             queryClient.invalidateQueries({queryKey: ['consultvaccinedependents', 'infinite']});
+             setIsRefreshing(false)
        }
 
   return (

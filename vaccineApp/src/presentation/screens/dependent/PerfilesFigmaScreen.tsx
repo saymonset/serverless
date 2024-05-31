@@ -24,9 +24,9 @@ export const PerfilesFigmaScreen = () => {
     const { loadGender } =  useGender();
     const { loadRelationShip } =  useRelationShip();
     const { top } = useSafeAreaInsets();
-    const [ term, setTerm ] = useState('');
     const navigation = useNavigation<NavigationProp<RootStackParams>>();
     const {  dependentDelete} =  useDependent();
+    const [ term, setTerm ] = useState('');
     const queryClient = useQueryClient();
 
 
@@ -44,9 +44,10 @@ export const PerfilesFigmaScreen = () => {
               setTerm(termino);
             }
          } 
-        
           return term;
     }
+
+  
  
     
 
