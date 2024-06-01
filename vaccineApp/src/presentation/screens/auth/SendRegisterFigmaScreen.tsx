@@ -160,15 +160,15 @@ export const SendRegisterFigmaScreen = () => {
     
                             <Layout style={{height:10}}></Layout>
     
+                            { values.state && ( <Text category='h6'>{values.state? values.state:''}</Text> )}
                             {/* Estados */}
                             <Estados onData={(value) =>{
                                 onEstado(value)  
                                 setFieldValue('state', `${value?.capital} - ${value?.estado}`)
                             }}></Estados>
                              {/* Municipio */}
-                             <Text category='h6'>
-                                {`${municipio}`}
-                            </Text>
+                           
+                            { values.city && ( <Text category='h6'>{values.city? values.city:''}</Text> )}
                               <Municipios 
                                           onData={(value) =>{
                                             onMuncipio(value)  

@@ -1,6 +1,6 @@
 import React, { PropsWithChildren, useState } from 'react'
 import { Layout, Text } from '@ui-kitten/components';
-import { Image, Pressable, StyleSheet } from 'react-native';
+import { Dimensions, Image, Pressable, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { stylesFigma } from '../theme/appFigmaTheme';
@@ -45,6 +45,7 @@ const PreviewLayout = ({
   
   const navigation = useNavigation();
   const { logoutThunks } = useLogin();
+  const screenWidth = Dimensions.get("window").width;
 
   const dispatch = useDispatch();
 
@@ -80,7 +81,8 @@ const PreviewLayout = ({
 }
 
   return (
-  <Layout style={{padding: 5, flex: 1, backgroundColor:'white'}}>
+
+  <Layout style={{padding: 5, flex: 1, backgroundColor:'white', width: screenWidth - 10,}}>
     <Layout style={{flexDirection:'column'}}>
 
     <Pressable

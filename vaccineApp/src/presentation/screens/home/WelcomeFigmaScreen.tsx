@@ -51,7 +51,7 @@ export const WelcomeScreen = ({ navigation }:Props) => {
             >Registra tu información médica, accede a ella siempre que lo necesite</Text>
         
          {/* Space */}
-          <Layout style={{  marginTop:(Platform.OS === 'ios') ? 180: 250, marginLeft:(Platform.OS === 'ios') ? 100: 180, backgroundColor: '#80BFFF'}}>
+          <Layout style={{  marginTop:(Platform.OS === 'ios') ? 180: 150, marginLeft:(Platform.OS === 'ios') ? 100: 180, backgroundColor: '#80BFFF'}}>
                 <Image 
                       source={ require('../../../assets/hola.png') }
                       style={{
@@ -76,7 +76,7 @@ export const WelcomeScreen = ({ navigation }:Props) => {
              <Text 
              status="primary" 
              category="s1"
-               style={{ backgroundColor: '#80BFFF',marginTop:(Platform.OS==='ios')?-60:-180 }}
+               style={{ backgroundColor: '#80BFFF',marginTop:(Platform.OS==='ios')?-60:100 }}
                 onPress={() => navigation.navigate('LoginScreen')}
               >
              Inicia sessión

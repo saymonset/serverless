@@ -80,6 +80,7 @@ const PreviewLayout = ({
   const { logoutThunks } = useLogin();
   const [chooseVaccine, setChooseVaccine] = useState(false);
   const [idVaccine, setIdVaccine] = useState('');
+  const screenWidth = Dimensions.get("window").width;
 
   const {  isLoading, getVaccinesAll} = useVaccines();
 
@@ -89,6 +90,10 @@ const PreviewLayout = ({
   const loadVaccines = async ()=>{
     let term:string = "''";
        await   getVaccinesAll(term);
+  }
+    
+  const openCloseDosis = async ()=>{
+    setChooseVaccine(!chooseVaccine)
   }
  
 
@@ -134,7 +139,7 @@ const PreviewLayout = ({
             navigation.navigate( 'VaccineFigmaScreen' as never)
             break;
           case 'Dosis':
-            setChooseVaccine(true)
+            openCloseDosis();
              //
             break;
           default:
@@ -159,7 +164,7 @@ const PreviewLayout = ({
                             }}></VaccinesModal>
               </> }
        
-          <Layout style={{padding: 5, flex: 1, backgroundColor:'white'}}>
+          <Layout style={{padding: 5, flex: 1, backgroundColor:'white', width: screenWidth - 10,}}>
               <Layout style={{flexDirection:'column'}}>
 
                      

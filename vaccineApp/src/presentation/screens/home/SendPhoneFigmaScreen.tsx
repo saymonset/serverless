@@ -72,8 +72,8 @@ export const SendPhoneFigmaScreen = () => {
           <Text style={[stylesFigma.titlesecund, {textAlign:'left', left:10, marginTop:100}]}>Número de télefono</Text>
 
              {/* Inputs */}
-            <Layout style={{flex:1, flexDirection:'row', justifyContent:'space-between',marginTop: 10}}>
-                <Layout  style={{flex:1,  flexWrap:'wrap', left:20, marginRight:20}}>
+            <Layout style={{flex:1, flexDirection:'row', justifyContent:'space-between',marginTop: 10, left:40}}>
+                <Layout  style={{flex:1,  flexWrap:'wrap', left:0, marginRight:0}}>
                         <Input
                         placeholder="+58"
                         placeholderTextColor="rgba(0,0,0,0.4)"
