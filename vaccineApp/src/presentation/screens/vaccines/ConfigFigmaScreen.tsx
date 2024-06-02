@@ -4,19 +4,10 @@ import { Dimensions, Image, Platform, Pressable, StyleSheet } from 'react-native
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { stylesFigma } from '../theme/appFigmaTheme';
-import { useDispatch } from 'react-redux';
 import { useLogin } from '../../hooks/useLogin';
-import { VaccinesModal } from '../../components/VaccinesModal';
-import { Vaccine } from '../../../domain/entities/VaccineDependent';
 import { RootStackParams } from '../../navigation/StackNavigator';
 import { useVaccines } from '../../hooks/useVaccines';
 import { LoadingScreen } from '../loading/LoadingScreen';
-//import { Vaccine } from '../../../../domain/entities/VaccineDependent';
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { SearchInputComponent } from '../../components/SearchInputComponent';
-
- 
 
 interface CardProps {
   title: string;
@@ -24,13 +15,9 @@ interface CardProps {
   iconName: string;
 }
 
-
-
 export const ConfigFigmaScreen = () => {
-   
   const [alignItems, setAlignItems] = useState('Consultas');
   const {  isLoading, getVaccinesAll} = useVaccines();
-
     const loadVaccines = async ()=>{
       let term:string = "''";
          await   getVaccinesAll(term);
@@ -39,8 +26,6 @@ export const ConfigFigmaScreen = () => {
     useEffect(() => {
         loadVaccines();
     }, []);
-
-    
   return (
     <>
      {  isLoading && (  <LoadingScreen />  )}
@@ -52,7 +37,6 @@ export const ConfigFigmaScreen = () => {
         setSelectedValue={setAlignItems}>
       </PreviewLayout>
     </>
-    
   );
 };
 
@@ -80,13 +64,9 @@ const PreviewLayout = ({
         switch (selectedValue) {
           case 'Vacunas':
             navigation.navigate( 'VaccineFigmaScreen' as never)
-            
             break;
           case 'Dosis':
             navigation.navigate( 'ConfigDosisModalScreen' as never)
-            
-            //openCloseDosis();
-             //
             break;
           default:
             break;
@@ -144,11 +124,6 @@ const PreviewLayout = ({
                   </Layout>
           </Layout>
       </Layout>
-           
-
-   
-              
-        
     </>
  
 ) };

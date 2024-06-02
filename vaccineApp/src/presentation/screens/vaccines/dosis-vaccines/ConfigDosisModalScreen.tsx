@@ -44,44 +44,24 @@ export const ConfigDosisModalScreen = () =>  {
 
   
     return (
-
       <MainLayout
-      title="Seleccione vacuna de las dosis"
-      subTitle=""
-      >
-      <Layout
-        style={styles.container}
-        level='1'
-      >
-<VaccinesModal 
-                isVisible
-                title='Seleccione la vacuna'
-                onClose = { ( value ) => handleClose( value )}
-                onData={(value) =>{
-                  
-                  onVaccine(value);
-            }}></VaccinesModal>
-
-{/*   
-        <Button onPress={() => setVisible(true)}>
-          Vacunas
-        </Button>
-  
-        <Modal visible={visible}>
-          <Card disabled={true}>
-            <Text>
-  Welcome to UI Kitten 😻
-            </Text>
-            <Button onPress={() => setVisible(false)}>
-              DISMISS
-            </Button>
-          </Card>
-        </Modal>
-   */}
-      </Layout>
-      
-  </MainLayout>
-     
+          title="Seleccione vacuna de las dosis"
+          subTitle=""
+          >
+          <Layout
+            style={styles.container}
+            level='1'
+          >
+                <VaccinesModal 
+                    isVisible
+                    title='Seleccione la vacuna'
+                    onClose = { ( value ) => handleClose( value )}
+                    onData={(value) =>{
+                      
+                      onVaccine(value);
+                }}></VaccinesModal>
+          </Layout>
+      </MainLayout>
     );
   };
   
