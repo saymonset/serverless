@@ -2,7 +2,7 @@ import React from 'react'
 import { MainLayout } from '../../layouts/MainLayout';
 import { useSendSms } from '../../hooks/useSendSms';
 import { SendPhoneFigmaScreen } from './SendPhoneFigmaScreen';
-import { SendRegisterFigmaScreen } from '../auth/SendRegisterFigmaScreen';
+import { RegisterScreen } from '../register/RegisterScreen';
 import { SendCodeFigmaScreen } from './SendCodeFigmaScreen';
 import { SeguridadFigmaScreen } from './SeguridadFigmaScreen';
 import { LoginScreen } from '../auth/LoginScreen';
@@ -25,7 +25,7 @@ function HomeScreen({ navigation }:Props) {
         { (sendSmsStatus === 'isPhone') && <SendPhoneFigmaScreen/> }
         { (sendSmsStatus === 'isCode') && <SendCodeFigmaScreen/> }
         { (sendSmsStatus === 'isSeguridad') && <SeguridadFigmaScreen/> }
-        { (sendSmsStatus === 'isRegister') && <SendRegisterFigmaScreen/> }
+        { (sendSmsStatus === 'isRegister') && <RegisterScreen/> }
         { (sendSmsStatus === 'isLogin') && <LoginScreen navigation={undefined} route={undefined}/> }
       </MainLayout>
     </>

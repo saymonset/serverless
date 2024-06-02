@@ -7,7 +7,7 @@ import { LoginScreen } from '../screens/auth/LoginScreen';
 import { useDispatch } from 'react-redux';
 import { SendPhoneFigmaScreen } from '../screens/home/SendPhoneFigmaScreen';
 import { SendCodeFigmaScreen } from '../screens/home/SendCodeFigmaScreen';
-import { SendRegisterFigmaScreen } from '../screens/auth/SendRegisterFigmaScreen';
+import { RegisterScreen } from '../screens/register/RegisterScreen';
 import { SeguridadFigmaScreen } from '../screens/home/SeguridadFigmaScreen';
 import { PasswordRecoveryScreen } from '../screens/auth/PasswordRecoveryScreen';
 import { SendCodeRecoveryFigmaScreen } from '../screens/home/SendCodeRecoveryFigmaScreen';
@@ -37,7 +37,7 @@ export type RootStackParams = {
   WelcomeScreen: undefined;
   SendPhoneFigmaScreen: undefined;
   SendCodeFigmaScreen: undefined;
-  SendRegisterFigmaScreen: undefined;
+  RegisterScreen: undefined;
   SeguridadFigmaScreen: undefined;
   PasswordRecoveryScreen: undefined;
   SendCodeRecoveryFigmaScreen: undefined;
@@ -79,7 +79,7 @@ export const  StackNavigator = () => {
                   <Stack.Screen name="LoginScreen" component={   LoginScreen } />
                   <Stack.Screen name="SendPhoneFigmaScreen" component={   SendPhoneFigmaScreen } />
                   <Stack.Screen name="SendCodeFigmaScreen" component={   SendCodeFigmaScreen } />
-                  <Stack.Screen name="SendRegisterFigmaScreen" component={   SendRegisterFigmaScreen } />
+                  <Stack.Screen name="RegisterScreen" component={   RegisterScreen } />
                   <Stack.Screen name="SeguridadFigmaScreen" component={   SeguridadFigmaScreen } />
                   <Stack.Screen name="PasswordRecoveryScreen" component={   PasswordRecoveryScreen } />
                   <Stack.Screen name="SendCodeRecoveryFigmaScreen" component={   SendCodeRecoveryFigmaScreen } />

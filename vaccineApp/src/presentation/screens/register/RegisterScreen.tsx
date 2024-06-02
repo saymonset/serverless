@@ -22,9 +22,9 @@ import { useSelector } from 'react-redux'
 import { LoadingScreen } from '../loading/LoadingScreen'
 import { useNavigation } from '@react-navigation/native';
 
-interface Props extends StackScreenProps<RootStackParams, 'SendRegisterFigmaScreen'> {}
+interface Props extends StackScreenProps<RootStackParams, 'RegisterScreen'> {}
 
-export const SendRegisterFigmaScreen = () => {
+export const RegisterScreen = () => {
    
     const {height} = useWindowDimensions(); 
 
