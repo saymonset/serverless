@@ -11,6 +11,7 @@ import { usePlanVaccines } from '../hooks/usePlanVaccines';
 import { MainLayout } from '../layouts/MainLayout';
 import { SearchInputComponent } from './SearchInputComponent';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { BooleanSchema } from 'yup';
 
  
 interface Props {
@@ -19,12 +20,13 @@ interface Props {
   isVisible?: boolean;
   title?: string;
   dependentId?: string;
+  highButtonVaccine?: boolean;
 }
 
 
 const screenWidth = Dimensions.get("window").width;
 
-export const VaccinesModal = ({ isVisible = false, title = '', dependentId, onData, onClose}:Props) => {
+export const VaccinesModal = ({ isVisible = false, title = '', dependentId, onData, onClose, highButtonVaccine = false}:Props) => {
     const [visible, setVisible] = React.useState(isVisible);
     const [vaccine, setVaccine] = useState('');
     const { top } = useSafeAreaInsets();
@@ -126,11 +128,12 @@ export const VaccinesModal = ({ isVisible = false, title = '', dependentId, onDa
                             { vaccine && ` ${vaccine}`}
                       </Text>
 
-                      <Button 
-                          status='basic'
-                          onPress={() => setVisible(true)}>
-                          <Text status='danger' category='h3'>Vacuna</Text>
-                      </Button>
+                     { highButtonVaccine ? <></> 
+                                         : (<Button 
+                                              status='basic'
+                                              onPress={() => setVisible(true)}>
+                                              <Text status='danger' category='h3'>Vacuna</Text>
+                                          </Button>)} 
 
                       <Modal
                         visible={visible}

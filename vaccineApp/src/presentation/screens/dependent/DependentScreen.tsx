@@ -209,7 +209,6 @@ export const DependentScreen = ({route}:Props) => {
                                                                     onData={(value) =>{
                                                                     onVaccine(value)  
                                                                     setFieldValue('vaccine_id', `${value._id.$oid}`)
-                                                                  
                                                                 }}></PlanVaccinesDependentModal>}
                          
                               
@@ -282,25 +281,6 @@ export const DependentScreen = ({route}:Props) => {
                                   }}
       />
 
-{/* 
-<Datepicker
-                                onFocus  ={() =>setFieldValue('birth', values.birth)}
-                                onBlur ={() =>setFieldValue('birth', values.birth)}
-                                min={minDate}
-                                max={maxDate}
-                                date={values.birth}
-                                onSelect={nextDate => setFieldValue('birth', nextDate)}
-                                placeholder='Selecciona una fecha'
-                            /> */}
-                              {/* <Datepicker
-                                  onFocus  ={() => console.log()}
-                                  onBlur ={() => console.log()}
-                                  min={minDate}
-                                  max={maxDate}
-                                  date={new Date(moment(values.birth ?? new Date()).format('YYYY-MM-DD'))}
-                                  onSelect={nextDate => setFieldValue('birth', nextDate || new Date())}
-                                  placeholder='Selecciona una fecha'
-                              /> */}
                                <Text style={{ color: 'red' }}> <ErrorMessage name="birth" /></Text>
                           </Layout>
                           

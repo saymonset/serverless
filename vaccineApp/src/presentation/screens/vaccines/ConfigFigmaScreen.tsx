@@ -15,6 +15,7 @@ import { LoadingScreen } from '../loading/LoadingScreen';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SearchInputComponent } from '../../components/SearchInputComponent';
+
  
 
 interface CardProps {
@@ -30,22 +31,16 @@ export const ConfigFigmaScreen = () => {
   const [alignItems, setAlignItems] = useState('Consultas');
   const {  isLoading, getVaccinesAll} = useVaccines();
 
-
- 
-    
     const loadVaccines = async ()=>{
       let term:string = "''";
          await   getVaccinesAll(term);
     }
 
     useEffect(() => {
-   //   if (!vaccines || vaccines.length==0){
         loadVaccines();
-  //    }
     }, []);
 
- 
-
+    
   return (
     <>
      {  isLoading && (  <LoadingScreen />  )}
@@ -78,68 +73,19 @@ const PreviewLayout = ({
   
   const navigation = useNavigation<NavigationProp<RootStackParams>>();
   const { logoutThunks } = useLogin();
-  const [chooseVaccine, setChooseVaccine] = useState(false);
   const [idVaccine, setIdVaccine] = useState('');
   const screenWidth = Dimensions.get("window").width;
-
-  const {  isLoading, getVaccinesAll} = useVaccines();
-
-
- 
-    
-  const loadVaccines = async ()=>{
-    let term:string = "''";
-       await   getVaccinesAll(term);
-  }
-    
-  const openCloseDosis = async ()=>{
-    setChooseVaccine(!chooseVaccine)
-  }
- 
-
- 
-  //Vamos a cargar dosis por el tipo de vacuna
-  useEffect(() => {
-    if (idVaccine!=''){
-       navigation.navigate( 'DosisFigmaScreen' ,{ vaccineId: idVaccine})
-    }
-    setIdVaccine('')
-  }, [idVaccine]);
-
-
-  //Vamos a cargar dosis por el tipo de vacuna
-  useEffect(() => {
-    if (chooseVaccine){
-      loadVaccines();
-    }
-  
-  }, [chooseVaccine]);
- 
-
-    const onVaccine = (value:Vaccine) =>{
-      setIdVaccine(value._id.$oid);
-      setChooseVaccine(false);
-    }
-
-    const handleClose = (isClose: boolean) =>{
-       
-        setChooseVaccine(false);
-       
-    }
-
-    
-    
-
-  
- 
  
   const goPage = (selectedValue: string) => {
         switch (selectedValue) {
           case 'Vacunas':
             navigation.navigate( 'VaccineFigmaScreen' as never)
+            
             break;
           case 'Dosis':
-            openCloseDosis();
+            navigation.navigate( 'ConfigDosisModalScreen' as never)
+            
+            //openCloseDosis();
              //
             break;
           default:
@@ -150,77 +96,59 @@ const PreviewLayout = ({
  
   return (
     <>
-
-    {/* POPUP DE VACUNAS PARA ESCOJER  */}
+      {/* POPUP DE VACUNAS PARA ESCOJER  */}
               {/* Vaccines */}
-              { (!isLoading && chooseVaccine) && <>
-                      <VaccinesModal 
-                                isVisible
-                                title='Seleccione la vacuna'
-                                onClose = { ( value ) => handleClose( value )}
-                                onData={(value) =>{
-                                  
-                                  onVaccine(value);
-                            }}></VaccinesModal>
-              </> }
-       
-          <Layout style={{padding: 5, flex: 1, backgroundColor:'white', width: screenWidth - 10,}}>
-              <Layout style={{flexDirection:'column'}}>
-
-                     
-                    
-                      <Layout  style={{flexDirection:'row', 
-                                    alignItems:'center',
-                                    }}>
-                              <Text style={stylesFigma.hola}>Hola!</Text>  
-                        <Image 
-                              source={ require('../../../assets/hola.png') }
-                              style={{
-                                  width: 50,
-                                  height: 50,
-                                  marginLeft:10,
-                              }}
-                          />
+      <Layout style={{padding: 5, flex: 1, backgroundColor:'white', width: screenWidth - 10,}}>
+          <Layout style={{flexDirection:'column'}}>
+                  <Layout  style={{flexDirection:'row', 
+                                alignItems:'center',
+                                }}>
+                          <Text style={stylesFigma.hola}>Hola!</Text>  
+                    <Image 
+                          source={ require('../../../assets/hola.png') }
+                          style={{
+                              width: 50,
+                              height: 50,
+                              marginLeft:10,
+                          }}
+                      />
+                  </Layout>
+                  <Layout style={{flex:1}}>
+                    <Text style={styles.label}>{label}</Text>
+                      <Layout style={styles.row}>
+                        {values.map(value => (
+                          <Pressable
+                            key={value.title}
+                            onPress={() => {
+                                      setSelectedValue(value.title)
+                                      goPage( value.title )
+                                    
+                                    }}
+                            style={[{...styles.button,
+                              backgroundColor:value.color}, selectedValue === value.title && {...styles.selected, backgroundColor:value.color}]}>
+                            <Layout style={{flex:1, flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
+                                <Icon name={ value.iconName } size = { 40 } color = { "black" }/>
+                                  <Text
+                                      style={[
+                                      {...styles.buttonLabel,
+                                          marginLeft:20,
+                                      },
+                                      selectedValue === value.title && styles.selectedLabel,
+                                      ]}>
+                                      {value.title}
+                                  </Text>
+                              </Layout>
+                          </Pressable>
+                        ))}
                       </Layout>
-                      <Layout style={{flex:1}}>
-                        <Text style={styles.label}>{label}</Text>
-                          <Layout style={styles.row}>
-                            {values.map(value => (
-                              <Pressable
-                                key={value.title}
-                                onPress={() => {
-                                          setSelectedValue(value.title)
-                                          goPage( value.title )
-                                        
-                                        }}
-                                style={[{...styles.button,
-                                  backgroundColor:value.color}, selectedValue === value.title && {...styles.selected, backgroundColor:value.color}]}>
-                                <Layout style={{flex:1, flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
-                                    <Icon name={ value.iconName } size = { 40 } color = { "black" }/>
-                                      <Text
-                                          style={[
-                                          {...styles.buttonLabel,
-                                              marginLeft:20,
-                                          },
-                                          selectedValue === value.title && styles.selectedLabel,
-                                          ]}>
-                                          {value.title}
-                                      </Text>
-                                  </Layout>
-                              </Pressable>
-                              
-                            ))}
-                          </Layout>
-                          
-
-                      </Layout>
-
-                      
-
-              </Layout>
+                  </Layout>
           </Layout>
+      </Layout>
+           
 
-
+   
+              
+        
     </>
  
 ) };
