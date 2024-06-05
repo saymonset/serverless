@@ -198,8 +198,8 @@ export const LoginScreen =  () => {
           <Divider style={{ marginTop:20, marginHorizontal:60, marginBottom:0, borderBottomColor: 'rgba(0,0,0,0.1)', borderBottomWidth: 2 }} />
         {   ( isLoading ) && <LoadingScreen /> }    
          {/* Espacio */}
-         <Layout  style={{marginTop:(Platform.OS === 'ios') ? 180: 360}} />
-         <Layout style={{marginTop:0, marginLeft:(Platform.OS === 'ios') ? 70: 180}}>
+         <Layout  style={{marginTop:(Platform.OS === 'ios') ? 180: 100}} />
+         <Layout style={{marginTop:0, marginLeft:(Platform.OS === 'ios') ? 70: 80}}>
               <Pressable onPress={() => {}}>
                 <Layout style={{flexDirection:'row'}}>
                       <Text 

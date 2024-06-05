@@ -73,15 +73,15 @@ export const SendPhoneFigmaScreen = () => {
 
              {/* Inputs */}
             <Layout style={{flex:1, flexDirection:'row', justifyContent:'space-between',marginTop: 10, left:40}}>
-                <Layout  style={{flex:1,  flexWrap:'wrap', left:0, marginRight:0}}>
+                {/* <Layout  style={{flex:1,  flexWrap:'wrap', left:0, marginRight:0}}> */}
                         <Input
                         placeholder="+58"
                         placeholderTextColor="rgba(0,0,0,0.4)"
                         underlineColorAndroid="rgba(0,0,0,0)"
                         style={[ 
-                            stylesFigma.inputField,
+                            stylesFigma.inputFieldPhoneCode,
                             ( Platform.OS === 'ios' ) && stylesFigma.inputFieldIOS,
-                            {  marginRight:70,
+                            {  marginRight:0,
                                 textAlign: 'center'}
                         ]}
                         onChangeText={ (value) => onCodInputChange(value) }
@@ -91,15 +91,15 @@ export const SendPhoneFigmaScreen = () => {
                         autoCorrect={ false }
                         maxLength={3} // Limita la entrada a tres caracteres
                     />
-                </Layout>
-                <Layout   style={{flex:2, right: ( Platform.OS === 'ios' )?60:90, marginBottom:0}}>
+                {/* </Layout> */}
+                {/* <Layout   style={{flex:2, right: ( Platform.OS === 'ios' )?60:90, marginBottom:0}}> */}
                     <Input
                             ref={inputRef} // Referencia al campo inputValue
                             placeholder="Número de télefono"
                             placeholderTextColor="rgba(0,0,0,0.4)"
                             underlineColorAndroid="rgba(0,0,0,0)"
                             style={[ 
-                                stylesFigma.inputField,
+                                stylesFigma.inputFieldPhone,
                                 ( Platform.OS === 'ios' ) && stylesFigma.inputFieldIOS
                             ]}
                             selectionColor="rgba(0,0,0,0.4)"
@@ -110,7 +110,7 @@ export const SendPhoneFigmaScreen = () => {
                             autoCorrect={ false }
                             maxLength={15} // Limita la entrada a tres caracteres
                     />
-                </Layout>
+                {/* </Layout> */}
             </Layout>
 
             <Layout style={{ flex:1 }}>

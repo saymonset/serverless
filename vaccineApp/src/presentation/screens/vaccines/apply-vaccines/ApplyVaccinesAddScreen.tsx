@@ -1,4 +1,4 @@
-import { Button, Datepicker, Input, Layout, Text, useTheme } from '@ui-kitten/components'
+import { Button, CheckBox, Datepicker, Input, Layout, Text, useTheme } from '@ui-kitten/components'
 import React, { useEffect, useRef, useState } from 'react'
 import { Alert, Platform, Pressable, ScrollView, useWindowDimensions } from 'react-native'
  
@@ -53,6 +53,7 @@ export const ApplyVaccinesAddScreen = ({route}:Props) => {
   const { dosis:dosisList, isLoading, getDosis } = useApplyVaccine();
   const { getVaccinesAll  } = useVaccines();
   const {   getPlanVaccinesByDependent } = usePlanVaccines();
+  const [canGalery, setCanGalery] = React.useState(false);
 
   
   useEffect(() => {
@@ -222,37 +223,51 @@ export const ApplyVaccinesAddScreen = ({route}:Props) => {
                                     }}>
                                     <VaccineDosisImages images={images} />
                                 </Layout>)}
-                              
-                              <Input 
-                                  disabled
-                                  placeholder="Enter your image:"
-                                  placeholderTextColor="rgba(0,0,0,0.4)"
-                                  underlineColorAndroid="rgba(0,0,0,0)"
-                                  style={[ 
-                                      stylesFigma.inputField,
-                                      ( Platform.OS === 'ios' ) && stylesFigma.inputFieldIOS
-                                  ]}
-                                  selectionColor="white"
-  
-                                  onChangeText={ handleChange('image') }
-                                  value={ values.image }
-                                  // onSubmitEditing={ onRegister }
-  
-                                  autoCapitalize="words"
-                                  autoCorrect={ false }
-                              />
-                              <Text style={{ color: 'red' }}> <ErrorMessage name="image" /></Text>
-                              <Pressable onPress={ async () => {
-                                const photos = await CameraAdapter.takePicture();
-                                const fileImages = photos.filter( image => image.includes('file://'));
-                                setImages(fileImages)
-                                let imgVaccine = fileImages[0].split('/').pop();
-                                console.log({imgVaccine, fileImages});
-                                setFieldValue('image', imgVaccine);
-                                
-                              }}>
-                                   <MyIcon name={"camera-outline"} /> 
-                              </Pressable>
+                                <Layout style={{flexDirection:'row'}}>
+                                     
+                                      <CheckBox
+                                      style={{marginLeft:10}}
+                                          checked={canGalery}
+                                          onChange={nextChecked => setCanGalery(nextChecked)}
+                                        >
+                                          {`Desde la galeria ?`}
+                                      </CheckBox>  
+                                      <Pressable onPress={ async () => {
+                                            const photos = canGalery? await CameraAdapter.getPicturesFromLibrary() : await CameraAdapter.takePicture();
+                                            const fileImages = photos.filter( image => image.includes('file://'));
+                                            setImages(fileImages)
+                                            let imgVaccine = fileImages[0].split('/').pop();
+                                            console.log({imgVaccine, fileImages});
+                                            setFieldValue('image', imgVaccine);
+                                            
+                                          }}>
+                                              <MyIcon name={"camera-outline"} /> 
+                                      </Pressable>
+                                    
+                                      <Text style={{ color: 'red' }}> <ErrorMessage name="image" /></Text>
+                                      <Input 
+                                          disabled
+                                          placeholder="Enter your image:"
+                                          placeholderTextColor="rgba(0,0,0,0.4)"
+                                          underlineColorAndroid="rgba(0,0,0,0)"
+                                          style={[ 
+                                              stylesFigma.inputField,
+                                              ( Platform.OS === 'ios' ) && stylesFigma.inputFieldIOS,
+                                              { display: 'none' }
+                                          ]}
+                                          selectionColor="white"
+
+                                          onChangeText={ handleChange('image') }
+                                          value={ values.image }
+                                          // onSubmitEditing={ onRegister }
+
+                                          autoCapitalize="words"
+                                          autoCorrect={ false }
+                                      />
+                                </Layout>
+
+                               
+                             
                           </Layout>   
   
 
@@ -260,15 +275,21 @@ export const ApplyVaccinesAddScreen = ({route}:Props) => {
                               <Text category='h6'>
                                   {`Fecha de vacunacion`} 
                               </Text>
-                              <Datepicker
-                                  onFocus  ={() => console.log()}
-                                  onBlur ={() => console.log()}
-                                  min={minDate}
-                                  max={maxDate}
-                                  date={new Date(moment(values.vaccination_date ?? new Date()).format('YYYY-MM-DD'))}
-                                  onSelect={nextDate => setFieldValue('vaccination_date', nextDate || new Date())}
-                                  placeholder='Selecciona de vacunación'
-                              />
+
+
+                             
+
+                          <Datepicker
+                                onFocus  ={() =>setFieldValue('vaccination_date', values.vaccination_date)}
+                                onBlur ={() =>setFieldValue('vaccination_date', values.vaccination_date)}
+                                min={minDate}
+                                max={maxDate}
+                                date={values.vaccination_date}
+                                onSelect={nextDate => setFieldValue('vaccination_date', nextDate)}
+                                placeholder='Selecciona una fecha'
+                            />
+
+
 
  
                                 <Text style={{ color: 'red' }}> <ErrorMessage name="vaccination_date" /></Text>

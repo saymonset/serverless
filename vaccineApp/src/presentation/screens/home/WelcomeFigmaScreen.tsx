@@ -51,7 +51,7 @@ export const WelcomeScreen = ({ navigation }:Props) => {
             >Registra tu información médica, accede a ella siempre que lo necesite</Text>
         
          {/* Space */}
-          <Layout style={{  marginTop:(Platform.OS === 'ios') ? 180: 150, marginLeft:(Platform.OS === 'ios') ? 100: 180, backgroundColor: '#80BFFF'}}>
+          <Layout style={{  marginTop:(Platform.OS === 'ios') ? 180: 50, marginLeft:(Platform.OS === 'ios') ? 100: 100, backgroundColor: '#80BFFF'}}>
                 <Image 
                       source={ require('../../../assets/hola.png') }
                       style={{
@@ -63,7 +63,7 @@ export const WelcomeScreen = ({ navigation }:Props) => {
           </Layout>
 
            {/* Button */}
-        <Layout style={{marginTop:(Platform.OS === 'ios') ? 110: 110, marginHorizontal:100 }}>
+        <Layout style={{marginTop:(Platform.OS === 'ios') ? 40: 40, marginHorizontal:100 }}>
           <Button 
             disabled={false}
            
@@ -72,11 +72,11 @@ export const WelcomeScreen = ({ navigation }:Props) => {
         
           {/* Text */}
           <Layout style={{backgroundColor: '#80BFFF', flex:1, justifyContent:'center', alignItems:'center',
-                  marginTop:(Platform.OS === 'ios') ? 130: 130 , marginHorizontal:0, marginVertical:0}}>
+                  marginTop:(Platform.OS === 'ios') ? 50: 50 , marginHorizontal:0, marginVertical:0}}>
              <Text 
              status="primary" 
              category="s1"
-               style={{ backgroundColor: '#80BFFF',marginTop:(Platform.OS==='ios')?-60:100 }}
+               style={{ backgroundColor: '#80BFFF',marginTop:(Platform.OS==='ios')?0:0 }}
                 onPress={() => navigation.navigate('LoginScreen')}
               >
              Inicia sessión

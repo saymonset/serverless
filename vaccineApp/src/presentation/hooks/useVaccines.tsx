@@ -43,12 +43,17 @@ export const useVaccines = () => {
                   total,
                   vaccines} = vaccinesData;
 
-         vaccines = vaccines.map(( vaccine)=>{
+         let vaccinesFilter = vaccines.map(( vaccine)=>{
                if (planVaccines.includes(vaccine._id.$oid)){
                 return {...vaccine, isChecked:true}
                }
                return vaccine;
-       }).filter( vac => vac.isChecked)          
+       }).filter( vac => vac.isChecked);
+
+       //Si las vacunas asignadas vienen en  cero, colocar todas las vacunas
+       vaccines = vaccinesFilter.length>0 ? vaccinesFilter : vaccines;
+       
+       
 
 
         const payload = {

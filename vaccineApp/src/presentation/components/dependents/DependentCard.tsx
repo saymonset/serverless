@@ -47,12 +47,12 @@ export const DependentCard = ( { dependent, goPage = 'DependentScreen', onDelete
                                           onPress = { () => {
                                           
                                         
-                                           return navigation.navigate('ApplyVaccinesAddScreen',{ dependentId: dependent._id.$oid})
+                                           return navigation.navigate('ApplyVaccinesAddScreen',{ dependentId: dependent?._id.$oid})
                                         }}
                                         header={() =>  <Text></Text>}
                                       >
                                           <Layout style={{flex:1, flexDirection:"row", justifyContent:'space-between', alignItems:'center' }}>
-                                              <Text style={{marginLeft:10}}>{ dependent.name  + ' ' + dependent.lastname}</Text>
+                                              <Text style={{marginLeft:10}}>{ dependent?.name  + ' ' + dependent?.lastname}</Text>
                                               <Text style={stylesFigma.titlesecund}></Text>
                                               <Ionicons name="eyedrop-outline" size={20} color="black" />
                                           </Layout>

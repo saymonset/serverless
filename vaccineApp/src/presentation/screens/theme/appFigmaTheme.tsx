@@ -70,6 +70,18 @@ export const stylesFigma = StyleSheet.create({
         fontSize: 20,
       
     },
+    inputFieldPhoneCode: {
+        color:'black',
+        fontSize: 20,
+        marginLeft:10,
+      
+    },
+    inputFieldPhone: {
+        color:'black',
+        fontSize: 20,
+        marginRight:200,
+      
+    },
     label: {
         color: 'black',
         fontWeight: 'bold',

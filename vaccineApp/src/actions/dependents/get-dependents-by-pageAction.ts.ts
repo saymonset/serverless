@@ -1,4 +1,5 @@
 import vaccinesApi from "../../config/api/vaccinesApi";
+import { User } from "../../domain/entities/user";
 import { DependentBDResponse } from "../../infrastructure/interfaces/dependent-bd-interface";
 import { Dependent, DependentResponse } from "../../infrastructure/interfaces/dependent-interface";
 import { SendSMSResponse } from "../../infrastructure/interfaces/sendSms.response";
@@ -9,11 +10,8 @@ const returnMapper = ( data: DependentBDResponse ): DependentResponse => {
 }
 
 
-  export const getDependentByPageAction = async (limite:number =1000, page:number, term:string = "''"):Promise<Dependent[]> => {
+  export const getDependentByPageAction = async (limite:number =1000, page:number, term:string = "''", user:User):Promise<Dependent[]> => {
     try {
-
-      
-      
       
       let offset = page * 10;
       let desde = offset;
@@ -24,7 +22,13 @@ const returnMapper = ( data: DependentBDResponse ): DependentResponse => {
       //console.log(`/dependent/${limite}/${desde}/${term}`)
       const response = await vaccinesApi.get<DependentBDResponse>(`/dependent/${limite}/${desde}/${term}`);
       const { data } = response;
-      return returnMapper(data).dependents ?? [];
+      let dependentsReuslt: Dependent[] = returnMapper(data).dependents ?? [];;
+      if (user){
+        dependentsReuslt = dependentsReuslt.filter((depend)=> depend.user_id == user.usuario?._id?.$oid);
+      }
+    
+      
+      return dependentsReuslt;
     } catch (error) {
       const message = error instanceof Error ? error.message : 'An unknown error occurred';
       console.log(error);

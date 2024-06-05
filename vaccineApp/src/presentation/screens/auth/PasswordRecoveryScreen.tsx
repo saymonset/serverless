@@ -9,7 +9,6 @@ import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '../../store';
 import { increment } from '../../store/slices/counter';
 import { useLogin } from '../../hooks/useLogin';
-import { loginCiThunks } from '../../store/slices/login/loginThunks';
 import { loginSlice } from '../../store/slices/login/loginSlice';
 import { useNavigation } from '@react-navigation/native';
 import { stylesFigma } from '../theme/appFigmaTheme';
@@ -108,15 +107,15 @@ export const PasswordRecoveryScreen =  () => {
                      
                   </Layout>
            
-           <Layout style={{flex:1, flexDirection:'row', justifyContent:'space-between',marginTop: 0}}>
+           <Layout style={{flex:1, flexDirection:'row', justifyContent:'space-between',marginTop: 10, left:0}}>
                 {/* CODIGO */}
-                <Layout  style={{flex:1,  flexWrap:'wrap', left:0, marginRight:0}}>
+                {/* <Layout  style={{flex:1,  flexWrap:'wrap', left:0, marginRight:0}}> */}
                         <Input
                         placeholder="+58"
                         placeholderTextColor="rgba(0,0,0,0.4)"
                         underlineColorAndroid="rgba(0,0,0,0)"
                         style={[ 
-                            stylesFigma.inputField,
+                            stylesFigma.inputFieldPhoneCode,
                             ( Platform.OS === 'ios' ) && stylesFigma.inputFieldIOS
                         ]}
                         onChangeText={ (value) => onCodInputChange(value) }
@@ -126,16 +125,16 @@ export const PasswordRecoveryScreen =  () => {
                         autoCorrect={ false }
                         maxLength={3} // Limita la entrada a tres caracteres
                     />
-                </Layout>
+                {/* </Layout> */}
                  {/* TELEFONO */}
-                <Layout   style={{flex:2, right: ( Platform.OS === 'ios' )?60:90, marginBottom:0}}>
+                {/* <Layout   style={{flex:2, right: ( Platform.OS === 'ios' )?60:90, marginBottom:0}}> */}
                     <Input
                             ref={tlfRef} // Referencia al campo inputValue
                             placeholder="Número de télefono"
                             placeholderTextColor="rgba(0,0,0,0.4)"
                             underlineColorAndroid="rgba(0,0,0,0)"
                             style={[ 
-                                stylesFigma.inputField,
+                                stylesFigma.inputFieldPhone,
                                 ( Platform.OS === 'ios' ) && stylesFigma.inputFieldIOS
                             ]}
                             selectionColor="rgba(0,0,0,0.4)"
@@ -146,7 +145,7 @@ export const PasswordRecoveryScreen =  () => {
                             autoCorrect={ false }
                             maxLength={15} // Limita la entrada a tres caracteres
                     />
-                </Layout>
+                {/* </Layout> */}
             </Layout>
 
 

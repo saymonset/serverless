@@ -15,12 +15,14 @@ import { FAB } from '../../components/ui/FAB';
 import { RootStackParams } from '../../navigation/StackNavigator';
 import { useDependent } from '../../hooks/useDependent';
 import { Dependent } from '../../../infrastructure/interfaces/dependent-interface';
+import { useLogin } from '../../hooks/useLogin';
 
 
 
 const screenWidth = Dimensions.get("window").width;
 
-export const PerfilesFigmaScreen = () => {
+export const DependentsMainScreen = () => {
+    const { user } = useLogin();
     const { loadGender } =  useGender();
     const { loadRelationShip } =  useRelationShip();
     const { top } = useSafeAreaInsets();
@@ -102,7 +104,7 @@ export const PerfilesFigmaScreen = () => {
       staleTime: 1000 * 60 * 60, // 1 hour
       initialPageParam: 0,
       queryFn: async ( params )=>  {
-        const dependents = await getDependentByPageAction(10000,params.pageParam, termUpdate());
+        const dependents = await getDependentByPageAction(10000,params.pageParam, termUpdate(), user);
         return dependents;
       },
       getNextPageParam: ( lastPage, allPages) => allPages.length,

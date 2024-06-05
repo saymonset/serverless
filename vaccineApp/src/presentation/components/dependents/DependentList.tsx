@@ -30,9 +30,9 @@ export const DependentList = ( {dependents, goPage,  fetchNextPage , onDeleteRow
   return (
     <Layout style={{flex:1}}>
       <List
-          data= { dependents }
+          data= { dependents ?? [] }
           numColumns = { 1 }
-          keyExtractor= { (item, index) => `${item._id ?? ''}-${index}` }
+          keyExtractor= { (item, index) => `${item?._id ?? ''}-${index}` }
           renderItem= {( { item } ) => (
            
             <DependentCard 

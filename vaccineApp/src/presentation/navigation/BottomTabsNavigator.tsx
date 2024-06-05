@@ -4,7 +4,7 @@ import { HomeFigmaTab1Screen } from '../screens/tabs/HomeFigmaTab1Screen';
 import { Tab2Screen } from '../screens/tabs/Tab2Screen';
 import { Tab3Screen } from '../screens/tabs/Tab3Screen';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { PerfilesFigmaScreen } from '../screens/dependent/PerfilesFigmaScreen';
+import { DependentsMainScreen } from '../screens/dependent/DependentsMainScreen';
 import { ConfigFigmaTab4Screen } from '../screens/tabs/ConfigFigmaTab4Screen';
 
 
@@ -29,7 +29,7 @@ const TabsAndroid = () => {
                   case 'HomeFigmaTab1Screen':
                     iconName='home-outline'
                     break;
-                 case 'PerfilesFigmaScreen':
+                 case 'DependentsMainScreen':
                     iconName='person-outline'
                     break;
                  case 'HomeFigmaTab3Screen':
@@ -49,7 +49,7 @@ const TabsAndroid = () => {
       >
         {/* En HomeFigmaTab1Screen aparece la tarjeta de (Consultas, Vacunacion, Embarazo, Patologias ) . PROXIMAS CITAS, CUIDA TU SALUD */}
         <BottomTabAndroid.Screen name="HomeFigmaTab1Screen" options={{title:''}} component={HomeFigmaTab1Screen} />
-        <BottomTabAndroid.Screen name="PerfilesFigmaScreen" options={{title:''}} component={PerfilesFigmaScreen} />
+        <BottomTabAndroid.Screen name="DependentsMainScreen" options={{title:''}} component={DependentsMainScreen} />
         <BottomTabAndroid.Screen name="HomeFigmaTab3Screen" options={{title:''}} component={Tab3Screen} />
         <BottomTabAndroid.Screen name="ConfigFigmaTab4Screen" options={{title:''}} component={ConfigFigmaTab4Screen} />
       </BottomTabAndroid.Navigator>
@@ -73,7 +73,7 @@ export const TabsIOs = () => {
                     case 'HomeFigmaTab1Screen':
                        iconName='home-outline'
                        break;
-                    case 'PerfilesFigmaScreen':
+                    case 'DependentsMainScreen':
                        iconName='person-outline'
                        break;
                     case 'HomeFigmaTab3Screen':
@@ -91,7 +91,7 @@ export const TabsIOs = () => {
      
     >
       <BottomTabIOS.Screen name="HomeFigmaTab1Screen" options={{title:''}} component={HomeFigmaTab1Screen} />
-      <BottomTabIOS.Screen name="PerfilesFigmaScreen" options={{title:''}} component={PerfilesFigmaScreen} />
+      <BottomTabIOS.Screen name="DependentsMainScreen" options={{title:''}} component={DependentsMainScreen} />
       <BottomTabIOS.Screen name="HomeFigmaTab3Screen" options={{title:''}} component={Tab3Screen} />
       <BottomTabIOS.Screen name="ConfigFigmaTab4Screen" options={{title:''}} component={ConfigFigmaTab4Screen} />
 

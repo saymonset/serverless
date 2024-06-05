@@ -64,7 +64,6 @@ export const RegisterScreen = () => {
 
     const onSubmit = async(register:Register) => {
         //   const {birth, ...register} = register;
-        console.log('fire-----')
            let registerBd = {...register, password}
            console.log({registerBd})
          registerData( registerBd);
