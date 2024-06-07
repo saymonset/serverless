@@ -53,11 +53,11 @@ export const ConfigDosisModalScreen = () =>  {
             level='1'
           >
                 <VaccinesModal 
+                    highButtonVaccine
                     isVisible
                     title='Seleccione la vacuna'
                     onClose = { ( value ) => handleClose( value )}
                     onData={(value) =>{
-                      
                       onVaccine(value);
                 }}></VaccinesModal>
           </Layout>

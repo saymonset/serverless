@@ -123,17 +123,17 @@ export const VaccinesModal = ({ isVisible = false, title = '', dependentId, onDa
 
         <View style={styles.container}>
                   
-  
-                      <Text category='h6'>
-                            { vaccine && ` ${vaccine}`}
-                      </Text>
+                    { highButtonVaccine ? <></>
+                                         : (  <Text category='h6'>
+                                                        {  vaccine && ` ${vaccine}`}
+                                                  </Text>)}
+                     
 
-                     { highButtonVaccine ? <></> 
-                                         : (<Button 
+                                      <Button 
                                               status='basic'
                                               onPress={() => setVisible(true)}>
                                               <Text status='danger' category='h3'>Vacuna</Text>
-                                          </Button>)} 
+                                      </Button>
 
                       <Modal
                         visible={visible}

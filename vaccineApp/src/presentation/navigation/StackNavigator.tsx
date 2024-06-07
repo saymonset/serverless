@@ -13,7 +13,7 @@ import { PasswordRecoveryScreen } from '../screens/auth/PasswordRecoveryScreen';
 import { SendCodeRecoveryFigmaScreen } from '../screens/home/SendCodeRecoveryFigmaScreen';
 import { PasswordRecoveryTwiceScreen } from '../screens/auth/PasswordRecoveryTwiceScreen';
 import { MainScreen } from '../screens/home/MainScreen';
-import { DependentScreen } from '../screens/dependent/DependentScreen';
+import { DependentAddEditScreen } from '../screens/dependent/DependentAddEditScreen';
 import { ApplyVaccinesAddScreen } from '../screens/vaccines/apply-vaccines/ApplyVaccinesAddScreen';
 import { ApplyVaccinesDependentsScreen } from '../screens/vaccines/apply-vaccines/ApplyVaccinesDependentsScreen';
  
@@ -43,7 +43,7 @@ export type RootStackParams = {
   SendCodeRecoveryFigmaScreen: undefined;
   PasswordRecoveryTwiceScreen: undefined;
   MainScreen: undefined;
-  DependentScreen: {dependentId: string};
+  DependentAddEditScreen: {dependentId: string};
   ApplyVaccinesDependentsScreen:  undefined;
   ApplyVaccinesAddScreen: {dependentId: string};
   ConsultVaccinesDependentsScreen:  undefined;
@@ -84,7 +84,7 @@ export const  StackNavigator = () => {
                   <Stack.Screen name="PasswordRecoveryScreen" component={   PasswordRecoveryScreen } />
                   <Stack.Screen name="SendCodeRecoveryFigmaScreen" component={   SendCodeRecoveryFigmaScreen } />
                   <Stack.Screen name="PasswordRecoveryTwiceScreen" component={   PasswordRecoveryTwiceScreen } />
-                  <Stack.Screen name="DependentScreen" component={   DependentScreen } />
+                  <Stack.Screen name="DependentAddEditScreen" component={   DependentAddEditScreen } />
                   <Stack.Screen name="ApplyVaccinesDependentsScreen" component={   ApplyVaccinesDependentsScreen } />
                   <Stack.Screen name="ApplyVaccinesAddScreen" component={   ApplyVaccinesAddScreen } />
                   <Stack.Screen name="ConsultVaccinesDependentsScreen" component={   ConsultVaccinesDependentsScreen } />

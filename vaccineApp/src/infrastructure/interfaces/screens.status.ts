@@ -1,4 +1,4 @@
 
 
-export type PagesScreenStatus = 'DependentScreen' | 'ApplyVaccinesAddScreen'| 'ConsultVaccinesScreen' ;
+export type PagesScreenStatus = 'DependentAddEditScreen' | 'ApplyVaccinesAddScreen'| 'ConsultVaccinesScreen' ;
 export type PagesVaccineScreenStatus = 'VaccineEditCreateScreen' | "DosisEditCreateScreen" 

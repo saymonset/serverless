@@ -165,15 +165,16 @@ export const RegisterScreen = () => {
                                 onEstado(value)  
                                 setFieldValue('state', `${value?.capital} - ${value?.estado}`)
                             }}></Estados>
+                             <Layout  style={{marginVertical:10}}></Layout>
                              {/* Municipio */}
-                           
                             { values.city && ( <Text category='h6'>{values.city? values.city:''}</Text> )}
-                              <Municipios 
-                                          onData={(value) =>{
-                                            onMuncipio(value)  
-                                            setFieldValue('city', `${value?.capital}`)
-                                          }}
-                                          idEstado = {idEstado}></Municipios>
+                            { values.state && (  <Municipios 
+                                                        onData={(value) =>{
+                                                            onMuncipio(value)  
+                                                            setFieldValue('city', `${value?.capital}`)
+                                                        }}
+                                                        idEstado = {idEstado}></Municipios> )}
+                             
                                {/* NOMBRE */}
                                <Layout style = {{ marginVertical:20}}>
                                                             <Text style={ stylesFigma.label }>Nombre:<Text style={{ color: 'skyblue' }}> *</Text></Text>

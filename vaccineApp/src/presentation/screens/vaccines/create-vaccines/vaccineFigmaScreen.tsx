@@ -107,7 +107,7 @@ export const VaccineFigmaScreen = () => {
         </MainLayout>
         {/* <FAB 
         iconName="plus-outline"
-        onPress={() => navigation.navigate('DependentScreen',{ dependentId: 'new' })}
+        onPress={() => navigation.navigate('DependentAddEditScreen',{ dependentId: 'new' })}
         style={{
           position: 'absolute',
           bottom: 30,

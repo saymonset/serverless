@@ -13,7 +13,7 @@ import { CreateEditVaccineList } from '../../../components/vaccine/consult/Creat
 import { getDosisByVaccineByIdAction, getVaccineByIdAction, getVaccinesAction } from '../../../../actions/vaccines/createEditVaccinesAction';
 import { CreateEditDosisList } from '../../../components/vaccine/dosis/CreateEditDosisList';
 import { StackScreenProps } from '@react-navigation/stack';
-import { VaccineByIDEntity } from '../../../../domain/entities/VaccineEditCreateEntity';
+import { DosisEntity, VaccineByIDEntity } from '../../../../domain/entities/VaccineEditCreateEntity';
 import { Text } from '@ui-kitten/components';
 import { useVaccines } from '../../../hooks/useVaccines';
 import { useDosis } from '../../../hooks/useDosis';
@@ -31,8 +31,9 @@ export const DosisFigmaScreen = ({route}:Props) => {
     const [ term, setTerm ] = useState('');
     const vaccineIdRef = useRef(route.params.vaccineId);
     const navigation = useNavigation<NavigationProp<RootStackParams>>();
-    const { isLoading:isLoadingDosis, dosisDelete, getDosisByVaccine } = useDosis();
+    const { dosisDelete, getDosisByVaccine } = useDosis();
     const { clearNameVaccineSelect, putVaccineID, getVaccinesAll} = useVaccines();
+    const [ dosis, setDosis] = useState<DosisEntity[]>( [] );
        
     
     useEffect(() => {
@@ -40,8 +41,11 @@ export const DosisFigmaScreen = ({route}:Props) => {
       clearNameVaccineSelect();
       //Este Id de la vacuna se etablece al colocar dosis
       putVaccineID(vaccineIdRef.current);
+
       //Refrescamos cache
       refetch();
+
+
     }, []);
 
     useEffect(() => {
@@ -52,7 +56,8 @@ export const DosisFigmaScreen = ({route}:Props) => {
 
   useEffect(() => {
     // Cargamos las vacunas de ese familiar
-    getVaccinesAll();
+   // getVaccinesAll();
+    
  }, []);
 
  
@@ -104,6 +109,7 @@ export const DosisFigmaScreen = ({route}:Props) => {
       initialPageParam: 0,
       queryFn: async ( params )=>  {
         const dosis = await getDosisByVaccine(vaccineIdRef.current, termUpdate());
+        // setDosis( dosis?.pages.flat())
         return dosis ?? [];
       },
       getNextPageParam: ( lastPage, allPages) => allPages.length,

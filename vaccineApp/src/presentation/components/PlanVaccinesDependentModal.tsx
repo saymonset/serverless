@@ -130,58 +130,58 @@ const onVaccineChecked = (): void => {
       
     );
   return (
-    <View style={styles.container}>
+     <View style={styles.container}>
        
   
-  <Text category='h6'>
-          { vaccine && ` ${vaccine}`}
-    </Text>
+          <Text category='h6'>
+                { vaccine && ` ${vaccine}`}
+          </Text>
   
-    <Button 
-        status='basic'
-        onPress={() => setVisible(true)}>
-        <Text status='danger' category='h3'>Vacuna</Text>
-    </Button>
+          <Button 
+              status='basic'
+              onPress={() => setVisible(true)}>
+              <Text status='danger' category='h3'>Vacuna</Text>
+          </Button>
 
-    <Modal
-      visible={visible}
-      backdropStyle={styles.backdrop}
-      onBackdropPress={() => setVisible(false)}
-    >
-      <Card 
-             header={<Text >{title}</Text>}
-           disabled={true} 
-           style={{  width:330, height:700}}>
-      <List
-          style={styles.container}
-          data={vaccinesAux ?? []}
-          ItemSeparatorComponent={Divider}
-          renderItem={renderItem}
-        />
-        
-        <Layout style={{flexDirection:'row', alignItems:'center'}}>
+          <Modal
+            visible={visible}
+            backdropStyle={styles.backdrop}
+            onBackdropPress={() => setVisible(false)}
+          >
+            <Card 
+                  header={<Text >{title}</Text>}
+                disabled={true} 
+                style={{  width:330, height:600}}>
+            <List
+                style={styles.container}
+                data={vaccinesAux ?? []}
+                ItemSeparatorComponent={Divider}
+                renderItem={renderItem}
+              />
+              
+              <Layout style={{flexDirection:'row', alignItems:'center', marginBottom:30}}>
 
-        <Button 
-            status='success'
-            style={{marginHorizontal:20}} onPress={() => {
-            onVaccineChecked();
-        }}>
-          Aplicar
-        </Button>
-      
-        <Button onPress={() => {
-              setVisible(false);
-              //Si existe el metodo, lanzamos verdadero
-              onClose && onClose(true);
-        }}>
-          Cerrar
-        </Button>
-        </Layout>
-       
-      </Card>
-    </Modal>
+                  <Button 
+                      status='success'
+                      style={{marginHorizontal:20}} onPress={() => {
+                      onVaccineChecked();
+                  }}>
+                    Aplicar
+                  </Button>
+                
+                  <Button onPress={() => {
+                        setVisible(false);
+                        //Si existe el metodo, lanzamos verdadero
+                        onClose && onClose(true);
+                  }}>
+                    Cerrar
+                  </Button>
+              </Layout>
+            
+            </Card>
+          </Modal>
 
-  </View>
+     </View>
   )
 }
 

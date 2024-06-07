@@ -104,7 +104,7 @@ export const DependentsMainScreen = () => {
       staleTime: 1000 * 60 * 60, // 1 hour
       initialPageParam: 0,
       queryFn: async ( params )=>  {
-        const dependents = await getDependentByPageAction(10000,params.pageParam, termUpdate(), user);
+        const dependents = await getDependentByPageAction(10000,params.pageParam, termUpdate(), user!);
         return dependents;
       },
       getNextPageParam: ( lastPage, allPages) => allPages.length,
@@ -124,7 +124,7 @@ export const DependentsMainScreen = () => {
             title="Perfiles"
             subTitle=""
             setTerm={( value )=> setTerm(value)}
-            rightAction= { () => navigation.navigate('DependentScreen',{ dependentId: 'new' })}
+            rightAction= { () => navigation.navigate('DependentAddEditScreen',{ dependentId: 'new' })}
             rightActionIcon="plus-outline"
             >
           
@@ -132,7 +132,7 @@ export const DependentsMainScreen = () => {
               ?  (<LoadingScreen />)
               : <DependentList 
                       onDeleteRow  = { (idRowDelete) => deleteRow(idRowDelete, data?.pages.flat() ?? []) }
-                      goPage="DependentScreen"
+                      goPage="DependentAddEditScreen"
                       dependents={  data?.pages.flat() ?? [] }
                       fetchNextPage = { fetchNextPage }/> }
             
@@ -140,7 +140,7 @@ export const DependentsMainScreen = () => {
         
         {/* <FAB 
         iconName="plus-outline"
-        onPress={() => navigation.navigate('DependentScreen',{ dependentId: 'new' })}
+        onPress={() => navigation.navigate('DependentAddEditScreen',{ dependentId: 'new' })}
         style={{
           position: 'absolute',
           bottom: 30,

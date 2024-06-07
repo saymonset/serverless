@@ -1,7 +1,7 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { Layout } from '@ui-kitten/components'
+import { Layout, Text } from '@ui-kitten/components'
 import React, { useEffect, useState } from 'react'
-import { DependentList } from '../../../components/dependents/DependentList';
+import { StyleSheet, View } from 'react-native';
 import { FAB } from '../../../components/ui/FAB';
 import { ConsultVaccineList } from '../../../components/vaccine/consult/ConsultVaccineList';
 import { useConsultVaccine } from '../../../hooks/useConsultVaccine';
@@ -18,8 +18,7 @@ export const ConsultVaccineDetailScreen = ({ dependent_id }:Props) => {
     
     const { exportVaccineAppliedByDependent } = useExportar();
     const { getVaccines, isLoading:isLoadingVaccine } = useVaccines();
-    const { isLoading, loadVaccineAppliedByDependent } = useConsultVaccine();
-
+    const { isLoading, loadVaccineAppliedByDependent, applyVaccinesUniqByIds } = useConsultVaccine();
 
 
   useEffect(() => {
@@ -40,7 +39,7 @@ export const ConsultVaccineDetailScreen = ({ dependent_id }:Props) => {
       <MainLayout
                 title="Consultar Vacunas"
                 subTitle=""
-                setTerm={( value )=>setTerm(value)}
+                //setTerm={( value )=>setTerm(value)}
                 // rightAction= { () => navigation.navigate('ConsultVaccinesScreen',{ dependentId: 'new' })}
                 // rightActionIcon="plus-outline"
                 >
@@ -49,19 +48,47 @@ export const ConsultVaccineDetailScreen = ({ dependent_id }:Props) => {
                   ?  (<LoadingScreen />)
                   : <ConsultVaccineList 
                         /> }
+
+            
+
+              { ( !applyVaccinesUniqByIds || applyVaccinesUniqByIds.length <= 0) && (
+                                                              <View style={styles.alternativeContainer}> 
+                                                                    <Text
+                                                                      style={styles.text}
+                                                                      appearance='alternative'
+                                                                    >
+                                                                      No se ha encontrado ningún registro
+                                                                    </Text>
+                                                              </View>
+                )}
+              { ( applyVaccinesUniqByIds && applyVaccinesUniqByIds.length > 0) && (
+                                                                  <FAB 
+                                                                      iconName="attach-2-outline"
+                                                                      onPress={() => exportVaccineAppliedByDependent ( dependent_id)}
+                                                                      style={{
+                                                                        position: 'absolute',
+                                                                        bottom: 30,
+                                                                        right: 20,
+                                                                      }}
+                                                                    />  
+                )}
                 
       </MainLayout>
-    
-     <FAB 
-        iconName="attach-2-outline"
-        onPress={() => exportVaccineAppliedByDependent ( dependent_id)}
-        style={{
-          position: 'absolute',
-          bottom: 30,
-          right: 20,
-        }}
-      />
+   
     </>
   
   )
 }
+
+
+
+const styles = StyleSheet.create({
+      text: {
+        margin: 2,
+      },
+      alternativeContainer: {
+        borderRadius: 4,
+        marginVertical: 2,
+        backgroundColor: '#3366FF',
+      },
+});

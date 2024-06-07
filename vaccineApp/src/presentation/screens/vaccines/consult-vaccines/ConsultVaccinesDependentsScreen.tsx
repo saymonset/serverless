@@ -13,6 +13,7 @@ import { getDependentByPageAction } from '../../../../actions/dependents/get-dep
 import { MainLayout } from '../../../layouts/MainLayout';
 import { LoadingScreen } from '../../loading/LoadingScreen';
 import { DependentList } from '../../../components/dependents/DependentList';
+import { useLogin } from '../../../hooks/useLogin';
  
 
 
@@ -20,6 +21,7 @@ import { DependentList } from '../../../components/dependents/DependentList';
 const screenWidth = Dimensions.get("window").width;
 
 export const ConsultVaccinesDependentsScreen = () => {
+    const { user } = useLogin();
     const { loadGender } =  useGender();
     const { loadRelationShip } =  useRelationShip();
     const { top } = useSafeAreaInsets();
@@ -58,7 +60,7 @@ export const ConsultVaccinesDependentsScreen = () => {
       staleTime: 1000 * 60 * 60, // 1 hour
       initialPageParam: 0,
       queryFn: async ( params )=>  {
-        const dependents = await getDependentByPageAction(10000,params.pageParam, termUpdate());
+        const dependents = await getDependentByPageAction(10000,params.pageParam, termUpdate(), user!);
         return dependents;
       },
       getNextPageParam: ( lastPage, allPages) => allPages.length,

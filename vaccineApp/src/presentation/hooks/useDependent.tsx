@@ -9,9 +9,11 @@ import { GenderElement } from '../../infrastructure/interfaces/gender';
 import { selectOption } from '../../infrastructure/interfaces/select-option';
 import { RootState } from '../store';
 import { clearDependentIdDeleted, putDependentIdDeleted, startLoadingStore, stopLoadingStore } from '../store/slices/dependent';
+import { useLogin } from './useLogin';
  
 
 export const useDependent = () => {
+   
     const {  isLoading, dependentIdDeleted } = useSelector((state: RootState) => state.dependentByIdStore);
     const dispatch = useDispatch();
 
@@ -22,9 +24,12 @@ export const useDependent = () => {
     // 
     const getDependentslist = async (pageParam: number):Promise<Dependent[]> =>{
       try{
+        const { user } = useLogin();
         dispatch( startLoadingStore())
         // TODO: realizar peticion http
-        const dependents:Dependent[] = await getDependentByPageAction(10000,pageParam);
+        let term = "''";
+        const dependents:Dependent[] = await getDependentByPageAction(10000,pageParam, term, user!);
+        //const dependents = await getDependentByPageAction(10000,params.pageParam, termUpdate(), user!);
         //dispatch( genderLoadStore(payload) );
         dispatch( stopLoadingStore() );
         return dependents ?? [];

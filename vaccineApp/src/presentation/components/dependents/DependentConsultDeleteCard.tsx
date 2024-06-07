@@ -27,7 +27,7 @@ export const DependentConsultDeleteCard = ({ dependent , onDeleteRow}:Props) => 
     <Layout style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
        
        <Pressable
-                 onPress = { () => navigation.navigate('DependentScreen',{ dependentId: dependent._id.$oid})}
+                 onPress = { () => navigation.navigate('DependentAddEditScreen',{ dependentId: dependent._id.$oid})}
                >
                   <Layout style={{ flexDirection: 'row'}}>
                       <Layout style={ {...styles.icon,

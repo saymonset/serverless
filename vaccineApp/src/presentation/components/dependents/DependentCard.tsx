@@ -23,7 +23,7 @@ interface Props {
 
  
 
-export const DependentCard = ( { dependent, goPage = 'DependentScreen', onDeleteRow}:Props) => {
+export const DependentCard = ( { dependent, goPage = 'DependentAddEditScreen', onDeleteRow}:Props) => {
 
   const navigation = useNavigation<NavigationProp<RootStackParams>>();
  
@@ -36,7 +36,7 @@ export const DependentCard = ( { dependent, goPage = 'DependentScreen', onDelete
   return (
     <Layout  style={{flex:1}}>
     
-      {(goPage==='DependentScreen') && <DependentConsultDeleteCard 
+      {(goPage==='DependentAddEditScreen') && <DependentConsultDeleteCard 
                                           onDeleteRow = { onDeleteRow }
                                           dependent ={ dependent }
                                       />

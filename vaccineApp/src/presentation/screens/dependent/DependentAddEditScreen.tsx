@@ -26,11 +26,11 @@ import { VaccinesModal } from '../../components/VaccinesModal'
 import { Vaccine } from '../../../domain/entities/VaccineDependent'
 import { PlanVaccinesDependentModal } from '../../components/PlanVaccinesDependentModal'
 
-interface Props extends StackScreenProps<RootStackParams,'DependentScreen'>{};
+interface Props extends StackScreenProps<RootStackParams,'DependentAddEditScreen'>{};
 
 
 
-export const DependentScreen = ({route}:Props) => {
+export const DependentAddEditScreen = ({route}:Props) => {
   const theme = useTheme();
   const queryClient = useQueryClient();
   
