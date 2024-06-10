@@ -1,15 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
-import { applyVaccinneAction } from "../../actions/apply-vaccine/applyVaccineAction";
-import { deleteVaccinneAction, vaccinneAction } from "../../actions/apply-vaccine/vaccinneAction";
 import { getPlanVaccineByDependentIdAction, updatePlanVaccineByDependentIdAction } from "../../actions/plan-vaccines/planVaccinesAction";
 import { getVaccinesAction } from "../../actions/vaccines/createEditVaccinesAction";
-import { ApplyVaccineEntity } from "../../domain/entities/apply-vaccine-interface";
-import { PlanVaccineByDependentEntity } from "../../domain/entities/PlanVaccineByDependentEntity";
-import { Vaccine, VaccineDependentPage } from "../../domain/entities/VaccineDependent";
-import { DosisEntity } from "../../domain/entities/VaccineEditCreateEntity";
+import { Vaccine } from "../../domain/entities/VaccineDependent";
 import { RootState } from "../store";
-import { loadDosisFilterbyVaccineId, startApplyVaccines, stopApplyVaccines } from "../store/slices/applyvaccines";
-import { initVaccinesResponse, loadVaccinesOnly, loadVaccinesResponse, offDosis, setNameVaccineSelect, setNameVaccineSelectClear, setVaccineId, showDosis, startVaccines, stopVaccines } from "../store/slices/vaccines";
+import { initVaccinesResponse, loadVaccinesOnly, startVaccines, stopVaccines } from "../store/slices/vaccines";
 
  
 

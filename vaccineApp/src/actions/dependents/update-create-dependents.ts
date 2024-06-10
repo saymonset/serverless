@@ -1,7 +1,11 @@
 import { AxiosResponse, isAxiosError } from "axios";
 import vaccinesApi from "../../config/api/vaccinesApi";
+import { VaccineDependentPage } from "../../domain/entities/VaccineDependent";
 import { DependentById, DependentCreateResponse, DependentUpdateCreateResponse } from "../../infrastructure/interfaces/dependentById-interface";
 import { UpdateCreateDependent } from "../../infrastructure/mappers/dependent/updateDependent-mapper";
+import { vaccinneAction } from "../apply-vaccine/vaccinneAction";
+import { updatePlanVaccineByDependentIdAction } from "../plan-vaccines/planVaccinesAction";
+import { getDependentByIdAction } from "./get-dependent-by-id";
 
 export const updateCreateDependentAction = ( dependent: Partial<DependentById> )=> {
  
@@ -62,6 +66,19 @@ const updateDependent = async (dependent: Partial<DependentById>):Promise<Depend
         let dep = Object.assign({}, resto, { birth: birthStr});
        
         const { data }: AxiosResponse<DependentCreateResponse> = await vaccinesApi.post<DependentCreateResponse>(`/dependent/p`, {...dep, status});
+
+        const { dependentNew } = data;
+
+        //Scamos el id generado
+        const { $oid:idDependent } = dependentNew;
+        let vaccinesData:VaccineDependentPage = await vaccinneAction(idDependent);
+        let { vaccines } = vaccinesData;
+        //sacamos las vacunas que esten en alerta segun su edad y tomamos solo las vacunas que esten con alerta aaplicar
+        let vaccs = vaccines.filter(( vac )=> vac.isAlertApply).map(( vac )=> vac._id.$oid);
+        //Actualizamos su plan de vacunacion 
+        await updatePlanVaccineByDependentIdAction  (idDependent,  vaccs ?? []) ; 
+        
+
       return returnCreaterMapper(data);
     } catch (error) {
       if ( isAxiosError(error) ) {

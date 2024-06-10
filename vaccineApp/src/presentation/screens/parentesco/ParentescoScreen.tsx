@@ -2,13 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { Alert, Dimensions, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { useDispatch } from 'react-redux';
-import { useVaccines } from '../../hooks/useVaccines';
 import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 import { RootStackParams } from '../../navigation/StackNavigator';
 import { MainLayout } from '../../layouts/MainLayout';
 import { LoadingScreen } from '../loading/LoadingScreen';
-import { CreateEditVaccineList } from '../../components/vaccine/consult/CreateEditVaccineList';
 import { useParentesco } from '../../hooks/useParentesco';
 import { CreateEditParentescoList } from '../../components/parentesco/CreateEditParentescoList';
 
