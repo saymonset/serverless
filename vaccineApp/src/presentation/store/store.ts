@@ -6,6 +6,7 @@ import { dependentByIdSlice } from './slices/dependent'
 import { dosisSlice } from './slices/dosis'
 import { genderSlice } from './slices/gender'
 import { loginSlice } from './slices/login'
+import { parentescoSlice } from './slices/parentescos'
 import { registerSlice } from './slices/register'
 import { relationShipSlice } from './slices/relationShip'
 import { sendSmsSlice } from './slices/sendSms'
@@ -20,6 +21,7 @@ export const store = configureStore({
     registerStore: registerSlice.reducer,
     dependentByIdStore: dependentByIdSlice.reducer,
     vaccineStore: vaccineSlice.reducer,
+    parentescoStore: parentescoSlice.reducer,
     applyVaccineStore: applyVaccineSlice.reducer,
     consultVaccineStore: consultVaccineSlice.reducer,
     dosisStore: dosisSlice.reducer,

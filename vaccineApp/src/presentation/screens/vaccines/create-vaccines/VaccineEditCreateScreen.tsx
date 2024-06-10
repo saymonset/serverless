@@ -22,8 +22,9 @@ import { MyIcon } from '../../../components/ui/MyIcon';
 import { SelectSimpleUsageShowcase } from '../../../components/ui/SelectSimpleUsageShowcase';
 import { Municipios } from '../../../components/Municipios';
 import { Estados } from '../../../components/Estados';
-import { Vaccine, VaccinePutPostResponseEntity } from '../../../../domain/entities/VaccineEditCreateEntity';
+import {  VaccinePutPostResponseEntity } from '../../../../domain/entities/VaccineEditCreateEntity';
 import { getVaccineByIdAction, updateCreateVaccineAction } from '../../../../actions/vaccines/createEditVaccinesAction';
+import { Vaccine } from '../../../../domain/entities/VaccineDependent';
 
 interface Props extends StackScreenProps<RootStackParams,'VaccineEditCreateScreen'>{};
 

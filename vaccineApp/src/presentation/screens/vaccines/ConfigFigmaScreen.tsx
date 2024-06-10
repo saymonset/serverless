@@ -33,7 +33,8 @@ export const ConfigFigmaScreen = () => {
         label="Servicios"
         selectedValue={alignItems}
         values={[ {title:'Vacunas', color:'rgb(180, 210, 255)', iconName:"eyedrop-outline"}, 
-                  {title:'Dosis', color:'oldlace', iconName:"brush-outline"},]}
+                  {title:'Dosis', color:'oldlace', iconName:"brush-outline"},
+                  {title:'Parentesco', color:'rgb(180, 230, 200)', iconName:"eyedrop-outline"}]}
         setSelectedValue={setAlignItems}>
       </PreviewLayout>
     </>
@@ -67,6 +68,9 @@ const PreviewLayout = ({
             break;
           case 'Dosis':
             navigation.navigate( 'ConfigDosisModalScreen' as never)
+            break;
+          case 'Parentesco':
+            navigation.navigate( 'ParentescoScreen' as never)
             break;
           default:
             break;

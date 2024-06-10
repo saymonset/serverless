@@ -13,7 +13,6 @@ import { PasswordRecoveryScreen } from '../screens/auth/PasswordRecoveryScreen';
 import { SendCodeRecoveryFigmaScreen } from '../screens/home/SendCodeRecoveryFigmaScreen';
 import { PasswordRecoveryTwiceScreen } from '../screens/auth/PasswordRecoveryTwiceScreen';
 import { MainScreen } from '../screens/home/MainScreen';
-import { DependentAddEditScreen } from '../screens/dependent/DependentAddEditScreen';
 import { ApplyVaccinesAddScreen } from '../screens/vaccines/apply-vaccines/ApplyVaccinesAddScreen';
 import { ApplyVaccinesDependentsScreen } from '../screens/vaccines/apply-vaccines/ApplyVaccinesDependentsScreen';
  
@@ -25,6 +24,9 @@ import { DosisFigmaScreen } from '../screens/vaccines/dosis-vaccines/DosisFigmaS
 import { DosisEditCreateScreen } from '../screens/vaccines/dosis-vaccines/DosisEditCreateScreen';
 import { ConsultDosisDetailScreen } from '../screens/vaccines/consult-vaccines/ConsultDosisDetailScreen';
 import { ConfigDosisModalScreen } from '../screens/vaccines/dosis-vaccines/ConfigDosisModalScreen';
+import { ParentescoScreen } from '../screens/parentesco/ParentescoScreen';
+import { ParentescoEditCreateScreen } from '../screens/parentesco/ParentescoEditCreateScreen';
+import { DependentAddEditScreen } from '../screens/dependent/DependentAddEditScreen';
  
  
 
@@ -47,13 +49,15 @@ export type RootStackParams = {
   ApplyVaccinesDependentsScreen:  undefined;
   ApplyVaccinesAddScreen: {dependentId: string};
   ConsultVaccinesDependentsScreen:  undefined;
-  VaccineFigmaScreen:  undefined;
   ConsultVaccinesScreen: {dependentId: string};
+  VaccineFigmaScreen:  undefined;
   VaccineEditCreateScreen: {vaccineId: string};
   DosisFigmaScreen:  {vaccineId: string};
   DosisEditCreateScreen: {dosisId: string};
   ConsultDosisDetailScreen: {vaccineId: string};
   ConfigDosisModalScreen: undefined;
+  ParentescoScreen:  undefined;
+  ParentescoEditCreateScreen: {parentescoId: string};
   
   
 }
@@ -94,7 +98,9 @@ export const  StackNavigator = () => {
                   <Stack.Screen name="DosisFigmaScreen" component={   DosisFigmaScreen } />
                   <Stack.Screen name="DosisEditCreateScreen" component={   DosisEditCreateScreen } />
                   <Stack.Screen name="ConsultDosisDetailScreen" component={   ConsultDosisDetailScreen } />
-                   <Stack.Screen name="ConfigDosisModalScreen" component={   ConfigDosisModalScreen } /> 
+                  <Stack.Screen name="ConfigDosisModalScreen" component={   ConfigDosisModalScreen } /> 
+                  <Stack.Screen name="ParentescoScreen" component={   ParentescoScreen } />
+                  <Stack.Screen name="ParentescoEditCreateScreen" component={   ParentescoEditCreateScreen } />
     </Stack.Navigator>
   );
 }

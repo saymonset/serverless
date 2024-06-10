@@ -3,9 +3,9 @@ import { applyVaccinneAction } from "../../actions/apply-vaccine/applyVaccineAct
 import { deleteVaccinneAction, vaccinneAction } from "../../actions/apply-vaccine/vaccinneAction";
 import { getPlanVaccineByDependentIdAction, updatePlanVaccineByDependentIdAction } from "../../actions/plan-vaccines/planVaccinesAction";
 import { getVaccinesAction } from "../../actions/vaccines/createEditVaccinesAction";
-import { ApplyVaccineEntity, Vaccine } from "../../domain/entities/apply-vaccine-interface";
+import { ApplyVaccineEntity } from "../../domain/entities/apply-vaccine-interface";
 import { PlanVaccineByDependentEntity } from "../../domain/entities/PlanVaccineByDependentEntity";
-import { VaccineDependentPage } from "../../domain/entities/VaccineDependent";
+import { Vaccine, VaccineDependentPage } from "../../domain/entities/VaccineDependent";
 import { DosisEntity } from "../../domain/entities/VaccineEditCreateEntity";
 import { RootState } from "../store";
 import { loadDosisFilterbyVaccineId, startApplyVaccines, stopApplyVaccines } from "../store/slices/applyvaccines";
@@ -72,25 +72,7 @@ export const useVaccines = () => {
 
 
 
-
-
-      // dispatch(startVaccines());
-      // dispatch(initVaccinesResponse({}));
-      // let page = 0;
-      // let term = '""';
-     
-    
-
-      
-
-     
-      // const payload = {
-      //                   vaccines
-      //                 };
-      // dispatch(loadVaccinesOnly(payload));
-      // dispatch(stopVaccines());     
-      // return vaccines;
-
+ 
 
 
 

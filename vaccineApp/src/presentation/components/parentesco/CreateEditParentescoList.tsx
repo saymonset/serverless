@@ -3,18 +3,19 @@ import React, { FC, useState } from 'react'
 import { Layout, List, Text } from '@ui-kitten/components';
 import { RefreshControl } from 'react-native-gesture-handler';
 import { useQueryClient } from '@tanstack/react-query';
-import { PagesScreenStatus, PagesVaccineScreenStatus } from '../../../../infrastructure/interfaces/screens.status';
- 
-import { CreateEditVaccineCard } from './CreateEditVaccineCard';
-import { Vaccine } from '../../../../domain/entities/VaccineDependent';
+import { PagesParentescoScreenStatus, PagesVaccineScreenStatus } from '../../../infrastructure/interfaces/screens.status';
+import { Vaccine } from '../../../domain/entities/VaccineDependent';
+import { CreateEditParentescoCard } from './CreateEditParentescoCard';
+import { Relationship } from '../../../domain/entities/ParentescoEntity';
+
 
 interface Props {
-    goPage: PagesVaccineScreenStatus;
-    vaccines: Vaccine[];
+    goPage: PagesParentescoScreenStatus;
+    parentescos: Relationship[];
     fetchNextPage : () => void;
     onDelete: (id:string) => void;
 }
-export const CreateEditVaccineList :FC<Props> = ( {vaccines, goPage, onDelete,  fetchNextPage }:Props) => {
+export const CreateEditParentescoList :FC<Props> = ( {parentescos, goPage, onDelete,  fetchNextPage }:Props) => {
 
        const queryClient = useQueryClient();
        const [isRefreshing, setIsRefreshing] = useState(false);
@@ -28,15 +29,15 @@ export const CreateEditVaccineList :FC<Props> = ( {vaccines, goPage, onDelete,  
   return (
     <Layout style={{flex:1}}>
       <List
-          data= { vaccines }
+          data= { parentescos }
           numColumns = { 1 }
           keyExtractor= { (item, index) => `${item._id}-${index}` }
           renderItem= {( { item } ) => (
            
-            <CreateEditVaccineCard 
+            <CreateEditParentescoCard 
                    onDelete ={ onDelete }
                    goPage={ goPage }
-                   vaccine={ item}/>
+                   parentesco={ item}/>
           )}
           
           ListFooterComponent={ () => <Layout style={{ flex:1}}/>}
