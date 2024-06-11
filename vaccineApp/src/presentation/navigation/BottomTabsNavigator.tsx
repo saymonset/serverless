@@ -2,7 +2,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Platform } from 'react-native';
 import { HomeFigmaTab1Screen } from '../screens/tabs/HomeFigmaTab1Screen';
 import { Tab2Screen } from '../screens/tabs/Tab2Screen';
-import { Tab3Screen } from '../screens/tabs/Tab3Screen';
+import { CalendarTabScreen } from '../screens/tabs/CalendarTabScreen';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { DependentsMainScreen } from '../screens/dependent/DependentsMainScreen';
 import { ConfigFigmaTab4Screen } from '../screens/tabs/ConfigFigmaTab4Screen';
@@ -32,7 +32,7 @@ const TabsAndroid = () => {
                  case 'DependentsMainScreen':
                     iconName='person-outline'
                     break;
-                 case 'HomeFigmaTab3Screen':
+                 case 'CalendarTabScreen':
                     iconName='calendar-outline'
                     break;
                  case 'ConfigFigmaTab4Screen':
@@ -50,7 +50,7 @@ const TabsAndroid = () => {
         {/* En HomeFigmaTab1Screen aparece la tarjeta de (Consultas, Vacunacion, Embarazo, Patologias ) . PROXIMAS CITAS, CUIDA TU SALUD */}
         <BottomTabAndroid.Screen name="HomeFigmaTab1Screen" options={{title:''}} component={HomeFigmaTab1Screen} />
         <BottomTabAndroid.Screen name="DependentsMainScreen" options={{title:''}} component={DependentsMainScreen} />
-        <BottomTabAndroid.Screen name="HomeFigmaTab3Screen" options={{title:''}} component={Tab3Screen} />
+        <BottomTabAndroid.Screen name="CalendarTabScreen" options={{title:''}} component={CalendarTabScreen} />
         <BottomTabAndroid.Screen name="ConfigFigmaTab4Screen" options={{title:''}} component={ConfigFigmaTab4Screen} />
       </BottomTabAndroid.Navigator>
     );
@@ -76,7 +76,7 @@ export const TabsIOs = () => {
                     case 'DependentsMainScreen':
                        iconName='person-outline'
                        break;
-                    case 'HomeFigmaTab3Screen':
+                    case 'CalendarTabScreen':
                        iconName='calendar-outline'
                        break;
                     case 'HomeFigmaTab4Screen':
@@ -92,7 +92,7 @@ export const TabsIOs = () => {
     >
       <BottomTabIOS.Screen name="HomeFigmaTab1Screen" options={{title:''}} component={HomeFigmaTab1Screen} />
       <BottomTabIOS.Screen name="DependentsMainScreen" options={{title:''}} component={DependentsMainScreen} />
-      <BottomTabIOS.Screen name="HomeFigmaTab3Screen" options={{title:''}} component={Tab3Screen} />
+      <BottomTabIOS.Screen name="CalendarTabScreen" options={{title:''}} component={CalendarTabScreen} />
       <BottomTabIOS.Screen name="ConfigFigmaTab4Screen" options={{title:''}} component={ConfigFigmaTab4Screen} />
 
  

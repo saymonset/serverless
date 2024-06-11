@@ -19,13 +19,11 @@ export const useApplyVaccine = () => {
  
       const getDosis = async(vaccineId:string, dependent_id:string) =>{
         try {
-
           if (vaccineId && dependent_id){
             dispatch(startApplyVaccines());
             dispatch(clearApplyVaccine( ));
             
             const   data:ApplyVaccineEntity   = await applyVaccinneAction(vaccineId, dependent_id );
-           
            
             const { vacc_apply_vaccines } = data;
             if (vacc_apply_vaccines && vacc_apply_vaccines.length > 0){
@@ -48,13 +46,11 @@ export const useApplyVaccine = () => {
           console.log(error)
           dispatch(stopApplyVaccines());
         }
-        
-        
-       
             return {};
       }
-   
 
+
+      
   return  {
     getDosis,
     vaccine,

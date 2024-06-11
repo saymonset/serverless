@@ -9,6 +9,7 @@ import WatchYourHealthScreen from '../vaccines/WatchYourHealthScreen';
 
 export const HomeFigmaTab1Screen = () => {
  
+   
   
   return (
     <Layout style={stylesFigma.container}>
