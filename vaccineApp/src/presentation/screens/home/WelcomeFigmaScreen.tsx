@@ -7,6 +7,7 @@ import { RootStackParams } from '../../navigation/StackNavigator';
 import { useSendSms } from '../../hooks/useSendSms';
 import { stylesFigma } from '../theme/appFigmaTheme';
 import { useTranslation } from 'react-i18next';
+import { SelectLenguage } from '../../components/i18n/SelectLenguage';
  
 interface Props extends StackScreenProps<RootStackParams, 'WelcomeScreen'> {}
 
@@ -81,6 +82,7 @@ export const WelcomeScreen = ({ navigation }:Props) => {
               >
              Inicia sessión
           </Text>
+         <SelectLenguage></SelectLenguage>  
         </Layout>
          </Layout>
     </Layout>                                
