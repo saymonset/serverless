@@ -36,7 +36,7 @@ export const ConsultVaccineCard = ( { applyVaccine }:Props) => {
 
   return (
     <Layout  style={{flex:1}}>
-      <Card 
+                                    <Card 
                                       style={{flex:1}}
                                           onPress = { () => navigation.navigate('ConsultDosisDetailScreen',{ vaccineId: applyVaccine.dosis.vaccine._id.$oid})}
                                       >

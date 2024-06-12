@@ -1,11 +1,11 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Platform } from 'react-native';
 import { HomeFigmaTab1Screen } from '../screens/tabs/HomeFigmaTab1Screen';
-import { Tab2Screen } from '../screens/tabs/Tab2Screen';
-import { CalendarTabScreen } from '../screens/tabs/CalendarTabScreen';
+ 
 import Icon from 'react-native-vector-icons/Ionicons';
 import { DependentsMainScreen } from '../screens/dependent/DependentsMainScreen';
 import { ConfigFigmaTab4Screen } from '../screens/tabs/ConfigFigmaTab4Screen';
+import { CalendarTabScreen } from '../screens/tabs/CalendarTabScreen';
 
 
 export const BottomTabsNavigator = () => {
