@@ -70,12 +70,30 @@ export class VaccinesMapper {
         dosis_ids:       response.dosis_ids
       }
     }
+
+
+  //   static dosisByvaccineByIDToEntity(response: VaccineByIDResponse): DosisEntity[] {
+  //     if (response.dosis_ids && response.dosis_ids.length > 0) {
+  //         return response.dosis_ids
+  //             .filter(dosis => dosis.status === false) // Filter doses with status "false"
+  //             .map(dosis => {
+  //                 return {
+  //                     // ... (rest of the mapping logic remains the same)
+  //                 };
+  //             });
+  //     } else {
+  //         return [];
+  //     }
+  // }
+  
      
     static dosisByvaccineByIDToEntity(response: VaccineByIDResponse): DosisEntity[] {
       // Verificar si response.dosis_ids está definido y no es un array vacío
       if (response.dosis_ids && response.dosis_ids.length > 0) {
           // Mapear los datos de VaccineByIDResponse a DosisEntity
-          return response.dosis_ids.map(dosis => {
+          return response.dosis_ids
+          .filter(dosis => dosis.status === true) // Filter doses with status "false"
+          .map(dosis => {
               return {
                 //DATOS DE LA VACUNA
                   vaccineID:               response._id,

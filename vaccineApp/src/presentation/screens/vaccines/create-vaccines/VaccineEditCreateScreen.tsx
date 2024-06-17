@@ -25,6 +25,7 @@ import { Estados } from '../../../components/Estados';
 import {  VaccinePutPostResponseEntity } from '../../../../domain/entities/VaccineEditCreateEntity';
 import { getVaccineByIdAction, updateCreateVaccineAction } from '../../../../actions/vaccines/createEditVaccinesAction';
 import { Vaccine } from '../../../../domain/entities/VaccineDependent';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 
 interface Props extends StackScreenProps<RootStackParams,'VaccineEditCreateScreen'>{};
 
@@ -43,6 +44,7 @@ export const VaccineEditCreateScreen = ({route}:Props) => {
   const {  relationships } =  useRelationShip();
   const vaccineIdRef = useRef(route.params.vaccineId);
   const [checkedChild, setCheckedChild] = React.useState(false);
+  const navigation = useNavigation<NavigationProp<RootStackParams>>();
 
  
 
@@ -263,6 +265,29 @@ export const VaccineEditCreateScreen = ({route}:Props) => {
                           <Layout style={{height: 10}} />
                           {/* Button */}
                           <Layout style={{...stylesFigma.buttonContainer,  alignItems:'center', marginTop:10, marginBottom:50}  }>
+
+                          {/* {  if ( id === 'new' )  }
+                          if ( id === 'new' ) {
+                              return emptyVaccine;
+                          } */}
+
+                          { vaccineIdRef.current === 'new'
+                                        ?(<></>)
+                                        : (
+                                          <Layout style={{ flex:1, justifyContent:'center', alignItems:'center',
+                                          marginVertical:(Platform.OS === 'ios') ? 20: 20 , marginHorizontal:0}}>
+                                                  <Text 
+                                                  status="primary" 
+                                                  category="s1"
+                                                  
+                                                      onPress={() =>  navigation.navigate( 'DosisFigmaScreen' ,{ vaccineId: vaccineIdRef.current})}
+                                                    >
+                                                  Dosis
+                                                </Text>
+                                            </Layout>
+                                        )}
+
+                           
                               
                               {/* Crear una nueva cuenta */}
                                   <Button 

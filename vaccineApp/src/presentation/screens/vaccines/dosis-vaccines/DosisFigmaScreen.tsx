@@ -80,7 +80,6 @@ export const DosisFigmaScreen = ({route}:Props) => {
             onPress: () => {
               // Lógica para eliminar el elemento
               dosisDelete(id);
-             console.log(id);
               queryClient.invalidateQueries({queryKey: ['dosis', 'infinite']});
               refetch();
             },
