@@ -7,8 +7,13 @@ export interface CalendarVaccineByDependentResponse {
 
 export interface CalendarVaccineDependent {
     datevaccine?:            string;
-    name?:                   string;
+    nameLastnameDependent?:                   string;
     dosisMissingandAplied?:  string;
+
+    titleVaccine ? : string;
+    dosisApplied? : number;
+    ofCountDosis ? : number;
+    titleDosis?: string[];
 }
 
 

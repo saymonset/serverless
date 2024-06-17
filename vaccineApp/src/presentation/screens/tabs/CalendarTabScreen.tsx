@@ -55,13 +55,20 @@ const { isLoading, data, fetchNextPage, refetch } = useInfiniteQuery({
 
   return (
     <Layout style={{flex:1}}>
-      <Stepper></Stepper>
+      
 
-      {/* {  ( isLoading )  ?  (<LoadingScreen />)
+      {  ( isLoading )  ?  (<LoadingScreen />)
                         :  <SectionList 
                         sections={ data?.pages.flat() ?? [] }
                         keyExtractor={() => uuidv4()}
-                        renderItem={ ({ item }) => <CalendarVaccineDependentComponent  item={item}/> }
+                        // renderItem={ ({ item }) => <CalendarVaccineDependentComponent  item={item}/> }
+                        renderItem={ ({ item }) => <Stepper
+                                  titleVaccine = { item.titleVaccine ?? ''}
+                                  dosisApplied = { item.dosisApplied ?? 0}  
+                                  ofCountDosis = { item.ofCountDosis ?? 0}  
+                                  titleDosis  = { item.titleDosis ?? []}  
+                        
+                        ></Stepper> }
     
                         renderSectionHeader={ ({section})=> <Text style={{ marginVertical: 2 }}>{ section.title }</Text>}
                         stickySectionHeadersEnabled
@@ -72,11 +79,11 @@ const { isLoading, data, fetchNextPage, refetch } = useInfiniteQuery({
     
                         showsVerticalScrollIndicator={ false }
                         style={{
-                          height: height - top - 120
+                          height: height - top - 0
                         }}
                       />
       }
-    */}
+   
   
     
     </Layout>

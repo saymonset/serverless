@@ -21,7 +21,7 @@ export const CalendarVaccineDependentComponent = ( { item }:Props) => {
                                           <Text
                                              
                                               style ={{ textAlign:'left'}}
-                                          >{ item.name  }</Text>
+                                          >{ item.nameLastnameDependent  }</Text>
                                           <Text
                                             
                                               style ={{ textAlign:'left'}}

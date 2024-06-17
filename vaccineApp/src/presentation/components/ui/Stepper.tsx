@@ -1,5 +1,6 @@
-import React from 'react'
-import { StyleSheet, View, Text, FlatList } from 'react-native';
+import { Text } from '@ui-kitten/components';
+import React, { useEffect } from 'react'
+import { StyleSheet, View, FlatList } from 'react-native';
 import StepIndicator from 'react-native-step-indicator';
 import { CalendarVaccineDependent } from '../../../infrastructure/interfaces/calendar-vaccinebydependents';
 import { CalendarVaccineDependentComponent } from '../calendar/CalendarVaccineDependentComponent';
@@ -26,58 +27,49 @@ const stepIndicatorStyles = {
     currentStepLabelColor: '#fe7013',
   };
 
-  let calendarVaccineDependent: CalendarVaccineDependent ={
-    datevaccine:'20/12/2024',
-    name: ` Simon Alberto rodriguez`,
-    dosisMissingandAplied:`  dosis apliccada`
+  interface Props {
+    titleVaccine: string,
+    dosisApplied: number,
+    ofCountDosis: number
+    titleDosis : string[],
   }
+ 
 
-  const labels = ["uno", "dos", "saymon"];
+  const labels = ["Primaria | Al nacer\n20/12/2024", "Primaria | Al nacer\n20/12/2024", "Primaria | Al nacer\n20/12/2024"];
 
-export const Stepper = () => {
-  const [currentPage, setCurrentPage] = React.useState<number>(0);
-  const viewabilityConfig = React.useRef({ itemVisiblePercentThreshold: 40 })
-    .current;
+export const Stepper = ( { titleVaccine  = 'BSG1', dosisApplied = 3,  ofCountDosis = 3, titleDosis = [] } : Props) => {
+  const [currentPage, setCurrentPage] = React.useState<number>(dosisApplied);
+  const [count, setCount] = React.useState<number>(ofCountDosis);
 
-  const renderPage = (rowData: any) => {
-    const item = rowData.item;
-    return (
-      <View style={styles.rowItem}>
-        <CalendarVaccineDependentComponent item={item.title} />
-      </View>
-    );
-  };
+  useEffect(() => {
+    setCurrentPage(dosisApplied)
+  }, [dosisApplied])
 
-  const onViewableItemsChanged = React.useCallback(({ viewableItems }) => {
-    const visibleItemsCount = viewableItems.length;
-    if (visibleItemsCount !== 0) {
-      setCurrentPage(viewableItems[visibleItemsCount - 1].index);
-    }
-  }, []);
+  useEffect(() => {
+    setCount(ofCountDosis)
+  }, [ofCountDosis])
+  
 
   return (
     <View style={styles.container}>
       <View style={styles.stepIndicator}>
+        <Text
+          category='h1'
+        >
+              {titleVaccine}
+        </Text>
         <StepIndicator
           customStyles={{
             ...stepIndicatorStyles,
             stepIndicatorLabelCurrentColor: stepIndicatorStyles.stepIndicatorLabelFinishedColor,
           }}
           
-          stepCount={3}
+          stepCount={ 3 }
           direction="vertical"
-          currentPosition={currentPage}
+          currentPosition={3}
           labels={labels}
-          stepIndicatorLabelAlign="flex-start"
         />
       </View>
-      <FlatList
-        style={{ flexGrow: 1 }}
-        data={dummyData.data}
-        renderItem={renderPage}
-        onViewableItemsChanged={onViewableItemsChanged}
-        viewabilityConfig={viewabilityConfig}
-      />
     </View>
   );
 };
@@ -90,11 +82,11 @@ const styles = StyleSheet.create({
       backgroundColor: '#ffffff',
     },
     stepIndicator: {
-      marginVertical: 250,
+     marginVertical: 10,
       paddingHorizontal: 20,
     },
     rowItem: {
-      marginTop:120,
+     // marginTop:120,
       flex: 3,
       paddingVertical: 0,
     },
