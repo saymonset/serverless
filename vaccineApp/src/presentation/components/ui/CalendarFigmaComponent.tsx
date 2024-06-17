@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, Platform } from 'react-native';
 import moment from 'moment';
 import { useSelector } from "react-redux";
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { stylesFigma } from "../../screens/theme/appFigmaTheme";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 interface IProps  {
     date:Date;
@@ -51,6 +51,8 @@ export const CalendarFigmaComponent : React.FC<IProps> = ({ date, placeholder, o
           onConfirm={handleConfirm}
           onCancel={hideDatePicker}
         />
+
+        
       </View>
     );
   };

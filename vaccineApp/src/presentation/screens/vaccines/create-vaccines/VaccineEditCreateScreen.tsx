@@ -51,7 +51,7 @@ export const VaccineEditCreateScreen = ({route}:Props) => {
     .max(15, 'Debe de tener 15 caracteres o menos')
     .min(3,'Debe de tener 3 caracteres o mas'),
     description: Yup.string().required('Requerido')
-    .max(10, 'Debe de tener 100 caracteres o menos')
+    .max(100, 'Debe de tener 100 caracteres o menos')
     .min(3,'Debe de tener 3 caracteres o mas'),
     disease_prevents: Yup.string().required('Requerido')
     .max(15, 'Debe de tener 15 caracteres o menos')

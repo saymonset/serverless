@@ -15,15 +15,15 @@ export const CalendarVaccineDependentComponent = ( { item }:Props) => {
                                           onPress = { ( item ) => console.log()}
                                       >
                                           <Text
-                                              numberOfLines={ 2 }
+                                           
                                               style ={{ textAlign:'left'}}
                                           >{ item.datevaccine  }</Text>
                                           <Text
-                                              numberOfLines={ 2 }
+                                             
                                               style ={{ textAlign:'left'}}
                                           >{ item.name  }</Text>
                                           <Text
-                                              numberOfLines={ 2 }
+                                            
                                               style ={{ textAlign:'left'}}
                                           >{ item.dosisMissingandAplied  }</Text>
                                            

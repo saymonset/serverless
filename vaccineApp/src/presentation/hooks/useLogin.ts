@@ -26,6 +26,9 @@ export const useLogin  = () => {
               message
            } = await authLoginAction(ci, password);
 
+           console.log('-------------1---------------')
+           console.log({resp, statusCode})
+           console.log('-------------2---------------')
            if (!usuario){
               dispatch( addError(enviarMensajePorStatusCode(statusCode+'')))
               return;

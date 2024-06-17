@@ -33,6 +33,7 @@ interface Props extends StackScreenProps<RootStackParams,'DependentAddEditScreen
 export const DependentAddEditScreen = ({route}:Props) => {
   const theme = useTheme();
   const queryClient = useQueryClient();
+  const {  startLoading, stopLoading, isLoading } =  useDependent();
   
   const {height} = useWindowDimensions(); 
   const [idEstado, setIdEstado] = useState(0);
@@ -69,11 +70,14 @@ export const DependentAddEditScreen = ({route}:Props) => {
 
   const mutation = useMutation({
     mutationFn: (data: DependentById) => {
+      startLoading();
       let {_id, ...rest} = data;
        _id = {
            $oid: dependentIdRef.current
        }
-     return updateCreateDependentAction({...rest, _id});
+       let resp = updateCreateDependentAction({...rest, _id}); 
+       stopLoading()
+     return resp;
     }
    ,
     onSuccess(data: DependentUpdateCreateResponse) {
@@ -97,7 +101,7 @@ export const DependentAddEditScreen = ({route}:Props) => {
     queryFn: () => getDependentByIdAction(dependentIdRef.current)
   });
 
-  if (!dependent) {
+  if (!dependent || isLoading) {
     return (<FullScreenLoader></FullScreenLoader>);
   }
 

@@ -69,8 +69,7 @@ export const CreateEditDosisCard = ( { dosis, goPage = 'DosisEditCreateScreen', 
                                                 
                                                 <Layout style={{ marginLeft: 280 }}> 
                                                     <Pressable onPress={ () => 
-                                                    Alert.alert("Por implementar")
-                                                      //onDelete (dosis._id.$oid)
+                                                      onDelete (dosis._id.$oid)
                                                     }>
                                                             <Ionicons name="trash" size={20} color="red" />
                                                     </Pressable>

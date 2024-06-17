@@ -82,7 +82,7 @@ export const WelcomeScreen = ({ navigation }:Props) => {
               >
              Inicia sessión
           </Text>
-         <SelectLenguage></SelectLenguage>  
+         {/* <SelectLenguage></SelectLenguage>   */}
         </Layout>
          </Layout>
     </Layout>                                

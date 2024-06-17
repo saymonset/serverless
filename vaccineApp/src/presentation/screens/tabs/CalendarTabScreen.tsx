@@ -12,6 +12,7 @@ import { useLogin } from '../../hooks/useLogin';
 import { RootStackParams } from '../../navigation/StackNavigator';
 import { CalendarVaccineDependentComponent } from '../../components/calendar/CalendarVaccineDependentComponent';
 import { LoadingScreen } from '../loading/LoadingScreen';
+import { Stepper } from '../../components/ui/Stepper';
 
 export const CalendarTabScreen = () => {
   const { height } = useWindowDimensions();
@@ -54,8 +55,9 @@ const { isLoading, data, fetchNextPage, refetch } = useInfiniteQuery({
 
   return (
     <Layout style={{flex:1}}>
+      <Stepper></Stepper>
 
-      {  ( isLoading )  ?  (<LoadingScreen />)
+      {/* {  ( isLoading )  ?  (<LoadingScreen />)
                         :  <SectionList 
                         sections={ data?.pages.flat() ?? [] }
                         keyExtractor={() => uuidv4()}
@@ -74,7 +76,7 @@ const { isLoading, data, fetchNextPage, refetch } = useInfiniteQuery({
                         }}
                       />
       }
-   
+    */}
   
     
     </Layout>

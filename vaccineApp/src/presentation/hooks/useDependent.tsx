@@ -54,6 +54,21 @@ export const useDependent = () => {
             console.log(error)
         }
       }
+   
+      const startLoading =  ()  => {
+        try {
+            dispatch( startLoadingStore())
+        } catch (error) {
+            console.log(error)
+        }
+      }
+      const stopLoading =  ()  => {
+        try {
+            dispatch( stopLoadingStore() );
+        } catch (error) {
+            console.log(error)
+        }
+      }
 
       const dependentDelete = async ( dependentIdDeleted:String)=> {
           try {
@@ -93,8 +108,10 @@ export const useDependent = () => {
       putDependIdDelete,
       getDependentslist,
       clearDependIdDelete,
-       isLoading,
-       dependentIdDeleted,
+      isLoading,
+      dependentIdDeleted,
+      startLoading,
+      stopLoading
         
        
   }
