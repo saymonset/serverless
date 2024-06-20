@@ -40,6 +40,7 @@ const stepIndicatorStyles = {
 export const Stepper = ( { titleVaccine  = 'BSG1', dosisApplied = 3,  ofCountDosis = 3, titleDosis = [] } : Props) => {
   const [currentPage, setCurrentPage] = React.useState<number>(dosisApplied);
   const [count, setCount] = React.useState<number>(ofCountDosis);
+  const [labels, setLabels] = React.useState<string[]>([]);
 
   useEffect(() => {
     setCurrentPage(dosisApplied)
@@ -48,6 +49,10 @@ export const Stepper = ( { titleVaccine  = 'BSG1', dosisApplied = 3,  ofCountDos
   useEffect(() => {
     setCount(ofCountDosis)
   }, [ofCountDosis])
+
+  useEffect(() => {
+    setLabels(titleDosis)
+  }, [titleDosis])
   
 
   return (
@@ -82,7 +87,7 @@ const styles = StyleSheet.create({
       backgroundColor: '#ffffff',
     },
     stepIndicator: {
-     marginVertical: 10,
+     marginVertical: 50,
       paddingHorizontal: 20,
     },
     rowItem: {

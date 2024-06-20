@@ -9,98 +9,90 @@ import { Dependent, DependentResponse } from "../../infrastructure/interfaces/de
 import { SendSMSResponse } from "../../infrastructure/interfaces/sendSms.response";
 import { DependentMapper } from "../../infrastructure/mappers/dependent/dependent-mapper";
 import { applyVaccinneAction } from "../apply-vaccine/applyVaccineAction";
-import { getDependentByPageAction } from "../dependents/get-dependents-by-pageAction.ts";
+import { getDependentByIdAction, getDependentByPageAction } from "../dependents/get-dependents-by-pageAction.ts";
 
 const returnMapper = ( data: DependentBDResponse ): DependentResponse => {
   return  DependentMapper.dependentBDToEntity(data);
 }
 
-export const getCalendarVaccineByDependentAction = async (limite: number = 1000, page: number, term: string = "''", user: User): Promise<CalendarVaccineByDependentResponse[]> => {
+export const getCalendarVaccineByDependentAction = async (dependentId: string): Promise<CalendarVaccineByDependentResponse[]> => {
   try {
 
     //RTomammos todos los familiaares
-    const dependents = await getDependentByPageAction(10000, page, term, user!);
+    const dependent = await getDependentByIdAction(dependentId);
+    let nameLastnameDependent = dependent.name + ' ' +dependent.lastname;
     const noRepiteByVaccIdDependentId: Map<string, boolean> = new Map();
 
     let results: CalendarVaccineByDependentResponse[] = [];
 
-    for (let i = 0; i < dependents.length; i++) {
-      const dependent = dependents[i];
+      console.log(dependent._id.$oid);
       let calendars: CalendarVaccineDependent[] = [];
         const { data } = await vaccinesApi.get<VaccineDependentPage>(`/vaccine/vaccdependent/${dependent._id.$oid}`);
         const { vaccines } = data;
-
         for (const vac of vaccines) {
           if (!noRepiteByVaccIdDependentId.has(`${vac._id.$oid}-${dependent._id.$oid}`)) {
-            noRepiteByVaccIdDependentId.set(`${vac._id.$oid}-${dependent._id.$oid}`, true);
+              noRepiteByVaccIdDependentId.set(`${vac._id.$oid}-${dependent._id.$oid}`, true);
+              const today = new Date();
+              today.setDate(today.getDate());
+              const day = today.getDate();
+              const month = today.getMonth() + 1;
+              const year = today.getFullYear();
+              const formattedDate = today.toLocaleDateString('es-ES', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+              });
 
-            const today = new Date();
-            today.setDate(today.getDate());
-            const day = today.getDate();
-            const month = today.getMonth() + 1;
-            const year = today.getFullYear();
-            const formattedDate = today.toLocaleDateString('es-ES', {
-              day: 'numeric',
-              month: 'long',
-              year: 'numeric'
-            });
-
-            const { vacc_apply_vaccines } = await applyVaccinneAction(vac._id.$oid, dependent._id.$oid);
-
-            let dosisApplied: number = 0;
-            let deCuantasDosis: number = 0;
-
-            if (vacc_apply_vaccines && vacc_apply_vaccines.length > 0) {
-              const { dosis } = vacc_apply_vaccines[2];
-              let dosisDependents: Dosi[] = dosis ?? [];
-              deCuantasDosis = dosisDependents.length;
-              dosisApplied = dosisDependents.filter((dosis) => dosis.isApplied).length;
-
-                  //  const labels = ["Primaria | Al nacer\n20/12/2024", "Primaria | Al nacer\n20/12/2024", "Primaria | Al nacer\n20/12/2024"];
-
+              const { dosis_ids } = vac;
+              let deCuantasDosis = 0;
+              let dosisApplied = 0;
+              console.log('----------------pasando------------------');
               let labels : string[] = [];
-              dosisDependents.forEach(( dosis )=>{
-                    //d
-                //    date={moment(values.birth ?? new Date()).add(0, 'day').toDate()}
+              if (dosis_ids && dosis_ids.length > 0){
+                 console.log('----------------Existe?------------------');
+                 console.log({dosis: dosis_ids})
+                 console.log('--------------cool--------------------');
+                // let dosisDependents: Dosi[] = dosis ?? [];
+                 deCuantasDosis = dosis_ids.length;
+                 dosisApplied = dosis_ids.filter((d) => d.isApplied).length;
+                     dosis_ids.forEach(( d )=>{
+                         let nextDate = new Date(moment(dependent.birth).add(d.expires_in_days, 'day').format('YYYY-MM-DD'))
+                         let titleDosisDetalle = d.name + d.age_frequency? ' | ' + d.age_frequency : '';
+                         labels.push( titleDosisDetalle + '\n' + nextDate);
+                     });
 
-                console.log('Expira en dias = '+dosis.expires_in_days);
-                console.log('dosis.vaccination_date = '+dosis.vaccination_date);
-                console.log('dependent.birth = '+dependent.birth);
-
-                let nextDate = new Date(moment(dependent.birth).add(dosis.expires_in_days, 'day').format('YYYY-MM-DD'))
-                let titleDosisDetalle = dosis.name + dosis.age_frequency? ' | ' + dosis.age_frequency : '';
-                labels.push( titleDosisDetalle + '\n' + nextDate);
-            });
-
-              let calendarVaccineDependent: CalendarVaccineDependent ={
-
-                datevaccine:formattedDate,
-                nameLastnameDependent: ` ${dependent.name} ${dependent.lastname}`,
-                dosisMissingandAplied:` ${vac.name} ${dosisApplied}/${deCuantasDosis}`,
-
-                titleVaccine : vac.name,
-                dosisApplied : dosisApplied,
-                ofCountDosis : deCuantasDosis,
-                titleDosis: labels
-
+                     let calendarVaccineDependent: CalendarVaccineDependent ={
+                      datevaccine:formattedDate,
+                      nameLastnameDependent,
+                      dosisMissingandAplied:` ${vac.name} ${dosisApplied}/${deCuantasDosis}`,
+          
+                      titleVaccine : vac.name,
+                      dosisApplied : dosisApplied,
+                      ofCountDosis : deCuantasDosis,
+                      titleDosis: labels
+                    }
+                    calendars.push(calendarVaccineDependent);
+                    let calendarVaccineByDependentResponse: CalendarVaccineByDependentResponse = {
+                      title: nameLastnameDependent,
+                      data: calendars
+                    }
+                    results = [...results, calendarVaccineByDependentResponse];
               }
-              calendars.push(calendarVaccineDependent);
+          
+                  
+   
+              }
+              console.log('----------------fin------------------');
 
-             
-            }
+    
 
-           
-          }
-        }
-
-      let calendarVaccineByDependentResponse: CalendarVaccineByDependentResponse = {
-        title: 'Primeros 30 dias',
-        data: calendars
-      }
-
-      results = [...results, calendarVaccineByDependentResponse];
+          
+    
     }
 
+    // console.log('-----------------1-----------')
+    // console.log(results)
+    // console.log('-----------------14----------')
     return results;
   } catch (error) {
     const message = error instanceof Error ? error.message : 'An unknown error occurred';

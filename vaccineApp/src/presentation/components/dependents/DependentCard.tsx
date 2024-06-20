@@ -74,6 +74,24 @@ export const DependentCard = ( { dependent, goPage = 'DependentAddEditScreen', o
                                           </Layout>
                                           
                                       </Card>}     
+      {(goPage==='CalendarVaccineByDependentScreen') && <Card 
+                                      style={{flex:1}}
+                                          onPress = { () => {
+                                            // Cargamos las vacunas de ese familiar
+                                          
+                                            return navigation.navigate('CalendarVaccineByDependentScreen',{ dependentId: dependent._id.$oid})
+                                        }}
+                                        header={() =>  <Text></Text>}
+                                      >
+                                          <Layout style={{flex:1, flexDirection:"row", justifyContent:'space-between', alignItems:'center' }}>
+                                              <Text style={{marginLeft:10}}>{ dependent.name  + ' ' + dependent.lastname}</Text>
+                                              <Text style={stylesFigma.titlesecund}></Text>
+                                              <Ionicons name="medkit-outline" size={20} color="black" />
+                                          </Layout>
+                                          
+                                      </Card>}     
+
+                                                                      
                                       
 
                                  

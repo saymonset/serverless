@@ -1,3 +1,6 @@
+import { Dosi } from "./apply-vaccine-interface";
+ 
+
 export interface VaccineDependentPage {
     desde:    number;
     limite:   number;
@@ -15,6 +18,7 @@ export interface Vaccine {
     name:             string;
     isChecked?:          boolean;
     status:           boolean;
+    dosis_ids? : Dosi[];
 }
 
 

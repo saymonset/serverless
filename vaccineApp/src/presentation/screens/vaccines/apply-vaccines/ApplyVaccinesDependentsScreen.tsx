@@ -21,7 +21,7 @@ import { useLogin } from '../../../hooks/useLogin';
 const screenWidth = Dimensions.get("window").width;
 
 export const ApplyVaccinesDependentsScreen = () => {
-    const { user } = useLogin();
+  const { user } = useLogin();
     const { loadGender } =  useGender();
     const { loadRelationShip } =  useRelationShip();
     const { top } = useSafeAreaInsets();

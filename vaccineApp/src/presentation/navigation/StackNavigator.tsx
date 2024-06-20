@@ -27,6 +27,7 @@ import { ConfigDosisModalScreen } from '../screens/vaccines/dosis-vaccines/Confi
 import { ParentescoScreen } from '../screens/parentesco/ParentescoScreen';
 import { ParentescoEditCreateScreen } from '../screens/parentesco/ParentescoEditCreateScreen';
 import { DependentAddEditScreen } from '../screens/dependent/DependentAddEditScreen';
+import { CalendarVaccineByDependentScreen } from '../screens/calendar-vaccine-dependent/CalendarVaccineByDependentScreen';
  
  
 
@@ -50,6 +51,7 @@ export type RootStackParams = {
   ApplyVaccinesAddScreen: {dependentId: string};
   ConsultVaccinesDependentsScreen:  undefined;
   ConsultVaccinesScreen: {dependentId: string};
+  CalendarVaccineByDependentScreen: {dependentId: string};
   VaccineFigmaScreen:  undefined;
   VaccineEditCreateScreen: {vaccineId: string};
   DosisFigmaScreen:  {vaccineId: string};
@@ -93,6 +95,7 @@ export const  StackNavigator = () => {
                   <Stack.Screen name="ApplyVaccinesAddScreen" component={   ApplyVaccinesAddScreen } />
                   <Stack.Screen name="ConsultVaccinesDependentsScreen" component={   ConsultVaccinesDependentsScreen } />
                   <Stack.Screen name="ConsultVaccinesScreen" component={   ConsultVaccinesScreen } />
+                  <Stack.Screen name="CalendarVaccineByDependentScreen" component={   CalendarVaccineByDependentScreen } />
                   <Stack.Screen name="VaccineFigmaScreen" component={   VaccineFigmaScreen } />
                   <Stack.Screen name="VaccineEditCreateScreen" component={   VaccineEditCreateScreen } />
                   <Stack.Screen name="DosisFigmaScreen" component={   DosisFigmaScreen } />
